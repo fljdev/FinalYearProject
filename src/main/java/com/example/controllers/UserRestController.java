@@ -45,10 +45,14 @@ public class UserRestController {
 
     @RequestMapping(value = "/createUsers", method = RequestMethod.POST)
     @ResponseBody
-    public String createUser(String username){
+    public String createUser(String firstName,String lastName, String username, String email, String password){
 
         User aUser = new User();
+        aUser.setFirstName(firstName);
+        aUser.setLastName(lastName);
         aUser.setUsername(username);
+        aUser.setEmail(email);
+        aUser.setPassword(password);
 
         iUserService.createUser(aUser);
 
@@ -70,6 +74,7 @@ public class UserRestController {
 
         if(userToDelete!=null){
             iUserService.deleteUser(userToDelete);
+
             return userToDelete.getUsername()+ " has been deleted";
         }else{
             return "Could not find user in db";

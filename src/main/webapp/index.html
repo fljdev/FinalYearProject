@@ -2,15 +2,38 @@
 <html>
 <body>
 
-<form action="/createUsers" method = "POST" >
-    Username:<br>
-    <input type="text" name="username" value="">
-    <br>
-    <br><br>
-    <input type="submit" value="Register">
-</form>
 
-<p>Click Register to register on the ForexFighter website </p>
+
+
+
+<table border='1' width='280px' cellpadding='2' cellspacing='2' align='left'>
+    <form action="/createUsers" method = "POST" >
+        <tr>
+            <td align = "center" colspan="2"><strong>Register to Join ForexFighter</strong></td>
+        </tr>
+            <tr>
+                <td align='left'>First Name: <td><input type='text' align = "right" name='firstName'></td></td>
+            </tr>
+            <tr>
+                <td align='left'>Second Name: <td><input type='text' align = "right" name='lastName'></td></td>
+            </tr>
+            <tr>
+                <td align='left'>Username: <td><input type='text' name='username'></td></td>
+            </tr>
+            <tr>
+                <td align='left'>Email: <td><input type='text' name='email'></td></td>
+            </tr>
+            <tr>
+                <td align='left'>Password: <td><input type='password' name='password'></td></td>
+            </tr>
+            <tr>
+                <td align='left'>Repeat Password: <td><input type='password' name='password2'></td></td>
+           </tr>
+            <tr>
+                <td align='center' colspan="2"><input type='submit' name='REGISTER' value="Register"></td>
+            </tr>
+    </form>
+</table>
 
 </body>
 </html>
