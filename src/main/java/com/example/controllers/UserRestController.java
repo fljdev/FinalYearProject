@@ -22,6 +22,7 @@ public class UserRestController {
 
     @Autowired
     public void setiUserService(IUserService iUserService) {
+
         this.iUserService = iUserService;
     }
 
@@ -29,7 +30,9 @@ public class UserRestController {
 
 
 
-    @RequestMapping("/")
+
+    @RequestMapping(value ="/allUsers", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
     public ArrayList<User> getAllUsers(){
 
         ArrayList<User>users = new ArrayList<User>();
@@ -40,15 +43,39 @@ public class UserRestController {
     }
 
 
-    @RequestMapping(value = "/createUsers", method = RequestMethod.GET, produces = "application/json")    @ResponseBody
+    @RequestMapping(value = "/createUsers", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
     public String createUser(){
 
-        User aUser = new User("john");
+        User aUser = new User("Joni");
 
         iUserService.createUser(aUser);
 
-        return "done";
+        return "Well done, "+aUser.getUsername()+" has been added to the database:)";
+    }
+
+    @RequestMapping(value = "/deleteUser",method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public String deleteUser(){
+
+        ArrayList<User>users = iUserService.getAllUsers();
+
+        User userToDelete=null;
+        for(User aUser:users){
+            if(aUser.getUsername().equalsIgnoreCase("Bill")){
+                userToDelete=aUser;
+            }
+        }
+
+        if(userToDelete!=null){
+            iUserService.deleteUser(userToDelete);
+            return userToDelete.getUsername()+ " has been deleted";
+        }else{
+            return "Could not find user in db";
+        }
     }
 
 
-}
+
+
+}//end class

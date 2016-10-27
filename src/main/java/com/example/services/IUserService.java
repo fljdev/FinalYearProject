@@ -11,5 +11,6 @@ public interface IUserService {
 
     ArrayList<User> getAllUsers();
     void createUser(User user);
+    void deleteUser(User user);
 
 }

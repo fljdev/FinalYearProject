@@ -21,6 +21,7 @@ public class UserService implements IUserService{
 
     @Autowired
     public void setUserDAO(UserDAO dao){
+
         this.userDAO = dao;
     }
 
@@ -41,6 +42,11 @@ public class UserService implements IUserService{
 
         userDAO.save(user);
 
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        userDAO.delete(user);
     }
 
 
