@@ -43,11 +43,12 @@ public class UserRestController {
     }
 
 
-    @RequestMapping(value = "/createUsers", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/createUsers", method = RequestMethod.POST)
     @ResponseBody
-    public String createUser(){
+    public String createUser(String username){
 
-        User aUser = new User("Joni");
+        User aUser = new User();
+        aUser.setUsername(username);
 
         iUserService.createUser(aUser);
 
@@ -62,7 +63,7 @@ public class UserRestController {
 
         User userToDelete=null;
         for(User aUser:users){
-            if(aUser.getUsername().equalsIgnoreCase("Bill")){
+            if(aUser.getUsername().equalsIgnoreCase("Joni")){
                 userToDelete=aUser;
             }
         }
