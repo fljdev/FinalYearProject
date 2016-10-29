@@ -29,20 +29,31 @@ public class UserService implements IUserService{
     @Override
     public ArrayList<User> getAllUsers() {
 
-        ArrayList<User>u = new ArrayList<User>();
+        ArrayList<User>usersFound = new ArrayList<User>();
         for(User aUser: userDAO.findAll()){
-            u.add(aUser);
+            usersFound.add(aUser);
         }
+        return usersFound;
+    }
 
-        return u;
+    @Override
+    public ArrayList<User> onlineUsers() {
+
+        ArrayList<User>usersOnline = new ArrayList<User>();
+        for(User aUser: userDAO.findAll()){
+
+            if(aUser.isOnline()){
+                System.out.println(aUser.getUsername());
+                usersOnline.add(aUser);
+            }
+        }
+        return usersOnline;
     }
 
     @Override
     public void createUser(User user) {
 
         userDAO.save(user);
-
-
     }
 
     @Override

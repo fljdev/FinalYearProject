@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -66,7 +68,7 @@ public class UserRestController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public String createUser(String username, String password){
+    public String login(String username, String password){
 
         boolean correctLoginDetails = false;
         ArrayList<User> users = iUserService.getAllUsers();
@@ -82,6 +84,23 @@ public class UserRestController {
         }
 
         return "I am afraid the login details provided do not match our records";
+    }
+
+//    @RequestMapping(value = "/onlineUsers", method = RequestMethod.POST)
+//    @ResponseBody
+//    public ArrayList<User> onlineUsers(){
+//
+//        return null;
+//
+//    }
+
+    @RequestMapping("/onlineUsers")
+    void handleFoo(HttpServletResponse response) {
+        try {
+            response.sendRedirect("ff.html");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @RequestMapping(value = "/deleteUser",method = RequestMethod.GET, produces = "application/json")
