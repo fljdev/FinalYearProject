@@ -54,9 +54,34 @@ public class UserRestController {
         aUser.setEmail(email);
         aUser.setPassword(password);
 
+        /**
+         * Registering will mean you are notautomatically online.
+         */
+//        aUser.setOnline(true);
+
         iUserService.createUser(aUser);
 
         return "Well done, "+aUser.getUsername()+" has been added to the database:)";
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseBody
+    public String createUser(String username, String password){
+
+        boolean correctLoginDetails = false;
+        ArrayList<User> users = iUserService.getAllUsers();
+        for(User u : users){
+            if(u.getUsername().equalsIgnoreCase(username)&& u.getPassword().equals(password)){
+                correctLoginDetails=true;
+
+
+                u.setOnline(true);
+                System.out.println(u.toString());
+                return username+" successfully logged in";
+            }
+        }
+
+        return "I am afraid the login details provided do not match our records";
     }
 
     @RequestMapping(value = "/deleteUser",method = RequestMethod.GET, produces = "application/json")

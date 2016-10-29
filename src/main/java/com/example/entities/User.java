@@ -25,6 +25,7 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private boolean online;
 
 
     //private CurrencyPair currencyPair; Object not created yet
@@ -34,17 +35,20 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, String username, String email, String password) {
+
+    public User(String firstName, String lastName, String username, String email, String password, boolean online) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.online = online;
     }
 
     public int getId() {
         return id;
     }
+
 
     public String getFirstName() {
         return firstName;
@@ -86,7 +90,24 @@ public class User {
         this.password = password;
     }
 
+    public boolean isOnline() {
+        return online;
+    }
 
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", online=" + online +
+                '}';
+    }
 }
