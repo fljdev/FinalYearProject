@@ -1,73 +1,125 @@
 <!DOCTYPE html>
-<html>
-<body bgcolor="aqua">
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>ForexFighter</title>
+	<meta name="description" content="Wiredwiki App">
+
+	<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
+
+</head>
+
+
+
+<body>
+
+	<!-- Navbar -->
+		<nav class="navbar navbar-inverse navbar-fixed-top" id="my-navbar">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+
+					<a href="" class="navbar-brand">ForexFighter</a>
+				</div><!-- Navbar Header-->
+				<div class="collapse navbar-collapse" id="navbar-collapse">
+
+				<a href="" class="btn btn-warning navbar-btn navbar-right">Enter</a>
+					<ul class="nav navbar-nav">
+						<li><a href="#feedback">Feedback</a>
+						<li><a href="#gallery">Gallery</a>
+						<li><a href="#features">Features</a>
+						<li><a href="#faq">Faq</a>
+						<li><a href="#contact">ContactUs</a>
+					</ul>
+				</div>
+			</div><!-- End Container-->
+		</nav><!-- End navbar -->
+
+<br /><br />
+		<!-- Contact -->
+
+		  <div class="container">
+		    <section>
+		      <div class="page-header" id="contact">
+		          <h2>Register Now<small> to start playing!!</small></h2>
+		        </div><!-- End Page Header -->
 
 
 
 
 
-<table border='1' width='280px' cellpadding='2' cellspacing='2' align='left'>
-    <form action="/createUsers" method = "POST" >
-        <tr>
-            <td align = "center" colspan="2"><strong>Register to Join ForexFighter</strong></td>
-        </tr>
-        <tr>
-            <td align='left'>First Name: <td><input type='text' align = "right" name='firstName'></td></td>
-        </tr>
-        <tr>
-            <td align='left'>Second Name: <td><input type='text' align = "right" name='lastName'></td></td>
-        </tr>
-        <tr>
-            <td align='left'>Username: <td><input type='text' name='username'></td></td>
-        </tr>
-        <tr>
-            <td align='left'>Email: <td><input type='text' name='email'></td></td>
-        </tr>
-        <tr>
-            <td align='left'>Password: <td><input type='password' name='password'></td></td>
-        </tr>
-        <tr>
-            <td align='left'>Repeat Password: <td><input type='password' name='password2'></td></td>
-        </tr>
-        <tr>
-            <td align='center' colspan="2"><input type='submit' name='Register' value="Register"></td>
-        </tr>
-    </form>
-</table>
+		          <div class="col-lg-8">
 
-<table border='1' width='280px' cellpadding='2' cellspacing='2' align='left'>
-    <form action="/login" method = "POST" >
-        <tr>
-            <td align = "center" colspan="2"><strong>Login</strong></td>
-        </tr>
+		            <form action="/createUsers" class="form-horizontal" method = "POST">
+		              <div class="form-group">
+		                <label for="firstName" class="col-lg-2 control-label">First Name</label>
+		                <div class="col-lg-10">
+		                  <input type="text" class="form-control" id="firstName" placeholder="Enter First Name" width="300px">
+		                </div>
+		              </div><!-- End form group -->
 
-        <tr>
-            <td align='left'>Username: <td><input type='text' name='username'></td></td>
-        </tr>
+									<form action="" class="form-horizontal">
+										<div class="form-group">
+											<label for="secondName" class="col-lg-2 control-label">Second Name</label>
+											<div class="col-lg-10">
+												<input type="text" class="form-control" id="secondName" placeholder="Enter Second Name">
+											</div>
+										</div><!-- End form group -->
 
-        <tr>
-            <td align='left'>Password: <td><input type='password' name='password'></td></td>
-        </tr>
+		              <div class="form-group">
+		                <label for="username" class="col-lg-2 control-label">Username</label>
+		                <div class="col-lg-10">
+		                  <input type="text" class="form-control" id="username" placeholder="Enter Username">
+		                </div>
+		              </div><!-- End form group -->
 
-        <tr>
-            <td align='center' colspan="2"><input type='submit' name='login' value="Login"></td>
-        </tr>
-    </form>
-</table>
+		              <div class="form-group">
+		                <label for="email" class="col-lg-2 control-label">Email</label>
+		                <div class="col-lg-10">
+		                  <input type="email" class="form-control" id="email" placeholder="Enter email">
+		                </div>
+		              </div><!-- End form group -->
+
+									<div class="form-group">
+										<label for="password" class="col-lg-2 control-label">Password</label>
+										<div class="col-lg-10">
+											<input type="password" class="form-control" id="password" placeholder="Enter password">
+										</div>
+									</div><!-- End form group -->
 
 
 
-<table border='1' width='280px' cellpadding='2' cellspacing='2' align='left'>
-    <form action="/onlineUsers" method = "POST" >
-        <tr>
-            <td align = "center" colspan="2"><strong>See who's online now</strong></td>
-        </tr>
+		              <div class="form-group">
+		                <div class="col-lg-10 col-lg-offset-2">
+		                  <button type="submit" class="btn btn-primary">Register</button>
+		                </div>
+		              </div>
 
-        <tr>
-            <td align='center' colspan="2"><input type='submit' name='onlineUsers' value="Who's Ready To play!"></td>
-        </tr>
-    </form>
-</table>
+
+
+		            </form>
+		          </div>
+		        </div><!-- End the row -->
+
+		    </section>
+		  </div>
+
+
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"  ></script>
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
 </body>
