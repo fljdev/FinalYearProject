@@ -51,7 +51,7 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public void createUser(User user) {
+    public void register(User user) {
 
         userDAO.save(user);
     }

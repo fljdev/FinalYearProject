@@ -41,9 +41,21 @@ public class UserRestController {
     }
 
 
-    @RequestMapping(value = "/createUser", method = RequestMethod.POST)
-    @ResponseBody
-    public String createUser(String firstName,String lastName, String username, String email, String password){
+    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
+    public User register(@RequestBody String jsonRegister){
+        System.out.println("got in here");
+
+        JSONObject jsonObject = new JSONObject(jsonRegister);
+        String firstName = jsonObject.getString("firstName");
+        String lastName = jsonObject.getString("lastName");
+        String username = jsonObject.getString("username");
+        String email = jsonObject.getString("email");
+        String password = jsonObject.getString("password");
+        String confirmPassword = jsonObject.getString("confirmPassword");
+
+        if(!password.equalsIgnoreCase(confirmPassword)){
+            return null;
+        }
 
         User aUser = new User();
         aUser.setFirstName(firstName);
@@ -57,9 +69,9 @@ public class UserRestController {
          */
 //        aUser.setOnline(true);
 
-        iUserService.createUser(aUser);
+        iUserService.register(aUser);
 
-        return "Well done, "+aUser.getUsername()+" has been added to the database:)";
+        return aUser;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
