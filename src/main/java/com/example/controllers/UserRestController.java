@@ -2,21 +2,22 @@ package com.example.controllers;
 
 import com.example.entities.User;
 import com.example.services.IUserService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+
+
 
 /**
  * Created by admin on 26/10/2016.
  */
 
 @RestController
+@RequestMapping("/api")
 public class UserRestController {
 
 
@@ -27,11 +28,6 @@ public class UserRestController {
 
         this.iUserService = iUserService;
     }
-
-
-
-
-
 
     @RequestMapping(value ="/allUsers", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -66,9 +62,14 @@ public class UserRestController {
         return "Well done, "+aUser.getUsername()+" has been added to the database:)";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    @ResponseBody
-    public String login(String username, String password){
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
+    public User login(@RequestBody String jsonLogin){
+
+        System.out.println(jsonLogin);
+        JSONObject jsonObject = new JSONObject(jsonLogin);
+        String username = jsonObject.getString("username");
+        String password = jsonObject.getString("password");
+
 
         boolean correctLoginDetails = false;
         ArrayList<User> users = iUserService.getAllUsers();
@@ -79,11 +80,11 @@ public class UserRestController {
 
                 u.setOnline(true);
                 System.out.println(u.toString());
-                return username+" successfully logged in";
+                return u;
             }
         }
 
-        return "I am afraid the login details provided do not match our records";
+        return null;
     }
 
 //    @RequestMapping(value = "/onlineUsers", method = RequestMethod.POST)
