@@ -45,7 +45,7 @@ public class UserRestController {
     }
 
 
-    @RequestMapping(value = "/createUsers", method = RequestMethod.POST)
+    @RequestMapping(value = "/createUser", method = RequestMethod.POST)
     @ResponseBody
     public String createUser(String firstName,String lastName, String username, String email, String password){
 

@@ -1,0 +1,16 @@
+{
+  "name": "springboottest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://c13731869@bitbucket.org/c13731869/springboottest.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/c13731869/springboottest#readme"
+}
