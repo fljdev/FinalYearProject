@@ -13,7 +13,7 @@ angular.module('myApp',[
 
     $stateProvider
         .state('home',{
-            url:"/home",
+            url:"/home/:varX",
             templateUrl: "resources/js/views/Home.html",
             controller:"HomeController"
         })

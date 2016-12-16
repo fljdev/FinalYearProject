@@ -83,11 +83,9 @@ public class UserRestController {
         String password = jsonObject.getString("password");
 
 
-        boolean correctLoginDetails = false;
         ArrayList<User> users = iUserService.getAllUsers();
         for(User u : users){
             if(u.getUsername().equalsIgnoreCase(username)&& u.getPassword().equals(password)){
-                correctLoginDetails=true;
 
 
                 u.setOnline(true);
