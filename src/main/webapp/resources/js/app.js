@@ -5,13 +5,19 @@ angular.module('myApp',[
     'ui.router',
     'myApp.HomeController',
     'myApp.LoginController',
-    'myApp.RegisterController'
+    'myApp.RegisterController',
+    'myApp.WelcomeController'
 ]).
     config(function ($stateProvider,$urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/home");
+    $urlRouterProvider.otherwise("/welcome");
 
     $stateProvider
+        .state('welcome',{
+            url:"/welcome",
+            templateUrl: "resources/js/views/Welcome.html",
+            controller:"WelcomeController"
+        })
         .state('home',{
             url:"/home/:varX",
             templateUrl: "resources/js/views/Home.html",
