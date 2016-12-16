@@ -26,7 +26,6 @@ angular.module('myApp',[
             url:"/register",
             templateUrl: "resources/js/views/Register.html",
             controller:"RegisterController"
-
     });
 });
 

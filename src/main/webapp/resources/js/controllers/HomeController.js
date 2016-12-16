@@ -1,10 +1,7 @@
 angular.module('myApp.HomeController',[]).
-    controller('HomeController',function($scope){
-    $scope.JohnVar= "Hey Hey!!";
+    controller('HomeController',function($scope, $stateParams){
 
-    // $scope.loggedNow = $scope.var;
-
-        // alert(varX);
+    $scope.currentUser = $stateParams.varX;
 
 });
 
