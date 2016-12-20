@@ -2,7 +2,7 @@ angular.module('myApp.RegisterController',[]).
 controller('RegisterController',function($scope,$http){
     $scope.RegisterText = "This is the Register!!";
 
-    alert("hell");
+    // alert("hell");
     $scope.register ={};
 
     $scope.submit=function(){
@@ -11,13 +11,12 @@ controller('RegisterController',function($scope,$http){
         console.log($scope.register);
 
         $http.post('http://localhost:8080/api/register', JSON.stringify($scope.register))
-            .then(function (response) {
-                if(response.status = 200){
+            .success(function (data, status) {
+                if(status = 200){
 
-                    console.log(response.data, "This is angalar register Controller");
-                    alert($scope.register.username+ " Registered");
+                    console.log(data.username, "This is angalar register Controller");
                 }
-            }).catch(function (error) {
+            }).error(function (error) {
             alert("something went wrong!!");
         });
     }
