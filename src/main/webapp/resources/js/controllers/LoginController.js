@@ -20,7 +20,6 @@ controller('LoginController',function($scope, $http, $state, $stateParams){
             }).error(function (error) {
                 alert("something went wrong!!");
 
-
             });
 
 
