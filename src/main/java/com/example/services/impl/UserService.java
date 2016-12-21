@@ -21,6 +21,7 @@ public class UserService implements IUserService{
 
     @Autowired
     public void setUserDAO(UserDAO dao){
+
         this.userDAO = dao;
     }
 
@@ -28,19 +29,36 @@ public class UserService implements IUserService{
     @Override
     public ArrayList<User> getAllUsers() {
 
-        ArrayList<User>u = new ArrayList<User>();
+        ArrayList<User>usersFound = new ArrayList<User>();
         for(User aUser: userDAO.findAll()){
-            u.add(aUser);
+            usersFound.add(aUser);
         }
-
-        return u;
+        return usersFound;
     }
 
     @Override
-    public void createUser(User user) {
+    public ArrayList<User> onlineUsers() {
+
+        ArrayList<User>usersOnline = new ArrayList<User>();
+        for(User aUser: userDAO.findAll()){
+
+            if(aUser.isOnline()){
+                System.out.println(aUser.getUsername());
+                usersOnline.add(aUser);
+            }
+        }
+        return usersOnline;
+    }
+
+    @Override
+    public void register(User user) {
 
         userDAO.save(user);
+    }
 
+    @Override
+    public void deleteUser(User user) {
+        userDAO.delete(user);
     }
 
 

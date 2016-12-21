@@ -10,6 +10,9 @@ import java.util.ArrayList;
 public interface IUserService {
 
     ArrayList<User> getAllUsers();
-    void createUser(User user);
+    ArrayList<User> onlineUsers();
+
+    void register(User user);
+    void deleteUser(User user);
 
 }
