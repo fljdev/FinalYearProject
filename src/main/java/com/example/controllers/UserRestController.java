@@ -56,6 +56,7 @@ public class UserRestController {
         return aUser;
     }
 
+
 //    @RequestMapping(value ="/allUsers", method = RequestMethod.GET, produces = "application/json")
 //    @ResponseBody
 //    public ArrayList<User> getAllUsers(){
