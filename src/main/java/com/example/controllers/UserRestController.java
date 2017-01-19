@@ -57,50 +57,14 @@ public class UserRestController {
     }
 
 
-//    @RequestMapping(value ="/allUsers", method = RequestMethod.GET, produces = "application/json")
-//    @ResponseBody
-//    public ArrayList<User> getAllUsers(){
-//
-//        ArrayList<User>users = new ArrayList<User>();
-//
-//        users=(ArrayList<User>) iUserService.getAllUsers();
-//
-//        return users;
-//    }
+    @RequestMapping(value ="/allUsers", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ArrayList<User> getAllUsers(){
+        ArrayList<User>users = new ArrayList();
+        users=(ArrayList<User>) iUserService.getAllUsers();
+        return users;
+    }
 
-
-//    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
-//    public User register(@RequestBody String jsonRegister){
-//        System.out.println("got in here");
-//
-//        JSONObject jsonObject = new JSONObject(jsonRegister);
-//        String firstName = jsonObject.getString("firstName");
-//        String lastName = jsonObject.getString("lastName");
-//        String username = jsonObject.getString("username");
-//        String email = jsonObject.getString("email");
-//        String password = jsonObject.getString("password");
-//        String confirmPassword = jsonObject.getString("confirmPassword");
-//
-//        if(!password.equalsIgnoreCase(confirmPassword)){
-//            return null;
-//        }
-//
-//        User aUser = new User();
-//        aUser.setFirstName(firstName);
-//        aUser.setLastName(lastName);
-//        aUser.setUsername(username);
-//        aUser.setEmail(email);
-//        aUser.setPassword(password);
-//
-//        /**
-//         * Registering will mean you are notautomatically online.
-//         */
-////        aUser.setOnline(true);
-//
-//        iUserService.register(aUser);
-//
-//        return aUser;
-//    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     public User login(@RequestBody String jsonLogin){
@@ -117,6 +81,7 @@ public class UserRestController {
 
 
                 u.setOnline(true);
+                System.out.println("status = " + u.isOnline());
                 System.out.println(u.toString());
                 return u;
             }
