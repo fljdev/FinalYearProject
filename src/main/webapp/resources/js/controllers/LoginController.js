@@ -14,6 +14,7 @@ controller('LoginController',function($scope, $http, $state, $stateParams){
                     console.log(data, "This is angalar login Controller");
 
                     //go to new state carrying "one of" the values the user entered as a  param
+                    //go to the home page
                     $state.go('home',{varX:data.username});
 
                 }
