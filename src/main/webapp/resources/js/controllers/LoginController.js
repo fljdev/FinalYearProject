@@ -14,7 +14,7 @@ controller('LoginController',function($scope, $http, $state,$cookieStore){
                     console.log($scope.login);
 
 
-                    $state.go('home',{varX:data.username});
+                    $state.go('home');
 
                     $cookieStore.put('user',$scope.login);
                 }
