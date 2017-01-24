@@ -9,7 +9,8 @@ angular.module('myApp',[
     'myApp.RegisterController',
     'myApp.WelcomeController',
     'myApp.OnlineController',
-    'myApp.AllUsersController'
+    'myApp.AllUsersController',
+    'myApp.header'
 ]).
     config(function ($stateProvider,$urlRouterProvider) {
 
