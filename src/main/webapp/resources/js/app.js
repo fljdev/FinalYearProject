@@ -1,6 +1,7 @@
 angular.module('myApp',[
     'ngRoute',
     'ngSanitize',
+    'ngCookies',
     'chart.js',
     'ui.router',
     'myApp.HomeController',
