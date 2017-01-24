@@ -22,7 +22,7 @@ angular.module('myApp',[
             controller:"WelcomeController"
         })
         .state('home',{
-            url:"/home/:varX",
+            url:"/home",
             templateUrl: "resources/js/views/Home.html",
             controller:"HomeController"
         })

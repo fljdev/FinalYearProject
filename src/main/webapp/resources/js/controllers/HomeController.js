@@ -1,7 +1,8 @@
 angular.module('myApp.HomeController',[]).
-    controller('HomeController',function($scope, $stateParams){
+    controller('HomeController',function($scope, $stateParams, $cookieStore){
 
-    $scope.currentUser = $stateParams.varX;
+    $scope.currentUser = $cookieStore.get('user').username;
+
 
 });
 

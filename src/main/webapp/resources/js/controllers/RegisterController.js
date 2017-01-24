@@ -18,8 +18,7 @@ controller('RegisterController',function($scope,$http,$state,$cookieStore){
                     console.log($scope.register);
                     // console.log(data.username, "This is angalar register Controller");
 
-                    $state.go('home',{varX:data.username});
-
+                    $state.go('home');
                     $cookieStore.put('user',$scope.register);
 
 
