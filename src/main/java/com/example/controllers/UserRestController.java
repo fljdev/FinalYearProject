@@ -90,6 +90,7 @@ public class UserRestController {
         return null;
     }
 
+
 //    @RequestMapping(value = "/onlineUsers", method = RequestMethod.POST)
 //    @ResponseBody
 //    public ArrayList<User> onlineUsers(){
@@ -97,6 +98,7 @@ public class UserRestController {
 //        return null;
 //
 //    }
+
 
 //    @RequestMapping("/onlineUsers")
 //    void handleFoo(HttpServletResponse response) {
