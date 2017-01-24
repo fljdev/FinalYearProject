@@ -1,5 +1,5 @@
 angular.module('myApp.LoginController',[]).
-controller('LoginController',function($scope, $http, $state, $stateParams){
+controller('LoginController',function($scope, $http, $state,$cookieStore){
         $scope.LoginText = "This is the login!!";
         $scope.login ={};
 
@@ -10,22 +10,18 @@ controller('LoginController',function($scope, $http, $state, $stateParams){
             .success(function (data, status) {
                 if(status = 200){
 
-                    //display values the user entered
-                    console.log(data, "This is angalar login Controller");
+                    $scope.login = data;
+                    console.log($scope.login);
 
-                    //go to new state carrying "one of" the values the user entered as a  param
-                    //go to the home page
+
                     $state.go('home',{varX:data.username});
 
+                    $cookieStore.put('user',$scope.login);
                 }
             }).error(function (error) {
                 alert("something went wrong!!");
-
-            });
-
-
+        });
     }
-
 });
 
 

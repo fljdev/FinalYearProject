@@ -1,5 +1,5 @@
 angular.module('myApp.RegisterController',[]).
-controller('RegisterController',function($scope,$http,$state){
+controller('RegisterController',function($scope,$http,$state,$cookieStore){
     $scope.RegisterText = "This is the Register!!";
 
     // alert("hell");
@@ -14,11 +14,14 @@ controller('RegisterController',function($scope,$http,$state){
             .success(function (data, status) {
                 if(status = 200){
 
-                    console.log(data.username, "This is angalar register Controller");
+                    $scope.register = data;
+                    console.log($scope.register);
+                    // console.log(data.username, "This is angalar register Controller");
 
-                    //go to new state carrying "one of" the values the user entered as a  param
-                    //go to the home page
                     $state.go('home',{varX:data.username});
+
+                    $cookieStore.put('user',$scope.register);
+
 
                 }
             }).error(function (error) {
