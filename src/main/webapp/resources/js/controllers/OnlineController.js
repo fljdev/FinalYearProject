@@ -5,7 +5,7 @@ angular.module('myApp.OnlineController',[]).
 
 
     $scope.online = {};
-    $scope.online = $cookieStore.get('user').username;
+    $scope.online = $cookieStore.get('userCookie').username;
 
 
 
