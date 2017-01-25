@@ -10,7 +10,7 @@ angular.module('myApp',[
     'myApp.WelcomeController',
     'myApp.OnlineController',
     'myApp.AllUsersController',
-    'myApp.header'
+    'myApp.navheader'
 ]).
     config(function ($stateProvider,$urlRouterProvider) {
 

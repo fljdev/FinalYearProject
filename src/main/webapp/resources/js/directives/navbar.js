@@ -1,5 +1,5 @@
-angular.module('myApp.header',[]).
-directive('header', function($cookieStore){
+angular.module('myApp.navheader',[]).
+directive('navheader', function($cookieStore){
     return{
         restrict:'E',
         scope : {
@@ -15,7 +15,7 @@ directive('header', function($cookieStore){
 
             $scope.home="HOME!!!";
         },
-        templateUrl:'resources/js/views/navbar.html',
+        templateUrl:'resources/js/views/NavHeader.html',
         replace:true
     }
 });
