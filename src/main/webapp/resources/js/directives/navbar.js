@@ -8,8 +8,8 @@ directive('header', function($cookieStore){
         controller: function ($scope) {
 
             $scope.logOut = function () {
-                console.log("Pressed");
-                $cookieStore.remove('cookie');
+                console.log("YOU LOGGED OUT!!");
+                $cookieStore.remove('userCookie');
 
             };
 
