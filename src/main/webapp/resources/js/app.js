@@ -42,8 +42,8 @@ angular.module('myApp',[
             templateUrl: "resources/js/views/AllUsers.html",
             controller: "AllUsersController"
         })
-        .state('online',{
-            url: "/online",
+        .state('onlineUsers',{
+            url: "/onlineUsers",
             templateUrl: "resources/js/views/Online.html",
             controller: "OnlineController"
         });

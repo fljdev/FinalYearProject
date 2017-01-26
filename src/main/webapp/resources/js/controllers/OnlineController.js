@@ -1,13 +1,29 @@
 angular.module('myApp.OnlineController',[]).
-    controller('OnlineController', function($scope,$cookieStore){
+    controller('OnlineController', function($scope,$cookieStore,$http){
 
-    $scope.onlineMessage = "Who's online";
-
-
+    // $scope.onlineMessage = "List of all users currently logged in!";
     $scope.online = {};
-    $scope.online = $cookieStore.get('userCookie').username;
+    // $scope.online = $cookieStore.get('userCookie');
 
 
+
+    $scope.init = function(){
+        $http.get('http://localhost:8080/api/onlineUsers')
+            .success(function (data, status) {
+                if(status = 200){
+
+                    //data will be equal to the arraylist returned by the UserRestController onlineUsers method
+                    console.log(data, "This is angalar OnlineController");
+                    $scope.online = data;
+
+                }
+            }).error(function (error) {
+            alert("something went wrong!!");
+
+        });//end http.get
+    }//end function
+
+    $scope.init();
 
 
 });
