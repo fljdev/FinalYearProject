@@ -13,7 +13,7 @@ directive('navheader', function($cookieStore){
 
             };
 
-            $scope.home="HOME!!!!";
+            $scope.home="HOME!!!!!";
         },
         templateUrl:'resources/js/views/NavHeader.html',
         replace:true
