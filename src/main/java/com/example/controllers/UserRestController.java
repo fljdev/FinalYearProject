@@ -66,6 +66,38 @@ public class UserRestController {
     }
 
 
+    @RequestMapping(value = "/onlineUsers", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ArrayList<User> onlineUsers(){
+
+        ArrayList<User>users = new ArrayList();
+        users=(ArrayList<User>) iUserService.getAllUsers();
+
+//        return users;
+
+        ArrayList<User> onlineUsers = new ArrayList<>();
+
+        for(User u : users ){
+            if(u.isOnline()){
+
+                System.out.println("Online Status "+u.getUsername()+" "+u.isOnline());
+                onlineUsers.add(u);
+            }
+        }
+
+        System.out.println("\n\n\n-----Online Users----- \n\n\n");
+        onlineUsers.size();
+
+        if(onlineUsers.size()>0){
+            return onlineUsers;
+        }else{
+            return null ;
+        }
+
+    }
+
+
+
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     public User login(@RequestBody String jsonLogin){
 
@@ -81,6 +113,7 @@ public class UserRestController {
 
 
                 u.setOnline(true);
+                iUserService.register(u);
                 System.out.println("status = " + u.isOnline());
                 System.out.println(u.toString());
                 return u;
@@ -91,23 +124,8 @@ public class UserRestController {
     }
 
 
-//    @RequestMapping(value = "/onlineUsers", method = RequestMethod.POST)
-//    @ResponseBody
-//    public ArrayList<User> onlineUsers(){
-//
-//        return null;
-//
-//    }
 
 
-//    @RequestMapping("/onlineUsers")
-//    void handleFoo(HttpServletResponse response) {
-//        try {
-//            response.sendRedirect("ff.html");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 //    @RequestMapping(value = "/deleteUser",method = RequestMethod.GET, produces = "application/json")
 //    @ResponseBody
