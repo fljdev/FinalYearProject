@@ -118,9 +118,9 @@ public class UserRestController {
         for(User u : users){
             if(u.getUsername().equalsIgnoreCase(username)){
 
-//                u.setOnline(false);
-                iUserService.deleteUser(u);
-//                iUserService.register(u);
+                u.setOnline(false);
+//                iUserService.deleteUser(u);
+                iUserService.register(u);
                 System.out.println(username + " has been logged out!");
 
                 return null;

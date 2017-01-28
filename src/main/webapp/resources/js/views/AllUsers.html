@@ -1,8 +1,26 @@
 <!--<body ng-app="myApp" ng-controller="myCtrl" data-ng-init="init()">-->
 
 {{allUsersMessage}}
-<h3 ng-repeat="x in allUsers">{{x.username}}</h3>
+<!--<h3 ng-repeat="x in allUsers">{{x.username}}</h3>-->
 
-this is crazy
+<head>
+    <link rel="stylesheet" type="text/css" href="allUsers.css">
+</head>
+<table>
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>online</th>
+        <th>rank</th>
+    </tr>
+    </thead>
 
-<!--</body>-->
+    <tbody>
+    <tr ng-repeat="x in allUsers">
+        <td>{{x.username}}</td>
+        <td>{{x.email}}</td>
+        <td>ranks</td>
+    </tr>
+    </tbody>
+
+</table>
