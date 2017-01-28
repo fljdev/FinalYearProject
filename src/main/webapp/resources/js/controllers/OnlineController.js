@@ -1,11 +1,7 @@
 angular.module('myApp.OnlineController',[]).
     controller('OnlineController', function($scope,$cookieStore,$http){
 
-    // $scope.onlineMessage = "List of all users currently logged in!";
     $scope.online = {};
-    // $scope.online = $cookieStore.get('userCookie');
-
-
 
     $scope.init = function(){
         $http.get('http://localhost:8080/api/onlineUsers')
