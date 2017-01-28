@@ -45,14 +45,11 @@ public class UserRestController {
         aUser.setUsername(username);
         aUser.setEmail(email);
         aUser.setPassword(password);
-
         /**
          * Registering will mean you are notautomatically online.
          */
-//        aUser.setOnline(true);
-
+        aUser.setOnline(true);
         iUserService.register(aUser);
-
         return aUser;
     }
 
@@ -70,30 +67,20 @@ public class UserRestController {
     @ResponseBody
     public ArrayList<User> onlineUsers(){
 
-        ArrayList<User>users = new ArrayList();
-        users=(ArrayList<User>) iUserService.getAllUsers();
-
-//        return users;
-
+        ArrayList<User>users = new ArrayList((ArrayList<User>) iUserService.getAllUsers());
         ArrayList<User> onlineUsers = new ArrayList<>();
 
         for(User u : users ){
             if(u.isOnline()){
-
-                System.out.println("Online Status "+u.getUsername()+" "+u.isOnline());
                 onlineUsers.add(u);
             }
         }
-
-        System.out.println("\n\n\n-----Online Users----- \n\n\n");
-        onlineUsers.size();
 
         if(onlineUsers.size()>0){
             return onlineUsers;
         }else{
             return null ;
         }
-
     }
 
 
@@ -120,6 +107,25 @@ public class UserRestController {
             }
         }
 
+        return null;
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")
+    public String logout(@RequestBody User user){
+
+        String username = user.getUsername();
+        ArrayList<User> users = iUserService.getAllUsers();
+        for(User u : users){
+            if(u.getUsername().equalsIgnoreCase(username)){
+
+//                u.setOnline(false);
+                iUserService.deleteUser(u);
+//                iUserService.register(u);
+                System.out.println(username + " has been logged out!");
+
+                return null;
+            }
+        }
         return null;
     }
 
