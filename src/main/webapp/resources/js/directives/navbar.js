@@ -1,19 +1,24 @@
 angular.module('myApp.navheader',[]).
-directive('navheader', function($cookieStore){
+directive('navheader', function($cookieStore, $state, $http){
     return{
         restrict:'E',
-        scope : {
-
-        },
+        scope : {},
         controller: function ($scope) {
 
             $scope.logOut = function () {
-                console.log("YOU LOGGED OUT!!");
+                var obj = $cookieStore.get('userCookie');
                 $cookieStore.remove('userCookie');
 
-            };
+                $http.post('http://localhost:8080/api/logout', JSON.stringify(obj))
+                    .success(function (data, status) {
 
-            $scope.home="HOME!!!!!";
+                        if(status = 200){
+                            $state.go('welcome');
+                        }
+                    }).error(function (error) {
+                    alert("something went wrong!!");
+                });
+            };
         },
         templateUrl:'resources/js/views/NavHeader.html',
         replace:true

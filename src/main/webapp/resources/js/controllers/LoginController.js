@@ -1,6 +1,6 @@
 angular.module('myApp.LoginController',[]).
 controller('LoginController',function($scope, $http, $state,$cookieStore){
-        $scope.LoginText = "This is the login!!";
+        // $scope.LoginText = "This is the login!!";
         $scope.login ={};
 
     $scope.submit=function(){

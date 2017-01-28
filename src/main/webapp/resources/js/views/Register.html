@@ -207,10 +207,10 @@
 <div class="login">
     <form id="register-form"  role="form">
 
-        <input type="text" ng-model="register.firstName" name="firstName" c placeholder="First Name" value="">
-        <input type="text" ng-model="register.lastName" name="lastName" placeholder="Last Name" value="">
-        <input type="text" ng-model="register.username" name="username" id="username"  placeholder="Username">
-        <input type="text" ng-model="register.email" name="email" id="email"  placeholder="Email">
+        <input type="text" ng-model="register.firstName"autocomplete="off" name="firstName" c placeholder="First Name" value="">
+        <input type="text" ng-model="register.lastName" autocomplete="off"name="lastName" placeholder="Last Name" value="">
+        <input type="text" ng-model="register.username" autocomplete="off"name="username" id="username"  placeholder="Username">
+        <input type="text" ng-model="register.email" autocomplete="off"name="email" id="email"  placeholder="Email">
         <input type="password" ng-model="register.password" name="password" id="password"  placeholder="Password">
         <input type="password" ng-model="register.confirmPassword" name="confirmPassword" id="confirmPassword"  placeholder="Confirm Password">
         <input type="button" ng-click="submit()"   name="register" id="register" value="Register">
