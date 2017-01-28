@@ -1,5 +1,28 @@
-<!--{{onlineMessage}}-->
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" ng-app="myApp">
 
-{{online}}
+<head>
+    <link rel="stylesheet" type="text/css" href="allUsers.css">
+</head>
 
-<h3 ng-repeat="x in online">{{x.username}}</h3>
+<table>
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>online</th>
+        <th>The rank</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr ng-repeat="x in online">
+        <td>{{x.username}}</td>
+        <td>{{x.email}}</td>
+        <td>ranks</td>
+    </tr>
+    </tbody>
+
+</table>
+
+
+</html>
