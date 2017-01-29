@@ -1,8 +1,9 @@
 angular.module('myApp.PairsController',[]).
-controller('PairsController', function($scope,$http){
+controller('PairsController', function($scope,$http,$interval){
 
     $scope.pairsMessage = "This is the pairs page";
     $scope.pairs = {};
+
 
     $scope.init = function(){
         $http.get('http://localhost:8080/api/pairs')
@@ -17,9 +18,13 @@ controller('PairsController', function($scope,$http){
             }).error(function (error) {
             alert("something went wrong!!");
 
+
+
         });//end http.get
     }//end function
 
-    $scope.init();
+    $interval( function(){ $scope.init(); }, 3000);
+
+    // $scope.init();
 
 });//end controller
