@@ -17,6 +17,8 @@ controller('LoginController',function($scope, $http, $state,$cookieStore){
                     $state.go('home');
 
                     $cookieStore.put('userCookie',$scope.login);
+
+
                 }
             }).error(function (error) {
                 alert("something went wrong!!");
