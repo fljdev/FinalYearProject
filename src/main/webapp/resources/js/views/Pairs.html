@@ -1,0 +1,20 @@
+{{pairsMessage}}
+
+<table>
+    <thead>
+    <tr>
+        <th>Currency Pair</th>
+        <th>Bid</th>
+        <th>Ask</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr ng-repeat="x in pairs">
+        <td>{{x.symbols}}</td>
+        <td>{{x.bid}}</td>
+        <td>{{x.ask}}</td>
+    </tr>
+    </tbody>
+
+</table>

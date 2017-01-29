@@ -1,6 +1,8 @@
 package com.example.controllers;
 
 import com.example.entities.User;
+import com.example.forex.CurrencyPair;
+import com.example.forex.ForexDriver;
 import com.example.services.IUserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,26 @@ public class UserRestController {
         ArrayList<User>users = new ArrayList();
         users=(ArrayList<User>) iUserService.getAllUsers();
         return users;
+    }
+
+    @RequestMapping(value ="/pairs", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ArrayList<CurrencyPair> allPairs()throws Exception{
+        ForexDriver tester = new ForexDriver();
+
+        tester.currencyPairs.clear();
+
+        tester.makeCurrencyPairs(tester.rawResponseList);
+        tester.rawResponseList.clear();
+
+        ArrayList<CurrencyPair>pairs= new ArrayList<CurrencyPair>();
+        pairs = tester.getCurrencyPairs();
+
+        for(CurrencyPair p : pairs){
+            System.out.println(p.getSymbols());
+        }
+
+        return pairs;
     }
 
 
