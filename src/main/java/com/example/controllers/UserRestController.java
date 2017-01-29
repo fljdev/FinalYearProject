@@ -88,25 +88,28 @@ public class UserRestController {
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     public User login(@RequestBody String jsonLogin){
 
-        System.out.println(jsonLogin);
         JSONObject jsonObject = new JSONObject(jsonLogin);
-        String username = jsonObject.getString("username");
+        String handle = jsonObject.getString("handle");
         String password = jsonObject.getString("password");
 
-
         ArrayList<User> users = iUserService.getAllUsers();
+
         for(User u : users){
-            if(u.getUsername().equalsIgnoreCase(username)&& u.getPassword().equals(password)){
 
-
-                u.setOnline(true);
-                iUserService.register(u);
-                System.out.println("status = " + u.isOnline());
-                System.out.println(u.toString());
-                return u;
+            if(u.getUsername().equalsIgnoreCase(handle)|| u.getEmail().equalsIgnoreCase(handle)){
+                if(u.getPassword().equals(password)){
+                    u.setOnline(true);
+                    iUserService.register(u);
+                    return u;
+                }
             }
-        }
 
+//            if((u.getUsername().equalsIgnoreCase(handle)|| u.getEmail().equalsIgnoreCase(handle) &&  u.getPassword().equals(password))){
+//                u.setOnline(true);
+//                iUserService.register(u);
+//                return u;
+//            }
+        }
         return null;
     }
 
