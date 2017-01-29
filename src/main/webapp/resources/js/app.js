@@ -10,7 +10,8 @@ angular.module('myApp',[
     'myApp.WelcomeController',
     'myApp.OnlineController',
     'myApp.AllUsersController',
-    'myApp.navheader'
+    'myApp.navheader',
+    'myApp.PairsController'
 ]).
     config(function ($stateProvider,$urlRouterProvider) {
 
@@ -46,6 +47,11 @@ angular.module('myApp',[
             url: "/onlineUsers",
             templateUrl: "resources/js/views/Online.html",
             controller: "OnlineController"
-        });
+        })
+        .state('pairs',{
+            url: "/pairs",
+            templateUrl: "resources/js/views/Pairs.html",
+            controller: "PairsController"
+        });;
 });
 
