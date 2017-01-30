@@ -44,6 +44,8 @@ public class UserService implements IUserService{
 
             if(aUser.isOnline()){
                 System.out.println(aUser.getUsername());
+
+
                 usersOnline.add(aUser);
             }
         }
