@@ -3,6 +3,10 @@ angular.module('myApp.OnlineController',[]).
 
     $scope.online = {};
 
+    $scope.challenge = function(){
+        alert("challenged");
+    }
+
     $scope.init = function(){
         $http.get('http://localhost:8080/api/onlineUsers')
             .success(function (data, status) {

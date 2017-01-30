@@ -16,6 +16,7 @@
         <th>Username</th>
         <th>online</th>
         <th>Balance</th>
+        <th>Player Stats</th>
     </tr>
     </thead>
 
@@ -24,6 +25,8 @@
         <td>{{x.username}}</td>
         <td>{{x.email}}</td>
         <td>{{x.account.balance}}</td>
+        <td><button ng-click="getStats()" class="btn btn-success">Stats</button></td>
+
     </tr>
     </tbody>
 
