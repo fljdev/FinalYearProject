@@ -77,10 +77,6 @@ public class UserRestController {
         ArrayList<CurrencyPair>pairs= new ArrayList<CurrencyPair>();
         pairs = tester.getCurrencyPairs();
 
-        for(CurrencyPair p : pairs){
-            System.out.println(p.getSymbols());
-        }
-
         return pairs;
     }
 

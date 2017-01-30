@@ -16,14 +16,14 @@ controller('PairsController', function($scope,$http,$interval){
 
                 }
             }).error(function (error) {
-            alert("something went wrong!!");
+            alert("something went wrong in the pairs controller init function!!");
 
 
 
         });//end http.get
     }//end function
 
-    $interval( function(){ $scope.init(); }, 3000);
+    $interval( function(){ $scope.init(); }, 4000);
 
     // $scope.init();
 
