@@ -15,7 +15,7 @@
     <tr>
         <th>Username</th>
         <th>online</th>
-        <th>The rank</th>
+        <th>Balance</th>
     </tr>
     </thead>
 
@@ -23,7 +23,7 @@
     <tr ng-repeat="x in allUsers">
         <td>{{x.username}}</td>
         <td>{{x.email}}</td>
-        <td>ranks</td>
+        <td>{{x.account.balance}}</td>
     </tr>
     </tbody>
 
