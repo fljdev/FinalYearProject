@@ -4,10 +4,7 @@ import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Generated;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by admin on 26/10/2016.
@@ -19,6 +16,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
+    @OneToOne
+    private BankAccount account;
+
 
     private String firstName;
     private String lastName;
@@ -36,12 +37,13 @@ public class User {
     }
 
 
-    public User(String firstName, String lastName, String username, String email, String password, boolean online) {
+    public User(String firstName, String lastName, String username, String email, String password,BankAccount account, boolean online) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.account = account;
         this.online = online;
     }
 
@@ -90,6 +92,14 @@ public class User {
         this.password = password;
     }
 
+    public BankAccount getAccount() {
+        return account;
+    }
+
+    public void setAccount(BankAccount account) {
+        this.account = account;
+    }
+
     public boolean isOnline() {
         return online;
     }
@@ -107,6 +117,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", account=" + account +
                 ", online=" + online +
                 '}';
     }

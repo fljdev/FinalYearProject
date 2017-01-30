@@ -1,8 +1,10 @@
 package com.example.controllers;
 
+import com.example.entities.BankAccount;
 import com.example.entities.User;
 import com.example.forex.CurrencyPair;
 import com.example.forex.ForexDriver;
+import com.example.services.IBankAccountService;
 import com.example.services.IUserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,18 @@ public class UserRestController {
 
 
     IUserService iUserService;
+    IBankAccountService iBankAccountService;
 
     @Autowired
     public void setiUserService(IUserService iUserService) {
 
         this.iUserService = iUserService;
+    }
+
+    @Autowired
+    public void setiBankAccountService(IBankAccountService iBankAccountService) {
+
+        this.iBankAccountService = iBankAccountService;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
@@ -47,6 +56,12 @@ public class UserRestController {
         aUser.setUsername(username);
         aUser.setEmail(email);
         aUser.setPassword(password);
+
+        BankAccount account = new BankAccount();
+        account.setBalance(20000);
+        iBankAccountService.register(account);
+
+        aUser.setAccount(account);
         /**
          * Registering will mean you are notautomatically online.
          */
