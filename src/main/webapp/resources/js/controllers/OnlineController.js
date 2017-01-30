@@ -4,7 +4,7 @@ angular.module('myApp.OnlineController',[]).
     $scope.online = {};
 
     $scope.challenge = function(){
-        alert("challenged");
+        alert("challenged " + $cookieStore.get('userCookie').email);
     }
 
     $scope.init = function(){
