@@ -96,15 +96,16 @@ public class UserRestController {
     }
 
 
-    @RequestMapping(value = "/onlineUsers", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/onlineUsers", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ArrayList<User> onlineUsers(){
+    public ArrayList<User> onlineUsers(@RequestBody String username){
+
 
         ArrayList<User>users = new ArrayList((ArrayList<User>) iUserService.getAllUsers());
         ArrayList<User> onlineUsers = new ArrayList<>();
 
         for(User u : users ){
-            if(u.isOnline()){
+            if(u.isOnline() &&(!u.getUsername().equalsIgnoreCase(username))){
 
                 onlineUsers.add(u);
             }
