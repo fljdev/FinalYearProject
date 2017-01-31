@@ -11,7 +11,7 @@ angular.module('myApp.OnlineController',[]).
     }
 
     $scope.init = function(){
-        $http.post('http://localhost:8080/api/onlineUsers',$cookieStore.get('userCookie').password)
+        $http.post('http://localhost:8080/api/onlineUsers',$cookieStore.get('userCookie').username)
             .success(function (data, status) {
                 if(status = 200){
 
