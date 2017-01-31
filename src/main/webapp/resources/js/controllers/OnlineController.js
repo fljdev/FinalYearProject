@@ -4,11 +4,11 @@ angular.module('myApp.OnlineController',[]).
     $scope.online = {};
 
     $scope.challenge = function(){
-        alert("challenged " + $cookieStore.get('userCookie').email);
+        alert($cookieStore.get('userCookie').email + " has challenged the other player to a game!!");
     }
 
     $scope.init = function(){
-        $http.get('http://localhost:8080/api/onlineUsers')
+        $http.post('http://localhost:8080/api/onlineUsers',$cookieStore.get('userCookie').password)
             .success(function (data, status) {
                 if(status = 200){
 
