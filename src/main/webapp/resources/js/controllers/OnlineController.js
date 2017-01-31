@@ -3,8 +3,11 @@ angular.module('myApp.OnlineController',[]).
 
     $scope.online = {};
 
-    $scope.challenge = function(){
-        alert($cookieStore.get('userCookie').email + " has challenged the other player to a game!!");
+    $scope.challenge = function(x){
+
+        var challenged = x.username;
+        var challenger = $cookieStore.get('userCookie').username;
+        alert(challenger + " has challenged "+challenged+" to a game!!");
     }
 
     $scope.init = function(){
