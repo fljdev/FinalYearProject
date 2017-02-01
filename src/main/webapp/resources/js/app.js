@@ -11,7 +11,8 @@ angular.module('myApp',[
     'myApp.OnlineController',
     'myApp.AllUsersController',
     'myApp.navheader',
-    'myApp.PairsController'
+    'myApp.PairsController',
+    'myApp.ChallengedController'
 ]).
     config(function ($stateProvider,$urlRouterProvider) {
 
@@ -52,6 +53,11 @@ angular.module('myApp',[
             url: "/pairs",
             templateUrl: "resources/js/views/Pairs.html",
             controller: "PairsController"
+        })
+        .state('challenged',{
+            url: '/challenged/:param',
+            templateUrl: "resources/js/views/Challenged.html",
+            controller: "ChallengedController"
         });;
 });
 

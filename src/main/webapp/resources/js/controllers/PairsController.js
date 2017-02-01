@@ -16,7 +16,7 @@ controller('PairsController', function($scope,$http,$interval){
 
                 }
             }).error(function (error) {
-            alert("something went wrong in the pairs controller init function!!");
+            console.log("something went wrong in the pairs controller init function!!");
 
 
 

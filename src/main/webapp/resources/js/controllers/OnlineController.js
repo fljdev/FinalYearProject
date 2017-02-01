@@ -1,13 +1,15 @@
 angular.module('myApp.OnlineController',[]).
-    controller('OnlineController', function($scope,$cookieStore,$http){
+    controller('OnlineController', function($scope,$cookieStore,$http,$state){
 
     $scope.online = {};
 
     $scope.challenge = function(x){
 
-        var challenged = x.username;
-        var challenger = $cookieStore.get('userCookie').username;
-        alert(challenger + " has challenged "+challenged+" to a game!!");
+        // var challengingPlayer = x.username;
+        // var challenged = $cookieStore.get('userCookie').username;
+
+        var obj=x.username
+        $state.go('challenged',{param:obj});
     }
 
     var name="";
