@@ -100,6 +100,7 @@ public class UserRestController {
     @ResponseBody
     public ArrayList<User> onlineUsers(@RequestBody String username){
 
+        System.out.println("\n\n\n --------"+username);
 
         ArrayList<User>users = new ArrayList((ArrayList<User>) iUserService.getAllUsers());
         ArrayList<User> onlineUsers = new ArrayList<>();
