@@ -31,7 +31,7 @@
         <td>{{currentUser.account.balance}}</td>
         <td><select ng-model="challengerPair" ng-options="x.symbols for x in pairs"></td>
         <td><select ng-model="challengerDirection" ng-options="x for x in direction"></td>
-        <td></td>
+        <td><select ng-model="challengerStake" ng-options="x for x in stakes"></td>
         <!--<td><button ng-click="getSclass="btn btn-success">Stats</button></td>-->
 
     </tr>
@@ -44,7 +44,8 @@
         <td>{{askedUserObject.account.balance}}</td>
         <td><select ng-model="challengedPair" ng-options="x.symbols for x in pairs"></td>
         <td><select ng-model="challengedDirection" ng-options="x for x in direction"></td>
-        <td></td>
+        <td><select ng-model="challengedStake" ng-options="x for x in stakes"></td>
+
 
         <!--<td><button ng-click="getSclass="btn btn-success">Stats</button></td>-->
 
