@@ -10,8 +10,17 @@ angular.module('myApp.OnlineController',[]).
         alert(challenger + " has challenged "+challenged+" to a game!!");
     }
 
+    var name="";
+    if(!$cookieStore.get('userCookie')){
+        name = "xyz";
+
+    }else{
+        name = $cookieStore.get('userCookie').username
+
+    }
+
     $scope.init = function(){
-        $http.post('http://localhost:8080/api/onlineUsers',$cookieStore.get('userCookie').username)
+        $http.post('http://localhost:8080/api/onlineUsers',name)
             .success(function (data, status) {
                 if(status = 200){
 
