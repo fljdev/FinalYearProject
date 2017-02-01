@@ -18,6 +18,25 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
         alert("something went wrong!!");
     });
 
+    $scope.pairs;
+    $scope.direction = ["long","short"];
+
+    $http.get('http://localhost:8080/api/pairs')
+        .success(function (data, status) {
+            if(status = 200){
+
+                //data will be equal to the arraylist returned by the UserRestController
+                console.log(data, "This is angalar pairs");
+                $scope.pairs = data;
+
+            }
+        }).error(function (error) {
+        console.log("something went wrong in the pairs controller init function!!");
+
+
+
+    });//end http.get
+
 
 
     // $scope.askedUser = $scope.object;
