@@ -6,7 +6,7 @@
 </head>
 <body>
 
-{{currentUser}} challenged {{askedUser}}
+{{currentUser.username}} challenged {{askedUserObject.username}}
 
 <table align="center">
     <thead>
@@ -31,11 +31,11 @@
     </tr>
 
     <tr>
-        <td>{{askedUser.firstName}}</td>
-        <td>{{askedUser.lastName}}</td>
-        <td>{{askedUser.username}}</td>
-        <td>{{askedUser.email}}</td>
-        <td>{{askedUser.account.balance}}</td>
+        <td>{{askedUserObject.firstName}}</td>
+        <td>{{askedUserObject.lastName}}</td>
+        <td>{{askedUserObject.username}}</td>
+        <td>{{askedUserObject.email}}</td>
+        <td>{{askedUserObject.account.balance}}</td>
         <!--<td><button ng-click="getSclass="btn btn-success">Stats</button></td>-->
 
     </tr>
