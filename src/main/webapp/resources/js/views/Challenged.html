@@ -8,5 +8,40 @@
 
 {{currentUser}} challenged {{askedUser}}
 
+<table align="center">
+    <thead>
+    <tr>
+        <th>Forename</th>
+        <th>Surname</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Balance</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr>
+        <td>{{currentUser.firstName}}</td>
+        <td>{{currentUser.lastName}}</td>
+        <td>{{currentUser.username}}</td>
+        <td>{{currentUser.email}}</td>
+        <td>{{currentUser.account.balance}}</td>
+        <!--<td><button ng-click="getSclass="btn btn-success">Stats</button></td>-->
+
+    </tr>
+
+    <tr>
+        <td>{{askedUser.firstName}}</td>
+        <td>{{askedUser.lastName}}</td>
+        <td>{{askedUser.username}}</td>
+        <td>{{askedUser.email}}</td>
+        <td>{{askedUser.account.balance}}</td>
+        <!--<td><button ng-click="getSclass="btn btn-success">Stats</button></td>-->
+
+    </tr>
+    </tbody>
+
+</table>
+
 </body>
 </html>

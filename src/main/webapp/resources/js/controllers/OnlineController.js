@@ -8,8 +8,10 @@ angular.module('myApp.OnlineController',[]).
         // var challengingPlayer = x.username;
         // var challenged = $cookieStore.get('userCookie').username;
 
-        var obj=x.username
-        $state.go('challenged',{param:obj});
+        var obj=x
+        console.log("sdfhsh")
+        console.log(obj)
+        $state.go('challenged',{param:obj.id});
     }
 
     var name="";

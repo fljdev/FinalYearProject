@@ -3,10 +3,16 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
     $scope.challenged = {};
 
-    $scope.currentUser = $cookieStore.get('userCookie').username;
+    $scope.currentUser = $cookieStore.get('userCookie');
 
-    $scope.object = $stateParams.param;
-    $scope.askedUser = $scope.object;
+    $scope.askedUser = $stateParams.param;
+
+    console.log($scope.askedUser)
+
+
+
+
+    // $scope.askedUser = $scope.object;
 
 
 
