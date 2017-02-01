@@ -5,10 +5,18 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
     $scope.currentUser = $cookieStore.get('userCookie');
 
-    $scope.askedUser = $stateParams.param;
+    $scope.askedUserID = $stateParams.param;
+    $scope.askedUserObject;
 
-    console.log($scope.askedUser)
 
+    $http.post('http://localhost:8080/api/findById', $scope.askedUserID)
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.askedUserObject = data;
+            }
+        }).error(function (error) {
+        alert("something went wrong!!");
+    });
 
 
 

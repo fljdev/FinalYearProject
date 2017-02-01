@@ -5,12 +5,7 @@ angular.module('myApp.OnlineController',[]).
 
     $scope.challenge = function(x){
 
-        // var challengingPlayer = x.username;
-        // var challenged = $cookieStore.get('userCookie').username;
-
         var obj=x
-        console.log("sdfhsh")
-        console.log(obj)
         $state.go('challenged',{param:obj.id});
     }
 
@@ -40,6 +35,4 @@ angular.module('myApp.OnlineController',[]).
     }//end function
 
     $scope.init();
-
-
 });

@@ -120,6 +120,19 @@ public class UserRestController {
     }
 
 
+    @RequestMapping(value = "/findById", method = RequestMethod.POST, produces = "application/json")
+    public User findById(@RequestBody String id){
+
+        int i = Integer.parseInt(id);
+        ArrayList<User> users = iUserService.getAllUsers();
+
+        for(User u : users){
+            if(u.getId()== i ){
+                return u;
+            }
+        }
+        return null;
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     public User login(@RequestBody String jsonLogin){
