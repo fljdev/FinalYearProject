@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html" ng-app="myApp" ng-controller="ChallengedController">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -47,9 +47,9 @@
         <td><select ng-model="challengedStake" ng-options="x for x in stakes"></td>
 
 
-        <!--<td><button ng-click="getSclass="btn btn-success">Stats</button></td>-->
 
     </tr>
+    <tr><th colspan="8"> <button class="btn btn-default btn-block btn-success"ng-click="fight()"  >Fight!!</button></th></tr>
     </tbody>
 
 </table>
