@@ -20,6 +20,7 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
     $scope.pairs;
     $scope.direction = ["long","short"];
+    $scope.stakes = ["100", "250","500","1000","2500","5000","10000"]
 
     $http.get('http://localhost:8080/api/pairs')
         .success(function (data, status) {
