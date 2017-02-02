@@ -3,10 +3,17 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
     $scope.challenged = {};
 
+    // $scope.challengerPosSize
+
     $scope.currentUser = $cookieStore.get('userCookie');
 
     $scope.askedUserID = $stateParams.param;
     $scope.askedUserObject;
+
+    $scope.pairs;
+    $scope.direction = ["long","short"];
+    $scope.stakes = ["100", "250","500","1000","2500","5000","10000"]
+    $scope.leverages=[10,50,100,200,500];
 
 
     $http.post('http://localhost:8080/api/findById', $scope.askedUserID)
@@ -18,9 +25,7 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
         alert("something went wrong!!");
     });
 
-    $scope.pairs;
-    $scope.direction = ["long","short"];
-    $scope.stakes = ["100", "250","500","1000","2500","5000","10000"]
+
 
     $http.get('http://localhost:8080/api/pairs')
         .success(function (data, status) {
@@ -38,7 +43,41 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
     $scope.fight = function(){
         // alert($scope.currentUser.username)
-        alert($scope.challengedPair.bid)
+        // alert($challengedPair.symbols + " " + $scope.challengedPair.bid+ " "+$scope.challengedPair.ask )
+
+        // $scope.challengedSym = $challengedPair.symbols
+        /**
+         * Get the players stakes in numeric format for calculations
+         */
+        var challengerStakeSelection = $scope.challengerStake
+        var challengerStakeFloat = parseFloat(challengerStakeSelection)
+        var challengedStakeSelection = $scope.challengedStake
+        var challengedStakeFloat = parseFloat(challengedStakeSelection)
+
+        /**
+         * Going long, they pay the ask, so get the ask for both pairs
+         */
+        var challengerPairSelectionAsk = $scope.challengerPair.ask
+        var challengerPairFloatAsk = parseFloat(challengerPairSelectionAsk)
+        var challengedPairSelectionAsk = $scope.challengedPair.ask
+        var challengedPairFloatAsk = parseFloat(challengedPairSelectionAsk)
+
+        /**
+         * get the leverage each player want to fight with
+         */
+        var challengerLev = $scope.challengerLeverage
+        var challengedLev = $scope.challengedLeverage
+
+        /**
+         * get the direction (long/short) for each player
+         */
+        var challengerDir = $scope.challengerDirection
+        var challengedDir = $scope.challengedDirection
+
+
+        $scope.challengerPosSize = challengerStakeFloat * challengerPairFloatAsk * challengerLev;
+        $scope.challengedPosSize = challengedStakeFloat * challengedPairFloatAsk * challengedLev;
+
     }
 
 });
