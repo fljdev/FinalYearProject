@@ -47,6 +47,9 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
         $scope.onTimeout = function(){
             $scope.counter--;
             mytimeout = $timeout($scope.onTimeout,1000);
+            if($scope.counter==0){
+                $timeout.cancel(mytimeout);
+            }
         }
         var mytimeout = $timeout($scope.onTimeout,1000);
 
