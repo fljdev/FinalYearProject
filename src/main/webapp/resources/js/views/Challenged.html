@@ -9,7 +9,7 @@
 
 <table align="center">
     <thead>
-    <tr><th colspan="8">{{currentUser.username}} challenged {{askedUserObject.username}}</th> </tr>
+    <tr><th colspan="9">{{currentUser.username}} challenged {{askedUserObject.username}}</th> </tr>
     <tr>
         <th>Forename</th>
         <th>Surname</th>
@@ -19,6 +19,7 @@
         <th>Pick Pair</th>
         <th>Long/Short</th>
         <th>Stake</th>
+        <th>Leverage</th>
     </tr>
     </thead>
 
@@ -32,6 +33,7 @@
         <td><select ng-model="challengerPair" ng-options="x.symbols for x in pairs"></td>
         <td><select ng-model="challengerDirection" ng-options="x for x in direction"></td>
         <td><select ng-model="challengerStake" ng-options="x for x in stakes"></td>
+        <td><select ng-model="challengerLeverage" ng-options="x for x in leverages"></td>
         <!--<td><button ng-click="getSclass="btn btn-success">Stats</button></td>-->
 
     </tr>
@@ -45,16 +47,49 @@
         <td><select ng-model="challengedPair" ng-options="x.symbols for x in pairs"></td>
         <td><select ng-model="challengedDirection" ng-options="x for x in direction"></td>
         <td><select ng-model="challengedStake" ng-options="x for x in stakes"></td>
+        <td><select ng-model="challengedLeverage" ng-options="x for x in leverages"></td>
 
 
 
     </tr>
-    <tr><th colspan="8"> <button class="btn btn-default btn-block btn-success"ng-click="fight()"  >Fight!!</button></th></tr>
+    <tr><th colspan="9"> <button class="btn btn-default btn-block btn-success"ng-click="fight()"  >Fight!!</button></th></tr>
     </tbody>
 
 </table>
 
+<br><br><br><br>
+<table align="center">
+    <thead>
+    <tr><th colspan="9">Live Game Info Feed</th> </tr>
+    <tr>
 
+        <th>Username</th>
+        <th>Balance</th>
+        <th>Pair</th>
+        <th>Direction</th>
+        <th>Position Size</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr>
+        <td>{{currentUser.username}}</td>
+        <td>{{currentUser.account.balance}}</td>
+        <td>{{challengerPair.symbols}}</td>
+        <td>{{challengerDirection}}</td>
+        <td>{{challengerPosSize}}</td>
+
+    </tr>
+    <tr>
+        <td>{{askedUserObject.username}}</td>
+        <td>{{askedUserObject.account.balance}}</td>
+       <td>{{challengedPair.symbols}}</td>
+       <td>{{challengedDirection}}</td>
+       <td>{{challengedPosSize}}</td>
+    </tr>
+    </tbody>
+
+</table>
 
 </body>
 </html>
