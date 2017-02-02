@@ -1,7 +1,9 @@
 angular.module('myApp.ChallengedController',[]).
-controller('ChallengedController', function($scope,$cookieStore,$http,$state,$stateParams){
+controller('ChallengedController', function($scope,$cookieStore,$http,$state,$stateParams,$timeout){
 
     $scope.challenged = {};
+    $scope.counter = 60;
+
 
     // $scope.challengerPosSize
 
@@ -42,6 +44,12 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
 
     $scope.fight = function(){
+        $scope.onTimeout = function(){
+            $scope.counter--;
+            mytimeout = $timeout($scope.onTimeout,1000);
+        }
+        var mytimeout = $timeout($scope.onTimeout,1000);
+
         // alert($scope.currentUser.username)
         // alert($challengedPair.symbols + " " + $scope.challengedPair.bid+ " "+$scope.challengedPair.ask )
 
@@ -77,6 +85,9 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
         $scope.challengerPosSize = challengerStakeFloat * challengerPairFloatAsk * challengerLev;
         $scope.challengedPosSize = challengedStakeFloat * challengedPairFloatAsk * challengedLev;
+
+        $scope.currentUser.account.balance = $scope.currentUser.account.balance - challengerStakeFloat
+        $scope.askedUserObject.account.balance = $scope.askedUserObject.account.balance - challengedStakeFloat
 
     }
 
