@@ -2,7 +2,6 @@ angular.module('myApp.ChallengedController',[]).
 controller('ChallengedController', function($scope,$cookieStore,$http,$state,$stateParams,$timeout){
 
     $scope.challenged = {};
-    $scope.counter = 10;
 
     $scope.direction = ["long","short"];
     $scope.stakes = ["100", "250","500","1000","2500","5000","10000"]
@@ -85,64 +84,38 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
         $scope.askedUser.account.balance = $scope.askedUser.account.balance - $scope.askedUserStakeFloat
 
 
-        $scope.test();
+        $scope.updatePriceChanges();
     }
 
-    $scope.test = function(){
+    $scope.updatePriceChanges = function(){
+
+        $scope.counter = 10;
+
         $scope.onTimeout = function(){
             $scope.counter--;
             mytimeout = $timeout($scope.onTimeout,1000);
 
             $scope.initPairs();
 
-
-            function findLatestPosition(currentCurrency) {
+            function findLatestQuote(currentCurrency) {
                 return currentCurrency.symbols === $scope.currentUserFinalPair.symbols;
-            }
-            $scope.currUserLatestPositon =  $scope.pairs.find(findLatestPosition);
-            $scope.askedUserLatestPositon =  $scope.pairs.find(findLatestPosition);
+            }//end findLatestPosition
 
-            $scope.currUserPosSize = $scope.currUserStakeFloat * parseFloat($scope.currUserLatestPositon.ask) * $scope.currUserLev - 20000;
+
+            $scope.currUserLatestPositon =  $scope.pairs.find(findLatestQuote);
+            $scope.askedUserLatestPositon =  $scope.pairs.find(findLatestQuote);
+
+            $scope.currUserPosSize = $scope.currUserStakeFloat * parseFloat($scope.currUserLatestPositon.ask) * $scope.currUserLev;
             $scope.askedUserPosSize = $scope.askedUserStakeFloat * parseFloat($scope.askedUserLatestPositon.ask) * $scope.askedUserLev;
 
 
             if($scope.counter==0){
 
                 $timeout.cancel(mytimeout);
-            }
-        }
+            }//end if
+        }//end onTimeout
         var mytimeout = $timeout($scope.onTimeout,1000);
 
+    }//end updatePriceChanges
 
-        /**
-         * Get the players stakes in numeric format for calculations
-         */
-        $scope.currUserStakeFloat = parseFloat($scope.currUserStake)
-        $scope.askedUserStakeFloat = parseFloat($scope.askedUserStake)
-
-        /**
-         * Going long, they pay the ask, so get the ask for both pairs
-         */
-        $scope.currUserPairFloatAsk = parseFloat($scope.currUserPair.ask)
-        $scope.askedUserPairFloatAsk = parseFloat($scope.askedUserPair.ask)
-
-        /**
-         * get the leverage each player want to fight with
-         */
-        $scope.currUserLev = $scope.currUserLeverage
-        $scope.askedUserLev = $scope.askedUserLeverage
-
-        /**
-         * get the direction (long/short) for each player
-         */
-        $scope.currUserDir = $scope.currUserDirection
-        $scope.askedUserDir = $scope.askedUserDirection
-
-        $scope.currUserPosSize = $scope.currUserStakeFloat * parseFloat($scope.currUserLatestPositon.ask) * $scope.currUserLev;
-        $scope.askedUserPosSize = $scope.askedUserStakeFloat * parseFloat($scope.currUserLatestPositon.ask)  * $scope.askedUserLev;
-
-        $scope.currUser.account.balance = $scope.currUser.account.balance - $scope.currUserStakeFloat
-        $scope.askedUser.account.balance = $scope.askedUser.account.balance - $scope.askedUserStakeFloat
-    }
-
-});
+});//end controller
