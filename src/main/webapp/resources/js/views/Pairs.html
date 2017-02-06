@@ -5,18 +5,23 @@
 <table align = "center">
     <thead>
     <tr>
-        <th align="center">Bid</th>
         <th align="center">Currency Pair</th>
-        <th align="center">Ask</th>
+        <th align="center">Bid</th>
+        <th align="center">Offer</th>
+        <th align="center">Spread</th>
     </tr>
     </thead>
 
     <tbody>
     <tr ng-repeat="x in pairs">
-        <td bgcolor="#f44e42"align="center">{{x.bid}}</td>
         <td align="center">{{x.symbols}}</td>
+        <td bgcolor="#f44e42"align="center">{{x.bid}}</td>
         <td bgcolor="#00FF00" align="center">{{x.ask}}</td>
+        <td bgcolor="#00FF00" align="center">{{}}</td>
     </tr>
+
     </tbody>
 
 </table>
+
+{{pairs}}
