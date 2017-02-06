@@ -109,6 +109,34 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
             $scope.askedUserPosSize = $scope.askedUserStakeFloat * parseFloat($scope.askedUserLatestPositon.ask) * $scope.askedUserLev;
 
 
+            $scope.currUserMargin = $scope.currUserStakeFloat;
+            $scope.askedUserMargin = $scope.askedUserStakeFloat;
+            // $scope.marginPercent=11;
+
+            if($scope.currUserLev==500){
+                $scope.currMarginPercent = .20;
+            }else if($scope.currUserLev==200){
+                $scope.currMarginPercent = .50;
+            }else if($scope.currUserLev==100){
+                $scope.currMarginPercent = 1.0;
+            }else if($scope.currUserLev==50){
+                $scope.currMarginPercent = 2.0;
+            }else if($scope.currUserLev==10){
+                $scope.currMarginPercent = 10.0;
+            }
+
+            if($scope.askedUserLev==500){
+                $scope.askedMarginPercent = .20;
+            }else if($scope.askedUserLev==200){
+                $scope.askedMarginPercent = .50;
+            }else if($scope.askedUserLev==100){
+                $scope.askedMarginPercent = 1.0;
+            }else if($scope.askedUserLev==50){
+                $scope.askedMarginPercent = 2.0;
+            }else if($scope.askedUserLev==10){
+                $scope.askedMarginPercent = 10.0;
+            }
+
             if($scope.counter==0){
 
                 $timeout.cancel(mytimeout);
