@@ -30,10 +30,10 @@
         <td>{{currUser.username}}</td>
         <td>{{currUser.email}}</td>
         <td>{{currUser.account.balance}}</td>
-        <td><select ng-model="challengerPair" ng-options="x.symbols for x in pairs"></td>
-        <td><select ng-model="challengerDirection" ng-options="x for x in direction"></td>
-        <td><select ng-model="challengerStake" ng-options="x for x in stakes"></td>
-        <td><select ng-model="challengerLeverage" ng-options="x for x in leverages"></td>
+        <td><select ng-model="currUserPair" ng-options="x.symbols for x in pairs"></td>
+        <td><select ng-model="currUserDirection" ng-options="x for x in direction"></td>
+        <td><select ng-model="currUserStake" ng-options="x for x in stakes"></td>
+        <td><select ng-model="currUserLeverage" ng-options="x for x in leverages"></td>
         <!--<td><button ng-click="getSclass="btn btn-success">Stats</button></td>-->
 
     </tr>
@@ -44,10 +44,10 @@
         <td>{{askedUser.username}}</td>
         <td>{{askedUser.email}}</td>
         <td>{{askedUser.account.balance}}</td>
-        <td><select ng-model="challengedPair" ng-options="x.symbols for x in pairs"></td>
-        <td><select ng-model="challengedDirection" ng-options="x for x in direction"></td>
-        <td><select ng-model="challengedStake" ng-options="x for x in stakes"></td>
-        <td><select ng-model="challengedLeverage" ng-options="x for x in leverages"></td>
+        <td><select ng-model="askedUserPair" ng-options="x.symbols for x in pairs"></td>
+        <td><select ng-model="askedUserDirection" ng-options="x for x in direction"></td>
+        <td><select ng-model="askedUserStake" ng-options="x for x in stakes"></td>
+        <td><select ng-model="askedUserLeverage" ng-options="x for x in leverages"></td>
 
 
 
@@ -75,17 +75,17 @@
     <tr>
         <td>{{currUser.username}}</td>
         <td>{{currUser.account.balance}}</td>
-        <td>{{challengerPair.symbols}}</td>
-        <td>{{challengerDirection}}</td>
-        <td>{{challengerPosSize}}</td>
+        <td>{{currUserPair.symbols}}</td>
+        <td>{{currUserDirection}}</td>
+        <td>{{currUserPosSize}}</td>
 
     </tr>
     <tr>
         <td>{{askedUser.username}}</td>
         <td>{{askedUser.account.balance}}</td>
-        <td>{{challengedPair.symbols}}</td>
-        <td>{{challengedDirection}}</td>
-        <td>{{challengedPosSize}}</td>
+        <td>{{askedUserPair.symbols}}</td>
+        <td>{{askedUserDirection}}</td>
+        <td>{{askedUserPosSize}}</td>
     </tr>
     <tr><th colspan="5">Game Time {{ counter}}</th> </tr>
     </tbody>
