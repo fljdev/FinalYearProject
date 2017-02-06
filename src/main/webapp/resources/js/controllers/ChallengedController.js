@@ -55,39 +55,43 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
         var mytimeout = $timeout($scope.onTimeout,1000);
 
 
-
-
         /**
          * Get the players stakes in numeric format for calculations
          */
-        $scope.challengerStakeFloat = parseFloat($scope.challengerStake)
-        $scope.challengedStakeFloat = parseFloat($scope.challengedStake)
+        $scope.currUserStakeFloat = parseFloat($scope.currUserStake)
+        $scope.askedUserStakeFloat = parseFloat($scope.askedUserStake)
 
         /**
          * Going long, they pay the ask, so get the ask for both pairs
          */
-        $scope.challengerPairFloatAsk = parseFloat($scope.challengerPair.ask)
-        $scope.challengedPairFloatAsk = parseFloat($scope.challengedPair.ask)
+        $scope.currUserPairFloatAsk = parseFloat($scope.currUserPair.ask)
+        $scope.askedUserPairFloatAsk = parseFloat($scope.askedUserPair.ask)
 
         /**
          * get the leverage each player want to fight with
          */
-        $scope.challengerLev = $scope.challengerLeverage
-        $scope.challengedLev = $scope.challengedLeverage
+        $scope.currUserLev = $scope.currUserLeverage
+        $scope.askedUserLev = $scope.askedUserLeverage
 
         /**
          * get the direction (long/short) for each player
          */
-        $scope.challengerDir = $scope.challengerDirection
-        $scope.challengedDir = $scope.challengedDirection
+        $scope.currUserDir = $scope.currUserDirection
+        $scope.askedUserDir = $scope.askedUserDirection
 
 
-        $scope.challengerPosSize = $scope.challengerStakeFloat * $scope.challengerPairFloatAsk * $scope.challengerLev;
-        $scope.challengedPosSize = $scope.challengedStakeFloat * $scope.challengedPairFloatAsk * $scope.challengedLev;
+        $scope.currUserPosSize = $scope.currUserStakeFloat * $scope.currUserPairFloatAsk * $scope.currUserLev;
+        $scope.askedUserPosSize = $scope.askedUserStakeFloat * $scope.askedUserPairFloatAsk * $scope.askedUserLev;
 
-        $scope.currUser.account.balance = $scope.currUser.account.balance - $scope.challengerStakeFloat
-        $scope.askedUser.account.balance = $scope.askedUser.account.balance - $scope.challengedStakeFloat
+        $scope.currUser.account.balance = $scope.currUser.account.balance - $scope.currUserStakeFloat
+        $scope.askedUser.account.balance = $scope.askedUser.account.balance - $scope.askedUserStakeFloat
 
+        // $scope.te();
+
+    }
+
+    $scope.te = function(){
+        alert($scope.askedUserPosSize);
     }
 
 });
