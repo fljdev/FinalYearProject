@@ -5,7 +5,7 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
     $scope.direction = ["long","short"];
     $scope.stakes = ["100", "250","500","1000","2500","5000","10000"]
-    $scope.leverages=[10,50,100,200,500];
+    $scope.leverages=[10,50,100,200,400];
 
     $scope.currUser = $cookieStore.get('userCookie');
     $scope.askedUserID = $stateParams.param;
@@ -78,7 +78,14 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
 
         $scope.currUserPosSize = $scope.currUserStakeFloat * $scope.currUserPairFloatAsk * $scope.currUserLev;
+        // var x = $scope.currUserPosSize
+        // var x4 = x.toFixed(4);
+        // $scope.currUserPosSize = x4;
+
         $scope.askedUserPosSize = $scope.askedUserStakeFloat * $scope.askedUserPairFloatAsk * $scope.askedUserLev;
+        // var y = $scope.askedUserPosSize
+        // var y4 = y.toFixed(4);
+        // $scope.askedUserPosSize = y4;
 
         $scope.currUser.account.balance = $scope.currUser.account.balance - $scope.currUserStakeFloat
         $scope.askedUser.account.balance = $scope.askedUser.account.balance - $scope.askedUserStakeFloat
@@ -106,15 +113,21 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
             $scope.askedUserLatestPositon =  $scope.pairs.find(findLatestQuote);
 
             $scope.currUserPosSize = $scope.currUserStakeFloat * parseFloat($scope.currUserLatestPositon.ask) * $scope.currUserLev;
+            // var x = $scope.currUserPosSize
+            // var x4 = x.toFixed(4);
+            // $scope.currUserPosSize = x4;
             $scope.askedUserPosSize = $scope.askedUserStakeFloat * parseFloat($scope.askedUserLatestPositon.ask) * $scope.askedUserLev;
+            // var y = $scope.askedUserPosSize
+            // var y4 = y.toFixed(4);
+            // $scope.askedUserPosSize = y4;
 
 
             $scope.currUserMargin = $scope.currUserStakeFloat;
             $scope.askedUserMargin = $scope.askedUserStakeFloat;
             // $scope.marginPercent=11;
 
-            if($scope.currUserLev==500){
-                $scope.currMarginPercent = .20;
+            if($scope.currUserLev==400){
+                $scope.currMarginPercent = .25;
             }else if($scope.currUserLev==200){
                 $scope.currMarginPercent = .50;
             }else if($scope.currUserLev==100){
@@ -125,8 +138,8 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
                 $scope.currMarginPercent = 10.0;
             }
 
-            if($scope.askedUserLev==500){
-                $scope.askedMarginPercent = .20;
+            if($scope.askedUserLev==400){
+                $scope.askedMarginPercent = .25;
             }else if($scope.askedUserLev==200){
                 $scope.askedMarginPercent = .50;
             }else if($scope.askedUserLev==100){
