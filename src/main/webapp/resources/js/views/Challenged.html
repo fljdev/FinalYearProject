@@ -9,7 +9,7 @@
 
 <table align="center">
     <thead>
-    <tr><th colspan="9">{{currentUser.username}} challenged {{askedUserObject.username}}</th> </tr>
+    <tr><th colspan="9">{{currentUser.username}} challenged {{askedUser.username}}</th> </tr>
     <tr>
         <th>Forename</th>
         <th>Surname</th>
@@ -39,11 +39,11 @@
     </tr>
 
     <tr>
-        <td>{{askedUserObject.firstName}}</td>
-        <td>{{askedUserObject.lastName}}</td>
-        <td>{{askedUserObject.username}}</td>
-        <td>{{askedUserObject.email}}</td>
-        <td>{{askedUserObject.account.balance}}</td>
+        <td>{{askedUser.firstName}}</td>
+        <td>{{askedUser.lastName}}</td>
+        <td>{{askedUser.username}}</td>
+        <td>{{askedUser.email}}</td>
+        <td>{{askedUser.account.balance}}</td>
         <td><select ng-model="challengedPair" ng-options="x.symbols for x in pairs"></td>
         <td><select ng-model="challengedDirection" ng-options="x for x in direction"></td>
         <td><select ng-model="challengedStake" ng-options="x for x in stakes"></td>
@@ -81,8 +81,8 @@
 
     </tr>
     <tr>
-        <td>{{askedUserObject.username}}</td>
-        <td>{{askedUserObject.account.balance}}</td>
+        <td>{{askedUser.username}}</td>
+        <td>{{askedUser.account.balance}}</td>
         <td>{{challengedPair.symbols}}</td>
         <td>{{challengedDirection}}</td>
         <td>{{challengedPosSize}}</td>

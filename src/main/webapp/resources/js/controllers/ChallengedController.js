@@ -4,30 +4,16 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
     $scope.challenged = {};
     $scope.counter = 60;
 
-
-    // $scope.challengerPosSize
-
-    $scope.currentUser = $cookieStore.get('userCookie');
-
-    $scope.askedUserID = $stateParams.param;
-    $scope.askedUserObject;
-
-    $scope.pairs;
     $scope.direction = ["long","short"];
     $scope.stakes = ["100", "250","500","1000","2500","5000","10000"]
     $scope.leverages=[10,50,100,200,500];
 
-
-    $http.post('http://localhost:8080/api/findById', $scope.askedUserID)
-        .success(function (data, status) {
-            if(status = 200){
-                $scope.askedUserObject = data;
-            }
-        }).error(function (error) {
-        alert("something went wrong!!");
-    });
+    $scope.currentUser = $cookieStore.get('userCookie');
+    $scope.askedUserID = $stateParams.param;
+    $scope.askedUser;
 
 
+    $scope.pairs;
 
     $http.get('http://localhost:8080/api/pairs')
         .success(function (data, status) {
@@ -41,6 +27,20 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
         }).error(function (error) {
         console.log("something went wrong in the pairs controller init function!!");
     });//end http.get
+
+
+    $http.post('http://localhost:8080/api/findById', $scope.askedUserID)
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.askedUser = data;
+            }
+        }).error(function (error) {
+        alert("something went wrong!!");
+    });
+
+
+
+
 
 
     $scope.fight = function(){
@@ -90,7 +90,7 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
         $scope.challengedPosSize = challengedStakeFloat * challengedPairFloatAsk * challengedLev;
 
         $scope.currentUser.account.balance = $scope.currentUser.account.balance - challengerStakeFloat
-        $scope.askedUserObject.account.balance = $scope.askedUserObject.account.balance - challengedStakeFloat
+        $scope.askedUser.account.balance = $scope.askedUser.account.balance - challengedStakeFloat
 
     }
 
