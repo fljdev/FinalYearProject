@@ -58,6 +58,11 @@
 </table>
 
 <br><br><br><br>
+
+<!--{{pairs}}-->
+<br><br>
+<!--{{currentUserFinalPair.symbols}}-->
+<!--{{$scope.currUserLatestPositon}}-->
 <table align="center">
     <thead>
     <tr><th colspan="5">Live Game Info Feed</th> </tr>
@@ -75,7 +80,7 @@
     <tr>
         <td>{{currUser.username}}</td>
         <td>{{currUser.account.balance}}</td>
-        <td>{{currUserPair.symbols}}</td>
+        <td>{{currentUserFinalPair.symbols}}</td>
         <td>{{currUserDirection}}</td>
         <td>{{currUserPosSize}}</td>
 
@@ -83,7 +88,7 @@
     <tr>
         <td>{{askedUser.username}}</td>
         <td>{{askedUser.account.balance}}</td>
-        <td>{{askedUserPair.symbols}}</td>
+        <td>{{askedUserFinalPair.symbols}}</td>
         <td>{{askedUserDirection}}</td>
         <td>{{askedUserPosSize}}</td>
     </tr>
