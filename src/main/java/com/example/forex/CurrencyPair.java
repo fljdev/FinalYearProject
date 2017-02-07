@@ -1,9 +1,20 @@
 package com.example.forex;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * Created by admin on 17/10/2016.
  */
+
+@Entity
 public class CurrencyPair {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
     private String symbols;
     private long milliseconds;
