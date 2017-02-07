@@ -127,4 +127,20 @@ public class Fight {
     public void setOpponentLeverage(double opponentLeverage) {
         this.opponentLeverage = opponentLeverage;
     }
+
+    @Override
+    public String toString() {
+        return "Fight{" +
+                "id=" + id +
+                ", challengerID=" + challengerID +
+                ", pairs=" + pairs +
+                ", challengerDirection='" + challengerDirection + '\'' +
+                ", challengerStake=" + challengerStake +
+                ", challengerLeverage=" + challengerLeverage +
+                ", opponentID=" + opponentID +
+                ", opponentDirection='" + opponentDirection + '\'' +
+                ", opponentStake=" + opponentStake +
+                ", opponentLeverage=" + opponentLeverage +
+                '}';
+    }
 }

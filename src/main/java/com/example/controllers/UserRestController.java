@@ -6,6 +6,8 @@ import com.example.entities.User;
 import com.example.forex.CurrencyPair;
 import com.example.forex.ForexDriver;
 import com.example.services.IBankAccountService;
+import com.example.services.ICurrencyPairService;
+import com.example.services.IFightService;
 import com.example.services.IUserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -22,6 +26,18 @@ public class UserRestController {
 
     IUserService iUserService;
     IBankAccountService iBankAccountService;
+    IFightService iFightService;
+    ICurrencyPairService iCurrencyPairService;
+
+    @Autowired
+    public void setiCurrencyPairService(ICurrencyPairService iCurrencyPairService){
+        this.iCurrencyPairService = iCurrencyPairService;
+    }
+
+    @Autowired
+    public void setiFightService(IFightService iFightService){
+        this.iFightService = iFightService;
+    }
 
     @Autowired
     public void setiUserService(IUserService iUserService) {
@@ -164,10 +180,10 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "/getFightGameObject", method = RequestMethod.POST, produces = "application/json")
-    public Fight fight(@RequestBody String jsonLogin){
+    public Fight fight(@RequestBody String jsonLogin)throws Exception{
 
         JSONObject jsonObject = new JSONObject(jsonLogin);
-        System.out.println(jsonObject);
+//        System.out.println(jsonObject);
 
         String cPair = jsonObject.getString("cPair");
         String cDir = jsonObject.getString("currUserDirection");
@@ -179,14 +195,50 @@ public class UserRestController {
         String oStake = jsonObject.getString("askedUserStake");
         String oLev = jsonObject.getString("askedUserLeverage");
 
-        System.out.println(cPair);
-        System.out.println(cDir);
-        System.out.println(cStake);
-        System.out.println(cLev);
-        System.out.println(cPair);
-        System.out.println(cDir);
-        System.out.println(cStake);
-        System.out.println(cLev);
+        ArrayList<CurrencyPair>pairs = new ArrayList<>();
+        pairs=allPairs();
+        CurrencyPair challengerPair = new CurrencyPair();
+        CurrencyPair opponentPair = new CurrencyPair();
+        for(CurrencyPair cp : pairs){
+            if(cp.getSymbols().equalsIgnoreCase(cPair)){
+                challengerPair=cp;
+                iCurrencyPairService.saveCurrencyPair(challengerPair);
+            }
+            if(cp.getSymbols().equalsIgnoreCase(oPair)){
+                opponentPair=cp;
+                iCurrencyPairService.saveCurrencyPair(opponentPair);
+            }
+        }
+        ArrayList<CurrencyPair>temp = new ArrayList<>();
+        temp.add(challengerPair);
+        temp.add(opponentPair);
+        Set<CurrencyPair> set = new HashSet<CurrencyPair>(temp);
+
+
+        Fight aFight = new Fight();
+
+        aFight.setChallengerID(11);
+        aFight.setPairs(set);
+        aFight.setChallengerDirection(cDir);
+        aFight.setChallengerStake(Double.parseDouble(cStake));
+        aFight.setChallengerLeverage(Double.parseDouble(cLev));
+        aFight.setOpponentID(14);
+        aFight.setOpponentDirection(oDir);
+        aFight.setOpponentStake(Double.parseDouble(oStake));
+        aFight.setOpponentLeverage(Double.parseDouble(oLev));
+
+        System.out.println(aFight.toString());
+        iFightService.saveFight(aFight);
+
+//        System.out.println(cPair);
+//        System.out.println(cDir);
+//        System.out.println(cStake);
+//        System.out.println(cLev);
+//        System.out.println(cPair);
+//        System.out.println(cDir);
+//        System.out.println(cStake);
+//        System.out.println(cLev);
+
         return null;
     }
 
