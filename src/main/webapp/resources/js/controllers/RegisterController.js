@@ -16,7 +16,6 @@ controller('RegisterController',function($scope,$http,$state,$cookieStore){
 
                     $scope.register = data;
                     console.log($scope.register);
-                    // console.log(data.username, "This is angalar register Controller");
 
                     $state.go('home');
                     $cookieStore.put('userCookie',$scope.register);

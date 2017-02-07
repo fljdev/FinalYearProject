@@ -33,9 +33,9 @@
         <td>{{currUser.email}}</td>
         <td>{{currUser.account.balance}}</td>
         <td><select ng-model="currUserPair" ng-options="x.symbols for x in pairs"></td>
-        <td><select ng-model="currUserDirection" ng-options="x for x in direction"></td>
-        <td><select ng-model="currUserStake" ng-options="x for x in stakes"></td>
-        <td><select ng-model="currUserLeverage" ng-options="x for x in leverages"></td>
+        <td><select ng-model="gameParamsObj.currUserDirection" ng-options="x for x in direction"></td>
+        <td><select ng-model="gameParamsObj.currUserStake" ng-options="x for x in stakes"></td>
+        <td><select ng-model="gameParamsObj.currUserLeverage" ng-options="x for x in leverages"></td>
         <!--<td><button ng-click="getSclass="btn btn-success">Stats</button></td>-->
 
     </tr>
@@ -47,9 +47,9 @@
         <td>{{askedUser.email}}</td>
         <td>{{askedUser.account.balance}}</td>
         <td><select ng-model="askedUserPair" ng-options="x.symbols for x in pairs"></td>
-        <td><select ng-model="askedUserDirection" ng-options="x for x in direction"></td>
-        <td><select ng-model="askedUserStake" ng-options="x for x in stakes"></td>
-        <td><select ng-model="askedUserLeverage" ng-options="x for x in leverages"></td>
+        <td><select ng-model="gameParamsObj.askedUserDirection" ng-options="x for x in direction"></td>
+        <td><select ng-model="gameParamsObj.askedUserStake" ng-options="x for x in stakes"></td>
+        <td><select ng-model="gameParamsObj.askedUserLeverage" ng-options="x for x in leverages"></td>
 
 
 
@@ -61,10 +61,8 @@
 
 <br><br><br><br>
 
-<!--{{pairs}}-->
 <br><br>
-<!--{{currentUserFinalPair.symbols}}-->
-<!--{{$scope.currUserLatestPositon}}-->
+
 <table align="center" width=750 style= 'table-layout:fixed'>
     <col width="100px" />
     <col width="100px" />
