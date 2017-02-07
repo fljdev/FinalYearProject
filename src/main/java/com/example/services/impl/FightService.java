@@ -2,7 +2,7 @@ package com.example.services.impl;
 
 import com.example.dao.FightDAO;
 import com.example.entities.Fight;
-import com.example.services.IFight;
+import com.example.services.IFightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class FightService implements IFight {
+public class FightService implements IFightService {
 
     FightDAO fightDAO;
 
@@ -25,6 +25,7 @@ public class FightService implements IFight {
 
     @Override
     public void saveFight(Fight fight){
+        fightDAO.save(fight);
 
     }
 }
