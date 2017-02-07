@@ -1,6 +1,7 @@
 package com.example.controllers;
 
 import com.example.entities.BankAccount;
+import com.example.entities.Fight;
 import com.example.entities.User;
 import com.example.forex.CurrencyPair;
 import com.example.forex.ForexDriver;
@@ -156,17 +157,66 @@ public class UserRestController {
                     u.setOnline(true);
                     iUserService.register(u);
                     return u;
-                }
-            }
-
-//            if((u.getUsername().equalsIgnoreCase(handle)|| u.getEmail().equalsIgnoreCase(handle) &&  u.getPassword().equals(password))){
-//                u.setOnline(true);
-//                iUserService.register(u);
-//                return u;
-//            }
-        }
+                }//end if
+            }//end if
+        }//end for
         return null;
     }
+
+    @RequestMapping(value = "/getFightGameObject", method = RequestMethod.POST, produces = "application/json")
+    public Fight fight(@RequestBody String jsonLogin){
+
+        JSONObject jsonObject = new JSONObject(jsonLogin);
+        System.out.println(jsonObject);
+
+        String cPair = jsonObject.getString("cPair");
+        String cDir = jsonObject.getString("currUserDirection");
+        String cStake = jsonObject.getString("currUserStake");
+        String cLev = jsonObject.getString("currUserLeverage");
+
+        String oPair = jsonObject.getString("oPair");
+        String oDir = jsonObject.getString("askedUserDirection");
+        String oStake = jsonObject.getString("askedUserStake");
+        String oLev = jsonObject.getString("askedUserLeverage");
+
+        System.out.println(cPair);
+        System.out.println(cDir);
+        System.out.println(cStake);
+        System.out.println(cLev);
+        System.out.println(cPair);
+        System.out.println(cDir);
+        System.out.println(cStake);
+        System.out.println(cLev);
+        return null;
+    }
+
+
+
+
+//        ArrayList<User> users = iUserService.getAllUsers();
+//
+//        for(User u : users){
+//
+//            if(u.getUsername().equalsIgnoreCase(handle)|| u.getEmail().equalsIgnoreCase(handle)){
+//                if(u.getPassword().equals(password)){
+//
+//                    if(u.getUsername().equalsIgnoreCase("j")){
+//                        u.getAccount().setBalance(u.getAccount().getBalance()+1666);
+//                    }
+//
+//
+//                    u.setOnline(true);
+//                    iUserService.register(u);
+//                    return u;
+//                }
+//            }
+//
+////            if((u.getUsername().equalsIgnoreCase(handle)|| u.getEmail().equalsIgnoreCase(handle) &&  u.getPassword().equals(password))){
+////                u.setOnline(true);
+////                iUserService.register(u);
+////                return u;
+////
+
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")
     public String logout(@RequestBody User user){
