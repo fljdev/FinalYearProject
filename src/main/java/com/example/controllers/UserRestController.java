@@ -185,6 +185,12 @@ public class UserRestController {
         JSONObject jsonObject = new JSONObject(jsonLogin);
 //        System.out.println(jsonObject);
 
+        String challengerId = jsonObject.getString("cId");
+        int challId = Integer.parseInt(challengerId);
+
+        String opponentId = jsonObject.getString("oId");
+        int oppId = Integer.parseInt(opponentId);
+
         String cPair = jsonObject.getString("cPair");
         String cDir = jsonObject.getString("currUserDirection");
         String cStake = jsonObject.getString("currUserStake");
@@ -217,12 +223,13 @@ public class UserRestController {
 
         Fight aFight = new Fight();
 
-        aFight.setChallengerID(11);
+        aFight.setChallengerID(challId);
         aFight.setPairs(set);
         aFight.setChallengerDirection(cDir);
         aFight.setChallengerStake(Double.parseDouble(cStake));
         aFight.setChallengerLeverage(Double.parseDouble(cLev));
-        aFight.setOpponentID(14);
+
+        aFight.setOpponentID(oppId);
         aFight.setOpponentDirection(oDir);
         aFight.setOpponentStake(Double.parseDouble(oStake));
         aFight.setOpponentLeverage(Double.parseDouble(oLev));
@@ -230,14 +237,6 @@ public class UserRestController {
         System.out.println(aFight.toString());
         iFightService.saveFight(aFight);
 
-//        System.out.println(cPair);
-//        System.out.println(cDir);
-//        System.out.println(cStake);
-//        System.out.println(cLev);
-//        System.out.println(cPair);
-//        System.out.println(cDir);
-//        System.out.println(cStake);
-//        System.out.println(cLev);
 
         return null;
     }
