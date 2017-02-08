@@ -49,8 +49,17 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
     $scope.fight = function() {
 
 
+        var cI = $scope.currUser.id +"";
+        var oI = $scope.askedUser.id +"";
+        console.log(cI);
+
+        $scope.gameParamsObj.cId = cI;
+        $scope.gameParamsObj.oId = oI;
+
+
         $scope.gameParamsObj.cPair=$scope.currUserPair.symbols;
         $scope.gameParamsObj.oPair=$scope.askedUserPair.symbols;
+
 
         $http.post('http://localhost:8080/api/getFightGameObject', JSON.stringify($scope.gameParamsObj))
             .success(function (data, status) {
@@ -58,6 +67,7 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
                     // $scope.register = data;
                     console.log("worked");
+
 
                     // $state.go('home');
                     // $cookieStore.put('userCookie',$scope.register);
