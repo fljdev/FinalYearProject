@@ -6,7 +6,7 @@ controller('PairsController', function($scope,$http,$interval){
 
 
     $scope.init = function(){
-        $http.get('http://localhost:8080/api/pairs')
+        $http.get('http://localhost:8080/api/user/pairs')
             .success(function (data, status) {
                 if(status = 200){
 

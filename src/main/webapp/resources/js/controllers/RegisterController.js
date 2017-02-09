@@ -10,7 +10,7 @@ controller('RegisterController',function($scope,$http,$state,$cookieStore){
 
         console.log($scope.register);
 
-        $http.post('http://localhost:8080/api/register', JSON.stringify($scope.register))
+        $http.post('http://localhost:8080/api/user/register', JSON.stringify($scope.register))
             .success(function (data, status) {
                 if(status = 200){
 

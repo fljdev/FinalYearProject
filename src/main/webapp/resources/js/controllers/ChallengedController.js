@@ -16,7 +16,7 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
     $scope.pairs;
     $scope.initPairs = function(){
-        $http.get('http://localhost:8080/api/pairs')
+        $http.get('http://localhost:8080/api/fight/pairs')
             .success(function (data, status) {
                 if(status = 200){
 
@@ -33,7 +33,7 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
 
 
-    $http.post('http://localhost:8080/api/findById', $scope.askedUserID)
+    $http.post('http://localhost:8080/api/user/findById', $scope.askedUserID)
         .success(function (data, status) {
             if(status = 200){
                 $scope.askedUser = data;
@@ -61,7 +61,7 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
         $scope.gameParamsObj.oPair=$scope.askedUserPair.symbols;
 
 
-        $http.post('http://localhost:8080/api/getFightGameObject', JSON.stringify($scope.gameParamsObj))
+        $http.post('http://localhost:8080/api/fight/getFightGameObject', JSON.stringify($scope.gameParamsObj))
             .success(function (data, status) {
                 if(status = 200){
 
