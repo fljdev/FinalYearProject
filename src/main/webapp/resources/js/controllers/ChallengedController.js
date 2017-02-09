@@ -48,21 +48,47 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
     $scope.fight = function() {
 
-        $state.go('fightStart');
+        var opponentID = $scope.askedUserID;
+
+        alert(opponentID);
 
 
-        // var cI = $scope.currUser.id +"";
-        // var oI = $scope.askedUser.id +"";
-        // console.log(cI);
-        //
-        // $scope.gameParamsObj.cId = cI;
-        // $scope.gameParamsObj.oId = oI;
-        //
-        //
-        // $scope.gameParamsObj.cPair=$scope.currUserPair.symbols;
-        // $scope.gameParamsObj.oPair=$scope.askedUserPair.symbols;
-        //
-        //
+
+        // $state.go('fightStart',{paramm:opponentID});
+
+
+        var cI = $scope.currUser.id +"";
+        var oI = $scope.askedUser.id +"";
+        console.log(cI);
+
+        $scope.gameParamsObj.cId = cI;
+        $scope.gameParamsObj.oId = oI;
+
+
+        $scope.gameParamsObj.cPair=$scope.currUserPair.symbols;
+        $scope.gameParamsObj.oPair=$scope.askedUserPair.symbols;
+
+        $scope.gameParamsObj.cBalance = $scope.currUser.account.balance;
+        $scope.gameParamsObj.oBalance = $scope.askedUser.account.balance;
+
+        $http.post('http://localhost:8080/api/fight/getFightStartObject', JSON.stringify($scope.gameParamsObj))
+            .success(function (data, status) {
+                if(status = 200){
+
+                    // $scope.register = data;
+                    console.log("getFightStartObject method worked");
+
+
+                    // $state.go('home');
+                    // $cookieStore.put('userCookie',$scope.register);
+
+
+                }
+            }).error(function (error) {
+            alert("something went wrong!!");
+        });
+
+
         // $http.post('http://localhost:8080/api/fight/getFightGameObject', JSON.stringify($scope.gameParamsObj))
         //     .success(function (data, status) {
         //         if(status = 200){
