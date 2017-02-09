@@ -13,7 +13,9 @@ angular.module('myApp',[
     'myApp.navheader',
     'myApp.PairsController',
     'myApp.ChallengedController',
-    'myApp.FightController'
+    'myApp.FightController',
+    'myApp.FightStartController',
+    'myApp.FightEndController'
 ]).
     config(function ($stateProvider,$urlRouterProvider) {
 
@@ -64,6 +66,16 @@ angular.module('myApp',[
             url: '/fight/:param',
             templateUrl: "resources/js/views/Fight.html",
             controller: "FightController"
+        })
+        .state('fightStart',{
+            url: '/fightStart',
+            templateUrl: "resources/js/views/FightStart.html",
+            controller: "FightStartController"
+        })
+        .state('fightEnd',{
+            url: '/fightEnd',
+            templateUrl: "resources/js/views/FightEnd.html",
+            controller: "FightEndController"
         });
 });
 

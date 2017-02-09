@@ -48,35 +48,37 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
     $scope.fight = function() {
 
-
-        var cI = $scope.currUser.id +"";
-        var oI = $scope.askedUser.id +"";
-        console.log(cI);
-
-        $scope.gameParamsObj.cId = cI;
-        $scope.gameParamsObj.oId = oI;
+        $state.go('fightStart');
 
 
-        $scope.gameParamsObj.cPair=$scope.currUserPair.symbols;
-        $scope.gameParamsObj.oPair=$scope.askedUserPair.symbols;
-
-
-        $http.post('http://localhost:8080/api/fight/getFightGameObject', JSON.stringify($scope.gameParamsObj))
-            .success(function (data, status) {
-                if(status = 200){
-
-                    // $scope.register = data;
-                    console.log("worked");
-
-
-                    // $state.go('home');
-                    // $cookieStore.put('userCookie',$scope.register);
-
-
-                }
-            }).error(function (error) {
-            alert("something went wrong!!");
-        });
+        // var cI = $scope.currUser.id +"";
+        // var oI = $scope.askedUser.id +"";
+        // console.log(cI);
+        //
+        // $scope.gameParamsObj.cId = cI;
+        // $scope.gameParamsObj.oId = oI;
+        //
+        //
+        // $scope.gameParamsObj.cPair=$scope.currUserPair.symbols;
+        // $scope.gameParamsObj.oPair=$scope.askedUserPair.symbols;
+        //
+        //
+        // $http.post('http://localhost:8080/api/fight/getFightGameObject', JSON.stringify($scope.gameParamsObj))
+        //     .success(function (data, status) {
+        //         if(status = 200){
+        //
+        //             // $scope.register = data;
+        //             console.log("worked");
+        //
+        //
+        //             // $state.go('home');
+        //             // $cookieStore.put('userCookie',$scope.register);
+        //
+        //
+        //         }
+        //     }).error(function (error) {
+        //     alert("something went wrong!!");
+        // });
 
 
         //     $scope.currentUserFinalPair = $scope.currUserPair ;
