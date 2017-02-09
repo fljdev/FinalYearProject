@@ -68,8 +68,8 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
         $scope.gameParamsObj.cPair=$scope.currUserPair.symbols;
         $scope.gameParamsObj.oPair=$scope.askedUserPair.symbols;
 
-        $scope.gameParamsObj.cBalance = $scope.currUser.account.balance;
-        $scope.gameParamsObj.oBalance = $scope.askedUser.account.balance;
+        $scope.gameParamsObj.cBalance = $scope.currUser.account.balance+"";
+        $scope.gameParamsObj.oBalance = $scope.askedUser.account.balance+"";
 
         $http.post('http://localhost:8080/api/fight/getFightStartObject', JSON.stringify($scope.gameParamsObj))
             .success(function (data, status) {

@@ -60,6 +60,9 @@ public class FightRestController {
 
         String challengerId = jsonObject.getString("cId");
         int challId = Integer.parseInt(challengerId);
+
+        String cBal = jsonObject.getString("cBalance");
+        double cBalance = Double.parseDouble(cBal);
         String cPair = jsonObject.getString("cPair");
         String cDir = jsonObject.getString("currUserDirection");
         String cStake = jsonObject.getString("currUserStake");
@@ -67,6 +70,8 @@ public class FightRestController {
 
         String opponentId = jsonObject.getString("oId");
         int oppId = Integer.parseInt(opponentId);
+        String oBal = jsonObject.getString("oBalance");
+        double oBalance = Double.parseDouble(oBal);
         String oPair = jsonObject.getString("oPair");
         String oDir = jsonObject.getString("askedUserDirection");
         String oStake = jsonObject.getString("askedUserStake");
@@ -99,12 +104,14 @@ public class FightRestController {
 
         aFightStart.setTimestamp(timestamp);
 
+        aFightStart.setChallengerBalance(cBalance);
         aFightStart.setChallengerID(challId);
         aFightStart.setPairs(set);
         aFightStart.setChallengerDirection(cDir);
         aFightStart.setChallengerStake(Double.parseDouble(cStake));
         aFightStart.setChallengerLeverage(Double.parseDouble(cLev));
 
+        aFightStart.setOpponentBalance(oBalance);
         aFightStart.setOpponentID(oppId);
         aFightStart.setOpponentDirection(oDir);
         aFightStart.setOpponentStake(Double.parseDouble(oStake));
