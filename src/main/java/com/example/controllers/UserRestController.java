@@ -1,23 +1,14 @@
 package com.example.controllers;
 
 import com.example.entities.BankAccount;
-import com.example.entities.Fight;
 import com.example.entities.User;
-import com.example.forex.CurrencyPair;
-import com.example.forex.ForexDriver;
 import com.example.services.IBankAccountService;
-import com.example.services.ICurrencyPairService;
-import com.example.services.IFightService;
 import com.example.services.IUserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/user")

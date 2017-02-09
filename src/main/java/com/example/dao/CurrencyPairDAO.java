@@ -1,6 +1,6 @@
 package com.example.dao;
 
-import com.example.forex.CurrencyPair;
+import com.example.entities.CurrencyPair;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

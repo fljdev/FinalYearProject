@@ -1,9 +1,6 @@
 package com.example.entities;
 
-import com.example.forex.CurrencyPair;
-
 import javax.persistence.*;
-import java.util.Currency;
 import java.util.Set;
 
 /**

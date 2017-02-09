@@ -2,6 +2,7 @@ package com.example.forex; /**
  * Created by admin on 17/10/2016.
  */
 
+import com.example.entities.CurrencyPair;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,8 +16,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
-import java.util.Scanner;
 
 
 public class ForexDriver {
