@@ -1,7 +1,7 @@
 package com.example.services.impl;
 
 import com.example.dao.CurrencyPairDAO;
-import com.example.forex.CurrencyPair;
+import com.example.entities.CurrencyPair;
 import com.example.services.ICurrencyPairService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +18,7 @@ public class CurrencyPairService implements ICurrencyPairService {
 
     @Autowired
     public void setCurrencyPairDAO(CurrencyPairDAO currencyPairDAO){
+
         this.currencyPairDAO = currencyPairDAO;
     }
 

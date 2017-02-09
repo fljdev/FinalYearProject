@@ -1,6 +1,6 @@
 package com.example.services;
 
-import com.example.forex.CurrencyPair;
+import com.example.entities.CurrencyPair;
 
 /**
  * Created by admin on 07/02/2017.

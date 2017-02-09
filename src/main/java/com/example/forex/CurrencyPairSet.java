@@ -1,13 +1,22 @@
 package com.example.forex;
 
+import com.example.entities.CurrencyPair;
+
+import javax.persistence.*;
+import java.util.Set;
+
 /**
  * Created by admin on 16/01/2017.
  */
+
 public class CurrencyPairSet {
+
+
 
     public CurrencyPairSet(){
 
     }
+
 
     private CurrencyPair EURUSD;
     private CurrencyPair USDJPY;

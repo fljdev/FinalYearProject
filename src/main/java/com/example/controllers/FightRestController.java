@@ -1,7 +1,7 @@
 package com.example.controllers;
 
 import com.example.entities.Fight;
-import com.example.forex.CurrencyPair;
+import com.example.entities.CurrencyPair;
 import com.example.forex.ForexDriver;
 import com.example.services.ICurrencyPairService;
 import com.example.services.IFightService;
