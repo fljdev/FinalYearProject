@@ -4,7 +4,9 @@ import com.example.entities.Fight;
 import com.example.entities.CurrencyPair;
 import com.example.forex.ForexDriver;
 import com.example.services.ICurrencyPairService;
+import com.example.services.IFightEndService;
 import com.example.services.IFightService;
+import com.example.services.IFightStartService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +24,19 @@ import java.util.Set;
 public class FightRestController {
 
     IFightService iFightService;
+    IFightStartService iFightStartService;
+    IFightEndService iFightEndService;
     ICurrencyPairService iCurrencyPairService;
+
+    @Autowired
+    public void setiFightStartService(IFightStartService iFightStartService){
+        this.iFightStartService = iFightStartService;
+    }
+
+    @Autowired
+    public void setiFightEndService(IFightEndService iFightEndService){
+        this.iFightEndService = iFightEndService;
+    }
 
     @Autowired
     public void setiCurrencyPairService(ICurrencyPairService iCurrencyPairService){
