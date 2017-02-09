@@ -68,7 +68,7 @@ angular.module('myApp',[
             controller: "FightController"
         })
         .state('fightStart',{
-            url: '/fightStart',
+            url: '/fightStart/:paramm',
             templateUrl: "resources/js/views/FightStart.html",
             controller: "FightStartController"
         })
