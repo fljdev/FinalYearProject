@@ -20,24 +20,24 @@ import java.util.HashSet;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserRestController {
 
 
     IUserService iUserService;
     IBankAccountService iBankAccountService;
-    IFightService iFightService;
-    ICurrencyPairService iCurrencyPairService;
+//    IFightService iFightService;
+//    ICurrencyPairService iCurrencyPairService;
 
-    @Autowired
-    public void setiCurrencyPairService(ICurrencyPairService iCurrencyPairService){
-        this.iCurrencyPairService = iCurrencyPairService;
-    }
-
-    @Autowired
-    public void setiFightService(IFightService iFightService){
-        this.iFightService = iFightService;
-    }
+//    @Autowired
+//    public void setiCurrencyPairService(ICurrencyPairService iCurrencyPairService){
+//        this.iCurrencyPairService = iCurrencyPairService;
+//    }
+//
+//    @Autowired
+//    public void setiFightService(IFightService iFightService){
+//        this.iFightService = iFightService;
+//    }
 
     @Autowired
     public void setiUserService(IUserService iUserService) {
@@ -87,6 +87,51 @@ public class UserRestController {
         return aUser;
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
+    public User login(@RequestBody String jsonLogin){
+
+        JSONObject jsonObject = new JSONObject(jsonLogin);
+        String handle = jsonObject.getString("handle");
+        String password = jsonObject.getString("password");
+
+        ArrayList<User> users = iUserService.getAllUsers();
+
+        for(User u : users){
+
+            if(u.getUsername().equalsIgnoreCase(handle)|| u.getEmail().equalsIgnoreCase(handle)){
+                if(u.getPassword().equals(password)){
+
+                    if(u.getUsername().equalsIgnoreCase("j")){
+                        u.getAccount().setBalance(u.getAccount().getBalance()+1666);
+                    }
+                    u.setOnline(true);
+                    iUserService.register(u);
+                    return u;
+                }//end if
+            }//end if
+        }//end for
+        return null;
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")
+    public String logout(@RequestBody User user){
+
+        String username = user.getUsername();
+        ArrayList<User> users = iUserService.getAllUsers();
+        for(User u : users){
+            if(u.getUsername().equalsIgnoreCase(username)){
+
+                u.setOnline(false);
+//                iUserService.deleteUser(u);
+                iUserService.register(u);
+                System.out.println(username + " has been logged out!");
+
+                return null;
+            }
+        }
+        return null;
+    }
+
 
     @RequestMapping(value ="/allUsers", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -95,23 +140,6 @@ public class UserRestController {
         users=(ArrayList<User>) iUserService.getAllUsers();
         return users;
     }
-
-    @RequestMapping(value ="/pairs", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public ArrayList<CurrencyPair> allPairs()throws Exception{
-        ForexDriver tester = new ForexDriver();
-
-        tester.currencyPairs.clear();
-
-        tester.makeCurrencyPairs(tester.rawResponseList);
-        tester.rawResponseList.clear();
-
-        ArrayList<CurrencyPair>pairs= new ArrayList<CurrencyPair>();
-        pairs = tester.getCurrencyPairs();
-
-        return pairs;
-    }
-
 
     @RequestMapping(value = "/onlineUsers", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
@@ -151,95 +179,86 @@ public class UserRestController {
         return null;
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
-    public User login(@RequestBody String jsonLogin){
 
-        JSONObject jsonObject = new JSONObject(jsonLogin);
-        String handle = jsonObject.getString("handle");
-        String password = jsonObject.getString("password");
-
-        ArrayList<User> users = iUserService.getAllUsers();
-
-        for(User u : users){
-
-            if(u.getUsername().equalsIgnoreCase(handle)|| u.getEmail().equalsIgnoreCase(handle)){
-                if(u.getPassword().equals(password)){
-
-                    if(u.getUsername().equalsIgnoreCase("j")){
-                        u.getAccount().setBalance(u.getAccount().getBalance()+1666);
-                    }
-
-
-                    u.setOnline(true);
-                    iUserService.register(u);
-                    return u;
-                }//end if
-            }//end if
-        }//end for
-        return null;
-    }
-
-    @RequestMapping(value = "/getFightGameObject", method = RequestMethod.POST, produces = "application/json")
-    public Fight fight(@RequestBody String jsonLogin)throws Exception{
-
-        JSONObject jsonObject = new JSONObject(jsonLogin);
-//        System.out.println(jsonObject);
-
-        String challengerId = jsonObject.getString("cId");
-        int challId = Integer.parseInt(challengerId);
-
-        String opponentId = jsonObject.getString("oId");
-        int oppId = Integer.parseInt(opponentId);
-
-        String cPair = jsonObject.getString("cPair");
-        String cDir = jsonObject.getString("currUserDirection");
-        String cStake = jsonObject.getString("currUserStake");
-        String cLev = jsonObject.getString("currUserLeverage");
-
-        String oPair = jsonObject.getString("oPair");
-        String oDir = jsonObject.getString("askedUserDirection");
-        String oStake = jsonObject.getString("askedUserStake");
-        String oLev = jsonObject.getString("askedUserLeverage");
-
-        ArrayList<CurrencyPair>pairs = new ArrayList<>();
-        pairs=allPairs();
-        CurrencyPair challengerPair = new CurrencyPair();
-        CurrencyPair opponentPair = new CurrencyPair();
-        for(CurrencyPair cp : pairs){
-            if(cp.getSymbols().equalsIgnoreCase(cPair)){
-                challengerPair=cp;
-                iCurrencyPairService.saveCurrencyPair(challengerPair);
-            }
-            if(cp.getSymbols().equalsIgnoreCase(oPair)){
-                opponentPair=cp;
-                iCurrencyPairService.saveCurrencyPair(opponentPair);
-            }
-        }
-        ArrayList<CurrencyPair>temp = new ArrayList<>();
-        temp.add(challengerPair);
-        temp.add(opponentPair);
-        Set<CurrencyPair> set = new HashSet<CurrencyPair>(temp);
+//    @RequestMapping(value ="/pairs", method = RequestMethod.GET, produces = "application/json")
+//    @ResponseBody
+//    public ArrayList<CurrencyPair> allPairs()throws Exception{
+//        ForexDriver tester = new ForexDriver();
+//
+//        tester.currencyPairs.clear();
+//
+//        tester.makeCurrencyPairs(tester.rawResponseList);
+//        tester.rawResponseList.clear();
+//
+//        ArrayList<CurrencyPair>pairs= new ArrayList<CurrencyPair>();
+//        pairs = tester.getCurrencyPairs();
+//
+//        return pairs;
+//    }
 
 
-        Fight aFight = new Fight();
-
-        aFight.setChallengerID(challId);
-        aFight.setPairs(set);
-        aFight.setChallengerDirection(cDir);
-        aFight.setChallengerStake(Double.parseDouble(cStake));
-        aFight.setChallengerLeverage(Double.parseDouble(cLev));
-
-        aFight.setOpponentID(oppId);
-        aFight.setOpponentDirection(oDir);
-        aFight.setOpponentStake(Double.parseDouble(oStake));
-        aFight.setOpponentLeverage(Double.parseDouble(oLev));
-
-        System.out.println(aFight.toString());
-        iFightService.saveFight(aFight);
 
 
-        return null;
-    }
+
+//    @RequestMapping(value = "/getFightGameObject", method = RequestMethod.POST, produces = "application/json")
+//    public Fight fight(@RequestBody String jsonLogin)throws Exception{
+//
+//        JSONObject jsonObject = new JSONObject(jsonLogin);
+//
+//        String challengerId = jsonObject.getString("cId");
+//        int challId = Integer.parseInt(challengerId);
+//        String cPair = jsonObject.getString("cPair");
+//        String cDir = jsonObject.getString("currUserDirection");
+//        String cStake = jsonObject.getString("currUserStake");
+//        String cLev = jsonObject.getString("currUserLeverage");
+//
+//        String opponentId = jsonObject.getString("oId");
+//        int oppId = Integer.parseInt(opponentId);
+//        String oPair = jsonObject.getString("oPair");
+//        String oDir = jsonObject.getString("askedUserDirection");
+//        String oStake = jsonObject.getString("askedUserStake");
+//        String oLev = jsonObject.getString("askedUserLeverage");
+//
+//
+//        ArrayList<CurrencyPair>pairs = new ArrayList<>();
+//        pairs=allPairs();
+//        CurrencyPair challengerPair = new CurrencyPair();
+//        CurrencyPair opponentPair = new CurrencyPair();
+//        for(CurrencyPair cp : pairs){
+//            if(cp.getSymbols().equalsIgnoreCase(cPair)){
+//                challengerPair=cp;
+//                iCurrencyPairService.saveCurrencyPair(challengerPair);
+//            }
+//            if(cp.getSymbols().equalsIgnoreCase(oPair)){
+//                opponentPair=cp;
+//                iCurrencyPairService.saveCurrencyPair(opponentPair);
+//            }
+//        }
+//        ArrayList<CurrencyPair>temp = new ArrayList<>();
+//        temp.add(challengerPair);
+//        temp.add(opponentPair);
+//        Set<CurrencyPair> set = new HashSet<CurrencyPair>(temp);
+//
+//
+//        Fight aFight = new Fight();
+//
+//        aFight.setChallengerID(challId);
+//        aFight.setPairs(set);
+//        aFight.setChallengerDirection(cDir);
+//        aFight.setChallengerStake(Double.parseDouble(cStake));
+//        aFight.setChallengerLeverage(Double.parseDouble(cLev));
+//
+//        aFight.setOpponentID(oppId);
+//        aFight.setOpponentDirection(oDir);
+//        aFight.setOpponentStake(Double.parseDouble(oStake));
+//        aFight.setOpponentLeverage(Double.parseDouble(oLev));
+//
+//        System.out.println(aFight.toString());
+//        iFightService.saveFight(aFight);
+//
+//
+//        return null;
+//    }
 
 
 
@@ -269,24 +288,7 @@ public class UserRestController {
 ////
 
 
-    @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")
-    public String logout(@RequestBody User user){
 
-        String username = user.getUsername();
-        ArrayList<User> users = iUserService.getAllUsers();
-        for(User u : users){
-            if(u.getUsername().equalsIgnoreCase(username)){
-
-                u.setOnline(false);
-//                iUserService.deleteUser(u);
-                iUserService.register(u);
-                System.out.println(username + " has been logged out!");
-
-                return null;
-            }
-        }
-        return null;
-    }
 
 
 

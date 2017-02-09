@@ -19,7 +19,7 @@ angular.module('myApp.OnlineController',[]).
     }
 
     $scope.init = function(){
-        $http.post('http://localhost:8080/api/onlineUsers',name)
+        $http.post('http://localhost:8080/api/user/onlineUsers',name)
             .success(function (data, status) {
                 if(status = 200){
 

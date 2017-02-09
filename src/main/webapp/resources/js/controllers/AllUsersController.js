@@ -5,7 +5,7 @@ controller('AllUsersController', function($scope,$http){
     $scope.allUsers = {};
 
      $scope.init = function(){
-            $http.get('http://localhost:8080/api/allUsers')
+            $http.get('http://localhost:8080/api/user/allUsers')
                 .success(function (data, status) {
                     if(status = 200){
 
