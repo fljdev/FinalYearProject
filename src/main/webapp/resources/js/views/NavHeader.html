@@ -34,14 +34,39 @@
 
                 <li><a ng-href="" ng-click = "logOut()" class="btn btn-warning">Logout</a></li>
 
-                <li><a ng-href="#/allUsers">All Users</a>
+                <li><a ng-href="#/welcome">Home</a>
+                <li><a ng-href="#/logreg">Trade Now</a>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Financial Markets Explained<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a ng-href="#/login">Shares</a></li>
+                        <li><a ng-href="#/register">Forex</a></li>
+                        <li><a href="#">Indices</a></li>
+                        <!--<li role="separator" class="divider"></li>-->
+                        <li><a href="#">Commodities</a></li>
+                        <li><a href="#">ETF's</a></li>
+                        <li><a href="#">Options</a></li>
+                        <li><a href="#">CFD's</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Contact us for further support</a></li>
+                    </ul>
+                </li>
+
+                <li>ff</li>
+
+                <!--<li><a ng-href="#/allUsers">All Users</a>-->
                 <li><a ng-href="#/onlineUsers">See Who's Online</a>
-                <li><a ng-href="#/welcome">Welcome Page</a>
                 <li><a ng-href="#/pairs">Current Forex Prices</a>
 
 
                  <li><a ng-href="#/login">Login</a>
                  <li><a ng-href="#/register">Register</a>
+
+
+                <li ng-show="isUserLoggedIn"><a href="#Login">LogOut <span class="glyphicon glyphicon-user"></span></a></li>
+
+                <li ng-show="!isUserLoggedIn"><a href="#Signout">Login <span class="glyphicon glyphicon-user"></span></a></li>
 
 
 

@@ -15,7 +15,8 @@ angular.module('myApp',[
     'myApp.ChallengedController',
     'myApp.FightController',
     'myApp.FightStartController',
-    'myApp.FightEndController'
+    'myApp.FightEndController',
+    'myApp.LogRegController'
 ]).
     config(function ($stateProvider,$urlRouterProvider) {
 
@@ -76,6 +77,11 @@ angular.module('myApp',[
             url: '/fightEnd',
             templateUrl: "resources/js/views/FightEnd.html",
             controller: "FightEndController"
+        })
+        .state('logreg',{
+            url: '/logreg',
+            templateUrl: "resources/js/views/LogReg.html",
+            controller: "LogRegController"
         });
 });
 
