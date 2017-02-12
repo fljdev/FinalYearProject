@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 /**
  * Created by admin on 09/02/2017.
  */
@@ -26,4 +28,18 @@ public class FightStartService implements IFightStartService {
     public void saveFightStart(FightStart fightStart) {
         fightStartDAO.save(fightStart);
     }
+
+    @Override
+    public ArrayList<FightStart> getAllFights() {
+        ArrayList<FightStart> allFights = new ArrayList<FightStart>();
+
+        for(FightStart fs : fightStartDAO.findAll()){
+            allFights.add(fs);
+            System.out.println(fs.toString());
+        }
+
+        return allFights;
+    }
+
+
 }

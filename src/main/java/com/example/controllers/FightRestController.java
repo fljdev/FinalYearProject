@@ -51,9 +51,33 @@ public class FightRestController {
     }
 
 
+    @RequestMapping(value = "/getAllFightStartObjects", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ArrayList<FightStart> getAllFightStartObjects(){
+        ArrayList<FightStart> fights = new ArrayList<>();
+        fights =(ArrayList<FightStart>) iFightStartService.getAllFights();
+        return fights;
+    }
+
+    @RequestMapping(value = "/findFightObjectById", method = RequestMethod.POST, produces = "application/json")
+    public FightStart findById(@RequestBody String id){
+
+        int i = Integer.parseInt(id);
+        ArrayList<FightStart> fightStarts = getAllFightStartObjects();
+
+        for(FightStart fs : fightStarts){
+            if(fs.getId()== i ){
+
+                System.out.println("------------- "+fs.toString()+"---------------------");
+                return fs;
+            }
+        }
+        return null;
+    }
 
 
-    @RequestMapping(value = "/getFightStartObject", method = RequestMethod.POST, produces = "application/json")
+
+    @RequestMapping(value = "/makeFightStartObjAndReturnID", method = RequestMethod.POST, produces = "application/json")
     public int fightStart(@RequestBody String jsonLogin)throws Exception{
 
         JSONObject jsonObject = new JSONObject(jsonLogin);

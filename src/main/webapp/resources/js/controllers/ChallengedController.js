@@ -48,11 +48,14 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
     $scope.fight = function() {
 
-        var cI = $scope.currUser.id +"";
-        var oI = $scope.askedUser.id +"";
+        // var cI = $scope.currUser.id +"";
+        // var oI = $scope.askedUser.id +"";
+        //
+        // $scope.gameParamsObj.cId = cI;
+        // $scope.gameParamsObj.oId = oI;
 
-        $scope.gameParamsObj.cId = cI;
-        $scope.gameParamsObj.oId = oI;
+        $scope.gameParamsObj.cId  = $scope.currUser.id +"";
+        $scope.gameParamsObj.oId = $scope.askedUser.id +"";
 
 
         $scope.gameParamsObj.cPair=$scope.currUserPair.symbols;
@@ -61,14 +64,17 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
         $scope.gameParamsObj.cBalance = $scope.currUser.account.balance+"";
         $scope.gameParamsObj.oBalance = $scope.askedUser.account.balance+"";
 
-        $http.post('http://localhost:8080/api/fight/getFightStartObject', JSON.stringify($scope.gameParamsObj))
+        /**
+         * Now I send the lev, long,stake and pair etc to the controller
+         * an object will be make
+         * the id of that object will be returned
+         * then i will state.go to a new controller, taking the ID of the FightStart object with me
+         */
+        $http.post('http://localhost:8080/api/fight/makeFightStartObjAndReturnID', JSON.stringify($scope.gameParamsObj))
             .success(function (data, status) {
                 if(status = 200){
-
-                    console.log("getFightStartObject method worked", data);
-
+                    console.log("makeFightStartObjAndReturnID method worked, the ID of FightStart obj is : ", data);
                     $state.go('fightStart',{paramm:data});
-
                 }
             }).error(function (error) {
             alert("something went wrong!!");
