@@ -54,7 +54,7 @@ public class FightRestController {
 
 
     @RequestMapping(value = "/getFightStartObject", method = RequestMethod.POST, produces = "application/json")
-    public FightStart fightStart(@RequestBody String jsonLogin)throws Exception{
+    public int fightStart(@RequestBody String jsonLogin)throws Exception{
 
         JSONObject jsonObject = new JSONObject(jsonLogin);
 
@@ -121,7 +121,8 @@ public class FightRestController {
         iFightStartService.saveFightStart(aFightStart);
 
 
-        return aFightStart;
+        int fightStartObjID = aFightStart.getId();
+        return fightStartObjID;
     }
 
 //    @RequestMapping(value = "/getFightGameObject", method = RequestMethod.POST, produces = "application/json")

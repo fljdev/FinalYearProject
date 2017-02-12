@@ -6,12 +6,11 @@ controller('PairsController', function($scope,$http,$interval){
 
 
     $scope.init = function(){
-        $http.get('http://localhost:8080/api/user/pairs')
+        $http.get('http://localhost:8080/api/fight/pairs')
             .success(function (data, status) {
                 if(status = 200){
 
                     //data will be equal to the arraylist returned by the UserRestController
-                    console.log(data, "This is angalar pairs");
                     $scope.pairs = data;
 
                 }
