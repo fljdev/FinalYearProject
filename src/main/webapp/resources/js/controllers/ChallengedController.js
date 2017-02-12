@@ -48,18 +48,8 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
     $scope.fight = function() {
 
-        var opponentID = $scope.askedUserID;
-
-        alert(opponentID);
-
-
-
-        // $state.go('fightStart',{paramm:opponentID});
-
-
         var cI = $scope.currUser.id +"";
         var oI = $scope.askedUser.id +"";
-        console.log(cI);
 
         $scope.gameParamsObj.cId = cI;
         $scope.gameParamsObj.oId = oI;
@@ -75,13 +65,9 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
             .success(function (data, status) {
                 if(status = 200){
 
-                    // $scope.register = data;
-                    console.log("getFightStartObject method worked");
+                    console.log("getFightStartObject method worked", data);
 
-
-                    // $state.go('home');
-                    // $cookieStore.put('userCookie',$scope.register);
-
+                    $state.go('fightStart',{paramm:data});
 
                 }
             }).error(function (error) {

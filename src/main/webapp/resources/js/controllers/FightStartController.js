@@ -1,7 +1,7 @@
 angular.module('myApp.FightStartController',[]).
 controller('FightStartController', function($scope,$cookieStore,$http,$state,$stateParams,$timeout){
 
-    console.log("yoyoyo");
+    console.log("fightStartController got the id ",$stateParams.paramm);
 
     // $scope.currUser = $cookieStore.get('userCookie');
     // $scope.opponentID = $stateParams.paramm;
