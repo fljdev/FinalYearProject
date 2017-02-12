@@ -1,7 +1,38 @@
 angular.module('myApp.FightStartController',[]).
 controller('FightStartController', function($scope,$cookieStore,$http,$state,$stateParams,$timeout){
 
-    console.log("fightStartController got the id ",$stateParams.paramm);
+    console.log("fightStartController got the recieved the id ",$stateParams.paramm);
+
+    var fightStartID = $stateParams.paramm;
+
+    $scope.allFights = {};
+
+    $scope.init = function(){
+        $http.post('http://localhost:8080/api/fight/findFightObjectById',fightStartID)
+            .success(function (data, status) {
+                if(status = 200){
+                    console.log(data, "This is angalar fingFightObjectById method");
+                    // $scope.allFights = data;
+
+                }
+            }).error(function (error) {
+            alert("something went wrong!!");
+
+        });//end http.get
+        // $http.get('http://localhost:8080/api/fight/getAllFightStartObjects')
+        //     .success(function (data, status) {
+        //         if(status = 200){
+        //             console.log(data, "This is angalar fights controller");
+        //             $scope.allFights = data;
+        //
+        //         }
+        //     }).error(function (error) {
+        //     alert("something went wrong!!");
+        //
+        // });//end http.get
+    }//end function
+
+    $scope.init();
 
     // $scope.currUser = $cookieStore.get('userCookie');
     // $scope.opponentID = $stateParams.paramm;
