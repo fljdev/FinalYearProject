@@ -20,21 +20,40 @@ public class FightStart{
 
     }
 
+    @Column(name="time")
     private Timestamp timestamp;
 
     @ManyToMany
     private Set<CurrencyPair> pairs;
 
+    @Column(name="challID")
     private int challengerID;
+
+    @Column(name="challDir")
     private String challengerDirection;
+
+    @Column(name="challStake")
     private double challengerStake;
+
+    @Column(name="challLev")
     private double challengerLeverage;
+
+    @Column(name="challBalance")
     private double challengerBalance;
 
+    @Column(name="oppID")
     private int opponentID;
+
+    @Column(name="oppDir")
     private String opponentDirection;
+
+    @Column(name="oppStake")
     private double opponentStake;
+
+    @Column(name="OppLev")
     private double opponentLeverage;
+
+    @Column(name="oppBalance")
     private double opponentBalance;
 
     public FightStart(Timestamp timestamp, Set<CurrencyPair> pairs, int challengerID,
