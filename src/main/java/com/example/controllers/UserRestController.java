@@ -46,6 +46,8 @@ public class UserRestController {
     public User register(@RequestBody String jsonRegister){
         System.out.println("got in here");
 
+        System.out.println("hhhhhhhhhhhhhh");
+
         JSONObject jsonObject = new JSONObject(jsonRegister);
         String firstName = jsonObject.getString("firstName");
         String lastName = jsonObject.getString("lastName");
