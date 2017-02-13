@@ -12,8 +12,10 @@ import org.jsoup.select.Elements;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -113,7 +115,9 @@ public class ForexDriver {
     public void makeCurrencyPairs(ArrayList<TrueFxResponse> responseList){
 
         for(TrueFxResponse res : responseList){
+
             CurrencyPair aPair = new CurrencyPair();
+
             String bid = res.getTd3()+res.getTd4();
             double bidNumeric = Double.parseDouble(bid);
             String ask = res.getTd5()+res.getTd6();
@@ -130,6 +134,26 @@ public class ForexDriver {
             aPair.setHigh(high);
             aPair.setLow(low);
             aPair.setOpen(open);
+
+            double spread = 0;
+            DecimalFormat df = new DecimalFormat("#0.0");
+
+
+            if(res.getTd1().contains("JPY")){
+                spread = ((askNumeric - bidNumeric)*100);
+
+
+
+            }else{
+                spread = ((askNumeric - bidNumeric)*10000);
+
+
+            }
+
+            aPair.setSpreadPips(Double.parseDouble(df.format(spread)));
+
+
+//            if()
 
 //            System.out.println("Pairs are "+aPair.getSymbols()+" added to the currencyPair []");
 //            System.out.println(aPair.toString());
