@@ -24,18 +24,29 @@ public class CurrencyPair {
     private double low;
     private double open;
 
+    private double spreadPips;
 
 
-    public CurrencyPair(String symbols,long milliseconds, double bid, double ask, double high, double low, double open) {
+    public CurrencyPair(String symbols, long milliseconds, double bid, double ask, double high, double low, double open, double spreadPips) {
         this.symbols = symbols;
+        this.milliseconds = milliseconds;
         this.bid = bid;
         this.ask = ask;
         this.high = high;
         this.low = low;
         this.open = open;
+        this.spreadPips = spreadPips;
     }
 
     public CurrencyPair() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getSymbols() {
@@ -94,17 +105,27 @@ public class CurrencyPair {
         this.open = open;
     }
 
+    public double getSpreadPips() {
+        return spreadPips;
+    }
+
+    public void setSpreadPips(double spreadPips) {
+        this.spreadPips = spreadPips;
+    }
+
 
     @Override
     public String toString() {
         return "CurrencyPair{" +
-                "symbols='" + symbols + '\'' +
+                "id=" + id +
+                ", symbols='" + symbols + '\'' +
                 ", milliseconds=" + milliseconds +
                 ", bid=" + bid +
                 ", ask=" + ask +
                 ", high=" + high +
                 ", low=" + low +
                 ", open=" + open +
+                ", spreadPips=" + spreadPips +
                 '}';
     }
 }
