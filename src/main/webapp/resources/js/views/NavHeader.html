@@ -30,8 +30,6 @@
 
             <ul class="nav navbar-nav">
 
-
-
                 <li><a ng-href="" ng-click = "logOut()" class="btn btn-warning">Logout</a></li>
 
                 <li><a ng-href="#/welcome">Home</a>
@@ -59,24 +57,14 @@
                 <li><a ng-href="#/onlineUsers">See Who's Online</a>
                 <li><a ng-href="#/pairs">Current Forex Prices</a>
 
+                <!--<li><a ng-href="#/login">Login</a>-->
+                <!--<li><a ng-href="#/register">Register</a>-->
 
-                 <!--<li><a ng-href="#/login">Login</a>-->
-                 <!--<li><a ng-href="#/register">Register</a>-->
-
-
-                <li ng-show="isUserLoggedIn"><a href="#Login">LogOut <span class="glyphicon glyphicon-user"></span></a></li>
-
-                <li ng-show="!isUserLoggedIn"><a href="#Signout">Login <span class="glyphicon glyphicon-user"></span></a></li>
-
-
-
+                <li ng-show='loggedIn'><a href="#Login">LogOut <span class="glyphicon glyphicon-user"></span></a></li>
+                <li ng-show='!loggedIn'><a href="#Signout">Login <span class="glyphicon glyphicon-user"></span></a></li>
 
             </ul>
 
-
-
-
-
-        </div>
+      </div>
     </div>
 </navbar><!-- End navbar -->
