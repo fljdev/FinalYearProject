@@ -222,7 +222,6 @@ public class FightRestController {
         ArrayList<CurrencyPair>pairs= new ArrayList<CurrencyPair>();
         pairs = tester.getCurrencyPairs();
 
-        System.out.println("got "+pairs.get(0).getSpreadPips());
 
         return pairs;
     }

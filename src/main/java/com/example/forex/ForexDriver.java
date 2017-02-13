@@ -15,7 +15,9 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -152,16 +154,15 @@ public class ForexDriver {
 
             aPair.setSpreadPips(Double.parseDouble(df.format(spread)));
 
+            SimpleDateFormat sdf = new SimpleDateFormat("HH.mm.ss");
 
-//            if()
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-//            System.out.println("Pairs are "+aPair.getSymbols()+" added to the currencyPair []");
-//            System.out.println(aPair.toString());
+            aPair.setTimeStampString(sdf.format(timestamp).toString());
+
+            System.out.println(aPair.toString());
 
             currencyPairs.add(aPair);
-
-
-
         }
 
     }
