@@ -5,13 +5,16 @@ directive('navheader', function($cookieStore, $state, $http, $rootScope){
         scope : {},
         controller: function ($scope) {
 
+            $scope.loggedIn = false;
+
+
+            if($cookieStore.get('userCookie')){
+                $scope.loggedIn = true;
+            }
+
             $scope.logOut = function () {
                 var obj = $cookieStore.get('userCookie');
                 $cookieStore.remove('userCookie');
-
-
-                $rootScope.isUserLoggedIn = false;
-                console.log($rootScope.isUserLoggedIn);
 
                 $http.post('http://localhost:8080/api/user/logout', JSON.stringify(obj))
                     .success(function (data, status) {

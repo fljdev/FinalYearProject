@@ -1,6 +1,5 @@
 angular.module('myApp.LoginController',[]).
 controller('LoginController',function($scope, $http, $state,$cookieStore, $rootScope){
-        // $scope.LoginText = "This is the login!!";
         $scope.login ={};
 
     $scope.submit=function(){
@@ -10,17 +9,14 @@ controller('LoginController',function($scope, $http, $state,$cookieStore, $rootS
             .success(function (data, status) {
                 if(status = 200){
 
+
+
                     $scope.login = data;
                     console.log($scope.login);
-
 
                     $state.go('home');
 
                     $cookieStore.put('userCookie',$scope.login);
-
-                    $rootScope.isUserLoggedIn = true;
-                    console.log("after logging in ", $rootScope.isUserLoggedIn)
-
 
 
 
