@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.sql.Timestamp;
 
 /**
  * Created by admin on 17/10/2016.
@@ -27,7 +28,12 @@ public class CurrencyPair {
     private double spreadPips;
 
 
-    public CurrencyPair(String symbols, long milliseconds, double bid, double ask, double high, double low, double open, double spreadPips) {
+    private String timeStampString;
+
+    public CurrencyPair() {
+    }
+
+    public CurrencyPair(String symbols, long milliseconds, double bid, double ask, double high, double low, double open, double spreadPips, String timeStampString) {
         this.symbols = symbols;
         this.milliseconds = milliseconds;
         this.bid = bid;
@@ -36,9 +42,7 @@ public class CurrencyPair {
         this.low = low;
         this.open = open;
         this.spreadPips = spreadPips;
-    }
-
-    public CurrencyPair() {
+        this.timeStampString = timeStampString;
     }
 
     public int getId() {
@@ -113,6 +117,13 @@ public class CurrencyPair {
         this.spreadPips = spreadPips;
     }
 
+    public String getTimeStampString() {
+        return timeStampString;
+    }
+
+    public void setTimeStampString(String timeStampString) {
+        this.timeStampString = timeStampString;
+    }
 
     @Override
     public String toString() {
@@ -126,6 +137,7 @@ public class CurrencyPair {
                 ", low=" + low +
                 ", open=" + open +
                 ", spreadPips=" + spreadPips +
+                ", timeStampString='" + timeStampString + '\'' +
                 '}';
     }
 }
