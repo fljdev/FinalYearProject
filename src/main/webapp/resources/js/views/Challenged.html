@@ -11,7 +11,15 @@
 
 <table align="center">
     <thead>
-    <tr><th colspan="9">{{currUser.username}} challenged {{askedUser.username}}</th> </tr>
+    <tr><th colspan="9">{{currUser.username}} challenged {{askedUser.username}} To a Forex Fight!!</th> </tr>
+
+
+</table>
+
+<br><br>
+<table align="center">
+    <thead>
+    <tr><th colspan="9">Pick your Game Variables now {{currUser.username}}!!</th> </tr>
     <tr>
         <th>Forename</th>
         <th>Surname</th>
@@ -40,6 +48,32 @@
 
     </tr>
 
+
+    <!--<tr><th colspan="9"> <button class="btn btn-default btn-block btn-success"ng-click="fight()"  >Fight!!</button></th></tr>-->
+    </tbody>
+
+</table>
+<br><br>
+
+<table align="center">
+    <thead>
+    <tr><th colspan="8">Pick your Game Variables now {{askedUser.username}}!!</th> </tr>
+    <tr>
+        <th>Forename</th>
+        <th>Surname</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Balance</th>
+        <th>Pick Pair</th>
+        <th>Long/Short</th>
+        <!--<th>Stake</th>-->
+        <th>Leverage</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+
     <tr>
         <td>{{askedUser.firstName}}</td>
         <td>{{askedUser.lastName}}</td>
@@ -48,72 +82,20 @@
         <td>{{askedUser.account.balance}}</td>
         <td><select ng-model="askedUserPair" ng-options="x.symbols for x in pairs"></td>
         <td><select ng-model="gameParamsObj.askedUserDirection" ng-options="x for x in direction"></td>
-        <td><select ng-model="gameParamsObj.askedUserStake" ng-options="x for x in stakes"></td>
+        <!--<td><select ng-model="gameParamsObj.askedUserStake" ng-options="x for x in stakes"></td>-->
         <td><select ng-model="gameParamsObj.askedUserLeverage" ng-options="x for x in leverages"></td>
 
 
 
     </tr>
-    <tr><th colspan="9"> <button class="btn btn-default btn-block btn-success"ng-click="fight()"  >Fight!!</button></th></tr>
+    <tr><th colspan="8"> <button class="btn btn-default btn-block btn-success"ng-click="fight()"  >Fight!!</button></th></tr>
     </tbody>
 
 </table>
 
-<br><br><br><br>
-
 <br><br>
 
-<!--<table align="center" width=750 style= 'table-layout:fixed'>-->
-    <!--<col width="100px" />-->
-    <!--<col width="100px" />-->
-    <!--<col width="100px" />-->
-    <!--<col width="80px" />-->
-    <!--<col width="80px" />-->
-    <!--<col width="100px" />-->
-    <!--<col width="200px" />-->
-    <!--<col width="120px" />-->
 
-    <!--<thead>-->
-    <!--<tr><th colspan="8">Live Game Info Feed</th> </tr>-->
-    <!--<tr>-->
-
-        <!--<th style = "background-color:#BDB76B;color:#ffffff;">Username</th>-->
-        <!--<th style = "background-color:#BDB76B;color:#ffffff;">Available</th>-->
-        <!--<th style = "background-color:#BDB76B;color:#ffffff;">M.Margin</th>-->
-        <!--<th style = "background-color:#BDB76B;color:#ffffff;">Margin %</th>-->
-        <!--<th style = "background-color:#BDB76B;color:#ffffff;">Pair</th>-->
-        <!--<th style = "background-color:#BDB76B;color:#ffffff;">Direction</th>-->
-        <!--<th style = "background-color:#BDB76B;color:#ffffff;">Current Value</th>-->
-        <!--<th style = "background-color:#BDB76B;color:#ffffff;">Net P&L</th>-->
-    <!--</tr>-->
-    <!--</thead>-->
-
-    <!--<tbody>-->
-    <!--<tr>-->
-        <!--<td>{{currUser.username}}</td>-->
-        <!--<td>{{currUser.account.balance}}</td>-->
-        <!--<td>{{currUserMargin}}</td>-->
-        <!--<td>{{currMarginPercent}}%</td>-->
-        <!--<td>{{currentUserFinalPair.symbols}}</td>-->
-        <!--<td>{{currUserDirection}}</td>-->
-        <!--<td>{{currUserPosSize}}</td>-->
-        <!--<td>$</td>-->
-
-    <!--</tr>-->
-    <!--<tr>-->
-        <!--<td>{{askedUser.username}}</td>-->
-        <!--<td>{{askedUser.account.balance}}</td>-->
-        <!--<td>{{askedUserMargin}}</td>-->
-        <!--<td>{{askedMarginPercent}}%</td>-->
-        <!--<td>{{askedUserFinalPair.symbols}}</td>-->
-        <!--<td>{{askedUserDirection}}</td>-->
-        <!--<td>{{askedUserPosSize}}</td>-->
-        <!--<td>$</td>-->
-    <!--</tr>-->
-    <!--<tr><th colspan="8">Game Time {{ counter}}</th> </tr>-->
-    <!--</tbody>-->
-
-<!--</table>-->
 
 </body>
 </html>
