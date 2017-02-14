@@ -92,7 +92,7 @@ public class FightRestController {
         double oBalance = Double.parseDouble(oBal);
         String oPair = jsonObject.getString("oPair");
         String oDir = jsonObject.getString("askedUserDirection");
-        String oStake = jsonObject.getString("askedUserStake");
+//        String oStake = jsonObject.getString("askedUserStake");
         String oLev = jsonObject.getString("askedUserLeverage");
 
 
@@ -132,7 +132,7 @@ public class FightRestController {
         aFightStart.setOpponentBalance(oBalance);
         aFightStart.setOpponentID(oppId);
         aFightStart.setOpponentDirection(oDir);
-        aFightStart.setOpponentStake(Double.parseDouble(oStake));
+        aFightStart.setOpponentStake(Double.parseDouble(cStake));
         aFightStart.setOpponentLeverage(Double.parseDouble(oLev));
 
         System.out.println(aFightStart.toString());
