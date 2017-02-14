@@ -25,7 +25,6 @@ public class CurrencyPairService implements ICurrencyPairService {
     @Override
     public void saveCurrencyPair(CurrencyPair cp ){
         currencyPairDAO.save(cp);
-
     }
 
 

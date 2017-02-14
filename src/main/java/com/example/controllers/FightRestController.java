@@ -104,10 +104,13 @@ public class FightRestController {
             if(cp.getSymbols().equalsIgnoreCase(cPair)){
                 challengerPair=cp;
                 iCurrencyPairService.saveCurrencyPair(challengerPair);
+                System.out.println("saved challenger pair "+cp.getSymbols());
+
             }
             if(cp.getSymbols().equalsIgnoreCase(oPair)){
                 opponentPair=cp;
                 iCurrencyPairService.saveCurrencyPair(opponentPair);
+                System.out.println("saved opponent pair "+cp.getSymbols());
             }
         }
         ArrayList<CurrencyPair>temp = new ArrayList<>();
