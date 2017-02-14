@@ -1,12 +1,10 @@
 package com.example.controllers;
 
-import com.example.entities.Fight;
 import com.example.entities.CurrencyPair;
 import com.example.entities.FightStart;
 import com.example.forex.ForexDriver;
 import com.example.services.ICurrencyPairService;
 import com.example.services.IFightEndService;
-import com.example.services.IFightService;
 import com.example.services.IFightStartService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +23,10 @@ import java.util.Set;
 @RequestMapping("/api/fight")
 public class FightRestController {
 
-    IFightService iFightService;
     IFightStartService iFightStartService;
     IFightEndService iFightEndService;
     ICurrencyPairService iCurrencyPairService;
+
 
     @Autowired
     public void setiFightStartService(IFightStartService iFightStartService){
@@ -45,10 +43,6 @@ public class FightRestController {
         this.iCurrencyPairService = iCurrencyPairService;
     }
 
-    @Autowired
-    public void setiFightService(IFightService iFightService){
-        this.iFightService = iFightService;
-    }
 
 
     @RequestMapping(value = "/getAllFightStartObjects", method = RequestMethod.GET, produces = "application/json")

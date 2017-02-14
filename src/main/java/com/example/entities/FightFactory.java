@@ -1,64 +1,80 @@
 package com.example.entities;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Set;
 
 /**
- * Created by admin on 07/02/2017.
+ * Created by admin on 09/02/2017.
  */
 
-@Entity
-public class Fight {
+@MappedSuperclass
+public class FightFactory {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
-    private int challengerID;
+    @Column(name="time")
+    private Timestamp timestamp;
 
     @ManyToMany
     private Set<CurrencyPair> pairs;
 
+    @Column(name="challID")
+    private int challengerID;
 
+    @Column(name="challDir")
     private String challengerDirection;
+
+    @Column(name="challStake")
     private double challengerStake;
+
+    @Column(name="challLev")
     private double challengerLeverage;
 
+    @Column(name="challBalance")
+    private double challengerBalance;
+
+    @Column(name="oppID")
     private int opponentID;
+
+    @Column(name="oppDir")
     private String opponentDirection;
+
+    @Column(name="oppStake")
     private double opponentStake;
+
+    @Column(name="OppLev")
     private double opponentLeverage;
 
-    public Fight() {
+    @Column(name="oppBalance")
+    private double opponentBalance;
+
+    public FightFactory(){
+
     }
 
-
-    public Fight(int challengerID, Set<CurrencyPair> pairs, String challengerDirection, double challengerStake, double challengerLeverage, int opponentID, String opponentDirection, double opponentStake, double opponentLeverage) {
-        this.challengerID = challengerID;
+    public FightFactory(Timestamp timestamp, Set<CurrencyPair> pairs, int challengerID,
+                        String challengerDirection, double challengerStake, double challengerLeverage,
+                        double challengerBalance, int opponentID, String opponentDirection, double opponentStake,
+                        double opponentLeverage, double opponentBalance) {
+        this.timestamp = timestamp;
         this.pairs = pairs;
+        this.challengerID = challengerID;
         this.challengerDirection = challengerDirection;
         this.challengerStake = challengerStake;
         this.challengerLeverage = challengerLeverage;
+        this.challengerBalance = challengerBalance;
         this.opponentID = opponentID;
         this.opponentDirection = opponentDirection;
         this.opponentStake = opponentStake;
         this.opponentLeverage = opponentLeverage;
+        this.opponentBalance = opponentBalance;
     }
 
-    public int getId() {
-        return id;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getChallengerID() {
-        return challengerID;
-    }
-
-    public void setChallengerID(int challengerID) {
-        this.challengerID = challengerID;
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 
     public Set<CurrencyPair> getPairs() {
@@ -67,6 +83,14 @@ public class Fight {
 
     public void setPairs(Set<CurrencyPair> pairs) {
         this.pairs = pairs;
+    }
+
+    public int getChallengerID() {
+        return challengerID;
+    }
+
+    public void setChallengerID(int challengerID) {
+        this.challengerID = challengerID;
     }
 
     public String getChallengerDirection() {
@@ -91,6 +115,14 @@ public class Fight {
 
     public void setChallengerLeverage(double challengerLeverage) {
         this.challengerLeverage = challengerLeverage;
+    }
+
+    public double getChallengerBalance() {
+        return challengerBalance;
+    }
+
+    public void setChallengerBalance(double challengerBalance) {
+        this.challengerBalance = challengerBalance;
     }
 
     public int getOpponentID() {
@@ -125,19 +157,11 @@ public class Fight {
         this.opponentLeverage = opponentLeverage;
     }
 
-    @Override
-    public String toString() {
-        return "Fight{" +
-                "id=" + id +
-                ", challengerID=" + challengerID +
-                ", pairs=" + pairs +
-                ", challengerDirection='" + challengerDirection + '\'' +
-                ", challengerStake=" + challengerStake +
-                ", challengerLeverage=" + challengerLeverage +
-                ", opponentID=" + opponentID +
-                ", opponentDirection='" + opponentDirection + '\'' +
-                ", opponentStake=" + opponentStake +
-                ", opponentLeverage=" + opponentLeverage +
-                '}';
+    public double getOpponentBalance() {
+        return opponentBalance;
+    }
+
+    public void setOpponentBalance(double opponentBalance) {
+        this.opponentBalance = opponentBalance;
     }
 }
