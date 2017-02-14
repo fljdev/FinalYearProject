@@ -18,33 +18,33 @@ public class CurrencyPairSet {
     }
 
 
-    private CurrencyPair EURUSD;
-    private CurrencyPair USDJPY;
-    private CurrencyPair GBPUSD;
-    private CurrencyPair EURGBP;
-    private CurrencyPair USDCHF;
-    private CurrencyPair EURJPY;
-    private CurrencyPair EURCHF;
-    private CurrencyPair USDCAD;
-    private CurrencyPair AUDUSD;
-    private CurrencyPair GBPJPY;
-    private CurrencyPair AUDCAD;
-    private CurrencyPair AUDCHF;
-    private CurrencyPair AUDJPY;
-    private CurrencyPair AUDNZD;
-    private CurrencyPair CADCHF;
-    private CurrencyPair CADJPY;
-    private CurrencyPair CHFJPY;
-    private CurrencyPair EURAUD;
-    private CurrencyPair EURCAD;
-    private CurrencyPair EURNOK;
-    private CurrencyPair EURNZD;
-    private CurrencyPair GBPCAD;
-    private CurrencyPair GBPCHF;
-    private CurrencyPair NZDJPY;
-    private CurrencyPair NZDUSD;
-    private CurrencyPair USDNOK;
-    private CurrencyPair USDSEK;
+    private CurrencyPair EURUSD;//.17
+    private CurrencyPair USDJPY;//.17
+    private CurrencyPair GBPUSD;//.17
+    private CurrencyPair EURGBP;//.17
+    private CurrencyPair USDCHF;//.17
+    private CurrencyPair EURJPY;//.17
+    private CurrencyPair EURCHF;//.25
+    private CurrencyPair USDCAD;//.17
+    private CurrencyPair AUDUSD;//.17
+    private CurrencyPair GBPJPY;//.17
+    private CurrencyPair AUDCAD;//.25
+    private CurrencyPair AUDCHF;//.25
+    private CurrencyPair AUDJPY;//.25
+    private CurrencyPair AUDNZD;//.25
+    private CurrencyPair CADCHF;//.25
+    private CurrencyPair CADJPY;//.25
+    private CurrencyPair CHFJPY;//.17
+    private CurrencyPair EURAUD;//.17
+    private CurrencyPair EURCAD;//.25
+    private CurrencyPair EURNOK;//.25
+    private CurrencyPair EURNZD;//.17
+    private CurrencyPair GBPCAD;//.17
+    private CurrencyPair GBPCHF;//.25
+    private CurrencyPair NZDJPY;//.25
+    private CurrencyPair NZDUSD;//.17
+    private CurrencyPair USDNOK;//.25
+    private CurrencyPair USDSEK;//.25
 
     public CurrencyPair getEURUSD() {
         return EURUSD;

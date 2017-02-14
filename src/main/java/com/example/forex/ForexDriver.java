@@ -47,6 +47,8 @@ public class ForexDriver {
         String username;
         String password;
 
+
+
         String url = "http://webrates.truefx.com/rates/connect.html?u="+USERNAME+"&p="+PASSWORD+"&q=eurates&c=EUR/USD,USD/JPY,"+
         "GBP/USD,EUR/GBP,USD/CHF,EUR/JPY,EUR/CHF,USD/CAD,AUD/USD,GBP/JPY,AUD/CAD,AUD/CHF,AUD/JPY,AUD/NZD,CAD/CHF,"+
         "CAD/JPY,CHF/JPY,EUR/AUD,EUR/CAD,EUR/NOK,EUR/NZD,GBP/CAD,GBP/CHF,NZD/JPY,NZD/USD,USD/NOK,USD/SEK&f=xml\n";

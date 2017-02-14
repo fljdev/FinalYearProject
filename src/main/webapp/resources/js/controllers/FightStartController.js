@@ -1,38 +1,101 @@
 angular.module('myApp.FightStartController',[]).
 controller('FightStartController', function($scope,$cookieStore,$http,$state,$stateParams,$timeout){
 
-    console.log("fightStartController got the recieved the id ",$stateParams.paramm);
+    // console.log("fightStartController got the recieved the id ",$stateParams.paramm);
 
+    $scope.thisFight = {};
+
+
+    /**
+     * this is the id of the FightStart object that will be retrieved from the DB
+     */
     var fightStartID = $stateParams.paramm;
-
-    $scope.allFights = {};
 
     $scope.init = function(){
         $http.post('http://localhost:8080/api/fight/findFightObjectById',fightStartID)
             .success(function (data, status) {
                 if(status = 200){
-                    console.log(data, "This is angalar fingFightObjectById method");
-                    // $scope.allFights = data;
+                    // console.log(data, "This is angalar fingFightObjectById method");
+
+                    $scope.thisFight = data;
+
+                    // console.log($scope.thisFight.challengerBalance);
+
+                    $scope.play();
+
+
 
                 }
             }).error(function (error) {
             alert("something went wrong!!");
 
         });//end http.get
-        // $http.get('http://localhost:8080/api/fight/getAllFightStartObjects')
-        //     .success(function (data, status) {
-        //         if(status = 200){
-        //             console.log(data, "This is angalar fights controller");
-        //             $scope.allFights = data;
-        //
-        //         }
-        //     }).error(function (error) {
-        //     alert("something went wrong!!");
-        //
-        // });//end http.get
-    }//end function
 
+    }//end function
     $scope.init();
+
+    $scope.getPercentLeverage = function(challLev,oppLev){
+                if(challLev==400){
+                    $scope.currMarginPercent = .25;
+                }else if(challLev==200){
+                    $scope.currMarginPercent = .50;
+                }else if(challLev==100){
+                    $scope.currMarginPercent = 1.0;
+                }else if(challLev==50){
+                    $scope.currMarginPercent = 2.0;
+                }else if(challLev==33){
+                    $scope.currMarginPercent = 3.0;
+                }else if(challLev==20){
+                    $scope.currMarginPercent = 5.0;
+                }
+
+                if(oppLev==400){
+                    $scope.askedMarginPercent = .25;
+                }else if(oppLev==200){
+                    $scope.askedMarginPercent = .50;
+                }else if(oppLev==100){
+                    $scope.askedMarginPercent = 1.0;
+                }else if(oppLev==50){
+                    $scope.askedMarginPercent = 2.0;
+                }else if(oppLev==33){
+                    $scope.askedMarginPercent = 3.0;
+                }else if(oppLev==20){
+                    $scope.askedMarginPercent = 5.0;
+                }
+    }
+
+    $scope.play = function(){
+        console.log($scope.thisFight);
+        // $scope.currUser = $cookieStore.get('userCookie');
+
+        $scope.mMargin = $scope.thisFight.challengerStake/2;
+
+        $scope.currAvailable = $scope.thisFight.challengerBalance - $scope.thisFight.challengerStake ;
+        $scope.oppAvailable = $scope.thisFight.opponentBalance - $scope.thisFight.challengerStake ;
+
+
+        $scope.getPercentLeverage($scope.thisFight.challengerLeverage, $scope.thisFight.opponentLeverage);
+
+
+
+
+
+    }
+
+
+
+    // $http.get('http://localhost:8080/api/fight/getAllFightStartObjects')
+    //     .success(function (data, status) {
+    //         if(status = 200){
+    //             console.log(data, "This is angalar fights controller");
+    //             $scope.allFights = data;
+    //
+    //         }
+    //     }).error(function (error) {
+    //     alert("something went wrong!!");
+    //
+    // });//end http.get
+
 
     // $scope.currUser = $cookieStore.get('userCookie');
     // $scope.opponentID = $stateParams.paramm;
