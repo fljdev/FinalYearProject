@@ -2,6 +2,7 @@ package com.example.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,8 +15,9 @@ public class FightFactory {
     @Column(name="time")
     private Timestamp timestamp;
 
-    @ManyToMany
-    private Set<CurrencyPair> pairs;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @Column(name="pairs")
+    private List<CurrencyPair> pairs;
 
     @Column(name="challID")
     private int challengerID;
@@ -51,7 +53,7 @@ public class FightFactory {
 
     }
 
-    public FightFactory(Timestamp timestamp, Set<CurrencyPair> pairs, int challengerID,
+    public FightFactory(Timestamp timestamp, List<CurrencyPair> pairs, int challengerID,
                         String challengerDirection, double challengerStake, double challengerLeverage,
                         double challengerBalance, int opponentID, String opponentDirection, double opponentStake,
                         double opponentLeverage, double opponentBalance) {
@@ -77,11 +79,11 @@ public class FightFactory {
         this.timestamp = timestamp;
     }
 
-    public Set<CurrencyPair> getPairs() {
+    public List<CurrencyPair> getPairs() {
         return pairs;
     }
 
-    public void setPairs(Set<CurrencyPair> pairs) {
+    public void setPairs(List<CurrencyPair> pairs) {
         this.pairs = pairs;
     }
 

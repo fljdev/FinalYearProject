@@ -29,6 +29,8 @@ public class FightStartService implements IFightStartService {
         fightStartDAO.save(fightStart);
     }
 
+
+
     @Override
     public ArrayList<FightStart> getAllFights() {
         ArrayList<FightStart> allFights = new ArrayList<FightStart>();

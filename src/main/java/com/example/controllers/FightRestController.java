@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -62,7 +63,6 @@ public class FightRestController {
         for(FightStart fs : fightStarts){
             if(fs.getId()== i ){
 
-                System.out.println("------------- "+fs.toString()+"---------------------");
                 return fs;
             }
         }
@@ -82,6 +82,7 @@ public class FightRestController {
         String cBal = jsonObject.getString("cBalance");
         double cBalance = Double.parseDouble(cBal);
         String cPair = jsonObject.getString("cPair");
+        System.out.println("dddddddddd_ cPair came in as "+cPair);
         String cDir = jsonObject.getString("currUserDirection");
         String cStake = jsonObject.getString("currUserStake");
         String cLev = jsonObject.getString("currUserLeverage");
@@ -89,8 +90,12 @@ public class FightRestController {
         String opponentId = jsonObject.getString("oId");
         int oppId = Integer.parseInt(opponentId);
         String oBal = jsonObject.getString("oBalance");
+
         double oBalance = Double.parseDouble(oBal);
         String oPair = jsonObject.getString("oPair");
+
+        System.out.println("dddddddddd_ oPair came in as "+oPair);
+
         String oDir = jsonObject.getString("askedUserDirection");
 //        String oStake = jsonObject.getString("askedUserStake");
         String oLev = jsonObject.getString("askedUserLeverage");
@@ -98,25 +103,27 @@ public class FightRestController {
 
         ArrayList<CurrencyPair> pairs = new ArrayList<>();
         pairs=allPairs();
-        CurrencyPair challengerPair = new CurrencyPair();
-        CurrencyPair opponentPair = new CurrencyPair();
+
+        List<CurrencyPair> cPairs = new ArrayList<CurrencyPair>();
+//        CurrencyPair challengerPair = new CurrencyPair();
+//        CurrencyPair opponentPair = new CurrencyPair();
         for(CurrencyPair cp : pairs){
             if(cp.getSymbols().equalsIgnoreCase(cPair)){
-                challengerPair=cp;
+                CurrencyPair challengerPair=cp;
+                System.out.println("\n\n\n\n -----------------------------------koasdasdf"+cp.toString());
                 iCurrencyPairService.saveCurrencyPair(challengerPair);
-                System.out.println("saved challenger pair "+cp.getSymbols());
+                cPairs.add(cp);
 
             }
             if(cp.getSymbols().equalsIgnoreCase(oPair)){
-                opponentPair=cp;
+                CurrencyPair opponentPair=cp;
+                System.out.println("\n\n\n\n -----------------------------------koasdasdf"+cp.toString());
                 iCurrencyPairService.saveCurrencyPair(opponentPair);
-                System.out.println("saved opponent pair "+cp.getSymbols());
+                cPairs.add(cp);
+
             }
         }
-        ArrayList<CurrencyPair>temp = new ArrayList<>();
-        temp.add(challengerPair);
-        temp.add(opponentPair);
-        Set<CurrencyPair> set = new HashSet<CurrencyPair>(temp);
+
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
@@ -127,7 +134,7 @@ public class FightRestController {
 
         aFightStart.setChallengerBalance(cBalance);
         aFightStart.setChallengerID(challId);
-        aFightStart.setPairs(set);
+        aFightStart.setPairs(cPairs);
         aFightStart.setChallengerDirection(cDir);
         aFightStart.setChallengerStake(Double.parseDouble(cStake));
         aFightStart.setChallengerLeverage(Double.parseDouble(cLev));
@@ -138,7 +145,6 @@ public class FightRestController {
         aFightStart.setOpponentStake(Double.parseDouble(cStake));
         aFightStart.setOpponentLeverage(Double.parseDouble(oLev));
 
-        System.out.println(aFightStart.toString());
         iFightStartService.saveFightStart(aFightStart);
 
 

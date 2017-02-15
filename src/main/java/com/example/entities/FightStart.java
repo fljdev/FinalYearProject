@@ -1,6 +1,7 @@
 package com.example.entities;
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,7 +19,7 @@ public class FightStart extends FightFactory {
 
     }
 
-    public FightStart(Timestamp timestamp, Set<CurrencyPair> pairs, int challengerID,
+    public FightStart(Timestamp timestamp, List<CurrencyPair> pairs, int challengerID,
                       String challengerDirection, double challengerStake, double challengerLeverage,
                       double challengerBalance, int opponentID, String opponentDirection,
                       double opponentStake, double opponentLeverage, double opponentBalance) {

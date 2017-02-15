@@ -2,6 +2,7 @@ package com.example.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 /**
  * Created by admin on 09/02/2017.
@@ -28,7 +29,7 @@ public class FightEnd extends FightFactory{
 
 
     public FightEnd(int winnerID, int loserID, double winAmount, Timestamp timestamp,
-                    Set<CurrencyPair> pairs, int challengerID, String challengerDirection,
+                    List<CurrencyPair> pairs, int challengerID, String challengerDirection,
                     double challengerStake, double challengerLeverage, double challengerBalance,
                     int opponentID, String opponentDirection, double opponentStake, double opponentLeverage, double opponentBalance) {
 
