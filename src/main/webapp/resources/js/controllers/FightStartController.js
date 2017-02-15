@@ -1,10 +1,9 @@
 angular.module('myApp.FightStartController',[]).
 controller('FightStartController', function($scope,$cookieStore,$http,$state,$stateParams,$timeout){
 
-    // console.log("fightStartController got the recieved the id ",$stateParams.paramm);
-
     $scope.thisFight = {};
-
+    $scope.currUser = $cookieStore.get('userCookie');
+    $scope.opponent = {};
 
     /**
      * this is the id of the FightStart object that will be retrieved from the DB
@@ -15,24 +14,16 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
         $http.post('http://localhost:8080/api/fight/findFightObjectById',fightStartID)
             .success(function (data, status) {
                 if(status = 200){
-                    // console.log(data, "This is angalar fingFightObjectById method");
-
                     $scope.thisFight = data;
-
-                    // console.log($scope.thisFight.challengerBalance);
-
+                    console.log($scope.thisFight.opponentID);
                     $scope.play();
-
-
-
                 }
             }).error(function (error) {
             alert("something went wrong!!");
-
         });//end http.get
-
     }//end function
     $scope.init();
+
 
     $scope.getPercentLeverage = function(challLev,oppLev){
                 if(challLev==400){
@@ -66,21 +57,34 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
 
     $scope.play = function(){
         console.log($scope.thisFight);
-        // $scope.currUser = $cookieStore.get('userCookie');
+        $scope.currUsername = $scope.currUser.username;
+
+        $http.post('http://localhost:8080/api/user/findById',$scope.thisFight.opponentID)
+            .success(function (data, status) {
+                if(status = 200){
+                    console.log(data.username);
+                    $scope.oppUsername = data.username;
+                }
+            }).error(function (error) {
+            alert("something went wrong in find by id!!");
+        });//end http.get
+
 
         $scope.mMargin = $scope.thisFight.challengerStake/2;
 
-        $scope.currAvailable = $scope.thisFight.challengerBalance - $scope.thisFight.challengerStake ;
-        $scope.oppAvailable = $scope.thisFight.opponentBalance - $scope.thisFight.challengerStake ;
-
-
         $scope.getPercentLeverage($scope.thisFight.challengerLeverage, $scope.thisFight.opponentLeverage);
 
+        $scope.currAvailable = $scope.thisFight.challengerBalance - $scope.thisFight.challengerStake ;
+        $scope.currPair = $scope.thisFight.pairs[0].symbols;
+        $scope.currDir = $scope.thisFight.challengerDirection;
+        $scope.currValue= "work out";
 
+        $scope.oppAvailable = $scope.thisFight.opponentBalance - $scope.thisFight.challengerStake ;
+        $scope.oppPair = $scope.thisFight.pairs[1].symbols;
+        $scope.oppDir = $scope.thisFight.opponentDirection;
+        $scope.oppValue= "work out";
 
-
-
-    }
+    }//end play
 
 
 
