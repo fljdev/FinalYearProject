@@ -40,26 +40,26 @@
     <tbody>
     <tr>
         <td>{{currUser.username}}</td>
-        <td>{{currAvailable}}</td>
-        <td>equity</td>//balance + stake + p/l
+        <td>{{cA}}</td>
+        <td>{{currEquity}}</td>//balance + stake + p/l
         <td>{{mMargin}}</td>
         <td>{{currMarginPercent}}%</td>
         <td>{{currPair}}</td>
         <td>{{currDir}}</td>
-        <td>{{currValue}}</td>
-        <td>$</td>
+        <td>{{currUserCurrentPos}}</td>
+        <td>${{currPL}}</td>
 
     </tr>
     <tr>
         <td>{{oppUsername}}</td>
-        <td>{{oppAvailable}}</td>
-        <td>equity</td>//balance + stake + p/l
+        <td>{{oA}}</td>
+        <td>{{oppEquity}}</td>//balance + stake + p/l
         <td>{{mMargin}}</td>
         <td>{{askedMarginPercent}}%</td>
         <td>{{oppPair}}</td>
         <td>{{oppDir}}</td>
-        <td>{{oppValue}}</td>
-        <td>$</td>
+        <td>{{opponentCurrentPos}}</td>
+        <td>${{oppPL}}</td>
     </tr>
     <tr><th colspan="9">Game Time {{ counter}}</th> </tr>
     </tbody>

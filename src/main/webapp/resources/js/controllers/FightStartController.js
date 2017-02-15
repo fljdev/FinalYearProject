@@ -70,75 +70,68 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
         });//end http.get
 
 
+        /**
+         * This section is the static variables, they will not change as the game progresses
+         * @type {number}
+         */
         $scope.mMargin = $scope.thisFight.challengerStake/2;
 
         $scope.getPercentLeverage($scope.thisFight.challengerLeverage, $scope.thisFight.opponentLeverage);
 
-        $scope.currAvailable = $scope.thisFight.challengerBalance - $scope.thisFight.challengerStake ;
         $scope.currPair = $scope.thisFight.pairs[0].symbols;
         $scope.currDir = $scope.thisFight.challengerDirection;
-        $scope.currValue= "work out";
 
-        $scope.oppAvailable = $scope.thisFight.opponentBalance - $scope.thisFight.challengerStake ;
         $scope.oppPair = $scope.thisFight.pairs[1].symbols;
         $scope.oppDir = $scope.thisFight.opponentDirection;
-        $scope.oppValue= "work out";
+
+
+
+
+        //Stake is shared between both players (they must play for the same amount
+        $scope.stake = $scope.thisFight.challengerStake;
+
+        $scope.currUserCurrentPos = $scope.stake * $scope.thisFight.challengerLeverage * $scope.thisFight.pairs[0].ask;
+        $scope.currUserSellValue =  $scope.stake * $scope.thisFight.challengerLeverage * $scope.thisFight.pairs[0].bid;
+        $scope.currPL =  ($scope.currUserSellValue-$scope.currUserCurrentPos);
+        $scope.currAvailable = ($scope.thisFight.challengerBalance - $scope.thisFight.challengerStake);
+        $scope.cA = ($scope.currAvailable + $scope.currPL);
+        $scope.currEquity = ($scope.currPL + $scope.cA + $scope.thisFight.challengerStake);
+
+        $scope.currEquity = $scope.currEquity.toFixed(2);
+        $scope.cA = ($scope.cA).toFixed(2);
+        $scope.currPL = $scope.currPL.toFixed(2);
+        $scope.currAvailable = $scope.currAvailable.toFixed(2);
+
+
+
+
+
+        $scope.opponentCurrentPos = $scope.stake * $scope.thisFight.opponentLeverage * $scope.thisFight.pairs[1].ask;
+        $scope.opponentSellValue =  $scope.stake * $scope.thisFight.opponentLeverage * $scope.thisFight.pairs[1].bid;
+        $scope.oppPL = ($scope.opponentSellValue - $scope.opponentCurrentPos);
+        $scope.oppAvailable = $scope.thisFight.opponentBalance - $scope.thisFight.challengerStake ;
+        $scope.oA = ($scope.oppAvailable + $scope.oppPL);
+        $scope.oppEquity = ($scope.oppPL + $scope.oA + $scope.thisFight.challengerStake);
+
+        $scope.oppEquity = $scope.oppEquity.toFixed(2);
+        $scope.oA = ($scope.oppAvailable + $scope.oppPL).toFixed(2);
+        $scope.oppPL = $scope.oppPL.toFixed(2);
+        $scope.oppAvailable = $scope.oppAvailable.toFixed(2);
+
+
+
+
+
+
+
 
     }//end play
 
 
 
-    // $http.get('http://localhost:8080/api/fight/getAllFightStartObjects')
-    //     .success(function (data, status) {
-    //         if(status = 200){
-    //             console.log(data, "This is angalar fights controller");
-    //             $scope.allFights = data;
-    //
-    //         }
-    //     }).error(function (error) {
-    //     alert("something went wrong!!");
-    //
-    // });//end http.get
 
 
-    // $scope.currUser = $cookieStore.get('userCookie');
-    // $scope.opponentID = $stateParams.paramm;
-    // alert($scope.gameParamsObj.direction);
-    //
-    //
-    //
-    //
-    // $scope.play = function(){
-    //     alert("got into the play function in fightstart controller");
-    //
-    //
-    //     $scope.gameParamsObj.cId = $scope.currUser.id +"";
-    //     $scope.gameParamsObj.oId = $scope.opponentID;
-    //
-    //
-    //     $scope.gameParamsObj.cPair=$scope.currUserPair.symbols;
-    //     $scope.gameParamsObj.oPair=$scope.askedUserPair.symbols;
-    //
-    //
-    //     $http.post('http://localhost:8080/api/fight/getFightGameObject', JSON.stringify($scope.gameParamsObj))
-    //         .success(function (data, status) {
-    //             if(status = 200){
-    //
-    //                 // $scope.register = data;
-    //                 console.log("worked");
-    //
-    //
-    //                 // $state.go('home');
-    //                 // $cookieStore.put('userCookie',$scope.register);
-    //
-    //
-    //             }
-    //         }).error(function (error) {
-    //         alert("something went wrong!!");
-    //     });
-    // }
-    // $scope.play();
-    //
+
     //
     //
     //
