@@ -82,7 +82,6 @@ public class FightRestController {
         String cBal = jsonObject.getString("cBalance");
         double cBalance = Double.parseDouble(cBal);
         String cPair = jsonObject.getString("cPair");
-        System.out.println("dddddddddd_ cPair came in as "+cPair);
         String cDir = jsonObject.getString("currUserDirection");
         String cStake = jsonObject.getString("currUserStake");
         String cLev = jsonObject.getString("currUserLeverage");
@@ -94,7 +93,6 @@ public class FightRestController {
         double oBalance = Double.parseDouble(oBal);
         String oPair = jsonObject.getString("oPair");
 
-        System.out.println("dddddddddd_ oPair came in as "+oPair);
 
         String oDir = jsonObject.getString("askedUserDirection");
 //        String oStake = jsonObject.getString("askedUserStake");
@@ -110,17 +108,13 @@ public class FightRestController {
         for(CurrencyPair cp : pairs){
             if(cp.getSymbols().equalsIgnoreCase(cPair)){
                 CurrencyPair challengerPair=cp;
-                System.out.println("\n\n\n\n -----------------------------------koasdasdf"+cp.toString());
                 iCurrencyPairService.saveCurrencyPair(challengerPair);
                 cPairs.add(cp);
-
             }
             if(cp.getSymbols().equalsIgnoreCase(oPair)){
                 CurrencyPair opponentPair=cp;
-                System.out.println("\n\n\n\n -----------------------------------koasdasdf"+cp.toString());
                 iCurrencyPairService.saveCurrencyPair(opponentPair);
                 cPairs.add(cp);
-
             }
         }
 
@@ -228,4 +222,20 @@ public class FightRestController {
 
         return pairs;
     }
+
+    @RequestMapping(value ="/getThisPair", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public CurrencyPair thisPair(@RequestBody String symbols)throws Exception{
+        CurrencyPair thisPair = new CurrencyPair();
+        ArrayList<CurrencyPair> pairs = allPairs();
+
+        for(CurrencyPair cp : pairs){
+            if(cp.getSymbols().equalsIgnoreCase(symbols)){
+                thisPair = cp;
+            }
+        }
+        return thisPair;
+    }
+
+
 }

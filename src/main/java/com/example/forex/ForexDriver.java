@@ -79,7 +79,6 @@ public class ForexDriver {
 
         for (Element aRow : rows) {
 
-//            System.out.println("a row looks like "+aRow);
             String[] splitArray = null;
             splitArray = aRow.text().split("\\s+");
             parseResponse(splitArray);
@@ -162,7 +161,6 @@ public class ForexDriver {
 
             aPair.setTimeStampString(sdf.format(timestamp).toString());
 
-            System.out.println(aPair.toString());
 
             currencyPairs.add(aPair);
         }
@@ -265,9 +263,7 @@ public class ForexDriver {
             cps.setUSDSEK(aPair);
         }
 
-        System.out.println(cps.toString());
         currencyPairSets.add(cps);
-        System.out.println("CurrencyPairSet object arraylist size : "+currencyPairSets.size());
     }
 
 public void createBackupFiles()throws Exception{
