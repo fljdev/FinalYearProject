@@ -4,18 +4,18 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
     $scope.thisFight = {};
     $scope.currUser = $cookieStore.get('userCookie');
     $scope.opponent = {};
-    $scope.counter = 60;
+    $scope.counter = 300;
 
     /**
      * this is the id of the FightStart object that will be retrieved from the DB
      */
     var fightStartID = $stateParams.paramm;
-
     $scope.init = function(){
         $http.post('http://localhost:8080/api/fight/findFightObjectById',fightStartID)
             .success(function (data, status) {
                 if(status = 200){
                     $scope.thisFight = data;
+                    $scope.setConstants();
                     $scope.play();
                 }
             }).error(function (error) {
@@ -54,7 +54,7 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
                 }
     }
 
-    $scope.play = function(){
+    $scope.setConstants = function(){
 
         $scope.currUsername = $scope.currUser.username;
 
@@ -67,6 +67,37 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
             alert("something went wrong in find by id!!");
         });//end http.get
 
+        /**
+         * both players chosen leverages will be passed to a function which will return the % leverage of their position
+         */
+        $scope.getPercentLeverage($scope.thisFight.challengerLeverage, $scope.thisFight.opponentLeverage);
+
+        /**
+         * Stake is shared between both players (they must play for the same amount
+         */
+        $scope.stake = $scope.thisFight.challengerStake;
+
+        /**
+         * This section is the static variables, they will not change as the game progresses
+         */
+        $scope.mMargin = $scope.thisFight.challengerStake/2;
+        $scope.currPair = $scope.thisFight.pairs[0].symbols;
+        $scope.currDir = $scope.thisFight.challengerDirection;
+        $scope.oppPair = $scope.thisFight.pairs[1].symbols;
+        $scope.oppDir = $scope.thisFight.opponentDirection;
+
+        $scope.initialCurrAsk = $scope.thisFight.pairs[0].ask;
+        $scope.initialCurrBid = $scope.thisFight.pairs[0].bid;
+        $scope.initialCurrLongPosSize = $scope.stake * $scope.thisFight.challengerLeverage * $scope.initialCurrAsk;
+
+        $scope.initialOppAsk = $scope.thisFight.pairs[1].ask;
+        $scope.initialOppBid = $scope.thisFight.pairs[1].bid;
+        $scope.initialOppLongPosSize = $scope.stake * $scope.thisFight.challengerLeverage * $scope.initialOppAsk;
+
+
+    }
+
+    $scope.play = function(){
 
         $scope.onTimeout = function(){
             $scope.counter--;
@@ -82,57 +113,50 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
         }//end onTimeout
         var mytimeout = $timeout($scope.onTimeout,1000);
 
-        console.log("edit Values called inside play function");
         $scope.editValues();
     }//end play
 
+
+    /**
+     * editValues wil get all the values of the four fields that change
+     * PosSize, Equity, Available, P&L
+     */
     $scope.editValues = function(){
-        /**
-         * This section is the static variables, they will not change as the game progresses
-         */
-        $scope.mMargin = $scope.thisFight.challengerStake/2;
-        $scope.currPair = $scope.thisFight.pairs[0].symbols;
-        $scope.currDir = $scope.thisFight.challengerDirection;
-        $scope.oppPair = $scope.thisFight.pairs[1].symbols;
-        $scope.oppDir = $scope.thisFight.opponentDirection;
-
-        /**
-         * both players chosen leverages will be passed to a function which will return the % leverage of their position
-         */
-        $scope.getPercentLeverage($scope.thisFight.challengerLeverage, $scope.thisFight.opponentLeverage);
-
-        /**
-         * Stake is shared between both players (they must play for the same amount
-         */
-        $scope.stake = $scope.thisFight.challengerStake;
 
         /**
          * Challenger Variables
          */
 
         $scope.currAsk = $scope.thisFight.pairs[0].ask;
-        console.log("curr ask is now ",$scope.currAsk);
         $scope.currBid = $scope.thisFight.pairs[0].bid;
-        console.log("curr bid is now ",$scope.currBid);
 
         $scope.currUserCurrentPos = $scope.stake * $scope.thisFight.challengerLeverage * $scope.currAsk;
         $scope.currUserSellValue =  $scope.stake * $scope.thisFight.challengerLeverage * $scope.currBid;
-        $scope.currPL =  ($scope.currUserSellValue-$scope.currUserCurrentPos);
+        // $scope.currPL =  ($scope.currUserSellValue-$scope.currUserCurrentPos);
+        $scope.currPL =  ($scope.currUserSellValue-$scope.initialCurrLongPosSize);
         $scope.currBalMinusStake = ($scope.thisFight.challengerBalance - $scope.thisFight.challengerStake);
         $scope.currAvailable = ($scope.currBalMinusStake + $scope.currPL);
         $scope.currEquity = ($scope.currPL + $scope.currAvailable + $scope.thisFight.challengerStake);
 
+        //format the 4 variable values to 2 decimal places
         $scope.currUserCurrentPosView = $scope.currUserCurrentPos.toFixed(2);
         $scope.currPLView = $scope.currPL.toFixed(2);
         $scope.currAvailableView =  $scope.currAvailable.toFixed(2);
         $scope.currEquityView = $scope.currEquity.toFixed(2);
 
+
+
+
         /**
          * Opponend Variables
          */
-        $scope.opponentCurrentPos = $scope.stake * $scope.thisFight.opponentLeverage * $scope.thisFight.pairs[1].ask;
-        $scope.opponentSellValue =  $scope.stake * $scope.thisFight.opponentLeverage * $scope.thisFight.pairs[1].bid;
-        $scope.oppPL = ($scope.opponentSellValue - $scope.opponentCurrentPos);
+
+        $scope.oppAsk = $scope.thisFight.pairs[1].ask;
+        $scope.oppBid = $scope.thisFight.pairs[1].bid;
+
+        $scope.opponentCurrentPos = $scope.stake * $scope.thisFight.opponentLeverage * $scope.oppAsk;
+        $scope.opponentSellValue =  $scope.stake * $scope.thisFight.opponentLeverage * $scope.oppBid;
+        $scope.oppPL = ($scope.opponentSellValue - $scope.initialOppLongPosSize);
         $scope.oppBalMinusStake = $scope.thisFight.opponentBalance - $scope.thisFight.challengerStake ;
         $scope.oppAvailable = ($scope.oppBalMinusStake + $scope.oppPL);
         $scope.oppEquity = ($scope.oppPL + $scope.oppAvailable + $scope.thisFight.challengerStake);
@@ -149,7 +173,6 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
             .success(function (data, status) {
                 if(status = 200){
                     $scope.thisFight.pairs[0] = data;
-                    console.log("editValues called inside updatePairs function by  currentUser");
                     $scope.editValues();
                 }
             }).error(function (error) {
@@ -160,14 +183,13 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
          * millisecondsToWait ensures no concurrency error
          * @type {number}
          */
-        var millisecondsToWait = 500;
+        var millisecondsToWait = 20;
         setTimeout(function() {
 
             $http.post('http://localhost:8080/api/fight/getThisPair',$scope.thisFight.pairs[1].symbols)
                 .success(function (data, status) {
                     if(status = 200){
                         $scope.thisFight.pairs[1] = data;
-                        console.log("editValues called inside updatePairs function by opponent");
                     }
                 }).error(function (error) {
                 alert("something went wrong in pairs!!");
