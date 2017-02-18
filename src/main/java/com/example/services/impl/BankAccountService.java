@@ -26,6 +26,7 @@ public class BankAccountService implements IBankAccountService {
 
     @Override
     public void register(BankAccount account) {
+
         bankAccountDAO.save(account);
     }
 

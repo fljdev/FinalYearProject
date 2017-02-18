@@ -81,8 +81,10 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
          * This section is the static variables, they will not change as the game progresses
          */
         $scope.mMargin = $scope.thisFight.challengerStake/2;
+
         $scope.currPair = $scope.thisFight.pairs[0].symbols;
         $scope.currDir = $scope.thisFight.challengerDirection;
+
         $scope.oppPair = $scope.thisFight.pairs[1].symbols;
         $scope.oppDir = $scope.thisFight.opponentDirection;
 
@@ -132,11 +134,13 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
 
         $scope.currUserCurrentPos = $scope.stake * $scope.thisFight.challengerLeverage * $scope.currAsk;
         $scope.currUserSellValue =  $scope.stake * $scope.thisFight.challengerLeverage * $scope.currBid;
-        // $scope.currPL =  ($scope.currUserSellValue-$scope.currUserCurrentPos);
-        $scope.currPL =  ($scope.currUserSellValue-$scope.initialCurrLongPosSize);
+
+        $scope.currPL =  ($scope.currUserSellValue- $scope.initialCurrLongPosSize);
         $scope.currBalMinusStake = ($scope.thisFight.challengerBalance - $scope.thisFight.challengerStake);
         $scope.currAvailable = ($scope.currBalMinusStake + $scope.currPL);
         $scope.currEquity = ($scope.currPL + $scope.currAvailable + $scope.thisFight.challengerStake);
+
+
 
         //format the 4 variable values to 2 decimal places
         $scope.currUserCurrentPosView = $scope.currUserCurrentPos.toFixed(2);
@@ -183,7 +187,7 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
          * millisecondsToWait ensures no concurrency error
          * @type {number}
          */
-        var millisecondsToWait = 20;
+        var millisecondsToWait = 1000;
         setTimeout(function() {
 
             $http.post('http://localhost:8080/api/fight/getThisPair',$scope.thisFight.pairs[1].symbols)

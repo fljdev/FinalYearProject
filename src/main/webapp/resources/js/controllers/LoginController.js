@@ -1,6 +1,5 @@
 angular.module('myApp.LoginController',[]).
-controller('LoginController',function($scope, $http, $state,$cookieStore, $rootScope){
-        $scope.login ={};
+controller('LoginController',function($scope, $http, $state,$cookieStore){
 
     $scope.submit=function(){
         console.log($scope.login);
@@ -9,17 +8,10 @@ controller('LoginController',function($scope, $http, $state,$cookieStore, $rootS
             .success(function (data, status) {
                 if(status = 200){
 
-
-
                     $scope.login = data;
-                    console.log($scope.login);
-
                     $state.go('home');
 
                     $cookieStore.put('userCookie',$scope.login);
-
-
-
                 }
             }).error(function (error) {
                 alert("something went wrong!!");
