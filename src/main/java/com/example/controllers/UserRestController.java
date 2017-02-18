@@ -14,21 +14,8 @@ import java.util.ArrayList;
 @RequestMapping("/api/user")
 public class UserRestController {
 
-
     IUserService iUserService;
     IBankAccountService iBankAccountService;
-//    IFightService iFightService;
-//    ICurrencyPairService iCurrencyPairService;
-
-//    @Autowired
-//    public void setiCurrencyPairService(ICurrencyPairService iCurrencyPairService){
-//        this.iCurrencyPairService = iCurrencyPairService;
-//    }
-//
-//    @Autowired
-//    public void setiFightService(IFightService iFightService){
-//        this.iFightService = iFightService;
-//    }
 
     @Autowired
     public void setiUserService(IUserService iUserService) {
@@ -44,9 +31,7 @@ public class UserRestController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
     public User register(@RequestBody String jsonRegister){
-        System.out.println("got in here");
 
-        System.out.println("hhhhhhhhhhhhhh");
 
         JSONObject jsonObject = new JSONObject(jsonRegister);
         String firstName = jsonObject.getString("firstName");
@@ -172,22 +157,6 @@ public class UserRestController {
         return null;
     }
 
-
-//    @RequestMapping(value ="/pairs", method = RequestMethod.GET, produces = "application/json")
-//    @ResponseBody
-//    public ArrayList<CurrencyPair> allPairs()throws Exception{
-//        ForexDriver tester = new ForexDriver();
-//
-//        tester.currencyPairs.clear();
-//
-//        tester.makeCurrencyPairs(tester.rawResponseList);
-//        tester.rawResponseList.clear();
-//
-//        ArrayList<CurrencyPair>pairs= new ArrayList<CurrencyPair>();
-//        pairs = tester.getCurrencyPairs();
-//
-//        return pairs;
-//    }
 
 
 
