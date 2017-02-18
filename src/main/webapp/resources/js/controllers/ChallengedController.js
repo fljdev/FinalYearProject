@@ -7,7 +7,6 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
     $scope.currUser = $cookieStore.get('userCookie');
     $scope.askedUserID = $stateParams.param;
-    console.log("challengd controller gets ",$scope.askedUserID);
 
     $scope.pairs;
     $scope.initPairs = function(){
