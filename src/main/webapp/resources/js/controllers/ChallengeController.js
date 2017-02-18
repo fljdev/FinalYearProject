@@ -4,15 +4,15 @@ controller('ChallengeController', function($scope,$cookieStore,$http,$state,$sta
 
 
     $scope.currUser = $cookieStore.get('userCookie');
+    $scope.askedUserID = $stateParams.param;
 
     $scope.init = function(){
-        $scope.askedUserID = $stateParams.param;
         $http.post('http://localhost:8080/api/user/findById', $scope.askedUserID)
             .success(function (data, status) {
                 if(status = 200){
 
-                    $scope.askedUserX = data;
-                    console.log("1",status,$scope.askedUserX);
+                    $scope.askedUser = data;
+                    console.log("1",status,$scope.askedUser);
 
                     $scope.pp();
 
@@ -27,7 +27,7 @@ controller('ChallengeController', function($scope,$cookieStore,$http,$state,$sta
 
 
     $scope.pp = function(){
-        console.log("2 ",$scope.askedUserX);
+        console.log("2 ",$scope.askedUser);
 
 
         console.log("3 ",$scope.currUser);

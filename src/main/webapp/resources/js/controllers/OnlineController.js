@@ -3,7 +3,6 @@ angular.module('myApp.OnlineController',[]).
 
     $scope.challenge = function(x){
         var obj=x
-        console.log("online controller sends ",obj.id);
         $state.go('challenge',{param:obj.id});
     }
 
