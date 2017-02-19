@@ -10,7 +10,7 @@
 
 <table align="center">
     <thead>
-    <tr><th colspan="9">Hi <b>{{currUser.username}}</b> Challenges you are involved in are found here</th> </tr>
+    <tr><th colspan="9">Hi <b>{{currUser.username}}</b> here's the challenges you are involved in are found here</th> </tr>
     </thead>
 </table>
 
@@ -28,6 +28,7 @@
         <th>ChallengerID</th>
         <th>Opponent ID</th>
         <th>Status</th>
+        <th>Option</th>
     </tr>
     </thead>
 
@@ -38,6 +39,8 @@
         <td>{{x.opponentId}}</td>
         <td ng-if="x.open">{{"Open"}}</td>
         <td ng-if="x.open ==  false">{{"Completed"}}</td>
+        <td><button ng-click="withdraw()" class="btn btn-danger">Withdraw Challenge</button></td>
+
 
     </tr>
     </tbody>
@@ -58,6 +61,7 @@
         <th>ChallengerID</th>
         <th>Opponent ID</th>
         <th>Status</th>
+        <th>Option</th>
     </tr>
     </thead>
 
@@ -68,6 +72,8 @@
         <td>{{x.opponentId}}</td>
         <td ng-if="x.open">{{"Open"}}</td>
         <td ng-if="x.open ==  false">{{"Completed"}}</td>
+        <td><button ng-click="accept()" class="btn btn-success">Accept Challenge</button></td>
+
 
     </tr>
     </tbody>
