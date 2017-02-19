@@ -1,7 +1,6 @@
 package com.example.controllers;
 
 import com.example.entities.Challenge;
-import com.example.entities.User;
 import com.example.services.IChallengeService;
 import com.example.services.IUserService;
 import org.json.JSONObject;
@@ -45,11 +44,22 @@ public class ChallengeRestContoller {
         iChallengeService.saveChallenge(thisChallenge);
     }//end saveThidChallenge
 
-    @RequestMapping(value ="/challengesSent", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value ="/challengesSent", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ArrayList<Challenge> getAllChallenges(){
+    public ArrayList<Challenge> getAllChallenges(@RequestBody String id){
+        System.out.println("id came into challengesSent as "+id);
+        int idNo =Integer.parseInt(id);
         ArrayList<Challenge>challenges = new ArrayList();
         challenges=(ArrayList<Challenge>) iChallengeService.getAllChallenges();
-        return challenges;
+
+        ArrayList<Challenge>sentChallenges = new ArrayList<>();
+
+        for(Challenge c : challenges){
+            if(c.getChallengerId()==idNo){
+                sentChallenges.add(c);
+            }
+        }
+
+        return sentChallenges;
     }
 }
