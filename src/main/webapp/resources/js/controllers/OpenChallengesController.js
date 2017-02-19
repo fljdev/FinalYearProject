@@ -3,14 +3,11 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
 
     $scope.currUser = $cookieStore.get('userCookie');
 
-    $scope.openView = "this is openChallengesView";
-
     $scope.init = function(){
-        $http.get('http://localhost:8080/api/challenge/challengesSent')
+        $http.post('http://localhost:8080/api/challenge/challengesSent',$scope.currUser.id)
             .success(function (data, status) {
                 if(status = 200){
                     $scope.challenges = data;
-                    console.log($scope.challenges);
                 }
             }).error(function (error) {
             alert("something went wrong in challengesSent !!");
