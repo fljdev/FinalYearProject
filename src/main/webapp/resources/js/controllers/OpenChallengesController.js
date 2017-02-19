@@ -10,6 +10,7 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
             .success(function (data, status) {
                 if(status = 200){
                     $scope.challenges = data;
+                    console.log($scope.challenges);
                 }
             }).error(function (error) {
             alert("something went wrong in challengesSent !!");

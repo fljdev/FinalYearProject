@@ -18,13 +18,15 @@ public class Challenge {
 
     private int challengerId;
     private int opponentId;
+    private boolean open;
 
     public Challenge() {
     }
 
-    public Challenge(int challengerId, int opponentId) {
+    public Challenge(int challengerId, int opponentId, boolean open) {
         this.challengerId = challengerId;
         this.opponentId = opponentId;
+        this.open = open;
     }
 
     public int getId() {
@@ -47,12 +49,21 @@ public class Challenge {
         this.opponentId = opponentId;
     }
 
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
+
     @Override
     public String toString() {
         return "Challenge{" +
                 "id=" + id +
                 ", challengerId=" + challengerId +
                 ", opponentId=" + opponentId +
+                ", open=" + open +
                 '}';
     }
 }

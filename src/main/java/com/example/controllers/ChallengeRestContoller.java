@@ -41,6 +41,7 @@ public class ChallengeRestContoller {
         Challenge thisChallenge = new Challenge();
         thisChallenge.setChallengerId(currID);
         thisChallenge.setOpponentId(oppID);
+        thisChallenge.setOpen(true);
         iChallengeService.saveChallenge(thisChallenge);
     }//end saveThidChallenge
 
