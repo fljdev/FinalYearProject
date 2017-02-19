@@ -44,10 +44,11 @@ public class ChallengeRestContoller {
         iChallengeService.saveChallenge(thisChallenge);
     }//end saveThidChallenge
 
+
     @RequestMapping(value ="/challengesSent", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ArrayList<Challenge> getAllChallenges(@RequestBody String id){
-        System.out.println("id came into challengesSent as "+id);
+    public ArrayList<Challenge> getAllSentChallenges(@RequestBody String id){
+
         int idNo =Integer.parseInt(id);
         ArrayList<Challenge>challenges = new ArrayList();
         challenges=(ArrayList<Challenge>) iChallengeService.getAllChallenges();
@@ -61,5 +62,24 @@ public class ChallengeRestContoller {
         }
 
         return sentChallenges;
+    }
+
+    @RequestMapping(value ="/challengesRecieved", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ArrayList<Challenge> getAllRecievedChallenges(@RequestBody String id){
+
+        int idNo =Integer.parseInt(id);
+        ArrayList<Challenge>challenges = new ArrayList();
+        challenges=(ArrayList<Challenge>) iChallengeService.getAllChallenges();
+
+        ArrayList<Challenge>challengesRecieved = new ArrayList<>();
+
+        for(Challenge c : challenges){
+            if(c.getOpponentId()==idNo){
+                challengesRecieved.add(c);
+            }
+        }
+
+        return challengesRecieved;
     }
 }
