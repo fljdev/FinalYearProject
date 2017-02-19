@@ -24,14 +24,17 @@
         <th>Challenge ID</th>
         <th>ChallengerID</th>
         <th>Opponent ID</th>
+        <th>Status</th>
     </tr>
     </thead>
 
     <tbody>
-    <tr ng-repeat="x in challenges">
+    <tr ng-repeat="x in challenges" >
         <td>{{x.id}}</td>
         <td>{{x.challengerId}}</td>
         <td>{{x.opponentId}}</td>
+        <td ng-if="x.open">{{"Open"}}</td>
+        <td ng-if="x.open ==  false">{{"Completed"}}</td>
         <!--<td><button ng-click="getStats()" class="btn btn-success">Stats</button></td>-->
 
     </tr>
