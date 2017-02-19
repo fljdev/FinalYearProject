@@ -6,10 +6,7 @@ import com.example.services.IChallengeService;
 import com.example.services.IUserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -46,4 +43,12 @@ public class ChallengeRestContoller {
         thisChallenge.setOpponentId(oppID);
         iChallengeService.saveChallenge(thisChallenge);
     }//end saveThidChallenge
+
+    @RequestMapping(value ="/challengesSent", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ArrayList<Challenge> getAllChallenges(){
+        ArrayList<Challenge>challenges = new ArrayList();
+        challenges=(ArrayList<Challenge>) iChallengeService.getAllChallenges();
+        return challenges;
+    }
 }

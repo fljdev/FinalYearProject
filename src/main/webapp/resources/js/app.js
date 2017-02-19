@@ -17,7 +17,8 @@ angular.module('myApp',[
     'myApp.FightStartController',
     'myApp.FightEndController',
     'myApp.LogRegController',
-    'myApp.ChallengeController'
+    'myApp.ChallengeController',
+    'myApp.OpenChallengesController'
 ]).
     config(function ($stateProvider,$urlRouterProvider) {
 
@@ -88,6 +89,11 @@ angular.module('myApp',[
             url: '/challenge/:param',
             templateUrl: "resources/js/views/Challenge.html",
             controller: "ChallengeController"
+        })
+        .state('openChallenges',{
+            url: '/openChallenges',
+            templateUrl: "resources/js/views/OpenChallenges.html",
+            controller: "OpenChallengesController"
         });
 });
 

@@ -35,7 +35,7 @@ controller('ChallengeController', function($scope,$cookieStore,$http,$state,$sta
         $http.post('http://localhost:8080/api/challenge/saveChallenge',JSON.stringify($scope.idArray))
             .success(function (data, status) {
                 if(status = 200){
-
+                    console.log($scope.currUser.username,"vs",$scope.askedUser.username,"Challenge Saved");
                 }
             }).error(function (error) {
             alert("something went wrong in saveChallenge!!");
@@ -43,6 +43,7 @@ controller('ChallengeController', function($scope,$cookieStore,$http,$state,$sta
 
 
     }
+
 
 
 

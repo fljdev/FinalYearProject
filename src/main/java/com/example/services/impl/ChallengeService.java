@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 /**
  * Created by admin on 18/02/2017.
  */
@@ -25,4 +27,16 @@ public class ChallengeService implements IChallengeService{
     public void saveChallenge(Challenge challenge){
         challengeDAO.save(challenge);
     }
+
+
+    @Override
+    public ArrayList<Challenge> getAllChallenges() {
+        ArrayList<Challenge> challenges = new ArrayList<Challenge>();
+        for(Challenge ch : challengeDAO.findAll()){
+            challenges.add(ch);
+        }
+        return challenges;
+    }
+
+
 }
