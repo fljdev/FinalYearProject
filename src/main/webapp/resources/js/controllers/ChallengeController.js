@@ -1,5 +1,5 @@
 angular.module('myApp.ChallengeController',[]).
-controller('ChallengeController', function($scope,$cookieStore,$http,$state,$stateParams){
+controller('ChallengeController', function($scope,$cookieStore,$http,$state,$stateParams,$timeout){
 
 
 
@@ -12,7 +12,8 @@ controller('ChallengeController', function($scope,$cookieStore,$http,$state,$sta
                 if(status = 200){
 
                     $scope.askedUser = data;
-                    console.log("1",status,$scope.askedUser);
+                    console.log("1",$scope.currUser);
+                    console.log("2",status,$scope.askedUser);
 
                     $scope.pp();
 
@@ -27,10 +28,23 @@ controller('ChallengeController', function($scope,$cookieStore,$http,$state,$sta
 
 
     $scope.pp = function(){
-        console.log("2 ",$scope.askedUser);
+        console.log("3 curr Id : ",$scope.currUser.id);
+        console.log("4 asked ID :  ",$scope.askedUser.id);
+
+        $scope.idArray = {};
+        $scope.idArray[0]=$scope.currUser.id;
+        $scope.idArray[1]=$scope.askedUser.id;
+
+        $http.post('http://localhost:8080/api/challenge/saveChallenge',JSON.stringify($scope.idArray))
+            .success(function (data, status) {
+                if(status = 200){
+
+                }
+            }).error(function (error) {
+            alert("something went wrong in saveChallenge!!");
+        });//end http.get
 
 
-        console.log("3 ",$scope.currUser);
     }
 
 
