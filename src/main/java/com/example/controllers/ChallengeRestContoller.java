@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import com.example.entities.Challenge;
 import com.example.entities.User;
 import com.example.services.IChallengeService;
 import com.example.services.IUserService;
@@ -35,16 +36,14 @@ public class ChallengeRestContoller {
     }
 
     @RequestMapping(value = "/saveChallenge", method = RequestMethod.POST, produces = "application/json")
-    public void findById(@RequestBody String id){
+    public void saveThisChallenge(@RequestBody String id){
         JSONObject jsonObject = new JSONObject(id);
         int currID = jsonObject.getInt("0");
         int oppID = jsonObject.getInt("1");
-        System.out.println("curr Id : "+currID);
-        System.out.println("opp Id : "+oppID);
-        System.out.println("id came in as "+id);
 
-
-
-
-    }
+        Challenge thisChallenge = new Challenge();
+        thisChallenge.setChallengerId(currID);
+        thisChallenge.setOpponentId(oppID);
+        iChallengeService.saveChallenge(thisChallenge);
+    }//end saveThidChallenge
 }

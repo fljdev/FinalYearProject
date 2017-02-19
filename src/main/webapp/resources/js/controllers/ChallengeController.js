@@ -10,12 +10,9 @@ controller('ChallengeController', function($scope,$cookieStore,$http,$state,$sta
         $http.post('http://localhost:8080/api/user/findById', $scope.askedUserID)
             .success(function (data, status) {
                 if(status = 200){
-
                     $scope.askedUser = data;
-                    console.log("1",$scope.currUser);
-                    console.log("2",status,$scope.askedUser);
 
-                    $scope.pp();
+                    $scope.createChallengeObject();
 
                 }
             }).error(function (error) {
@@ -27,9 +24,9 @@ controller('ChallengeController', function($scope,$cookieStore,$http,$state,$sta
     $scope.init();
 
 
-    $scope.pp = function(){
-        console.log("3 curr Id : ",$scope.currUser.id);
-        console.log("4 asked ID :  ",$scope.askedUser.id);
+    $scope.createChallengeObject = function(){
+        // console.log("3 curr Id : ",$scope.currUser.id);
+        // console.log("4 asked ID :  ",$scope.askedUser.id);
 
         $scope.idArray = {};
         $scope.idArray[0]=$scope.currUser.id;
