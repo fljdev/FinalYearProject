@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" ng-app="myApp" ng-controller="OpenChallengesController">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<body>
+
+<table align="center">
+    <thead>
+    <tr><th colspan="9">Hi <b>{{currUser.username}}</b> Challenges you are involved in are found here</th> </tr>
+    </thead>
+
+
+
+
+</table>
+
+<table align="center">
+    <thead>
+    <tr>
+        <th>Challenge ID</th>
+        <th>ChallengerID</th>
+        <th>Opponent ID</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr ng-repeat="x in challenges">
+        <td>{{x.id}}</td>
+        <td>{{x.challengerId}}</td>
+        <td>{{x.opponentId}}</td>
+        <!--<td><button ng-click="getStats()" class="btn btn-success">Stats</button></td>-->
+
+    </tr>
+    </tbody>
+
+</table>
