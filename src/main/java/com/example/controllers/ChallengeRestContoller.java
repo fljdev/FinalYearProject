@@ -60,7 +60,6 @@ public class ChallengeRestContoller {
                 sentChallenges.add(c);
             }
         }
-
         return sentChallenges;
     }
 
@@ -71,7 +70,6 @@ public class ChallengeRestContoller {
         int idNo =Integer.parseInt(id);
         ArrayList<Challenge>challenges = new ArrayList();
         challenges=(ArrayList<Challenge>) iChallengeService.getAllChallenges();
-
         ArrayList<Challenge>challengesRecieved = new ArrayList<>();
 
         for(Challenge c : challenges){

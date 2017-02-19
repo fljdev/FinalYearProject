@@ -26,4 +26,14 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
 
 
 
+    $scope.withdraw = function(){
+        alert("Challenge WIthdrawn");
+    }
+
+    $scope.accept = function(){
+        alert("Challenge Accepted");
+    }
+
+
+
 });
