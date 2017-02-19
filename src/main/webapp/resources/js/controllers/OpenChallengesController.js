@@ -26,8 +26,22 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
 
 
 
-    $scope.withdraw = function(){
-        alert("Challenge WIthdrawn");
+    $scope.withdraw = function(x){
+
+        var obj = x;
+
+        console.log("x came in as ",x);
+
+        $http.post('http://localhost:8080/api/challenge/withdrawChallenge',obj.id)
+            .success(function (data, status) {
+                if(status = 200){
+
+                    console.log("withdraw challenge worked");
+                    // $scope.challengesRecieved = data;
+                }
+            }).error(function (error) {
+            alert("something went wrong in withdraw challenge!!");
+        });//end http.get
     }
 
     $scope.accept = function(){

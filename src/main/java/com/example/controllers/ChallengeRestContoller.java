@@ -80,4 +80,25 @@ public class ChallengeRestContoller {
 
         return challengesRecieved;
     }
-}
+
+    @RequestMapping(value = "/withdrawChallenge",method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public void withdrawChallenge(@RequestBody String id){
+
+        int idNo = Integer.parseInt(id);
+
+         ArrayList<Challenge>challenges = new ArrayList<>();
+         challenges=(ArrayList<Challenge>) iChallengeService.getAllChallenges();
+
+         Challenge challengeToCancel=null;
+
+        for(Challenge ch:challenges){
+            if(ch.getId()==idNo){
+                challengeToCancel = ch;
+                iChallengeService.deleteChallenge(challengeToCancel);
+            }//end if
+        }//end for
+    }//end withdrawChallenge
+
+
+}//end Controller

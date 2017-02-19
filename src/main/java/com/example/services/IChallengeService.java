@@ -12,4 +12,5 @@ public interface IChallengeService {
     void saveChallenge(Challenge challenge);
 
     ArrayList<Challenge> getAllChallenges();
+    void deleteChallenge(Challenge challenge);
 }

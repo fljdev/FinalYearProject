@@ -39,4 +39,9 @@ public class ChallengeService implements IChallengeService{
     }
 
 
+    @Override
+    public void deleteChallenge(Challenge challenge) {
+
+        challengeDAO.delete(challenge);
+    }
 }
