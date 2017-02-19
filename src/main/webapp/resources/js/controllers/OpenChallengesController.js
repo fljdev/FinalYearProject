@@ -7,10 +7,19 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
         $http.post('http://localhost:8080/api/challenge/challengesSent',$scope.currUser.id)
             .success(function (data, status) {
                 if(status = 200){
-                    $scope.challenges = data;
+                    $scope.sentChallenges = data;
                 }
             }).error(function (error) {
             alert("something went wrong in challengesSent !!");
+        });//end http.get
+
+        $http.post('http://localhost:8080/api/challenge/challengesRecieved',$scope.currUser.id)
+            .success(function (data, status) {
+                if(status = 200){
+                    $scope.challengesRecieved = data;
+                }
+            }).error(function (error) {
+            alert("something went wrong in recievedChallenged !!");
         });//end http.get
     }//end function
     $scope.init();
