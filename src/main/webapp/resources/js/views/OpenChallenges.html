@@ -61,7 +61,7 @@
         <th>ChallengerID</th>
         <th>Opponent ID</th>
         <th>Status</th>
-        <th>Option</th>
+        <th colspan="2">Option</th>
     </tr>
     </thead>
 
@@ -72,7 +72,8 @@
         <td>{{x.opponentId}}</td>
         <td ng-if="x.open">{{"Open"}}</td>
         <td ng-if="x.open ==  false">{{"Completed"}}</td>
-        <td><button ng-click="accept()" class="btn btn-success">Accept Challenge</button></td>
+        <td><button ng-click="accept()" class="btn btn-success">Accept</button></td>
+        <td><button ng-click="withdraw(x)" class="btn btn-warning">Decline</button></td>
 
 
     </tr>
