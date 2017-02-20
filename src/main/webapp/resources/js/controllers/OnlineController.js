@@ -22,7 +22,7 @@ angular.module('myApp.OnlineController',[]).
     }
 
     $scope.init = function(){
-        $http.post('http://localhost:8080/api/user/onlineUsers',name)
+        $http.post('/api/user/onlineUsers',name)
             .success(function (data, status) {
                 if(status = 200){
                     //data will be equal to the arraylist returned by the UserRestController onlineUsers method

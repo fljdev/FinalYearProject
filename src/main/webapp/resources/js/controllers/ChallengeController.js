@@ -7,7 +7,7 @@ controller('ChallengeController', function($scope,$cookieStore,$http,$state,$sta
     $scope.askedUserID = $stateParams.param;
 
     $scope.init = function(){
-        $http.post('http://localhost:8080/api/user/findById', $scope.askedUserID)
+        $http.post('/api/user/findById', $scope.askedUserID)
             .success(function (data, status) {
                 if(status = 200){
                     $scope.askedUser = data;
@@ -32,7 +32,7 @@ controller('ChallengeController', function($scope,$cookieStore,$http,$state,$sta
         $scope.idArray[0]=$scope.currUser.id;
         $scope.idArray[1]=$scope.askedUser.id;
 
-        $http.post('http://localhost:8080/api/challenge/saveChallenge',JSON.stringify($scope.idArray))
+        $http.post('/api/challenge/saveChallenge',JSON.stringify($scope.idArray))
             .success(function (data, status) {
                 if(status = 200){
                     console.log($scope.currUser.username,"vs",$scope.askedUser.username,"Challenge Saved");

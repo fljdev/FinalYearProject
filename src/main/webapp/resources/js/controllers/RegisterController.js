@@ -4,7 +4,7 @@ controller('RegisterController',function($scope,$http,$state,$cookieStore){
 
     $scope.submit=function(){
 
-        $http.post('http://localhost:8080/api/user/register', JSON.stringify($scope.register))
+        $http.post('/api/user/register', JSON.stringify($scope.register))
             .success(function (data, status) {
                 if(status = 200){
 

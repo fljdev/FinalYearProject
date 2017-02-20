@@ -11,7 +11,7 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
      */
     var fightStartID = $stateParams.paramm;
     $scope.init = function(){
-        $http.post('http://localhost:8080/api/fight/findFightObjectById',fightStartID)
+        $http.post('/api/fight/findFightObjectById',fightStartID)
             .success(function (data, status) {
                 if(status = 200){
                     $scope.thisFight = data;
@@ -58,7 +58,7 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
 
         $scope.currUsername = $scope.currUser.username;
 
-        $http.post('http://localhost:8080/api/user/findById',$scope.thisFight.opponentID)
+        $http.post('/api/user/findById',$scope.thisFight.opponentID)
             .success(function (data, status) {
                 if(status = 200){
                     $scope.oppUsername = data.username;
@@ -173,7 +173,7 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
 
 
     $scope.updatePairs = function(){
-        $http.post('http://localhost:8080/api/fight/getThisPair',$scope.thisFight.pairs[0].symbols)
+        $http.post('/api/fight/getThisPair',$scope.thisFight.pairs[0].symbols)
             .success(function (data, status) {
                 if(status = 200){
                     $scope.thisFight.pairs[0] = data;
@@ -190,7 +190,7 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
         var millisecondsToWait = 1000;
         setTimeout(function() {
 
-            $http.post('http://localhost:8080/api/fight/getThisPair',$scope.thisFight.pairs[1].symbols)
+            $http.post('/api/fight/getThisPair',$scope.thisFight.pairs[1].symbols)
                 .success(function (data, status) {
                     if(status = 200){
                         $scope.thisFight.pairs[1] = data;
