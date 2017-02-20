@@ -50,4 +50,9 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
 
 
 
+
+
+
+
+
 });
