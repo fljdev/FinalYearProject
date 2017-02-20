@@ -16,7 +16,7 @@ directive('navheader', function($cookieStore, $state, $http, $rootScope){
                 var obj = $cookieStore.get('userCookie');
                 $cookieStore.remove('userCookie');
 
-                $http.post('http://localhost:8080/api/user/logout', JSON.stringify(obj))
+                $http.post('/api/user/logout', JSON.stringify(obj))
                     .success(function (data, status) {
 
                         if(status = 200){

@@ -4,7 +4,7 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
     $scope.currUser = $cookieStore.get('userCookie');
 
     $scope.init = function(){
-        $http.post('http://localhost:8080/api/challenge/challengesSent',$scope.currUser.id)
+        $http.post('/api/challenge/challengesSent',$scope.currUser.id)
             .success(function (data, status) {
                 if(status = 200){
                     $scope.sentChallenges = data;
@@ -13,7 +13,7 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
             alert("something went wrong in challengesSent !!");
         });//end http.get
 
-        $http.post('http://localhost:8080/api/challenge/challengesRecieved',$scope.currUser.id)
+        $http.post('/api/challenge/challengesRecieved',$scope.currUser.id)
             .success(function (data, status) {
                 if(status = 200){
                     $scope.challengesRecieved = data;
@@ -32,7 +32,7 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
 
         console.log("x came in as ",x);
 
-        $http.post('http://localhost:8080/api/challenge/withdrawChallenge',obj.id)
+        $http.post('/api/challenge/withdrawChallenge',obj.id)
             .success(function (data, status) {
                 if(status = 200){
 

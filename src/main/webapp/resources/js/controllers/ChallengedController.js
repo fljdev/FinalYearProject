@@ -10,7 +10,7 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
 
     $scope.pairs;
     $scope.initPairs = function(){
-        $http.get('http://localhost:8080/api/fight/pairs')
+        $http.get('/api/fight/pairs')
             .success(function (data, status) {
                 if(status = 200){
                     $scope.pairs = data;
@@ -21,7 +21,7 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
     }
     $scope.initPairs()
 
-    $http.post('http://localhost:8080/api/user/findById', $scope.askedUserID)
+    $http.post('/api/user/findById', $scope.askedUserID)
         .success(function (data, status) {
             if(status = 200){
                 $scope.askedUser = data;
@@ -51,7 +51,7 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
          * the id of that object will be returned
          * then i will state.go to a new controller, taking the ID of the FightStart object with me
          */
-        $http.post('http://localhost:8080/api/fight/makeFightStartObjAndReturnID', JSON.stringify($scope.gameParamsObj))
+        $http.post('/api/fight/makeFightStartObjAndReturnID', JSON.stringify($scope.gameParamsObj))
             .success(function (data, status) {
                 if(status = 200){
                     console.log("makeFightStartObjAndReturnID method worked, the ID of FightStart obj is : ", data);
