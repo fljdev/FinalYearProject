@@ -36,6 +36,7 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
             .success(function (data, status) {
                 if(status = 200){
 
+                    console.log("x.id was no ",obj.id);
                     console.log("withdraw challenge worked");
                     // $scope.challengesRecieved = data;
                 }

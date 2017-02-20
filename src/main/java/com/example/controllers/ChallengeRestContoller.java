@@ -1,6 +1,7 @@
 package com.example.controllers;
 
 import com.example.entities.Challenge;
+import com.example.entities.User;
 import com.example.services.IChallengeService;
 import com.example.services.IUserService;
 import org.json.JSONObject;
@@ -28,7 +29,22 @@ public class ChallengeRestContoller {
 
     @Autowired
     public void setiChallengeService(IChallengeService service){
+
         this.iChallengeService = service;
+    }
+
+    @RequestMapping(value = "/findById", method = RequestMethod.POST, produces = "application/json")
+    public User findById(@RequestBody String id){
+
+        int i = Integer.parseInt(id);
+        ArrayList<User> users = iUserService.getAllUsers();
+
+        for(User u : users){
+            if(u.getId()== i ){
+                return u;
+            }
+        }
+        return null;
     }
 
     @RequestMapping(value = "/saveChallenge", method = RequestMethod.POST, produces = "application/json")
@@ -37,9 +53,20 @@ public class ChallengeRestContoller {
         int currID = jsonObject.getInt("0");
         int oppID = jsonObject.getInt("1");
 
+        User currUserObject = findById(String.valueOf(currID));
+        String currUsername =currUserObject.getUsername();
+        User oppUserObject = findById(String.valueOf(oppID));
+        String oppUsername = oppUserObject.getUsername();
+
+
         Challenge thisChallenge = new Challenge();
+
         thisChallenge.setChallengerId(currID);
+        thisChallenge.setChallengerName(currUsername);
+
         thisChallenge.setOpponentId(oppID);
+        thisChallenge.setOpponentName(oppUsername);
+
         thisChallenge.setOpen(true);
         iChallengeService.saveChallenge(thisChallenge);
     }//end saveThidChallenge
