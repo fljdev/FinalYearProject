@@ -1,5 +1,8 @@
-angular.module('myApp.PairsController',[]).
-controller('PairsController', function($scope,$http,$interval){
+angular.module('myApp.SoloTradeController',[]).
+controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav){
+    $scope.currUser = $cookieStore.get('userCookie');
+
+    $scope.d = $scope.dir;
 
     $scope.init = function(){
         $http.get('/api/fight/pairs')
@@ -16,5 +19,20 @@ controller('PairsController', function($scope,$http,$interval){
     }//end function
     $interval( function(){ $scope.init(); }, 4000);
 
+    /**
+     *
+     * SideNav Section
+     */
+    $scope.toggleLeft = buildToggler('left');
+    $scope.toggleRight = buildToggler('right');
 
-});//end controller
+    function buildToggler(componentId) {
+        return function(x) {
+            $scope.p =x;
+            $mdSidenav(componentId).toggle();
+        };
+    }
+});
+
+
+

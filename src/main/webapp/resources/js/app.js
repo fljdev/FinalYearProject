@@ -21,7 +21,8 @@ angular.module('myApp',[
     'myApp.FightEndController',
     'myApp.LogRegController',
     'myApp.ChallengeController',
-    'myApp.OpenChallengesController'
+    'myApp.OpenChallengesController',
+    'myApp.SoloTradeController'
 ]).
     config(function ($stateProvider,$urlRouterProvider) {
 
@@ -97,6 +98,11 @@ angular.module('myApp',[
             url: '/openChallenges',
             templateUrl: "resources/js/views/OpenChallenges.html",
             controller: "OpenChallengesController"
+        })
+        .state('soloTrade',{
+            url: '/soloTrade',
+            templateUrl: "resources/js/views/SoloTrade.html",
+            controller: "SoloTradeController"
         });
 });
 
