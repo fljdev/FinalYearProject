@@ -1,16 +1,5 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html" ng-app="myApp" ng-controller="ChallengedController">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
 
 
-</head>
-<body>
-
-<br>
-<br>
-<br>
         <md-sidenav class="md-sidenav-left" md-component-id="left" md-disable-backdrop="" md-whiteframe="4">
 
             <md-toolbar class="md-theme-indigo">
@@ -20,16 +9,17 @@
             <md-content layout-margin="">
                 <p>
                     This sidenav is not showing any backdrop, where users can click on it, to close the sidenav.
+                    {{currUser.username}}
                 </p>
                 <md-button ng-click="toggleLeft()" class="md-accent">
                     Close this Sidenav
                 </md-button>
             </md-content>
+            <button class="btn btn-default btn-block btn-success"ng-click=""  >Fight!!</button>
 
         </md-sidenav>
-        <md-button ng-click="toggleLeft()" class="md-accent">
-            Close this Sidenav
-        </md-button>
+
+
 
 <table align="center">
     <thead>
@@ -37,6 +27,9 @@
 
 
 </table>
+<!--<md-button ng-click="toggleLeft()" class="md-accent">-->
+    <!--Open Sidenav-->
+<!--</md-button>-->
 
 <br><br>
 <table align="center">
@@ -65,13 +58,17 @@
         <td><select ng-model="currUserPair" ng-options="x.symbols for x in pairs| orderBy:'symbols'"></td>
         <td><select ng-model="gameParamsObj.currUserDirection" ng-options="x for x in direction"></td>
         <td><select ng-model="gameParamsObj.currUserStake" ng-options="x for x in stakes"></td>
-        <td><select ng-model="gameParamsObj.currUserLeverage" ng-options="x for x in leverages"></td>
+        <!--<td><select ng-model="gameParamsObj.currUserLeverage" ng-options="x for x in leverages"></td>-->
+        <td>
+            <md-button ng-click="toggleLeft()" class="md-accent" ng-model = "currUser.username">
+              Open Sidenav
+            </md-button>>
+        </td>
         <!--<td><button ng-click="getSclass="btn btn-success">Stats</button></td>-->
 
     </tr>
 
 
-    <!--<tr><th colspan="9"> <button class="btn btn-default btn-block btn-success"ng-click="fight()"  >Fight!!</button></th></tr>-->
     </tbody>
 
 </table>
@@ -114,10 +111,3 @@
     </tbody>
 
 </table>
-
-<br><br>
-
-
-
-</body>
-</html>

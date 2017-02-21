@@ -1,0 +1,93 @@
+
+
+<table align="center" width=100% style= 'table-layout:fixed'>
+    <col width="300px" />
+    <col width="300px" />
+    <col width="300px" />
+    <col width="300px" />
+
+    <thead>
+    <tr>
+        <th style = "background-color:#BDB76B;color:#ffffff;">Available</th>
+        <th style = "background-color:#BDB76B;color:#ffffff;">Equity</th>
+        <th style = "background-color:#BDB76B;color:#ffffff;">M.Margin</th>
+        <th style = "background-color:#BDB76B;color:#ffffff;">Profit/Loss</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr>
+        <td>{{currUser.account.balance}}</td>
+        <td>{{currEquityView}}a</td>
+        <td>{{mMargin}}a</td>
+        <td>${{currPLView}}</td>
+    </tr>
+    </tbody>
+</table>
+
+<br><br><br>
+
+<table align="center" width=850 style= 'table-layout:fixed'>
+    <col width="100px" />
+    <col width="100px" />
+    <col width="100px" />
+    <col width="100px" />
+    <col width="200px" />
+    <col width="100px" />
+    <col width="200px" />
+    <col width="100px" />
+    <col width="100px" />
+
+    <thead>
+    <tr class="border_bottom">
+        <th style = "background-color:#BDB76B;color:#ffffff;" colspan="2">Instrument</th>
+        <th style = "background-color:#BDB76B;color:#ffffff;">Change</th>
+        <th style = "background-color:#BDB76B;color:#ffffff;">Sell</th>
+        <th style = "background-color:#BDB76B;color:#ffffff;"></th>
+        <th style = "background-color:#BDB76B;color:#ffffff;">Buy</th>
+        <th style = "background-color:#BDB76B;color:#ffffff;"></th>
+        <th style = "background-color:#BDB76B;color:#ffffff;" colspan="2">High/Low</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr ng-repeat="x in pairs">
+        <td align="left" colspan="2">{{x.symbols}}</td>
+        <td bgcolor="	#48D1CC"align="center">..%</td>
+        <td bgcolor="#F0F8FF" align="center">{{x.bid}}</td>
+        <td bgcolor="#F0F8FF" align="center">
+            <md-button ng-click="toggleLeft(x.symbols)" class="md-accent" ng-model = "dir" ng-init="dir='buy'">
+            Buy
+           </md-button></td>
+        <td bgcolor="#F0F8FF" align="center">{{x.ask}}</td>
+        <td bgcolor="#F0F8FF" align="center">
+            <md-button ng-click="toggleLeft(x.symbols)" class="md-accent" ng-model = "dir" ng-init="dir='sell'">
+                Sell
+            </md-button></td>
+        </td>
+        <td bgcolor="#F0F8FF" align="center" colspan="2">{{x.high}}/{{x.low}}</td>
+        <!--<td bgcolor="#4286f4" align="center">{{x.spreadPips}}</td>-->
+        <!--<td bgcolor="#f0f4b5" align="center">{{x.timeStampString}}</td>-->
+    </tr>
+    </tbody>
+</table>
+
+
+<md-sidenav class="md-sidenav-left" md-component-id="left" md-disable-backdrop="" md-whiteframe="4">
+
+    <md-toolbar class="md-theme-indigo">
+        <h1 class="md-toolbar-tools">Disabled Backdrop</h1>
+    </md-toolbar>
+
+    <md-content layout-margin="">
+        <p>
+Select Lot Size  {{currUser.username}}
+            {{p}} {{dir}}
+        </p>
+        <md-button ng-click="toggleLeft()" class="md-accent">
+            Close this Sidenav
+        </md-button>
+    </md-content>
+    <button class="btn btn-default btn-block btn-success"ng-click=""  >Fight!!</button>
+
+</md-sidenav>
