@@ -1,5 +1,15 @@
 angular.module('myApp.ChallengedController',[]).
-controller('ChallengedController', function($scope,$cookieStore,$http,$state,$stateParams,$timeout){
+controller('ChallengedController', function($scope,$cookieStore,$http,$state,$stateParams,$timeout,$mdSidenav, $log){
+
+    $scope.toggleLeft = buildToggler('left');
+    $scope.toggleRight = buildToggler('right');
+
+    function buildToggler(componentId) {
+        return function() {
+            $mdSidenav(componentId).toggle();
+        };
+    }
+
 
     $scope.direction = ["long","short"];
     $scope.stakes = ["100", "250","500","1000","2500","5000","10000"]

@@ -83,18 +83,28 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
         $scope.mMargin = $scope.thisFight.challengerStake/2;
 
         $scope.currPair = $scope.thisFight.pairs[0].symbols;
-        $scope.currDir = $scope.thisFight.challengerDirection;
+        if($scope.currPair.match("/USD")){
+            console.log($scope.currPair, " is a Direct Quote");
+        }else if($scope.currPair.match("USD/")){
+            console.log($scope.currPair, " is an InDirect Quote");
+        }else{
+            console.log($scope.currPair, " is a Cross");
+        }
 
+
+        $scope.currDir = $scope.thisFight.challengerDirection;
         $scope.oppPair = $scope.thisFight.pairs[1].symbols;
         $scope.oppDir = $scope.thisFight.opponentDirection;
 
         $scope.initialCurrAsk = $scope.thisFight.pairs[0].ask;
         $scope.initialCurrBid = $scope.thisFight.pairs[0].bid;
         $scope.initialCurrLongPosSize = $scope.stake * $scope.thisFight.challengerLeverage * $scope.initialCurrAsk;
+        $scope.initialCurrShortPosSize = $scope.stake * $scope.thisFight.challengerLeverage * $scope.initialCurrBid;
 
         $scope.initialOppAsk = $scope.thisFight.pairs[1].ask;
         $scope.initialOppBid = $scope.thisFight.pairs[1].bid;
         $scope.initialOppLongPosSize = $scope.stake * $scope.thisFight.challengerLeverage * $scope.initialOppAsk;
+        $scope.initialOppShortPosSize = $scope.stake * $scope.thisFight.challengerLeverage * $scope.initialOppBid;
 
 
     }
@@ -134,8 +144,19 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
 
         $scope.currUserCurrentPos = $scope.stake * $scope.thisFight.challengerLeverage * $scope.currAsk;
         $scope.currUserSellValue =  $scope.stake * $scope.thisFight.challengerLeverage * $scope.currBid;
+        $scope.currUserBuyValue = $scope.stake * $scope.thisFight.challengerLeverage * $scope.currAsk;
 
-        $scope.currPL =  ($scope.currUserSellValue- $scope.initialCurrLongPosSize);
+        if($scope.currDir=="long"){
+            $scope.currPL =  ($scope.currUserSellValue- $scope.initialCurrLongPosSize);
+            console.log("got into log");
+        }
+        if($scope.currDir=="short"){
+            $scope.currPL =  ( $scope.initialCurrShortPosSize - $scope.currUserBuyValue);
+            console.log("got into short");
+
+        }
+
+
         $scope.currBalMinusStake = ($scope.thisFight.challengerBalance - $scope.thisFight.challengerStake);
         $scope.currAvailable = ($scope.currBalMinusStake + $scope.currPL);
         $scope.currEquity = ($scope.currPL + $scope.currAvailable + $scope.thisFight.challengerStake);
