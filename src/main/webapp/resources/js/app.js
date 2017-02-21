@@ -1,6 +1,9 @@
 angular.module('myApp',[
     'ngRoute',
     'ngSanitize',
+    'ngAnimate',
+    'ngAria',
+    'ngMaterial',
     'ngCookies',
     'chart.js',
     'ui.router',

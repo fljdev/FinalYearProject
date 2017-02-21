@@ -12,5 +12,8 @@
   },
   "author": "",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/c13731869/springboottest#readme"
+  "homepage": "https://bitbucket.org/c13731869/springboottest#readme",
+  "dependencies": {
+    "angular-material": "^1.1.3"
+  }
 }

@@ -26,13 +26,11 @@ public class FightEnd extends FightFactory{
     private double winAmount;
 
 
-
-
-    public FightEnd(int winnerID, int loserID, double winAmount, Timestamp timestamp,
-                    List<CurrencyPair> pairs, int challengerID, String challengerDirection,
-                    double challengerStake, double challengerLeverage, double challengerBalance,
-                    int opponentID, String opponentDirection, double opponentStake, double opponentLeverage, double opponentBalance) {
-
+    public FightEnd(Timestamp timestamp, List<CurrencyPair> pairs, int challengerID,
+                      String challengerDirection, double challengerStake, double challengerLeverage,
+                      double challengerBalance, int opponentID, String opponentDirection,
+                      double opponentStake, double opponentLeverage, double opponentBalance) {
+        super();
     }
 
     public int getId() {

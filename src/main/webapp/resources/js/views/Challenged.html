@@ -8,6 +8,28 @@
 </head>
 <body>
 
+<br>
+<br>
+<br>
+        <md-sidenav class="md-sidenav-left" md-component-id="left" md-disable-backdrop="" md-whiteframe="4">
+
+            <md-toolbar class="md-theme-indigo">
+                <h1 class="md-toolbar-tools">Disabled Backdrop</h1>
+            </md-toolbar>
+
+            <md-content layout-margin="">
+                <p>
+                    This sidenav is not showing any backdrop, where users can click on it, to close the sidenav.
+                </p>
+                <md-button ng-click="toggleLeft()" class="md-accent">
+                    Close this Sidenav
+                </md-button>
+            </md-content>
+
+        </md-sidenav>
+        <md-button ng-click="toggleLeft()" class="md-accent">
+            Close this Sidenav
+        </md-button>
 
 <table align="center">
     <thead>
@@ -40,7 +62,7 @@
         <td>{{currUser.username}}</td>
         <td>{{currUser.email}}</td>
         <td>{{currUser.account.balance}}</td>
-        <td><select ng-model="currUserPair" ng-options="x.symbols for x in pairs"></td>
+        <td><select ng-model="currUserPair" ng-options="x.symbols for x in pairs| orderBy:'symbols'"></td>
         <td><select ng-model="gameParamsObj.currUserDirection" ng-options="x for x in direction"></td>
         <td><select ng-model="gameParamsObj.currUserStake" ng-options="x for x in stakes"></td>
         <td><select ng-model="gameParamsObj.currUserLeverage" ng-options="x for x in leverages"></td>
@@ -80,7 +102,7 @@
         <td>{{askedUser.username}}</td>
         <td>{{askedUser.email}}</td>
         <td>{{askedUser.account.balance}}</td>
-        <td><select ng-model="askedUserPair" ng-options="x.symbols for x in pairs"></td>
+        <td><select ng-model="askedUserPair" ng-options="x.symbols for x in pairs | orderBy:'symbols'"></td>
         <td><select ng-model="gameParamsObj.askedUserDirection" ng-options="x for x in direction"></td>
         <!--<td><select ng-model="gameParamsObj.askedUserStake" ng-options="x for x in stakes"></td>-->
         <td><select ng-model="gameParamsObj.askedUserLeverage" ng-options="x for x in leverages"></td>
