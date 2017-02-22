@@ -27,7 +27,8 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
     $scope.toggleRight = buildToggler('right');
 
     function buildToggler(componentId) {
-        return function(x) {
+        return function(x,y) {
+            $scope.dir = y;
             $scope.p =x;
             $mdSidenav(componentId).toggle();
         };
