@@ -32,6 +32,10 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
             $mdSidenav(componentId).toggle();
         };
     }
+
+    $scope.trade = function(){
+        alert("Trading your position");
+    }
 });
 
 
