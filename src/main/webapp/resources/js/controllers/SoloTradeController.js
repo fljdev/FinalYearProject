@@ -1,8 +1,8 @@
 angular.module('myApp.SoloTradeController',[]).
 controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav){
     $scope.currUser = $cookieStore.get('userCookie');
+    $scope.stakes = ["100", "250","500","1000","2500","5000","10000"];
 
-    $scope.d = $scope.dir;
 
     $scope.init = function(){
         $http.get('/api/fight/pairs')
@@ -28,14 +28,18 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
 
     function buildToggler(componentId) {
         return function(x,y) {
-            $scope.dir = y;
-            $scope.p =x;
+
+            $scope.direction = y;
+            $scope.pairSym =x;
+
+            console.log("sym : ",x, "dir : ", $scope.direction);
             $mdSidenav(componentId).toggle();
         };
     }
 
     $scope.trade = function(){
-        alert("Trading your position");
+        // alert("Trading your position");
+        console.log("open position pressed : ",$scope.direction, $scope.pairSym);
     }
 });
 
