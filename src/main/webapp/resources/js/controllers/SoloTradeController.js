@@ -6,6 +6,15 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
     $scope.leverage = 300;
     $scope.mMargin=0;
 
+    $scope.openBuyRate=0;
+    $scope.openSellRate=0;
+
+
+    /**
+     * init is called initially to fill the rows with currency data
+     * then it is called again every four seconds to update
+     * THIS SECTION WORKS 1000%!!!
+     */
     $scope.init = function(){
         $http.get('/api/fight/pairs')
             .success(function (data, status) {
@@ -21,6 +30,7 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
     }//end function
     $interval( function(){ $scope.init(); }, 4000);
 
+
     /**
      *
      * SideNav Section
@@ -33,11 +43,13 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
 
             $scope.direction = y;
             $scope.pairChosen =x;
+            $scope.pairChosenSym = $scope.pairChosen.symbols;
 
-            console.log("sym : ",x, "dir : ", $scope.direction);
             $mdSidenav(componentId).toggle();
         };
     }
+
+
 
 
     $scope.trade = function(){
@@ -56,13 +68,79 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
         $scope.mMargin += (($scope.currUserStake / 2));
 
 
-        $scope.currAsk = $scope.pairChosen.ask;
-        console.log("ask is ",$scope.currAsk);
-        $scope.currBid = $scope.pairChosen.bid;
-        console.log("bid is ",$scope.currBid);
+        /**
+         * THIS SECTION, WORKS 100% for Direct Quotes (USD the counter currency)
+         */
+
+        if($scope.pairChosenSym.match("/USD")){
+
+            if($scope.direction=='buy'){
+
+                $scope.openBuyRate = $scope.pairChosen.ask;
+
+            }else if ($scope.direction == 'sell'){
+
+                $scope.openSellRate = $scope.pairChosen.bid;
+            }
+
+            $scope.watch();
+
+
+
+        }else if($scope.pairChosenSym.match("USD/")){
+            console.log($scope.pairChosenSym, " is an InDirect Quote");
+        }else{
+            console.log($scope.pairChosenSym, " is a Cross");
+        }
 
 
     }
+
+
+    /**
+     * The watch and watchMarkets will update the bid/ask for the chosen currency pair
+     */
+    $scope.watch = function(){
+        $scope.watchMarkets = function(){
+            console.log("watching");
+
+            $http.post('/api/fight/getThisPair',$scope.pairChosenSym)
+                .success(function (data, status) {
+                    if(status = 200){
+                        $scope.pairChosen = data;
+                    }
+                }).error(function (error) {
+                alert("something went wrong in pairs!!");
+            });//end http.get
+
+            $scope.directQuoteCalc($scope.pairChosen,$scope.direction);
+
+
+
+        }
+        $interval( function(){ $scope.watchMarkets(); }, 4000);
+    }
+
+
+
+
+    $scope.directQuoteCalc = function(pair,direction){
+
+
+        /**
+         * curr ask and curr bid are used for calculating the P&L, whether (buy or sell)
+         */
+        $scope.currAsk = pair.ask;
+        $scope.currBid = pair.bid;
+
+        $scope.closeSellRate = $scope.currBid;
+
+        $scope.profitAndLoss = ($scope.closeSellRate - $scope.openBuyRate) * ($scope.currUserStake * $scope.leverage);
+        $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+
+    }
+
+
 });
 
 
