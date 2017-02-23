@@ -6,6 +6,7 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
     $scope.opponent = {};
     $scope.counter = 300;
 
+
     /**
      * this is the id of the FightStart object that will be retrieved from the DB
      */
