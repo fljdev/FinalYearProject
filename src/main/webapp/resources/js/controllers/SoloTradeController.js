@@ -2,7 +2,9 @@ angular.module('myApp.SoloTradeController',[]).
 controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav){
     $scope.currUser = $cookieStore.get('userCookie');
     $scope.stakes = ["100", "250","500","1000","2500","5000","10000"];
-
+    $scope.available = $scope.currUser.account.balance;
+    $scope.leverage = 300;
+    $scope.mMargin=0;
 
     $scope.init = function(){
         $http.get('/api/fight/pairs')
@@ -30,16 +32,36 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
         return function(x,y) {
 
             $scope.direction = y;
-            $scope.pairSym =x;
+            $scope.pairChosen =x;
 
             console.log("sym : ",x, "dir : ", $scope.direction);
             $mdSidenav(componentId).toggle();
         };
     }
 
+
     $scope.trade = function(){
-        // alert("Trading your position");
-        console.log("open position pressed : ",$scope.direction, $scope.pairSym);
+
+        /**
+         * reduce amount available each time trader opens a position
+         */
+        $scope.available = $scope.available - $scope.currUserStake;
+
+
+        /**
+         * Maintanance Margin is always half the original margin
+         * Account equiry must exceed the mMargin level, or position is automatically closed
+         * increased every time a trader opens a position
+         */
+        $scope.mMargin += (($scope.currUserStake / 2));
+
+
+        $scope.currAsk = $scope.pairChosen.ask;
+        console.log("ask is ",$scope.currAsk);
+        $scope.currBid = $scope.pairChosen.bid;
+        console.log("bid is ",$scope.currBid);
+
+
     }
 });
 
