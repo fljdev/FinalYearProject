@@ -56,12 +56,12 @@
         <td bgcolor="	#48D1CC"align="center">..%</td>
         <td bgcolor="#F0F8FF" align="center">{{x.bid}}</td>
         <td bgcolor="#F0F8FF" align="center">
-            <md-button ng-click="toggleLeft(x.symbols,'buy')" class="md-primary md-raised">
+            <md-button ng-click="toggleLeft(x,'buy')" class="md-primary md-raised">
             Buy
            </md-button></td>
         <td bgcolor="#F0F8FF" align="center">{{x.ask}}</td>
         <td bgcolor="#F0F8FF" align="center">
-            <md-button ng-click="toggleLeft(x.symbols,'sell')" class="md-primary md-raised">
+            <md-button ng-click="toggleLeft(x,'sell')" class="md-primary md-raised">
                 Sell
             </md-button></td>
         </td>
@@ -80,13 +80,36 @@
     </md-toolbar>
 
     <md-content layout-margin="">
-        <p>
-Select Lot Size  {{currUser.username}}
-            {{p}} {{dir}}
-        </p>
+
+        <!--<p>-->
+            <!--{{currUser.username}}-->
+        <!--</p>-->
+        <md-table-container>
+
+        <table md-table>
+            <thead>
+              <th>Instrument</th>
+              <th>Position</th>
+              <th>Stake</th>
+            </thead>
+
+            <tbody md-body>
+            <tr md-row>
+                <td>{{pairSym.symbols}}</td>
+                <td> {{direction}}</td>
+                <td><select ng-model="currUserStake" ng-options="x for x in stakes"></td>
+            </tr>
+
+            </tbody>
+        </table>
+        </md-table-container>
+
+
         <md-button ng-click="toggleLeft()" class="md-primary md-raised">
             Close this Sidenav
         </md-button>
+        <!--<h2><select ng-model="currUserStake" ng-options="x for x in stakes"></h2>-->
+
     </md-content>
     <button class="btn btn-default btn-block btn-info"ng-click="trade()"  >Open Position!!</button>
 
