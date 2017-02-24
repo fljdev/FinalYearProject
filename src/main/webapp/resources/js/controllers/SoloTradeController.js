@@ -50,6 +50,15 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
     }
 
 
+    $scope.closeToggleLeft = buildTogglerClose('left');
+    function buildTogglerClose(componentId) {
+        return function() {
+            $mdSidenav(componentId).toggle();
+        };
+    }
+
+
+
 
 
     $scope.trade = function(){
@@ -110,7 +119,7 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
                         $scope.pairChosen = data;
                     }
                 }).error(function (error) {
-                alert("something went wrong in pairs!!");
+                alert("something went wrong in pairs call inside watch markets!!");
             });//end http.get
 
             $scope.directQuoteCalc($scope.pairChosen,$scope.direction);
