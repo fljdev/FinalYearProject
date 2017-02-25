@@ -229,6 +229,7 @@ public class FightRestController {
         CurrencyPair thisPair = new CurrencyPair();
         ArrayList<CurrencyPair> pairs = allPairs();
 
+        System.out.println("getThisPair got "+symbols);
         for(CurrencyPair cp : pairs){
             if(cp.getSymbols().equalsIgnoreCase(symbols)){
                 thisPair = cp;

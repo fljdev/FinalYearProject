@@ -101,9 +101,6 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
     }//end trade()
 
 
-    /**
-     * The watch and watchMarkets will update the bid/ask for the chosen currency pair
-     */
     $scope.watch = function(param){
         $scope.watchMarkets = function(){
             console.log("watching markets...");
@@ -133,10 +130,6 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
 
     $scope.directQuoteCalc = function(pair,direction){
 
-        console.log("inside directQuteCalc , direction is ",direction);
-        /**
-         * curr ask and curr bid are used for calculating the P&L, whether (buy or sell)
-         */
         $scope.currAsk = pair.ask;
         $scope.currBid = pair.bid;
 
@@ -175,25 +168,45 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
     $scope.crossQuoteCalc = function(pair,direction){
         console.log("$scope.crossQuoteCalc method called");
 
-        /**
-         * curr ask and curr bid are used for calculating the P&L, whether (buy or sell)
-         */
-        $scope.currAsk = pair.ask;
-        $scope.currBid = pair.bid;
 
-        $scope.closeSellRate = $scope.currBid;
-        $scope.closeAskRate = $scope.currAsk;
+        $scope.closeSellRate = pair.bid;
+        $scope.closeAskRate = pair.ask;
 
         if(direction=='buy'){
-            $scope.profitAndLoss = ($scope.closeSellRate - $scope.openBuyRate) * ($scope.currUserStake * $scope.leverage);
-            $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+            $scope.getGBPUSD();
+
+            $scope.setEURGBPProfit = function(){
+                $scope.profitAndLoss = (($scope.closeSellRate - $scope.openBuyRate) * ($scope.currUserStake * $scope.leverage) )*$scope.eurUsdBase;
+                $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+            }
+
+
+
         }else if(direction=='sell'){
-            $scope.profitAndLoss = ($scope.openSellRate - $scope.closeAskRate) * ($scope.currUserStake * $scope.leverage);
-            $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+            $scope.getGBPUSD();
+
+            $scope.setEURGBPProfit = function() {
+                $scope.profitAndLoss = (($scope.openSellRate - $scope.closeAskRate) * ($scope.currUserStake * $scope.leverage) * $scope.eurUsdBase);
+                $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+            }
+
         }
     }
 
+$scope.getGBPUSD = function(){
+    $http.post('/api/fight/getThisPair',"GBP/USD")
+        .success(function (data, status) {
+            if(status = 200){
 
+                $scope.eurUsdBase = data.ask;
+
+
+                $scope.setEURGBPProfit();
+            }
+        }).error(function (error) {
+        console.log("something went wrong in the pairs controller init function!!");
+    });//end http.get
+}
 
 });
 
