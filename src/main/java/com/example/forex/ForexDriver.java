@@ -50,7 +50,7 @@ public class ForexDriver {
 
 
         String url = "http://webrates.truefx.com/rates/connect.html?u="+USERNAME+"&p="+PASSWORD+"&q=eurates&c=EUR/USD,USD/JPY,"+
-        "GBP/USD,EUR/GBP,USD/CHF,AUD/USD,AUD/NZD,EUR/AUD,EUR/NZD,NZD/USD,USD/NOK,USD/SEK,USD/CAD&f=xml\n";
+                "GBP/USD,EUR/GBP,USD/CHF,AUD/USD,AUD/NZD,EUR/AUD,EUR/NZD,NZD/USD,USD/NOK,USD/SEK,USD/CAD&f=xml\n";
         URL obj = new URL(url);
 
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();

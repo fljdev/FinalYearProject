@@ -166,39 +166,45 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
     }
 
     $scope.crossQuoteCalc = function(pair,direction){
-        console.log("$scope.crossQuoteCalc method called");
+
+        if(pair.symbols=='EUR/GBP'){
+            $scope.param = 'GBP/USD';
+        }
 
 
         $scope.closeSellRate = pair.bid;
         $scope.closeAskRate = pair.ask;
 
+
+
         if(direction=='buy'){
-            $scope.getGBPUSD();
+            $scope.getBase();
 
             $scope.setEURGBPProfit = function(){
-                $scope.profitAndLoss = (($scope.closeSellRate - $scope.openBuyRate) * ($scope.currUserStake * $scope.leverage) )*$scope.eurUsdBase;
+                $scope.profitAndLoss = (($scope.closeSellRate - $scope.openBuyRate) * ($scope.currUserStake * $scope.leverage) )*$scope.baseAsk;
                 $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             }
 
 
 
         }else if(direction=='sell'){
-            $scope.getGBPUSD();
+            $scope.getBase();
 
             $scope.setEURGBPProfit = function() {
-                $scope.profitAndLoss = (($scope.openSellRate - $scope.closeAskRate) * ($scope.currUserStake * $scope.leverage) * $scope.eurUsdBase);
+                $scope.profitAndLoss = (($scope.openSellRate - $scope.closeAskRate) * ($scope.currUserStake * $scope.leverage) * $scope.baseBid);
                 $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             }
 
         }
     }
 
-$scope.getGBPUSD = function(){
-    $http.post('/api/fight/getThisPair',"GBP/USD")
+$scope.getBase = function(){
+    $http.post('/api/fight/getThisPair',$scope.param)
         .success(function (data, status) {
             if(status = 200){
 
-                $scope.eurUsdBase = data.ask;
+                $scope.baseAsk = data.ask;
+                $scope.baseBid = data.bid;
 
 
                 $scope.setEURGBPProfit();
