@@ -81,44 +81,24 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
          * THIS SECTION, WORKS 100% for Direct Quotes (USD the counter currency)
          */
 
+        $scope.openBuyRate = $scope.pairChosen.ask;
+        $scope.openSellRate = $scope.pairChosen.bid;
+
+
         if($scope.pairChosenSym.match("/USD")){
-
-            if($scope.direction=='buy'){
-
-                $scope.openBuyRate = $scope.pairChosen.ask;
-
-            }else if ($scope.direction == 'sell'){
-
-                $scope.openSellRate = $scope.pairChosen.bid;
-            }
 
             $scope.watch("/USD");
 
-
-
         }else if($scope.pairChosenSym.match("USD/")){
-            console.log($scope.pairChosenSym, " is an InDirect Quote");
-
-            if($scope.direction=='buy'){
-
-                $scope.openBuyRate = $scope.pairChosen.ask;
-
-            }else if ($scope.direction == 'sell'){
-
-                $scope.openSellRate = $scope.pairChosen.bid;
-            }
 
             $scope.watch("USD/");
 
         }else{
-            console.log($scope.pairChosenSym, " is a Cross");
-
-
             $scope.watch("cross")
         }
 
 
-    }
+    }//end trade()
 
 
     /**
