@@ -92,14 +92,17 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
                 $scope.openSellRate = $scope.pairChosen.bid;
             }
 
-            $scope.watch();
+            $scope.watch("/USD");
 
 
 
         }else if($scope.pairChosenSym.match("USD/")){
             console.log($scope.pairChosenSym, " is an InDirect Quote");
+            $scope.watch("USD/");
+
         }else{
             console.log($scope.pairChosenSym, " is a Cross");
+            $scope.watch("cross")
         }
 
 
@@ -109,7 +112,7 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
     /**
      * The watch and watchMarkets will update the bid/ask for the chosen currency pair
      */
-    $scope.watch = function(){
+    $scope.watch = function(param){
         $scope.watchMarkets = function(){
             console.log("watching");
 
@@ -121,13 +124,16 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
                 }).error(function (error) {
                 alert("something went wrong in pairs call inside watch markets!!");
             });//end http.get
-
-            $scope.directQuoteCalc($scope.pairChosen,$scope.direction);
-
-
-
         }
         $interval( function(){ $scope.watchMarkets(); }, 4000);
+
+        if(param.match("/USD")){
+            $scope.directQuoteCalc($scope.pairChosen,$scope.direction);
+        }else if(param.match("USD/")){
+            $scope.indirectQuoteCalc($scope.pairChosen,$scope.direction);
+        }else if(param.match("cross")){
+            $scope.crossQuoteCalc($scope.pairChosen,$scope.direction);
+        }
     }
 
 
@@ -135,7 +141,7 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
 
     $scope.directQuoteCalc = function(pair,direction){
 
-
+        console.log("inside directQuteCalc");
         /**
          * curr ask and curr bid are used for calculating the P&L, whether (buy or sell)
          */
@@ -146,8 +152,16 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
 
         $scope.profitAndLoss = ($scope.closeSellRate - $scope.openBuyRate) * ($scope.currUserStake * $scope.leverage);
         $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
-
     }
+
+    $scope.indirectQuoteCalc = function(){
+        console.log("$scope.indirectQuoteCalc method called");
+    }
+
+    $scope.crossQuoteCalc = function(){
+        console.log("$scope.crossQuoteCalc method called");
+    }
+
 
 
 });
