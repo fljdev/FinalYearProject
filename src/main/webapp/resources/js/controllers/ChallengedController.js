@@ -37,7 +37,7 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
                 $scope.askedUser = data;
             }
         }).error(function (error) {
-        alert("something went wrong!!");
+        console.log("something went wrong!!");
     });
 
 
@@ -68,7 +68,7 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
                     $state.go('fightStart',{paramm:data});
                 }
             }).error(function (error) {
-            alert("something went wrong!!");
+            console.log("something went wrong!!");
         });
     }
 

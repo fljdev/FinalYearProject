@@ -23,7 +23,7 @@ directive('navheader', function($cookieStore, $state, $http, $rootScope){
                             $state.go('welcome');
                         }
                     }).error(function (error) {
-                    alert("something went wrong!!");
+                    console.log("something went wrong!!");
                 });
             };
         },

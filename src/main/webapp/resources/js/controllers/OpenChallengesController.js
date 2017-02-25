@@ -10,7 +10,7 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
                     $scope.sentChallenges = data;
                 }
             }).error(function (error) {
-            alert("something went wrong in challengesSent !!");
+            console.log("something went wrong in challengesSent !!");
         });//end http.get
 
         $http.post('/api/challenge/challengesRecieved',$scope.currUser.id)
@@ -19,7 +19,7 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
                     $scope.challengesRecieved = data;
                 }
             }).error(function (error) {
-            alert("something went wrong in recievedChallenged !!");
+            console.log("something went wrong in recievedChallenged !!");
         });//end http.get
     }//end function
     $scope.init();
@@ -41,12 +41,12 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
                     // $scope.challengesRecieved = data;
                 }
             }).error(function (error) {
-            alert("something went wrong in withdraw challenge!!");
+            console.log("something went wrong in withdraw challenge!!");
         });//end http.get
     }
 
     $scope.accept = function(){
-        alert("Challenge Accepted");
+        console.log("Challenge Accepted");
     }
 
 

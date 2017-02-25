@@ -29,7 +29,7 @@ angular.module('myApp.OnlineController',[]).
                     $scope.online = data;
                 }
             }).error(function (error) {
-            alert("something went wrong!!");
+            console.log("something went wrong!!");
         });//end http.get
     }//end function
     $scope.init();
