@@ -136,17 +136,21 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
         $scope.closeSellRate = $scope.currBid;
         $scope.closeAskRate = $scope.currAsk;
 
+        $scope.longPipDifference = $scope.closeSellRate - $scope.openBuyRate;
+        $scope.shortPipDifference = $scope.openSellRate - $scope.closeAskRate;
+
+        $scope.lotSize = $scope.currUserStake * $scope.leverage;
+
         if(direction=='buy'){
-            $scope.profitAndLoss = ($scope.closeSellRate - $scope.openBuyRate) * ($scope.currUserStake * $scope.leverage);
+            $scope.profitAndLoss = ( $scope.longPipDifference * $scope.lotSize);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
         }else if(direction=='sell'){
-            $scope.profitAndLoss = ($scope.openSellRate - $scope.closeAskRate) * ($scope.currUserStake * $scope.leverage);
+            $scope.profitAndLoss = ($scope.shortPipDifference * $scope.lotSize);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
         }
     }
 
     $scope.indirectQuoteCalc = function(pair,direction){
-        console.log("$scope.indirectQuoteCalc method called");
         /**
          * curr ask and curr bid are used for calculating the P&L, whether (buy or sell)
          */
@@ -156,11 +160,17 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
         $scope.closeSellRate = $scope.currBid;
         $scope.closeAskRate = $scope.currAsk;
 
+
+        $scope.longPipDifference = $scope.closeSellRate - $scope.openBuyRate;
+        $scope.shortPipDifference = $scope.openSellRate - $scope.closeAskRate;
+
+        $scope.lotSize = $scope.currUserStake * $scope.leverage;
+
         if(direction=='buy'){
-            $scope.profitAndLoss = ((($scope.closeSellRate - $scope.openBuyRate) * ($scope.currUserStake * $scope.leverage))/$scope.closeSellRate);
+            $scope.profitAndLoss = ( ($scope.longPipDifference *  $scope.lotSize) / $scope.closeSellRate);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
         }else if(direction=='sell'){
-            $scope.profitAndLoss = ((($scope.openSellRate - $scope.closeAskRate) * ($scope.currUserStake * $scope.leverage))/$scope.closeAskRate);
+            $scope.profitAndLoss = (($scope.shortPipDifference * $scope.lotSize)/$scope.closeAskRate);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
         }
     }
@@ -180,12 +190,16 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
         $scope.closeSellRate = pair.bid;
         $scope.closeAskRate = pair.ask;
 
+        $scope.longPipDifference = $scope.closeSellRate - $scope.openBuyRate;
+        $scope.shortPipDifference = $scope.openSellRate - $scope.closeAskRate;
+        $scope.lotSize = $scope.currUserStake * $scope.leverage;
+
 
         if(direction=='buy'){
             $scope.getBase();
 
             $scope.setCrossProfit = function(){
-                $scope.profitAndLoss = (($scope.closeSellRate - $scope.openBuyRate) * ($scope.currUserStake * $scope.leverage) )*$scope.baseAsk;
+                $scope.profitAndLoss = ($scope.longPipDifference * $scope.lotSize *$scope.baseAsk);
                 $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             }
 
@@ -193,7 +207,7 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
             $scope.getBase();
 
             $scope.setCrossProfit = function() {
-                $scope.profitAndLoss = (($scope.openSellRate - $scope.closeAskRate) * ($scope.currUserStake * $scope.leverage) * $scope.baseBid);
+                $scope.profitAndLoss = ($scope.shortPipDifference * $scope.lotSize * $scope.baseBid);
                 $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             }
         }//end else
@@ -206,7 +220,6 @@ $scope.getBase = function(){
 
                 $scope.baseAsk = data.ask;
                 $scope.baseBid = data.bid;
-
 
                 $scope.setCrossProfit();
             }
