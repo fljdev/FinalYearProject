@@ -3,7 +3,7 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
     $scope.currUser = $cookieStore.get('userCookie');
     $scope.stakes = ["100", "250","500","1000","2500","5000","10000"];
     $scope.available = $scope.currUser.account.balance;
-    $scope.leverage = 300;
+    $scope.leverage = 1000;
     $scope.mMargin=0;
 
     $scope.openBuyRate=0;
@@ -98,10 +98,22 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
 
         }else if($scope.pairChosenSym.match("USD/")){
             console.log($scope.pairChosenSym, " is an InDirect Quote");
+
+            if($scope.direction=='buy'){
+
+                $scope.openBuyRate = $scope.pairChosen.ask;
+
+            }else if ($scope.direction == 'sell'){
+
+                $scope.openSellRate = $scope.pairChosen.bid;
+            }
+
             $scope.watch("USD/");
 
         }else{
             console.log($scope.pairChosenSym, " is a Cross");
+
+
             $scope.watch("cross")
         }
 
@@ -114,7 +126,7 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
      */
     $scope.watch = function(param){
         $scope.watchMarkets = function(){
-            console.log("watching");
+            console.log("watching markets...");
 
             $http.post('/api/fight/getThisPair',$scope.pairChosenSym)
                 .success(function (data, status) {
@@ -141,7 +153,7 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
 
     $scope.directQuoteCalc = function(pair,direction){
 
-        console.log("inside directQuteCalc");
+        console.log("inside directQuteCalc , direction is ",direction);
         /**
          * curr ask and curr bid are used for calculating the P&L, whether (buy or sell)
          */
@@ -149,17 +161,56 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
         $scope.currBid = pair.bid;
 
         $scope.closeSellRate = $scope.currBid;
+        $scope.closeAskRate = $scope.currAsk;
 
-        $scope.profitAndLoss = ($scope.closeSellRate - $scope.openBuyRate) * ($scope.currUserStake * $scope.leverage);
-        $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+        if(direction=='buy'){
+            $scope.profitAndLoss = ($scope.closeSellRate - $scope.openBuyRate) * ($scope.currUserStake * $scope.leverage);
+            $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+        }else if(direction=='sell'){
+            $scope.profitAndLoss = ($scope.openSellRate - $scope.closeAskRate) * ($scope.currUserStake * $scope.leverage);
+            $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+        }
     }
 
-    $scope.indirectQuoteCalc = function(){
+    $scope.indirectQuoteCalc = function(pair,direction){
         console.log("$scope.indirectQuoteCalc method called");
+        /**
+         * curr ask and curr bid are used for calculating the P&L, whether (buy or sell)
+         */
+        $scope.currAsk = pair.ask;
+        $scope.currBid = pair.bid;
+
+        $scope.closeSellRate = $scope.currBid;
+        $scope.closeAskRate = $scope.currAsk;
+
+        if(direction=='buy'){
+            $scope.profitAndLoss = ((($scope.closeSellRate - $scope.openBuyRate) * ($scope.currUserStake * $scope.leverage))/$scope.closeSellRate);
+            $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+        }else if(direction=='sell'){
+            $scope.profitAndLoss = ((($scope.openSellRate - $scope.closeAskRate) * ($scope.currUserStake * $scope.leverage))/$scope.closeAskRate);
+            $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+        }
     }
 
-    $scope.crossQuoteCalc = function(){
+    $scope.crossQuoteCalc = function(pair,direction){
         console.log("$scope.crossQuoteCalc method called");
+
+        /**
+         * curr ask and curr bid are used for calculating the P&L, whether (buy or sell)
+         */
+        $scope.currAsk = pair.ask;
+        $scope.currBid = pair.bid;
+
+        $scope.closeSellRate = $scope.currBid;
+        $scope.closeAskRate = $scope.currAsk;
+
+        if(direction=='buy'){
+            $scope.profitAndLoss = ($scope.closeSellRate - $scope.openBuyRate) * ($scope.currUserStake * $scope.leverage);
+            $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+        }else if(direction=='sell'){
+            $scope.profitAndLoss = ($scope.openSellRate - $scope.closeAskRate) * ($scope.currUserStake * $scope.leverage);
+            $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+        }
     }
 
 
