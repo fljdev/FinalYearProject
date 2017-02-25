@@ -9,7 +9,7 @@ controller('AllUsersController', function($scope,$http){
                         $scope.allUsers = data;
                     }
                 }).error(function (error) {
-                alert("something went wrong!!");
+                console.log("something went wrong!!");
             });//end http.get
     }//end function
     $scope.init();

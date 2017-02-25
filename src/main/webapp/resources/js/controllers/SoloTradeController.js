@@ -111,7 +111,7 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
                         $scope.pairChosen = data;
                     }
                 }).error(function (error) {
-                alert("something went wrong in pairs call inside watch markets!!");
+                console.log("something went wrong in pairs call inside watch markets!!");
             });//end http.get
         }
         $interval( function(){ $scope.watchMarkets(); }, 4000);
@@ -169,34 +169,35 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
 
         if(pair.symbols=='EUR/GBP'){
             $scope.param = 'GBP/USD';
+        }else if(pair.symbols=='EUR/AUD'){
+            $scope.param='AUD/USD';
+        }else if(pair.symbols=='EUR/NZD') {
+            $scope.param = 'NZD/USD';
+        }else if(pair.symbols=='AUD/NZD') {
+            $scope.param = 'NZD/USD';
         }
-
 
         $scope.closeSellRate = pair.bid;
         $scope.closeAskRate = pair.ask;
 
 
-
         if(direction=='buy'){
             $scope.getBase();
 
-            $scope.setEURGBPProfit = function(){
+            $scope.setCrossProfit = function(){
                 $scope.profitAndLoss = (($scope.closeSellRate - $scope.openBuyRate) * ($scope.currUserStake * $scope.leverage) )*$scope.baseAsk;
                 $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             }
 
-
-
         }else if(direction=='sell'){
             $scope.getBase();
 
-            $scope.setEURGBPProfit = function() {
+            $scope.setCrossProfit = function() {
                 $scope.profitAndLoss = (($scope.openSellRate - $scope.closeAskRate) * ($scope.currUserStake * $scope.leverage) * $scope.baseBid);
                 $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             }
-
-        }
-    }
+        }//end else
+    }//end crossQuoteCalc
 
 $scope.getBase = function(){
     $http.post('/api/fight/getThisPair',$scope.param)
@@ -207,10 +208,10 @@ $scope.getBase = function(){
                 $scope.baseBid = data.bid;
 
 
-                $scope.setEURGBPProfit();
+                $scope.setCrossProfit();
             }
         }).error(function (error) {
-        console.log("something went wrong in the pairs controller init function!!");
+        console.log("something went wrong in getBase() -> getThisPair!!");
     });//end http.get
 }
 

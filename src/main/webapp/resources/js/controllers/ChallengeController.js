@@ -16,7 +16,7 @@ controller('ChallengeController', function($scope,$cookieStore,$http,$state,$sta
 
                 }
             }).error(function (error) {
-            alert("something went wrong!!");
+            console.log("something went wrong!!");
 
 
         });
@@ -38,7 +38,7 @@ controller('ChallengeController', function($scope,$cookieStore,$http,$state,$sta
                     console.log($scope.currUser.username,"vs",$scope.askedUser.username,"Challenge Saved");
                 }
             }).error(function (error) {
-            alert("something went wrong in saveChallenge!!");
+            console.log("something went wrong in saveChallenge!!");
         });//end http.get
 
 

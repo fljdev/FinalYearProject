@@ -20,7 +20,7 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
                     $scope.play();
                 }
             }).error(function (error) {
-            alert("something went wrong!!");
+            console.log("something went wrong!!");
         });//end http.get
     }//end function
     $scope.init();
@@ -65,7 +65,7 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
                     $scope.oppUsername = data.username;
                 }
             }).error(function (error) {
-            alert("something went wrong in find by id!!");
+            console.log("something went wrong in find by id!!");
         });//end http.get
 
         /**
@@ -202,7 +202,7 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
                     $scope.editValues();
                 }
             }).error(function (error) {
-            alert("something went wrong in pairs!!");
+            console.log("something went wrong in pairs!!");
         });//end http.get
 
         /**
@@ -218,7 +218,7 @@ controller('FightStartController', function($scope,$cookieStore,$http,$state,$st
                         $scope.thisFight.pairs[1] = data;
                     }
                 }).error(function (error) {
-                alert("something went wrong in pairs!!");
+                console.log("something went wrong in pairs!!");
             });//end http.get
 
         }, millisecondsToWait);
