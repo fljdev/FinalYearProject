@@ -1,6 +1,8 @@
 package com.example.controllers;
 
 import com.example.entities.BankAccount;
+import com.example.entities.CurrencyPair;
+import com.example.entities.Trade;
 import com.example.entities.User;
 import com.example.services.IBankAccountService;
 import com.example.services.IUserService;
@@ -40,6 +42,8 @@ public class UserRestController {
         String email = jsonObject.getString("email");
         String password = jsonObject.getString("password");
         String confirmPassword = jsonObject.getString("confirmPassword");
+
+
 
         if(!password.equalsIgnoreCase(confirmPassword)){
             return null;

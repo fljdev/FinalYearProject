@@ -66,7 +66,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         var tradeObject = {};
 
         tradeObject.playerID = $scope.currUser.id+"";
-        tradeObject.pairID = $scope.pairChosen.id+"";
+        tradeObject.pairSymbols = $scope.pairChosen.symbols;
         tradeObject.stake = $scope.currUserStake;
         tradeObject.action = $scope.direction;
         // console.log(tradeObject.playerID, tradeObject.pairID,tradeObject.stake,tradeObject.action);
