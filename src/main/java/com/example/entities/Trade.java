@@ -27,6 +27,8 @@ public class Trade {
     private Timestamp timestampClose;
     private double stake;
     private String action;
+
+    @Column(nullable = true)
     private double profitLoss;
 
     public Trade(User user, CurrencyPair currencyPair, Timestamp timestampOpen,
