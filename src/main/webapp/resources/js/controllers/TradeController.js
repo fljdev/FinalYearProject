@@ -23,6 +23,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
                     //data will be equal to the arraylist returned by the UserRestController
                     $scope.pairs = data;
+                    console.log("pair is ",$scope.pairChosen);
 
                 }
             }).error(function (error) {
@@ -119,6 +120,11 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     }//end trade()
 
+    $scope.closeTrade = function(x){
+
+        $scope.p = x;
+        console.log("closing trade : ",$scope.p.symbols);
+    }
 
     $scope.watch = function(param){
         $scope.watchMarkets = function(){
