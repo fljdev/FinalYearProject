@@ -58,12 +58,12 @@
         <td><select ng-model="currUserPair" ng-options="x.symbols for x in pairs| orderBy:'symbols'"></td>
         <td><select ng-model="gameParamsObj.currUserDirection" ng-options="x for x in direction"></td>
         <td><select ng-model="gameParamsObj.currUserStake" ng-options="x for x in stakes"></td>
-        <!--<td><select ng-model="gameParamsObj.currUserLeverage" ng-options="x for x in leverages"></td>-->
-        <td>
-            <md-button ng-click="toggleLeft()" class="md-accent" ng-model = "currUser.username">
-              Open Sidenav
-            </md-button>>
-        </td>
+        <td><select ng-model="gameParamsObj.currUserLeverage" ng-options="x for x in leverages"></td>
+        <!--<td>-->
+            <!--<md-button ng-click="toggleLeft()" class="md-accent" ng-model = "currUser.username">-->
+              <!--Open Sidenav-->
+            <!--</md-button>>-->
+        <!--</td>-->
         <!--<td><button ng-click="getSclass="btn btn-success">Stats</button></td>-->
 
     </tr>
