@@ -144,9 +144,17 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
         if(direction=='buy'){
             $scope.profitAndLoss = ( $scope.longPipDifference * $scope.lotSize);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+            $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.currUserStake));
+            $scope.equityView = ($scope.equity.toFixed(2));
+
+
         }else if(direction=='sell'){
             $scope.profitAndLoss = ($scope.shortPipDifference * $scope.lotSize);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+            $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.currUserStake));
+            $scope.equityView = $scope.equity.toFixed(2);
+
+
         }
     }
 
@@ -169,9 +177,17 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
         if(direction=='buy'){
             $scope.profitAndLoss = ( ($scope.longPipDifference *  $scope.lotSize) / $scope.closeSellRate);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+            $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.currUserStake));
+            $scope.equityView = $scope.equity.toFixed(2);
+
+
         }else if(direction=='sell'){
             $scope.profitAndLoss = (($scope.shortPipDifference * $scope.lotSize)/$scope.closeAskRate);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+            $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.currUserStake));
+            $scope.equityView = $scope.equity.toFixed(2);
+
+
         }
     }
 
@@ -201,6 +217,10 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
             $scope.setCrossProfit = function(){
                 $scope.profitAndLoss = ($scope.longPipDifference * $scope.lotSize *$scope.baseAsk);
                 $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+                $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.currUserStake));
+                $scope.equityView = $scope.equity.toFixed(2);
+
+
             }
 
         }else if(direction=='sell'){
@@ -209,6 +229,10 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
             $scope.setCrossProfit = function() {
                 $scope.profitAndLoss = ($scope.shortPipDifference * $scope.lotSize * $scope.baseBid);
                 $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+                $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.currUserStake));
+                $scope.equityView = $scope.equity.toFixed(2);
+
+
             }
         }//end else
     }//end crossQuoteCalc
