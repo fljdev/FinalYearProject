@@ -51,7 +51,7 @@
     </thead>
 
     <tbody>
-    <tr ng-repeat="x in pairs">
+    <tr ng-repeat-start="x in pairs">
         <td align="left" colspan="2">{{x.symbols}}</td>
         <td bgcolor="	#48D1CC"align="center">..%</td>
 
@@ -70,6 +70,16 @@
         <td bgcolor="#F0F8FF" align="center" colspan="2">{{x.high}}/{{x.low}}</td>
         <!--<td bgcolor="#4286f4" align="center">{{x.spreadPips}}</td>-->
         <!--<td bgcolor="#f0f4b5" align="center">{{x.timeStampString}}</td>-->
+    </tr>
+    <tr ng-repeat-end="" ng-if="x.ask>1">
+        <td>{{x.symbols}}</td>
+        <td></td>
+        <td colspan="2">Value:$</td>
+        <td><button class="btn btn-default btn-block btn-danger"ng-click="closeTrade(x)"  >Close Position!!</button></td>
+        <td colspan="2">P/L :$</td>
+        <td></td>
+        <td></td>
+
     </tr>
     </tbody>
 </table>
