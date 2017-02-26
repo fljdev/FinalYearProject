@@ -1,5 +1,5 @@
-angular.module('myApp.SoloTradeController',[]).
-controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav){
+angular.module('myApp.TradeController',[]).
+controller('TradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav){
     $scope.currUser = $cookieStore.get('userCookie');
     $scope.stakes = ["100", "250","500","1000","2500","5000","10000"];
     $scope.available = $scope.currUser.account.balance;
@@ -8,6 +8,7 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
 
     $scope.openBuyRate=0;
     $scope.openSellRate=0;
+
 
 
     /**
@@ -62,6 +63,24 @@ controller('SoloTradeController',function($scope,$http,$state,$cookieStore,$inte
 
 
     $scope.trade = function(){
+        var tradeObject = {};
+
+        tradeObject.playerID = $scope.currUser.id+"";
+        tradeObject.pairID = $scope.pairChosen.id+"";
+        tradeObject.stake = $scope.currUserStake;
+        tradeObject.action = $scope.direction;
+        // console.log(tradeObject.playerID, tradeObject.pairID,tradeObject.stake,tradeObject.action);
+
+
+
+        $http.post('/api/trade/saveTrade',JSON.stringify(tradeObject))
+            .success(function (data, status) {
+                if(status = 200){
+                    console.log("save trade http.post worked");
+                }
+            }).error(function (error) {
+            console.log("something went wrong in pairs call inside watch markets!!");
+        });//end http.get
 
         /**
          * reduce amount available each time trader opens a position
