@@ -20,11 +20,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         $http.get('/api/fight/pairs')
             .success(function (data, status) {
                 if(status = 200){
-
-                    //data will be equal to the arraylist returned by the UserRestController
                     $scope.pairs = data;
-                    console.log("pair is ",$scope.pairChosen);
-
                 }
             }).error(function (error) {
             console.log("something went wrong in the pairs controller init function!!");
@@ -58,6 +54,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             $mdSidenav(componentId).toggle();
         };
     }
+
 
 
 
@@ -123,8 +120,14 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.closeTrade = function(x){
 
         $scope.p = x;
-        console.log("closing trade : ",$scope.p.symbols);
+        console.log("closing trade : ",$scope.p);
     }
+
+
+
+
+
+
 
     $scope.watch = function(param){
         $scope.watchMarkets = function(){
@@ -152,6 +155,16 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
 
+
+
+
+
+
+    /**
+     * Calculation Section
+     * @param pair
+     * @param direction
+     */
 
     $scope.directQuoteCalc = function(pair,direction){
 
@@ -204,15 +217,11 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.currUserStake));
             $scope.equityView = $scope.equity.toFixed(2);
-
-
         }else if(direction=='sell'){
             $scope.profitAndLoss = (($scope.shortPipDifference * $scope.lotSize)/$scope.closeAskRate);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.currUserStake));
             $scope.equityView = $scope.equity.toFixed(2);
-
-
         }
     }
 
@@ -244,10 +253,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
                 $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.currUserStake));
                 $scope.equityView = $scope.equity.toFixed(2);
-
-
             }
-
         }else if(direction=='sell'){
             $scope.getBase();
 
@@ -256,8 +262,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
                 $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.currUserStake));
                 $scope.equityView = $scope.equity.toFixed(2);
-
-
             }
         }//end else
     }//end crossQuoteCalc

@@ -77,14 +77,12 @@ public class TradeRestController {
         user = findById(playerID);
 
         trade.setUser(user);
-        trade.setCurrencyPair(currencyPair);
+        trade.setCurrencyPairOpen(currencyPair);
         trade.setStake(stake);
         trade.setAction(action);
         trade.setTimestampOpen(timestampOpen);
 
         iTradeService.saveTrade(trade);
-
-
     }//end saveTrade
 
     @RequestMapping(value ="/getThisPair", method = RequestMethod.POST, produces = "application/json")
