@@ -21,7 +21,13 @@ public class Trade {
     private User user;
 
     @ManyToOne
-    private CurrencyPair currencyPair;
+    private CurrencyPair currencyPairOpen;
+
+
+    @ManyToOne
+    private CurrencyPair currencyPairClose;
+
+
 
     private Timestamp timestampOpen;
     private Timestamp timestampClose;
@@ -31,10 +37,11 @@ public class Trade {
     @Column(nullable = true)
     private double profitLoss;
 
-    public Trade(User user, CurrencyPair currencyPair, Timestamp timestampOpen,
-                 Timestamp timestampClose, double stake, String action, double profitLoss) {
+    public Trade(User user, CurrencyPair currencyPairOpen, CurrencyPair currencyPairClose,
+                 Timestamp timestampOpen, Timestamp timestampClose, double stake, String action, double profitLoss) {
         this.user = user;
-        this.currencyPair = currencyPair;
+        this.currencyPairOpen = currencyPairOpen;
+        this.currencyPairClose = currencyPairClose;
         this.timestampOpen = timestampOpen;
         this.timestampClose = timestampClose;
         this.stake = stake;
@@ -58,12 +65,20 @@ public class Trade {
         this.user = user;
     }
 
-    public CurrencyPair getCurrencyPair() {
-        return currencyPair;
+    public CurrencyPair getCurrencyPairOpen() {
+        return currencyPairOpen;
     }
 
-    public void setCurrencyPair(CurrencyPair currencyPair) {
-        this.currencyPair = currencyPair;
+    public void setCurrencyPairOpen(CurrencyPair currencyPairOpen) {
+        this.currencyPairOpen = currencyPairOpen;
+    }
+
+    public CurrencyPair getCurrencyPairClose() {
+        return currencyPairClose;
+    }
+
+    public void setCurrencyPairClose(CurrencyPair currencyPairClose) {
+        this.currencyPairClose = currencyPairClose;
     }
 
     public Timestamp getTimestampOpen() {
@@ -111,7 +126,8 @@ public class Trade {
         return "Trade{" +
                 "id=" + id +
                 ", user=" + user +
-                ", currencyPair=" + currencyPair +
+                ", currencyPairOpen=" + currencyPairOpen +
+                ", currencyPairClose=" + currencyPairClose +
                 ", timestampOpen=" + timestampOpen +
                 ", timestampClose=" + timestampClose +
                 ", stake=" + stake +
