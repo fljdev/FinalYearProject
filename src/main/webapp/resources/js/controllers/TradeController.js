@@ -141,6 +141,15 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 }).error(function (error) {
                 console.log("something went wrong in pairs call inside watch markets!!");
             });//end http.get
+
+            if(param.match("/USD")){
+                $scope.directQuoteCalc($scope.pairChosen,$scope.direction);
+            }else if(param.match("USD/")){
+                $scope.indirectQuoteCalc($scope.pairChosen,$scope.direction);
+            }else if(param.match("cross")){
+                $scope.crossQuoteCalc($scope.pairChosen,$scope.direction);
+            }
+
         }
         $interval( function(){ $scope.watchMarkets(); }, 4000);
 
