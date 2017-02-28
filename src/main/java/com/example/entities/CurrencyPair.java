@@ -27,7 +27,7 @@ public class CurrencyPair {
     private double spreadPips;
 
     @Column(nullable = true)
-    private boolean active;
+    private boolean active = true;
 
     private String timeStampString;
 

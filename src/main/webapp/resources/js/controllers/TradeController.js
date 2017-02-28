@@ -117,6 +117,16 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 console.log("something went wrong in pairs call inside watch markets!!");
             });
 
+            $http.post('/api/trade/getOpenTrades',$scope.currUser.id)
+                .success(function (data, status) {
+                    if(status = 200){
+                        $scope.openTrades = data;
+                        console.log($scope.openTrades);
+                    }
+                }).error(function (error) {
+                console.log("something went wrong in getOpenTrades call!!");
+            });
+
             $scope.calculatePositions(param);
 
         }

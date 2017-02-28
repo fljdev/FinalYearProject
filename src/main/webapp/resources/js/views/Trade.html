@@ -37,6 +37,7 @@
     <col width="200px" />
     <col width="100px" />
     <col width="100px" />
+    <col width="100px" />
 
     <thead>
     <tr class="border_bottom">
@@ -47,6 +48,7 @@
         <th style = "background-color:#BDB76B;color:#ffffff;">Ask</th>
         <th style = "background-color:#BDB76B;color:#ffffff;"><i>action</i></th>
         <th style = "background-color:#BDB76B;color:#ffffff;" colspan="2">High/Low</th>
+        <th style = "background-color:#BDB76B;color:#ffffff;" colspan="2">Spread</th>
     </tr>
     </thead>
 
@@ -68,10 +70,10 @@
             </md-button></td>
         </td>
         <td bgcolor="#F0F8FF" align="center" colspan="2">{{x.high}}/{{x.low}}</td>
-        <!--<td bgcolor="#4286f4" align="center">{{x.spreadPips}}</td>-->
+        <td bgcolor="#4286f4" align="center">{{x.spreadPips}}</td>
         <!--<td bgcolor="#f0f4b5" align="center">{{x.timeStampString}}</td>-->
     </tr>
-    <tr ng-repeat-end="" ng-if="x.active">
+    <tr ng-repeat-end="" ng-if="x.bid>1">
         <td>{{x.symbols}}</td>
         <td></td>
         <td colspan="2">Value:$</td>
