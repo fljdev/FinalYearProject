@@ -48,7 +48,7 @@
         <th style = "background-color:#BDB76B;color:#ffffff;">Ask</th>
         <th style = "background-color:#BDB76B;color:#ffffff;"><i>action</i></th>
         <th style = "background-color:#BDB76B;color:#ffffff;" colspan="2">High/Low</th>
-        <th style = "background-color:#BDB76B;color:#ffffff;" colspan="2">Spread</th>
+        <th style = "background-color:#BDB76B;color:#ffffff;">Spread</th>
     </tr>
     </thead>
 
@@ -73,12 +73,13 @@
         <td bgcolor="#4286f4" align="center">{{x.spreadPips}}</td>
         <!--<td bgcolor="#f0f4b5" align="center">{{x.timeStampString}}</td>-->
     </tr>
-    <tr ng-repeat-end="" ng-if="x.bid>1">
+    <tr ng-repeat-end="o in openTrades" ng-if="">
         <td>{{x.symbols}}</td>
         <td></td>
         <td colspan="2">Value:$</td>
         <td><button class="btn btn-default btn-block btn-danger"ng-click="closeTrade(x)"  >Close Position!!</button></td>
         <td colspan="2">P/L :$</td>
+        <td></td>
         <td></td>
         <td></td>
 
