@@ -43,7 +43,6 @@ public class UserService implements IUserService{
         for(User aUser: userDAO.findAll()){
 
             if(aUser.isOnline()){
-                System.out.println(aUser.getUsername());
 
 
                 usersOnline.add(aUser);

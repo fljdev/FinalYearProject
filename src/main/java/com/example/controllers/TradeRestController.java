@@ -50,7 +50,6 @@ public class TradeRestController {
     public void saveThisChallenge(@RequestBody String json)throws Exception{
         JSONObject jsonObject = new JSONObject(json);
 
-        System.out.println(json);
 
 
         String playerID = jsonObject.getString("playerID");
@@ -131,6 +130,38 @@ public class TradeRestController {
             }
         }
         return null;
+    }
+
+    @RequestMapping(value = "/getAllTrades", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ArrayList<Trade> findAllTrades(){
+        ArrayList<Trade> trades = new ArrayList<>();
+        trades=    iTradeService.getAllTrades();
+        return trades;
+    }
+
+    @RequestMapping(value = "/getOpenTrades", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ArrayList<Trade> findOpenTrades(@RequestBody String userId){
+
+        int i = Integer.parseInt(userId);
+        ArrayList<User> users = iUserService.getAllUsers();
+        User currentUser = null;
+        for(User u : users){
+            if(u.getId()== i ){
+                currentUser = u;
+            }
+        }
+
+        ArrayList<Trade> allTrades= findAllTrades();
+        ArrayList<Trade> openTrades = new ArrayList<>();
+
+        for(Trade trade : allTrades){
+            if((trade.getUser().getId()== currentUser.getId()) && (trade.getTimestampClose()==null)){
+                openTrades.add(trade);
+            }
+        }
+        return openTrades;
     }
 
 
