@@ -18,6 +18,23 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             }).error(function (error) {
             console.log("something went wrong in the pairs controller init function!!");
         });
+
+        $http.post('/api/trade/getOpenTrades',$scope.currUser.id)
+            .success(function (data, status) {
+                if(status = 200){
+                    $scope.openTrades = data;
+                    console.log($scope.openTrades);
+                }
+            }).error(function (error) {
+            console.log("something went wrong in getOpenTrades call!!");
+        });
+
+
+
+
+        angular.forEach($scope.openTrades, function(value, key) {
+            console.log(key + ':' + value.currencyPairOpen.symbols);
+        });
     }
     $scope.init();
     $interval( function(){ $scope.init(); }, 4000);
@@ -102,9 +119,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
 
-
-
-
     $scope.watch = function(param){
         $scope.watchMarkets = function(){
 
@@ -116,23 +130,14 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 }).error(function (error) {
                 console.log("something went wrong in pairs call inside watch markets!!");
             });
-
-            $http.post('/api/trade/getOpenTrades',$scope.currUser.id)
-                .success(function (data, status) {
-                    if(status = 200){
-                        $scope.openTrades = data;
-                        console.log($scope.openTrades);
-                    }
-                }).error(function (error) {
-                console.log("something went wrong in getOpenTrades call!!");
-            });
-
             $scope.calculatePositions(param);
-
         }
         $interval( function(){ $scope.watchMarkets(); }, 4000);
         $scope.calculatePositions(param);
     }
+
+
+
 
 
     $scope.calculatePositions = function(param){
