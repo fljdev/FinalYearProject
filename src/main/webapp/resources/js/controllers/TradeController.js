@@ -10,7 +10,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
     $scope.init = function(){
-        $http.get('/api/fight/pairs')
+        $http.get('/api/trade/pairs')
             .success(function (data, status) {
                 if(status = 200){
                     $scope.pairs = data;
@@ -108,7 +108,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.watch = function(param){
         $scope.watchMarkets = function(){
 
-            $http.post('/api/fight/getThisPair',$scope.pairChosenSym)
+            $http.post('/api/trade/getThisPair',$scope.pairChosenSym)
                 .success(function (data, status) {
                     if(status = 200){
                         $scope.pairChosen = data;
@@ -228,7 +228,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     }
 
 $scope.getBase = function(){
-    $http.post('/api/fight/getThisPair',$scope.param)
+    $http.post('/api/trade/getThisPair',$scope.param)
         .success(function (data, status) {
             if(status = 200){
 

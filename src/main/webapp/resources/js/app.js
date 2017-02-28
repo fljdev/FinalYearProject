@@ -16,9 +16,6 @@ angular.module('myApp',[
     'myApp.navheader',
     'myApp.PairsController',
     'myApp.ChallengedController',
-    'myApp.FightController',
-    'myApp.FightStartController',
-    'myApp.FightEndController',
     'myApp.LogRegController',
     'myApp.ChallengeController',
     'myApp.OpenChallengesController',
@@ -73,16 +70,6 @@ angular.module('myApp',[
             url: '/fight/:param',
             templateUrl: "resources/js/views/Fight.html",
             controller: "FightController"
-        })
-        .state('fightStart',{
-            url: '/fightStart/:paramm',
-            templateUrl: "resources/js/views/FightStart.html",
-            controller: "FightStartController"
-        })
-        .state('fightEnd',{
-            url: '/fightEnd',
-            templateUrl: "resources/js/views/FightEnd.html",
-            controller: "FightEndController"
         })
         .state('logreg',{
             url: '/logreg',

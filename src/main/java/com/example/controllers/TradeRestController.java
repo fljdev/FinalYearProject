@@ -71,6 +71,7 @@ public class TradeRestController {
 
         CurrencyPair currencyPair = new CurrencyPair();
         currencyPair = thisPair(pairSymbols);
+        currencyPair.setActive(true);
         iCurrencyPairService.saveCurrencyPair(currencyPair);
 
         User user = new User();
@@ -115,7 +116,6 @@ public class TradeRestController {
         pairs = tester.getCurrencyPairs();
 
 
-        System.out.println("pairs came in as "+pairs.toString());
         return pairs;
     }
 
