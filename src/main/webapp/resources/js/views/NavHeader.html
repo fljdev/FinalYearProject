@@ -67,6 +67,7 @@
 
                 <li ng-show='loggedIn'><a ng-href="" ng-click = "logOut()" class="btn btn-danger">LogOut<span class="glyphicon glyphicon-user"></span></a></li>
                 <li ng-show='!loggedIn'> <a ng-href="#/logreg" >Access Site<span class="glyphicon glyphicon-user"></span></a></li>
+                <li ng-show='loggedIn'> <a ng-href="" >{{currentUser.username}}</a></li>
 
             </ul>
 
