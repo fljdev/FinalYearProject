@@ -10,6 +10,7 @@ directive('navheader', function($cookieStore, $state, $http, $rootScope){
 
             if($cookieStore.get('userCookie')){
                 $scope.loggedIn = true;
+                $scope.currentUser = $cookieStore.get('userCookie');
             }
 
             $scope.logOut = function () {

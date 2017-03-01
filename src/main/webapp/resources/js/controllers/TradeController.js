@@ -28,9 +28,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             console.log("something went wrong in getOpenTrades call!!");
         });
 
-
-
-
         // angular.forEach($scope.openTrades, function(value, key) {
         //     console.log(key + ':' + value.currencyPairOpen.symbols);
         // });
