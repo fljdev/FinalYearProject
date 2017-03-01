@@ -1,5 +1,5 @@
 angular.module('myApp.LogRegController',[]).
-controller('LogRegController',function($scope) {
+controller('LogRegController',function($scope,$http,$state,$cookieStore) {
     $(function () {
 
         $('#login-form-link').click(function (e) {
@@ -18,5 +18,38 @@ controller('LogRegController',function($scope) {
         });
 
     });
+
+    $scope.submitRegistration =function(){
+
+        $http.post('/api/user/register', JSON.stringify($scope.register))
+            .success(function (data, status) {
+                if(status = 200){
+
+                    $scope.register = data;
+                    $state.go('home');
+                    $cookieStore.put('userCookie',$scope.register);
+                }
+            }).error(function (error) {
+            console.log("something went wrong!!");
+        });
+    };
+
+
+    $scope.submitLogin=function(){
+        console.log($scope.login);
+
+        $http.post('/api/user/login', JSON.stringify($scope.login))
+            .success(function (data, status) {
+                if(status = 200){
+
+                    $scope.login = data;
+                    $state.go('home');
+
+                    $cookieStore.put('userCookie',$scope.login);
+                }
+            }).error(function (error) {
+            console.log("something went wrong!!");
+        });
+    };
 });
 
