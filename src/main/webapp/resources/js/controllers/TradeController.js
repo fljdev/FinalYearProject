@@ -6,9 +6,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.available = $scope.currUser.account.balance;
     $scope.leverage = 300;
     $scope.mMargin=0;
-
-
-
     $scope.init = function(){
 
         $scope.getPairs();
@@ -125,8 +122,20 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     $scope.closeTrade = function(x){
 
-        $scope.p = x;
-        console.log("closing trade : ",$scope.p);
+        console.log("closing : ", x);
+        var closeParams = {};
+        closeParams.id = $scope.currUser.id+"";
+        closeParams.sym = x.symbols;
+
+        $http.post('/api/trade/closeTrade',JSON.stringify(closeParams))
+            .success(function (data, status) {
+                if(status = 200){
+                    // $scope.pairChosen = data;
+                    console.log("yey");
+                }
+            }).error(function (error) {
+            console.log("something went wrong in closeTrade!!");
+        });
     }
 
 

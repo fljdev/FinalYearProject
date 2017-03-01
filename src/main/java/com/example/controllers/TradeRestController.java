@@ -45,7 +45,7 @@ public class TradeRestController {
 
 
     @RequestMapping(value = "/saveTrade", method = RequestMethod.POST, produces = "application/json")
-    public void saveThisChallenge(@RequestBody String json)throws Exception{
+    public void saveThisTrade(@RequestBody String json)throws Exception{
         JSONObject jsonObject = new JSONObject(json);
 
 
@@ -71,8 +71,7 @@ public class TradeRestController {
         currencyPair.setActive(true);
         iCurrencyPairService.saveCurrencyPair(currencyPair);
 
-        User user = new User();
-        user = findById(playerID);
+        User user = findById(playerID);
 
         trade.setUser(user);
         trade.setCurrencyPairOpen(currencyPair);
@@ -82,6 +81,28 @@ public class TradeRestController {
 
         iTradeService.saveTrade(trade);
     }//end saveTrade
+
+    @RequestMapping(value = "/closeTrade", method = RequestMethod.POST, produces = "application/json")
+    public void closeThisTrade(@RequestBody String json)throws Exception{
+        JSONObject jsonObject = new JSONObject(json);
+        String playerID = jsonObject.getString("id");
+        String pairSymbols = jsonObject.getString("sym");
+
+        CurrencyPair closingPair = thisPair(pairSymbols);
+        iCurrencyPairService.saveCurrencyPair(closingPair);
+
+        ArrayList<Trade> openTrades = findOpenTrades(playerID);
+        for(Trade t : openTrades){
+            if(t.getCurrencyPairOpen().getSymbols().equalsIgnoreCase(pairSymbols)){
+                Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
+                t.setTimestampClose(timestampClose);
+                t.setCurrencyPairClose(closingPair);
+                iTradeService.saveTrade(t);
+            }
+        }
+    }
+
+
 
     @RequestMapping(value ="/getThisPair", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
