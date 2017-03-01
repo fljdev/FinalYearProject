@@ -6,9 +6,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Generated;
 import javax.persistence.*;
 
-/**
- * Created by admin on 26/10/2016.
- */
 
 @Entity
 public class User {
@@ -20,18 +17,12 @@ public class User {
     @OneToOne
     private BankAccount account;
 
-
     private String firstName;
     private String lastName;
     private String username;
     private String email;
     private String password;
     private boolean online;
-
-
-    //private CurrencyPair currencyPair; Object not created yet
-    //private Rank rank; Object not created yet
-
 
     public User() {
     }

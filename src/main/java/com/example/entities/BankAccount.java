@@ -5,9 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-/**
- * Created by admin on 30/01/2017.
- */
 
 @Entity
 public class BankAccount {

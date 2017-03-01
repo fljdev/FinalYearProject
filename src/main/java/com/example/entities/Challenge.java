@@ -5,9 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-/**
- * Created by admin on 18/02/2017.
- */
 
 @Entity
 public class Challenge {

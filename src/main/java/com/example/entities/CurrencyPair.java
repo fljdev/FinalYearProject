@@ -5,9 +5,6 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-/**
- * Created by admin on 17/10/2016.
- */
 
 @Entity
 public class CurrencyPair {

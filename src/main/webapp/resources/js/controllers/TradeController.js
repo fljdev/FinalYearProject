@@ -10,14 +10,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
     $scope.init = function(){
-        $http.get('/api/trade/pairs')
-            .success(function (data, status) {
-                if(status = 200){
-                    $scope.pairs = data;
-                }
-            }).error(function (error) {
-            console.log("something went wrong in the pairs controller init function!!");
-        });
+
+        $scope.getPairs();
 
         $http.post('/api/trade/getOpenTrades',$scope.currUser.id)
             .success(function (data, status) {
@@ -32,6 +26,19 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         //     console.log(key + ':' + value.currencyPairOpen.symbols);
         // });
     };
+
+    $scope.getPairs = function(){
+        $http.get('/api/trade/pairs')
+            .success(function (data, status) {
+                if(status = 200){
+                    $scope.pairs = data;
+                }
+            }).error(function (error) {
+            console.log("something went wrong in the pairs controller init function!!");
+        });
+    }
+
+    $scope.getPairs();
     $scope.init();
     $interval( function(){ $scope.init(); }, 4000);
 

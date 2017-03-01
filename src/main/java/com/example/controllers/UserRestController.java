@@ -61,9 +61,7 @@ public class UserRestController {
         iBankAccountService.register(account);
 
         aUser.setAccount(account);
-        /**
-         * Registering will mean you are notautomatically online.
-         */
+
         aUser.setOnline(true);
         iUserService.register(aUser);
         return aUser;
@@ -89,9 +87,9 @@ public class UserRestController {
                     u.setOnline(true);
                     iUserService.register(u);
                     return u;
-                }//end if
-            }//end if
-        }//end for
+                }
+            }
+        }
         return null;
     }
 
@@ -104,7 +102,6 @@ public class UserRestController {
             if(u.getUsername().equalsIgnoreCase(username)){
 
                 u.setOnline(false);
-//                iUserService.deleteUser(u);
                 iUserService.register(u);
 
                 return null;
@@ -161,126 +158,29 @@ public class UserRestController {
 
 
 
+    @RequestMapping(value = "/deleteUser",method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public String deleteUser(){
 
+        ArrayList<User>users = iUserService.getAllUsers();
 
+        User userToDelete=null;
+        for(User aUser:users){
+            if(aUser.getUsername().equalsIgnoreCase("Joni")){
+                userToDelete=aUser;
+            }
+        }
 
-//    @RequestMapping(value = "/getFightGameObject", method = RequestMethod.POST, produces = "application/json")
-//    public Fight fight(@RequestBody String jsonLogin)throws Exception{
-//
-//        JSONObject jsonObject = new JSONObject(jsonLogin);
-//
-//        String challengerId = jsonObject.getString("cId");
-//        int challId = Integer.parseInt(challengerId);
-//        String cPair = jsonObject.getString("cPair");
-//        String cDir = jsonObject.getString("currUserDirection");
-//        String cStake = jsonObject.getString("currUserStake");
-//        String cLev = jsonObject.getString("currUserLeverage");
-//
-//        String opponentId = jsonObject.getString("oId");
-//        int oppId = Integer.parseInt(opponentId);
-//        String oPair = jsonObject.getString("oPair");
-//        String oDir = jsonObject.getString("askedUserDirection");
-//        String oStake = jsonObject.getString("askedUserStake");
-//        String oLev = jsonObject.getString("askedUserLeverage");
-//
-//
-//        ArrayList<CurrencyPair>pairs = new ArrayList<>();
-//        pairs=allPairs();
-//        CurrencyPair challengerPair = new CurrencyPair();
-//        CurrencyPair opponentPair = new CurrencyPair();
-//        for(CurrencyPair cp : pairs){
-//            if(cp.getSymbols().equalsIgnoreCase(cPair)){
-//                challengerPair=cp;
-//                iCurrencyPairService.saveCurrencyPair(challengerPair);
-//            }
-//            if(cp.getSymbols().equalsIgnoreCase(oPair)){
-//                opponentPair=cp;
-//                iCurrencyPairService.saveCurrencyPair(opponentPair);
-//            }
-//        }
-//        ArrayList<CurrencyPair>temp = new ArrayList<>();
-//        temp.add(challengerPair);
-//        temp.add(opponentPair);
-//        Set<CurrencyPair> set = new HashSet<CurrencyPair>(temp);
-//
-//
-//        Fight aFight = new Fight();
-//
-//        aFight.setChallengerID(challId);
-//        aFight.setPairs(set);
-//        aFight.setChallengerDirection(cDir);
-//        aFight.setChallengerStake(Double.parseDouble(cStake));
-//        aFight.setChallengerLeverage(Double.parseDouble(cLev));
-//
-//        aFight.setOpponentID(oppId);
-//        aFight.setOpponentDirection(oDir);
-//        aFight.setOpponentStake(Double.parseDouble(oStake));
-//        aFight.setOpponentLeverage(Double.parseDouble(oLev));
-//
-//        System.out.println(aFight.toString());
-//        iFightService.saveFight(aFight);
-//
-//
-//        return null;
-//    }
+        if(userToDelete!=null){
+            iUserService.deleteUser(userToDelete);
+
+            return userToDelete.getUsername()+ " has been deleted";
+        }else{
+            return "Could not find user in db";
+        }
+    }
 
 
 
 
-//        ArrayList<User> users = iUserService.getAllUsers();
-//
-//        for(User u : users){
-//
-//            if(u.getUsername().equalsIgnoreCase(handle)|| u.getEmail().equalsIgnoreCase(handle)){
-//                if(u.getPassword().equals(password)){
-//
-//                    if(u.getUsername().equalsIgnoreCase("j")){
-//                        u.getAccount().setBalance(u.getAccount().getBalance()+1666);
-//                    }
-//
-//
-//                    u.setOnline(true);
-//                    iUserService.register(u);
-//                    return u;
-//                }
-//            }
-//
-////            if((u.getUsername().equalsIgnoreCase(handle)|| u.getEmail().equalsIgnoreCase(handle) &&  u.getPassword().equals(password))){
-////                u.setOnline(true);
-////                iUserService.register(u);
-////                return u;
-////
-
-
-
-
-
-
-
-
-//    @RequestMapping(value = "/deleteUser",method = RequestMethod.GET, produces = "application/json")
-//    @ResponseBody
-//    public String deleteUser(){
-//
-//        ArrayList<User>users = iUserService.getAllUsers();
-//
-//        User userToDelete=null;
-//        for(User aUser:users){
-//            if(aUser.getUsername().equalsIgnoreCase("Joni")){
-//                userToDelete=aUser;
-//            }
-//        }
-//
-//        if(userToDelete!=null){
-//            iUserService.deleteUser(userToDelete);
-//
-//            return userToDelete.getUsername()+ " has been deleted";
-//        }else{
-//            return "Could not find user in db";
-//        }
-//    }
-
-
-
-
-}//end class
+}

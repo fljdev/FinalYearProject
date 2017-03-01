@@ -3,9 +3,6 @@ package com.example.entities;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-/**
- * Created by admin on 26/02/2017.
- */
 
 @Entity
 public class Trade {

@@ -9,9 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
-/**
- * Created by admin on 26/02/2017.
- */
 
 @Service
 @Transactional

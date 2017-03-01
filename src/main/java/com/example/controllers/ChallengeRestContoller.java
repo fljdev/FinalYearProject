@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
-/**
- * Created by admin on 18/02/2017.
- */
+
 
 @RestController
 @RequestMapping("/api/challenge")
