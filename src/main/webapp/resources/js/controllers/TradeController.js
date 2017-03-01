@@ -23,7 +23,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             .success(function (data, status) {
                 if(status = 200){
                     $scope.openTrades = data;
-                    console.log($scope.openTrades);
                 }
             }).error(function (error) {
             console.log("something went wrong in getOpenTrades call!!");
@@ -32,14 +31,23 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
 
-        angular.forEach($scope.openTrades, function(value, key) {
-            console.log(key + ':' + value.currencyPairOpen.symbols);
-        });
-    }
+        // angular.forEach($scope.openTrades, function(value, key) {
+        //     console.log(key + ':' + value.currencyPairOpen.symbols);
+        // });
+    };
     $scope.init();
     $interval( function(){ $scope.init(); }, 4000);
 
-
+    $scope.checkForOpenTrades= function (pair) {
+        function findPair(currentPair) {
+            return currentPair.currencyPairOpen.symbols === pair.symbols;
+        }
+        var found = $scope.openTrades.find(findPair);
+        if(found){
+            return true;
+        }
+        return false;
+    };
 
 
 

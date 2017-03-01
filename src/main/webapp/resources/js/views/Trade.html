@@ -73,7 +73,7 @@
         <td bgcolor="#4286f4" align="center">{{x.spreadPips}}</td>
         <!--<td bgcolor="#f0f4b5" align="center">{{x.timeStampString}}</td>-->
     </tr>
-    <tr ng-repeat-end="o in openTrades" ng-if="">
+    <tr ng-repeat-end="" ng-show="checkForOpenTrades(x)">
         <td>{{x.symbols}}</td>
         <td></td>
         <td colspan="2">Value:$</td>
