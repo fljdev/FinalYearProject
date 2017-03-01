@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-/**
- * Created by admin on 26/02/2017.
- */
+
 
 @RestController
 @RequestMapping("/api/trade")

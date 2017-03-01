@@ -4,9 +4,6 @@ import com.example.entities.User;
 
 import java.util.ArrayList;
 
-/**
- * Created by admin on 26/10/2016.
- */
 public interface IUserService {
 
     ArrayList<User> getAllUsers();

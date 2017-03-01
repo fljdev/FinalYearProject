@@ -21,7 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-
 public class ForexDriver {
 
     public ForexDriver()throws Exception{
@@ -32,23 +31,15 @@ public class ForexDriver {
     static final String PASSWORD = "root";
     public static ArrayList<CurrencyPair> currencyPairs = new ArrayList<CurrencyPair>();
     public static ArrayList<TrueFxResponse> rawResponseList = new ArrayList<TrueFxResponse>();
-    public static ArrayList<CurrencyPairSet> currencyPairSets = new ArrayList<CurrencyPairSet>();
 
 
-//    private Player playerA;
-//    private Player playerB;
     private static int playerAPairIndex;
     private static double amount;
 
-
-    // HTTP GET request
     private String getAuthCode() throws Exception {
 
         String username;
         String password;
-
-
-
         String url = "http://webrates.truefx.com/rates/connect.html?u="+USERNAME+"&p="+PASSWORD+"&q=eurates&c=EUR/USD,USD/JPY,"+
                 "GBP/USD,EUR/GBP,USD/CHF,AUD/USD,AUD/NZD,EUR/AUD,EUR/NZD,NZD/USD,USD/NOK,USD/SEK,USD/CAD&f=xml\n";
         URL obj = new URL(url);
@@ -64,9 +55,8 @@ public class ForexDriver {
             response.append(inputLine);
         }
         in.close();
-
         return response.toString();
-    }//end getAuthCode
+    }
 
     public void getCurrencyPairRates()throws Exception{
 
@@ -77,13 +67,11 @@ public class ForexDriver {
         Elements rows = doc.select("tr");
 
         for (Element aRow : rows) {
-
             String[] splitArray = null;
             splitArray = aRow.text().split("\\s+");
             parseResponse(splitArray);
-
-        }//end for
-    }//end getCurrencyPairs()
+        }
+    }
 
 
     public void parseResponse(String[] splitArray){
@@ -112,7 +100,7 @@ public class ForexDriver {
             }
         }
         rawResponseList.add(aResponse);
-    }//end parseResponse()
+    }
 
     public void makeCurrencyPairs(ArrayList<TrueFxResponse> responseList){
 
@@ -140,16 +128,10 @@ public class ForexDriver {
             double spread = 0;
             DecimalFormat df = new DecimalFormat("#0.0");
 
-
             if(res.getTd1().contains("JPY")){
                 spread = ((askNumeric - bidNumeric)*100);
-
-
-
             }else{
                 spread = ((askNumeric - bidNumeric)*10000);
-
-
             }
 
             aPair.setSpreadPips(Double.parseDouble(df.format(spread)));
@@ -160,151 +142,14 @@ public class ForexDriver {
 
             aPair.setTimeStampString(sdf.format(timestamp).toString());
 
-
             currencyPairs.add(aPair);
         }
-
     }
 
     public static void main(String[] args)throws Exception {
-
         ForexDriver tester = new ForexDriver();
         tester.makeCurrencyPairs(tester.rawResponseList);
-//        tester.createBackupFiles();
     }
-
-
-    public void makeCurrencyPairSets(CurrencyPair cp){
-        CurrencyPairSet cps = new CurrencyPairSet();
-
-        CurrencyPair aPair = cp;
-        makeCurrencyPairSets(aPair);
-
-        if(aPair.getSymbols().equals("EUR/USD")){
-            cps.setEURUSD(aPair);
-        }
-        if(aPair.getSymbols().equals("USD/JPY")){
-            cps.setUSDJPY(aPair);
-        }
-        if(aPair.getSymbols().equals("GBP/USD")){
-            cps.setGBPUSD(aPair);
-        }
-        if(aPair.getSymbols().equals("EUR/GBP")){
-            cps.setEURGBP(aPair);
-        }
-        if(aPair.getSymbols().equals("USD/CHF")){
-            cps.setUSDCHF(aPair);
-        }
-        if(aPair.getSymbols().equals("EUR/JPY")){
-            cps.setEURJPY(aPair);
-        }
-        if(aPair.getSymbols().equals("EUR/CHF")){
-            cps.setEURCHF(aPair);
-        }
-        if(aPair.getSymbols().equals("USD/CAD")){
-            cps.setUSDCAD(aPair);
-        }
-        if(aPair.getSymbols().equals("AUD/USD")){
-            cps.setAUDUSD(aPair);
-        }
-        if(aPair.getSymbols().equals("GBP/JPY")){
-            cps.setGBPJPY(aPair);
-        }
-        if(aPair.getSymbols().equals("AUD/CAD")){
-            cps.setAUDCAD(aPair);
-        }
-        if(aPair.getSymbols().equals("AUD/CHF")){
-            cps.setAUDCHF(aPair);
-        }
-        if(aPair.getSymbols().equals("AUD/JPY")){
-            cps.setAUDJPY(aPair);
-        }
-        if(aPair.getSymbols().equals("AUD/NZD")){
-            cps.setAUDNZD(aPair);
-        }
-        if(aPair.getSymbols().equals("CAD/CHF")){
-            cps.setCADCHF(aPair);
-        }
-        if(aPair.getSymbols().equals("CAD/JPY")){
-            cps.setCADJPY(aPair);
-        }
-        if(aPair.getSymbols().equals("CHF/JPY")){
-            cps.setCHFJPY(aPair);
-        }
-        if(aPair.getSymbols().equals("EUR/AUD")){
-            cps.setEURAUD(aPair);
-        }
-        if(aPair.getSymbols().equals("EUR/CAD")){
-            cps.setEURCAD(aPair);
-        }
-        if(aPair.getSymbols().equals("EUR/NOK")){
-            cps.setEURNOK(aPair);
-        }
-        if(aPair.getSymbols().equals("EUR/NZD")){
-            cps.setEURNZD(aPair);
-        }
-        if(aPair.getSymbols().equals("GBP/CAD")){
-            cps.setGBPCAD(aPair);
-        }
-        if(aPair.getSymbols().equals("GBP/CHF")){
-            cps.setGBPCHF(aPair);
-        }
-        if(aPair.getSymbols().equals("NZD/JPY")){
-            cps.setNZDJPY(aPair);
-        }
-        if(aPair.getSymbols().equals("NZD/USD")){
-            cps.setNZDUSD(aPair);
-        }
-        if(aPair.getSymbols().equals("USD/NOK")){
-            cps.setUSDNOK(aPair);
-        }
-        if(aPair.getSymbols().equals("USD/SEK")){
-            cps.setUSDSEK(aPair);
-        }
-
-        currencyPairSets.add(cps);
-    }
-
-public void createBackupFiles()throws Exception{
-    for(int i = 0;i<10800;i++){
-
-        //We can get current date using default constructor
-        Date currentDate = new Date();
-        //toString would print the full date time string
-        String stamp = (currentDate.toString());
-
-        ForexDriver forexDriver = new ForexDriver();
-        forexDriver.makeCurrencyPairs(forexDriver.rawResponseList);
-
-        PrintWriter wr = new PrintWriter("/Users/admin/Documents/College/4th_Year/FYP/CurrencyQuotes/quotes/"+stamp+".txt","UTF-8");
-
-        Thread.sleep(1000);
-
-        for(CurrencyPairSet set : forexDriver.currencyPairSets){
-            ObjectMapper om = new ObjectMapper();
-            String x = om.writeValueAsString(set);
-            wr.println(x);
-//            wr.println(set.toString());
-        }
-//        for(CurrencyPair cp : forexDriver.currencyPairs){
-//
-//            ObjectMapper om = new ObjectMapper();
-//
-//            System.out.println("this json give ");
-//            String x = om.writeValueAsString(cp);
-//            System.out.println(x);
-//
-////          wr.println(cp.toString());
-////            System.out.println(cp.toString()+"\n");
-//
-//        }
-        wr.close();
-    }
-}
-
-
-
-
 
 
     public boolean validatePairSelection(String pair){
@@ -319,91 +164,7 @@ public void createBackupFiles()throws Exception{
         return found;
     }
 
-//    public String playerAChoosesPair(){
-//        Scanner scan = new Scanner(System.in);
-//
-//        System.out.println("Pick a pair");
-//        String playerAPair = scan.nextLine();
-//
-//
-//        do{
-//            if(validatePairSelection(playerAPair)){
-//                System.out.println("You chose "+playerAPair);
-//
-//                CurrencyPair playerACurrencyPair = new CurrencyPair();
-//                playerACurrencyPair.setSymbols(playerAPair);
-//                playerA.setPlayersPair(playerACurrencyPair);
-//                return playerAPair;
-//
-//            }else{
-//                System.out.println("You chose an invalid pair, retry");
-//                playerAPair=scan.nextLine();
-//            }
-//        }while(!validatePairSelection(playerAPair));
-//
-//        return playerAPair;
-//    }
-//
-//
-//    public void setUpGame(){
-//        Scanner scan = new Scanner(System.in);
-//        playerA = new Player("Johnny",1000000);
-//        playerB = new Player("Samantha",1000000);
-//
-//        // playerAChoosesPair();
-//        String aPair = playerAChoosesPair();
-//        for(CurrencyPair cp : currencyPairs){
-//            if(aPair.equalsIgnoreCase(cp.getSymbols())){
-//                playerA.setPlayersPair(cp);
-//            }
-//        }
-//
-//
-//        System.out.println("Do you want to take a long or short position?");
-//        String position = scan.nextLine();
-//        System.out.println("Ok, how much do you want to play with?");
-//        amount = scan.nextDouble();
-//        scan.nextLine();
-//        System.out.println("Ok , that's "+amount+ ","+position +" on "+playerA.getPlayersPair().getSymbols().toUpperCase());
-//        /**
-//         * Now player A has a pair,  i need to generate a random one for player b
-//         */
-//        int x = generateBPair(playerAPairIndex);
-//        playerB.setPlayersPair(currencyPairs.get(x));
-//
-//        playGame(playerA,playerB);
-//    }
-//
-//    public void playGame(Player a, Player b){
-//
-//        Game aGame = new Game();
-//        aGame.setPlayerA(playerA);
-//        aGame.setPlayerB(playerB);
-//        aGame.setPlayerACurrency(playerA.getPlayersPair());
-//        aGame.setPlayerBCurrency(playerB.getPlayersPair());
-//        aGame.setStake(amount);
-//
-//        playerA.setBalance(playerA.getBalance()-amount);
-//        playerB.setBalance(playerB.getBalance()-amount);
-//
-//    }
-//
-//    public int generateBPair(int playerAPairIndex){
-//        int bPair;
-//        do{
-//            Random random = new Random();
-//            int max = 10;
-//            int min = 1;
-//             bPair = random.nextInt(max - min + 1) + min;
-//        }while(playerAPairIndex ==bPair );
-//
-//            return bPair;
-//    }
-
-
     public static ArrayList<CurrencyPair> getCurrencyPairs() {
         return currencyPairs;
     }
-
-
 }

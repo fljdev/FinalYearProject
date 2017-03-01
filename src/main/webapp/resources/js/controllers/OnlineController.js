@@ -6,14 +6,6 @@ angular.module('myApp.OnlineController',[]).
         $state.go('challenge',{param:obj.id});
     }
 
-
-
-    /**
-     * The below section deals solely with displaying the users who are currently online
-     * except the user who is logged into this browser session
-     * @type {string}
-     */
-
     var name="";
     if(!$cookieStore.get('userCookie')){
         name = "xyz";
@@ -30,7 +22,7 @@ angular.module('myApp.OnlineController',[]).
                 }
             }).error(function (error) {
             console.log("something went wrong!!");
-        });//end http.get
-    }//end function
+        });
+    }
     $scope.init();
 });
