@@ -8,8 +8,6 @@ angular.module('myApp',[
     'chart.js',
     'ui.router',
     'myApp.HomeController',
-    'myApp.LoginController',
-    'myApp.RegisterController',
     'myApp.WelcomeController',
     'myApp.OnlineController',
     'myApp.AllUsersController',
@@ -36,16 +34,6 @@ angular.module('myApp',[
             templateUrl: "resources/js/views/Home.html",
             controller:"HomeController"
         })
-        .state('login',{
-            url:"/login",
-            templateUrl: "resources/js/views/Login.html",
-            controller:"LoginController"
-        })
-        .state('register', {
-            url: "/register",
-            templateUrl: "resources/js/views/Register.html",
-            controller: "RegisterController"
-        })
         .state('allUsers', {
             url: "/allUsers",
             templateUrl: "resources/js/views/AllUsers.html",
@@ -65,11 +53,6 @@ angular.module('myApp',[
             url: '/challenged/:param',
             templateUrl: "resources/js/views/Challenged.html",
             controller: "ChallengedController"
-        })
-        .state('fight',{
-            url: '/fight/:param',
-            templateUrl: "resources/js/views/Fight.html",
-            controller: "FightController"
         })
         .state('logreg',{
             url: '/logreg',
