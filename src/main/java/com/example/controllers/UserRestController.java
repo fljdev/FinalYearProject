@@ -34,7 +34,6 @@ public class UserRestController {
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
     public User register(@RequestBody String jsonRegister){
 
-
         JSONObject jsonObject = new JSONObject(jsonRegister);
         String firstName = jsonObject.getString("firstName");
         String lastName = jsonObject.getString("lastName");
@@ -42,8 +41,6 @@ public class UserRestController {
         String email = jsonObject.getString("email");
         String password = jsonObject.getString("password");
         String confirmPassword = jsonObject.getString("confirmPassword");
-
-
 
         if(!password.equalsIgnoreCase(confirmPassword)){
             return null;
