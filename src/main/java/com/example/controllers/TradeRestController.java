@@ -1,10 +1,8 @@
 package com.example.controllers;
 
-import com.example.entities.Challenge;
-import com.example.entities.CurrencyPair;
-import com.example.entities.Trade;
-import com.example.entities.User;
+import com.example.entities.*;
 import com.example.forex.ForexDriver;
+import com.example.services.IBankAccountService;
 import com.example.services.ICurrencyPairService;
 import com.example.services.ITradeService;
 import com.example.services.IUserService;
@@ -23,6 +21,13 @@ public class TradeRestController {
     ITradeService iTradeService;
     ICurrencyPairService iCurrencyPairService;
     IUserService iUserService;
+    IBankAccountService iBankAccountService;
+
+    @Autowired
+    public void setiBankAccountService(IBankAccountService iBankAccountService) {
+
+        this.iBankAccountService = iBankAccountService;
+    }
 
 
     @Autowired
@@ -65,13 +70,19 @@ public class TradeRestController {
 
         Timestamp timestampOpen = new Timestamp(System.currentTimeMillis());
 
-
-        CurrencyPair currencyPair = new CurrencyPair();
-        currencyPair = thisPair(pairSymbols);
+        CurrencyPair currencyPair = thisPair(pairSymbols);
         currencyPair.setActive(true);
         iCurrencyPairService.saveCurrencyPair(currencyPair);
 
         User user = findById(playerID);
+
+        BankAccount account = user.getAccount();
+        double currentBalance = account.getBalance();
+        double updatedBalance = currentBalance - stake;
+        account.setBalance(updatedBalance);
+        iBankAccountService.register(account);
+
+        iUserService.register(user);
 
         trade.setUser(user);
         trade.setCurrencyPairOpen(currencyPair);

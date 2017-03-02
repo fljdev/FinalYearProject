@@ -2,6 +2,20 @@ angular.module('myApp.TradeController',[]).
 controller('TradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav){
 
     $scope.currUser = $cookieStore.get('userCookie');
+    console.log("this",$scope.currUser);
+
+    if($scope.currUser){
+        $http.post('/api/user/findById', JSON.stringify($scope.currUser.id))
+            .success(function (data, status) {
+                if(status = 200){
+                    $cookieStore.put('userCookie', data);
+                    console.log("this s cookie",data);
+                }
+            }).error(function (error) {
+            console.log("something went wrong in pairs call inside watch markets!!");
+        });
+
+    }
     $scope.stakes = ["100", "250","500","1000","2500","5000","10000"];
     $scope.available = $scope.currUser.account.balance;
     $scope.leverage = 300;
