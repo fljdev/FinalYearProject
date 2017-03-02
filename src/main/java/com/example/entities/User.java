@@ -17,6 +17,9 @@ public class User {
     @OneToOne
     private BankAccount account;
 
+    @OneToOne
+    private Rank rank;
+
     private String firstName;
     private String lastName;
     private String username;
@@ -28,13 +31,14 @@ public class User {
     }
 
 
-    public User(String firstName, String lastName, String username, String email, String password,BankAccount account, boolean online) {
+    public User(BankAccount account, Rank rank, String firstName, String lastName, String username, String email, String password, boolean online) {
+        this.account = account;
+        this.rank = rank;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.account = account;
         this.online = online;
     }
 
@@ -42,6 +46,25 @@ public class User {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public BankAccount getAccount() {
+        return account;
+    }
+
+    public void setAccount(BankAccount account) {
+        this.account = account;
+    }
+
+    public Rank getRank() {
+        return rank;
+    }
+
+    public void setRank(Rank rank) {
+        this.rank = rank;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -83,14 +106,6 @@ public class User {
         this.password = password;
     }
 
-    public BankAccount getAccount() {
-        return account;
-    }
-
-    public void setAccount(BankAccount account) {
-        this.account = account;
-    }
-
     public boolean isOnline() {
         return online;
     }
@@ -103,13 +118,16 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", account=" + account +
+                ", rank=" + rank +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", account=" + account +
                 ", online=" + online +
                 '}';
     }
+
+
 }

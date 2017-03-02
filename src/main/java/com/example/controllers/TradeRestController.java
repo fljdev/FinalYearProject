@@ -53,18 +53,11 @@ public class TradeRestController {
     public void saveThisTrade(@RequestBody String json)throws Exception{
         JSONObject jsonObject = new JSONObject(json);
 
-
-
         String playerID = jsonObject.getString("playerID");
         String pairSymbols = jsonObject.getString("pairSymbols");
         String stakeString = jsonObject.getString("stake");
         double stake = Double.parseDouble(stakeString);
         String action = jsonObject.getString("action");
-
-        System.out.println("playerId : "+playerID);
-        System.out.println("pair : "+pairSymbols);
-        System.out.println("stake: "+stake);
-        System.out.println("action : "+action);
 
         Trade trade = new Trade();
 

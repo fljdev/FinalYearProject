@@ -1,6 +1,19 @@
 angular.module('myApp.ChallengedController',[]).
 controller('ChallengedController', function($scope,$cookieStore,$http,$state,$stateParams,$timeout,$mdSidenav, $log){
 
+    $scope.currUser = $cookieStore.get('userCookie');
+    if($scope.currUser){
+        $http.post('/api/user/findById', JSON.stringify($scope.currUser.id))
+            .success(function (data, status) {
+                if(status = 200){
+                    $cookieStore.put('userCookie', data);
+                }
+            }).error(function (error) {
+            console.log("something went wrong in findById -> ChallengedController!!");
+        });
+    }
+    $scope.askedUserID = $stateParams.param;
+
     $scope.toggleLeft = buildToggler('left');
     $scope.toggleRight = buildToggler('right');
 
@@ -15,8 +28,7 @@ controller('ChallengedController', function($scope,$cookieStore,$http,$state,$st
     $scope.stakes = ["100", "250","500","1000","2500","5000","10000"]
     $scope.leverages=["20","33","50","100","200","400"];
 
-    $scope.currUser = $cookieStore.get('userCookie');
-    $scope.askedUserID = $stateParams.param;
+
 
     $scope.pairs;
     $scope.initPairs = function(){
