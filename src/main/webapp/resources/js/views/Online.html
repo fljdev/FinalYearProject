@@ -4,18 +4,21 @@
         <th>Username</th>
         <th>online</th>
         <th>The rank</th>
+        <th>Stake</th>
         <th>Challenge</th>
 
     </tr>
     </thead>
 
     <tbody>
-    <tr ng-repeat="x in online">
-        <td>{{x.username}}</td>
-        <td>{{x.email}}</td>
+    <tr ng-repeat="user in online">
+        <td>{{user.username}}</td>
+        <td>{{user.email}}</td>
         <td>ranks</td>
-        <td><button ng-click="challenge(x)" class="btn btn-success" >Challenge</button></td>
+        <td><select ng-model="challengeStake" ng-options="x for x in stakes"></td>
+        <td><button ng-click="challenge(user, challengeStake)" class="btn btn-success" >Challenge</button></td>
     </tr>
+
     </tbody>
 
 </table>
