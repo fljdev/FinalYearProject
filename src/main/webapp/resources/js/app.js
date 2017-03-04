@@ -13,7 +13,6 @@ angular.module('myApp',[
     'myApp.AllUsersController',
     'myApp.navheader',
     'myApp.PairsController',
-    'myApp.ChallengedController',
     'myApp.LogRegController',
     'myApp.ChallengeController',
     'myApp.OpenChallengesController',
@@ -49,11 +48,6 @@ angular.module('myApp',[
             url: "/pairs",
             templateUrl: "resources/js/views/Pairs.html",
             controller: "PairsController"
-        })
-        .state('challenged',{
-            url: '/challenged/:param',
-            templateUrl: "resources/js/views/Challenged.html",
-            controller: "ChallengedController"
         })
         .state('logreg',{
             url: '/logreg',
