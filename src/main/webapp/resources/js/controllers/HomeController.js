@@ -1,5 +1,5 @@
 angular.module('myApp.HomeController',[]).
-    controller('HomeController',function($scope, $stateParams, $cookieStore){
+    controller('HomeController',function($scope, $stateParams, $cookieStore,$http){
 
     $scope.currUser = $cookieStore.get('userCookie').username;
     $scope.currUser = $cookieStore.get('userCookie');
