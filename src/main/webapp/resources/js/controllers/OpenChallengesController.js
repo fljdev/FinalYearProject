@@ -42,8 +42,9 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
         });
     }
 
-    $scope.accept = function(){
-        console.log("Challenge Accepted");
+    $scope.accept = function(x){
+        console.log("challenge that came is was ",x);
+
     }
 
 });

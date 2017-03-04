@@ -1,6 +1,9 @@
 angular.module('myApp.OnlineController',[]).
     controller('OnlineController', function($scope,$cookieStore,$http,$state){
 
+    $scope.stakes = ["100", "250","500","1000","2500","5000","10000"];
+
+
     $scope.currUser = $cookieStore.get('userCookie').username;
     // if($scope.currUser){
     //     $http.post('/api/user/findById', JSON.stringify($scope.currUser.id))
@@ -13,9 +16,12 @@ angular.module('myApp.OnlineController',[]).
     //     });
     // }
 
-    $scope.challenge = function(x){
-        var obj=x
-        $state.go('challenge',{param:obj.id});
+    $scope.challenge = function(user,stake){
+        console.log("stake is ",stake);
+        console.log(" is ",user);
+
+        // var obj=x
+        // $state.go('challenge',{param:obj.id});
     }
 
     var name="";

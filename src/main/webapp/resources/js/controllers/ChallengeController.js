@@ -25,8 +25,6 @@ controller('ChallengeController', function($scope,$cookieStore,$http,$state,$sta
 
 
     $scope.createChallengeObject = function(){
-        // console.log("3 curr Id : ",$scope.currUser.id);
-        // console.log("4 asked ID :  ",$scope.askedUser.id);
 
         $scope.idArray = {};
         $scope.idArray[0]=$scope.currUser.id;
