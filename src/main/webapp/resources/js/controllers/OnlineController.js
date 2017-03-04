@@ -2,16 +2,16 @@ angular.module('myApp.OnlineController',[]).
     controller('OnlineController', function($scope,$cookieStore,$http,$state){
 
     $scope.currUser = $cookieStore.get('userCookie').username;
-    if($scope.currUser){
-        $http.post('/api/user/findById', JSON.stringify($scope.currUser.id))
-            .success(function (data, status) {
-                if(status = 200){
-                    $cookieStore.put('userCookie', data);
-                }
-            }).error(function (error) {
-            console.log("something went wrong in findById -> RankController!!");
-        });
-    }
+    // if($scope.currUser){
+    //     $http.post('/api/user/findById', JSON.stringify($scope.currUser.id))
+    //         .success(function (data, status) {
+    //             if(status = 200){
+    //                 $cookieStore.put('userCookie', data);
+    //             }
+    //         }).error(function (error) {
+    //         console.log("something went wrong in findById -> OnlineController!!");
+    //     });
+    // }
 
     $scope.challenge = function(x){
         var obj=x

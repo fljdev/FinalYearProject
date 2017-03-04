@@ -9,7 +9,7 @@ controller('WelcomeController',function($scope,$cookieStore,$http){
     //                 $cookieStore.put('userCookie', data);
     //             }
     //         }).error(function (error) {
-    //         console.log("something went wrong in findById -> RankController!!");
+    //         console.log("something went wrong in findById -> WelcomeController!!");
     //     });
     // }
 
