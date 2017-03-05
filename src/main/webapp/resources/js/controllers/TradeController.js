@@ -17,8 +17,12 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     $scope.stakes = ["100", "250","500","1000","2500","5000","10000"];
     $scope.available = $scope.currUser.account.balance;
+    $scope.equity = $scope.available;
+    $scope.equityView = ($scope.equity.toFixed(2));
     $scope.leverage = 300;
     $scope.mMargin=0;
+
+
     $scope.init = function(){
 
         $scope.getPairs();
