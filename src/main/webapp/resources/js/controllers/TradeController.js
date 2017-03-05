@@ -19,13 +19,19 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     var max = 5000000;
     var min = $scope.position;
 
+    $scope.reqSym="";
+
     $scope.increment = function() {
         if ($scope.position >= max) { return; }
         $scope.position +=2500;
+        $scope.marginRequired = $scope.position/$scope.leverage;
+        $scope.marginRequiredView = $scope.marginRequired.toFixed(2);
     };
     $scope.decrement = function() {
         if ($scope.position <= min) { return; }
         $scope.position -=2500;
+        $scope.marginRequired = $scope.position/$scope.leverage;
+        $scope.marginRequiredView = $scope.marginRequired.toFixed(2);
     };
 
 
@@ -35,6 +41,9 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.equityView = ($scope.equity.toFixed(2));
     $scope.leverage = 300;
     $scope.mMargin=0;
+    $scope.marginRequired = $scope.position/$scope.leverage;
+    $scope.marginRequiredView = $scope.marginRequired.toFixed(2);
+
 
 
     $scope.init = function(){
@@ -91,6 +100,9 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             $scope.direction = y;
             $scope.pairChosen =x;
             $scope.pairChosenSym = $scope.pairChosen.symbols;
+
+            $scope.reqSym = $scope.pairChosenSym.charAt(0)+$scope.pairChosenSym.charAt(1)+$scope.pairChosenSym.charAt(2);
+
 
             $mdSidenav(componentId).toggle();
         };
