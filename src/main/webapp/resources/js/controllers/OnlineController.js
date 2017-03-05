@@ -3,8 +3,9 @@ angular.module('myApp.OnlineController',[]).
 
     $scope.stakes = ["100", "250","500","1000","2500","5000","10000"];
 
+    $scope
 
-    $scope.currUser = $cookieStore.get('userCookie').username;
+    $scope.currUser = $cookieStore.get('userCookie');
     // if($scope.currUser){
     //     $http.post('/api/user/findById', JSON.stringify($scope.currUser.id))
     //         .success(function (data, status) {
@@ -16,13 +17,26 @@ angular.module('myApp.OnlineController',[]).
     //     });
     // }
 
-    $scope.challenge = function(user,stake){
-        console.log("stake is ",stake);
-        console.log(" is ",user);
+    $scope.challenge = function(opponent,stake){
 
-        // var obj=x
-        // $state.go('challenge',{param:obj.id});
-    }
+        console.log("opponent is ",opponent);
+        console.log("stake is ",stake);
+
+        var challengeParams = {};
+        challengeParams.currUserID = $scope.currUser.id+"";
+        challengeParams.opponentID = opponent.id+"";
+        challengeParams.stake = stake;
+
+        $http.post('/api/challenge/saveChallenge',JSON.stringify(challengeParams))
+            .success(function (data, status) {
+                if(status = 200){
+                    console.log($scope.currUser.username,"vs",opponent.username,"Challenge Saved");
+                }
+            }).error(function (error) {
+            console.log("something went wrong in saveChallenge!!");
+        });
+
+    };
 
     var name="";
     if(!$cookieStore.get('userCookie')){

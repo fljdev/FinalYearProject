@@ -46,13 +46,23 @@ public class ChallengeRestContoller {
     }
 
     @RequestMapping(value = "/saveChallenge", method = RequestMethod.POST, produces = "application/json")
-    public void saveThisChallenge(@RequestBody String id){
-        JSONObject jsonObject = new JSONObject(id);
-        int currID = jsonObject.getInt("0");
-        int oppID = jsonObject.getInt("1");
+    public void saveThisChallenge(@RequestBody String params){
+        JSONObject jsonObject = new JSONObject(params);
+
+        System.out.println(jsonObject.toString());
+
+        String currIDString = jsonObject.getString("currUserID");
+        int currID = Integer.parseInt(currIDString);
+
+        String opponentID = jsonObject.getString("opponentID");
+        int oppID = Integer.parseInt(opponentID);
+
+        String stakeString = jsonObject.getString("stake");
+        double stake = Double.parseDouble(stakeString);
 
         User currUserObject = findById(String.valueOf(currID));
         String currUsername =currUserObject.getUsername();
+
         User oppUserObject = findById(String.valueOf(oppID));
         String oppUsername = oppUserObject.getUsername();
 
@@ -65,7 +75,10 @@ public class ChallengeRestContoller {
         thisChallenge.setOpponentId(oppID);
         thisChallenge.setOpponentName(oppUsername);
 
+        thisChallenge.setStake(stake);
+
         thisChallenge.setOpen(true);
+
         iChallengeService.saveChallenge(thisChallenge);
     }//end saveThidChallenge
 
@@ -124,6 +137,8 @@ public class ChallengeRestContoller {
             }//end if
         }//end for
     }//end withdrawChallenge
+
+
 
 
 
