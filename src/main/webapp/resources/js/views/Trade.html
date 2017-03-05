@@ -87,6 +87,16 @@
 </table>
 
 
+
+
+
+
+
+
+
+
+
+
 <md-sidenav class="md-sidenav-left" md-component-id="left" md-disable-backdrop="" md-whiteframe="4">
 
     <md-toolbar class="md-theme-indigo">
@@ -99,21 +109,23 @@
 
         <table md-table>
             <thead>
-              <th>Instrument</th>
-              <th>Action</th>
-              <th>Stake</th>
+              <th>{{pairChosen.symbols}}</th>
+              <th>{{direction}}</th>
+              <th></th>
             </thead>
 
             <tbody md-body>
             <tr md-row>
-                <td>{{pairChosen.symbols}}</td>
-                <td> {{direction}}</td>
-                <td><select ng-model="currUserStake" ng-options="x for x in stakes"></td>
+                <td><button ng-click="increment();">+</button></td>
+                <td>   Position: {{position}} </td>
+                <td> <button ng-click="decrement();">-</button></td>
             </tr>
 
             </tbody>
         </table>
         </md-table-container>
+
+
 
 
         <md-button ng-click="closeToggleLeft()" class="md-primary md-raised">

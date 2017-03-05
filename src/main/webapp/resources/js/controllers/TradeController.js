@@ -15,6 +15,20 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     }
 
 
+    $scope.position = 2500;
+    var max = 5000000;
+    var min = $scope.position;
+
+    $scope.increment = function() {
+        if ($scope.position >= max) { return; }
+        $scope.position +=2500;
+    };
+    $scope.decrement = function() {
+        if ($scope.position <= min) { return; }
+        $scope.position -=2500;
+    };
+
+
     $scope.stakes = ["100", "250","500","1000","2500","5000","10000"];
     $scope.available = $scope.currUser.account.balance;
     $scope.equity = $scope.available;
