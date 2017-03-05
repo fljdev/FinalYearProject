@@ -15,18 +15,23 @@ public class Challenge {
 
     private int challengerId;
     private String challengerName;
+
     private int opponentId;
     private String opponentName;
+
+    private double stake;
+
     private boolean open;
 
     public Challenge() {
     }
 
-    public Challenge(int challengerId, String challengerName, int opponentId, String opponentName, boolean open) {
+    public Challenge(int challengerId, String challengerName, int opponentId, String opponentName, double stake, boolean open) {
         this.challengerId = challengerId;
         this.challengerName = challengerName;
         this.opponentId = opponentId;
         this.opponentName = opponentName;
+        this.stake = stake;
         this.open = open;
     }
 
@@ -66,6 +71,14 @@ public class Challenge {
         this.opponentName = opponentName;
     }
 
+    public double getStake() {
+        return stake;
+    }
+
+    public void setStake(double stake) {
+        this.stake = stake;
+    }
+
     public boolean isOpen() {
         return open;
     }
@@ -82,6 +95,7 @@ public class Challenge {
                 ", challengerName='" + challengerName + '\'' +
                 ", opponentId=" + opponentId +
                 ", opponentName='" + opponentName + '\'' +
+                ", stake=" + stake +
                 ", open=" + open +
                 '}';
     }

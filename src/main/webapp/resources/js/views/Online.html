@@ -2,7 +2,6 @@
     <thead>
     <tr>
         <th>Username</th>
-        <th>online</th>
         <th>The rank</th>
         <th>Stake</th>
         <th>Challenge</th>
@@ -11,12 +10,11 @@
     </thead>
 
     <tbody>
-    <tr ng-repeat="user in online">
-        <td>{{user.username}}</td>
-        <td>{{user.email}}</td>
+    <tr ng-repeat="opponent in online">
+        <td>{{opponent.username}}</td>
         <td>ranks</td>
         <td><select ng-model="challengeStake" ng-options="x for x in stakes"></td>
-        <td><button ng-click="challenge(user, challengeStake)" class="btn btn-success" >Challenge</button></td>
+        <td><button ng-click="challenge(opponent, challengeStake)" class="btn btn-success" >Challenge</button></td>
     </tr>
 
     </tbody>
