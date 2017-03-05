@@ -14,7 +14,6 @@ angular.module('myApp',[
     'myApp.navheader',
     'myApp.PairsController',
     'myApp.LogRegController',
-    'myApp.ChallengeController',
     'myApp.OpenChallengesController',
     'myApp.TradeController',
     'myApp.RankController'
@@ -53,11 +52,6 @@ angular.module('myApp',[
             url: '/logreg',
             templateUrl: "resources/js/views/LogReg.html",
             controller: "LogRegController"
-        })
-        .state('challenge',{
-            url: '/challenge/:param',
-            templateUrl: "resources/js/views/Challenge.html",
-            controller: "ChallengeController"
         })
         .state('openChallenges',{
             url: '/openChallenges',
