@@ -91,6 +91,10 @@ public class TradeRestController {
         JSONObject jsonObject = new JSONObject(json);
         String playerID = jsonObject.getString("id");
         String pairSymbols = jsonObject.getString("sym");
+        String profitString = jsonObject.getString("profitAndLoss");
+        double profit = Double.parseDouble(profitString);
+
+
 
         CurrencyPair closingPair = thisPair(pairSymbols);
         iCurrencyPairService.saveCurrencyPair(closingPair);
@@ -101,6 +105,7 @@ public class TradeRestController {
                 Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
                 t.setTimestampClose(timestampClose);
                 t.setCurrencyPairClose(closingPair);
+                t.setProfitLoss(profit);
                 iTradeService.saveTrade(t);
             }
         }
