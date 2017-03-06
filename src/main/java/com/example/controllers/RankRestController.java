@@ -74,7 +74,7 @@ public class RankRestController {
 
 
 
-        return users;
+        return rankedByBalanceList;
     }
 
 

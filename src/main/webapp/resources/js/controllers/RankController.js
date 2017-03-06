@@ -33,10 +33,13 @@ controller('RankController',function($scope, $stateParams, $cookieStore, $http){
                 if(status = 200){
                     // $scope.allRanks = data;\
                     console.log(",saveRank returned : ",data);
+                    $scope.ranks = data;
                 }
             }).error(function (error) {
             console.log("something went wrong getting saveRanks!!");
         });
+
+
     }
     $scope.init();
 
