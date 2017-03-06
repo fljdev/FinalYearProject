@@ -121,6 +121,8 @@ public class UserRestController {
     public ArrayList<User> onlineUsers(@RequestBody String username){
 
 
+
+
         ArrayList<User>users = new ArrayList((ArrayList<User>) iUserService.getAllUsers());
         ArrayList<User> onlineUsers = new ArrayList<>();
 

@@ -22,7 +22,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
 
-    $scope.position = 75000;
+    $scope.position = 2500;
     var max = 5000000;
     var min = 2500;
 
@@ -104,7 +104,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             }).error(function (error) {
             console.log("something went wrong in $scope.getThisConversionPair!!");
         });
-    }
+    };
 
     $scope.init = function(){
         $scope.getPairs();
@@ -218,7 +218,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         }else{
             $scope.watch("cross")
         }
-    }
+    };
 
 
 
@@ -260,10 +260,10 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 console.log("something went wrong in pairs call inside watch markets !!");
             });
             $scope.calculatePositions(param);
-        }
+        };
         $interval( function(){ $scope.watchMarkets(); }, 4000);
         $scope.calculatePositions(param);
-    }
+    };
 
 
 
@@ -277,7 +277,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         }else if(param.match("cross")){
             $scope.crossQuoteCalc($scope.pairChosen,$scope.direction);
         }
-    }
+    };
 
 
 
