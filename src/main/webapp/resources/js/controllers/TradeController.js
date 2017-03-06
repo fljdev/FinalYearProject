@@ -1,18 +1,24 @@
 angular.module('myApp.TradeController',[]).
 controller('TradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav){
 
-    $scope.currUser = $cookieStore.get('userCookie');
 
-    if($scope.currUser){
-        $http.post('/api/user/findById', JSON.stringify($scope.currUser.id))
-            .success(function (data, status) {
-                if(status = 200){
-                    $cookieStore.put('userCookie', data);
-                }
-            }).error(function (error) {
-            console.log("something went wrong in findById -> TradeController!!");
-        });
-    }
+    $scope.setUser = function(){
+        $scope.currUser = $cookieStore.get('userCookie');
+
+        if($scope.currUser){
+            $http.post('/api/user/findById', JSON.stringify($scope.currUser.id))
+                .success(function (data, status) {
+                    if(status = 200){
+                        $cookieStore.put('userCookie', data);
+                    }
+                }).error(function (error) {
+                console.log("something went wrong in findById -> TradeController!!");
+            });
+        }
+    };
+    $scope.setUser();
+
+
 
 
 
@@ -47,7 +53,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
 
-    // $scope.stakes = ["100", "250","500","1000","2500","5000","10000"];
     $scope.available = $scope.currUser.account.balance;
     $scope.availableView = $scope.available.toFixed(2);
     $scope.equity = $scope.available;
@@ -176,7 +181,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
         tradeObject.playerID = $scope.currUser.id+"";
         tradeObject.pairSymbols = $scope.pairChosen.symbols;
-        tradeObject.stake = $scope.currUserStake;
+        tradeObject.stake = $scope.marginRequiredAccount+"";
         tradeObject.action = $scope.direction;
 
 
@@ -222,10 +227,12 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     $scope.closeTrade = function(x){
 
-        console.log("closing : ", x);
         var closeParams = {};
         closeParams.id = $scope.currUser.id+"";
         closeParams.sym = x.symbols;
+        closeParams.profitAndLoss = $scope.profitAndLoss+"";
+        // console.log("closing : ", x," profit" ,closeParams.profitAndLoss.toFixed(2));
+
 
         $http.post('/api/trade/closeTrade',JSON.stringify(closeParams))
             .success(function (data, status) {
