@@ -1,9 +1,7 @@
 angular.module('myApp.OnlineController',[]).
     controller('OnlineController', function($scope,$cookieStore,$http,$state){
 
-    $scope.stakes = ["100", "250","500","1000","2500","5000","10000"];
 
-    $scope
 
     $scope.currUser = $cookieStore.get('userCookie');
     // if($scope.currUser){
@@ -17,15 +15,11 @@ angular.module('myApp.OnlineController',[]).
     //     });
     // }
 
-    $scope.challenge = function(opponent,stake){
-
-        console.log("opponent is ",opponent);
-        console.log("stake is ",stake);
+    $scope.challenge = function(opponent){
 
         var challengeParams = {};
         challengeParams.currUserID = $scope.currUser.id+"";
         challengeParams.opponentID = opponent.id+"";
-        challengeParams.stake = stake;
 
         $http.post('/api/challenge/saveChallenge',JSON.stringify(challengeParams))
             .success(function (data, status) {

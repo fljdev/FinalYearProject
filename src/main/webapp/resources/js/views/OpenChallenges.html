@@ -27,7 +27,6 @@
         <th>Challenger</th>
         <th>Opponent</th>
         <th>Status</th>
-        <th>Stake</th>
         <th>Option</th>
     </tr>
     </thead>
@@ -38,7 +37,6 @@
         <td>{{x.opponentName}}</td>
         <td ng-if="x.open">{{"Open"}}</td>
         <td ng-if="x.open ==  false">{{"Completed"}}</td>
-        <td>{{x.stake}}</td>
         <td><button ng-click="withdraw(x)" class="btn btn-danger">Withdraw Challenge</button></td>
 
 
@@ -60,7 +58,6 @@
         <th>Challenger</th>
         <th>Opponent</th>
         <th>Status</th>
-        <th>Stake</th>
         <th colspan="2">Option</th>
     </tr>
     </thead>
@@ -71,7 +68,6 @@
         <td>{{x.opponentName}}</td>
         <td ng-if="x.open">{{"Open"}}</td>
         <td ng-if="x.open ==  false">{{"Completed"}}</td>
-        <td>{{x.stake}}</td>
         <td><button ng-click="accept(x)" class="btn btn-success">Accept</button></td>
         <td><button ng-click="withdraw(x)" class="btn btn-warning">Decline</button></td>
 
