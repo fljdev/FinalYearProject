@@ -57,9 +57,6 @@ public class ChallengeRestContoller {
         String opponentID = jsonObject.getString("opponentID");
         int oppID = Integer.parseInt(opponentID);
 
-        String stakeString = jsonObject.getString("stake");
-        double stake = Double.parseDouble(stakeString);
-
         User currUserObject = findById(String.valueOf(currID));
         String currUsername =currUserObject.getUsername();
 
@@ -74,8 +71,6 @@ public class ChallengeRestContoller {
 
         thisChallenge.setOpponentId(oppID);
         thisChallenge.setOpponentName(oppUsername);
-
-        thisChallenge.setStake(stake);
 
         thisChallenge.setOpen(true);
 
