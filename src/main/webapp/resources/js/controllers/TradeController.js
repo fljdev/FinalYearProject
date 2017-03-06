@@ -26,12 +26,16 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         $scope.position +=2500;
         $scope.marginRequired = $scope.position/$scope.leverage;
         $scope.marginRequiredView = $scope.marginRequired.toFixed(2);
+        $scope.convertRequiredMarginUSD($scope.pairChosenSym);
+
     };
     $scope.decrement = function() {
         if ($scope.position <= min) { return; }
         $scope.position -=2500;
         $scope.marginRequired = $scope.position/$scope.leverage;
         $scope.marginRequiredView = $scope.marginRequired.toFixed(2);
+        $scope.convertRequiredMarginUSD($scope.pairChosenSym);
+
     };
 
 
@@ -43,6 +47,42 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.mMargin=0;
     $scope.marginRequired = $scope.position/$scope.leverage;
     $scope.marginRequiredView = $scope.marginRequired.toFixed(2);
+
+
+    $scope.convertRequiredMarginUSD = function(sym){
+        console.log("sym came in as ",sym);
+        if(sym.match("EUR/")){
+            console.log("i neeed ask of EUR/USD");
+            var symParam = "EUR/USD";
+        }else if(sym.match("GBP/")){
+            console.log("i neeed ask of GBP/USD");
+            var symParam = "GBP/USD";
+        }else if(sym.match("AUD/")){
+            console.log("i neeed ask of AUD/USD");
+            var symParam = "AUD/USD";
+        }else if(sym.match("NZD/")){
+            console.log("i neeed ask of NZD/USD");
+            var symParam = "NZD/USD";
+        }else if(sym.match("USD/")){
+            console.log("i neeed ask of NZD/USD");
+            $scope.marginRequiredAccount = $scope.marginRequired;
+            $scope.marginRequiredAccountView = $scope.marginRequiredAccount.toFixed(2);
+        }
+
+        $http.post('/api/trade/getThisPair',symParam)
+            .success(function (data, status) {
+                if(status = 200){
+                    $scope.marginConversionPairAsk = data.ask;
+                    console.log("got this from post ",$scope.marginConversionPairAsk);
+                    $scope.marginRequiredAccount = $scope.marginRequired *  $scope.marginConversionPairAsk;
+                    $scope.marginRequiredAccountView = $scope.marginRequiredAccount.toFixed(2);
+                }
+            }).error(function (error) {
+            console.log("something went wrong in convertRequiredMarginUSD!!");
+        });
+
+
+    };
 
 
 
@@ -102,7 +142,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             $scope.pairChosenSym = $scope.pairChosen.symbols;
 
             $scope.reqSym = $scope.pairChosenSym.charAt(0)+$scope.pairChosenSym.charAt(1)+$scope.pairChosenSym.charAt(2);
-
+            $scope.convertRequiredMarginUSD($scope.pairChosenSym);
 
             $mdSidenav(componentId).toggle();
         };
