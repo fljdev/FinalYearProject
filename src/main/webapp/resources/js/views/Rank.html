@@ -8,9 +8,9 @@
     </thead>
 
     <tbody>
-    <tr ng-repeat="x in allRanks">
-        <td>{{x.userID}}</td>
-        <td>{{x.currentRank}}</td>
+    <tr ng-repeat="x in ranks">
+        <td>{{x.username}}</td>
+        <td>{{ranks.indexOf(x)+1}}</td>
         <td>{{x.bestRank}}</td>
     </tr>
     </tbody>
