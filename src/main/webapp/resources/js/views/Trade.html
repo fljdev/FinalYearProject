@@ -73,14 +73,14 @@
         <td bgcolor="#4286f4" align="center">{{x.spreadPips}}</td>
     </tr>
     <tr ng-repeat-end="" ng-show="checkForOpenTrades(x)">
+
+        <td>{{action}}</td>
         <td>{{x.symbols}}</td>
-        <td></td>
-        <td colspan="2">Value:$</td>
-        <td><button class="btn btn-default btn-block btn-danger"ng-click="closeTrade(x)"  >Close Position!!</button></td>
-        <td colspan="2">P/L :$</td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td colspan="5">Value:  {{reqSym}}: {{valueInBaseCurrencyView}}  ${{valueInAccountCurrencyView}}</td>
+        <td colspan="2">P/L :${{profitAndLossView}}</td>
+        <td><button class="btn btn-default btn-block btn-danger"ng-click="closeTrade(x)"  >Close</button></td>
+
+
 
     </tr>
     </tbody>
