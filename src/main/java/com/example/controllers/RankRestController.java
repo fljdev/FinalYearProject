@@ -36,7 +36,7 @@ public class RankRestController {
 
     @RequestMapping(value = "/allRanks", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ArrayList<Rank> getAllUsers() {
+    public ArrayList<Rank> getAllRanks() {
         ArrayList<Rank> ranks = new ArrayList();
         ranks = (ArrayList<Rank>) iRankService.getALlRanks();
         return ranks;
@@ -56,6 +56,8 @@ public class RankRestController {
         Collections.sort(balances);
 
         for(int i = balances.size()-1; i>=0 ; i--){
+
+
             for(User u : users){
                 if(u.getAccount().getBalance()==balances.get(i)){
                     rankedByBalanceList.add(u);
@@ -63,16 +65,17 @@ public class RankRestController {
             }
         }
 
+
         for(User u : rankedByBalanceList){
-            System.out.println("user in ranked list is "+u.getUsername()+" £"+u.getAccount().getBalance());
+            Rank rank = new Rank();
+
+            rank.setUserID(u.getId());
+            rank.setCurrentRank(rankedByBalanceList.indexOf(u)+1);
+            u.setRank(rank);
+
+            iRankService.saveRank(rank);
+            iUserService.register(u);
         }
-
-
-        Rank rank = new Rank();
-
-
-
-
 
         return rankedByBalanceList;
     }

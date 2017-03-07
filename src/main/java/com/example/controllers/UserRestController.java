@@ -54,7 +54,7 @@ public class UserRestController {
         aUser.setPassword(password);
 
         BankAccount account = new BankAccount();
-        account.setBalance(20000);
+        account.setBalance(44);
         iBankAccountService.register(account);
 
         aUser.setAccount(account);

@@ -1,9 +1,6 @@
 package com.example.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by admin on 02/03/2017.
@@ -17,6 +14,8 @@ public class Rank {
 
     private int userID;
     private int currentRank;
+
+    @Column(nullable = true)
     private int bestRank;
 
     public Rank() {
