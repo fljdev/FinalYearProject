@@ -153,7 +153,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     function buildToggler(componentId) {
         return function(x,y) {
 
-            $scope.direction = y;
+            $scope.action = y;
             $scope.pairChosen =x;
             $scope.pairChosenSym = $scope.pairChosen.symbols;
 
@@ -182,7 +182,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         tradeObject.playerID = $scope.currUser.id+"";
         tradeObject.pairSymbols = $scope.pairChosen.symbols;
         tradeObject.stake = $scope.marginRequiredAccount+"";
-        tradeObject.action = $scope.direction;
+        tradeObject.action = $scope.action;
 
 
 
@@ -271,17 +271,17 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     $scope.calculatePositions = function(param){
         if(param.match("/USD")){
-            $scope.directQuoteCalc($scope.pairChosen,$scope.direction);
+            $scope.directQuoteCalc($scope.pairChosen,$scope.action);
         }else if(param.match("USD/")){
-            $scope.indirectQuoteCalc($scope.pairChosen,$scope.direction);
+            $scope.indirectQuoteCalc($scope.pairChosen,$scope.action);
         }else if(param.match("cross")){
-            $scope.crossQuoteCalc($scope.pairChosen,$scope.direction);
+            $scope.crossQuoteCalc($scope.pairChosen,$scope.action);
         }
     };
 
 
 
-    $scope.directQuoteCalc = function(pair,direction){
+    $scope.directQuoteCalc = function(pair,action){
 
         $scope.closeSellRate = pair.bid;
         $scope.closeAskRate = pair.ask;
@@ -291,14 +291,14 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
         // $scope.lotSize = $scope.currUserStake * $scope.leverage;
 
-        if(direction=='buy'){
+        if(action=='buy'){
             $scope.profitAndLoss = ( $scope.longPipDifference * $scope.position);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.marginRequiredAccount));
             $scope.equityView = ($scope.equity.toFixed(2));
 
 
-        }else if(direction=='sell'){
+        }else if(action=='sell'){
             $scope.profitAndLoss = ($scope.shortPipDifference * $scope.position);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.marginRequiredAccount));
@@ -306,7 +306,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         }
     }
 
-    $scope.indirectQuoteCalc = function(pair,direction){
+    $scope.indirectQuoteCalc = function(pair,action){
 
         $scope.closeSellRate = pair.bid;
         $scope.closeAskRate = pair.ask;
@@ -317,12 +317,12 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
         // $scope.lotSize = $scope.currUserStake * $scope.leverage;
 
-        if(direction=='buy'){
+        if(action=='buy'){
             $scope.profitAndLoss = ( ($scope.longPipDifference *  $scope.position) / $scope.closeSellRate);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.marginRequiredAccount));
             $scope.equityView = $scope.equity.toFixed(2);
-        }else if(direction=='sell'){
+        }else if(action=='sell'){
             $scope.profitAndLoss = (($scope.shortPipDifference * $scope.position)/$scope.closeAskRate);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.marginRequiredAccount));
@@ -330,7 +330,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         }
     }
 
-    $scope.crossQuoteCalc = function(pair,direction){
+    $scope.crossQuoteCalc = function(pair,action){
 
         if(pair.symbols=='EUR/GBP'){
             $scope.param = 'GBP/USD';
@@ -350,7 +350,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         // $scope.lotSize = $scope.currUserStake * $scope.leverage;
 
 
-        if(direction=='buy'){
+        if(action=='buy'){
             $scope.getBase();
 
             $scope.setCrossProfit = function(){
@@ -359,7 +359,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.marginRequiredAccount));
                 $scope.equityView = $scope.equity.toFixed(2);
             }
-        }else if(direction=='sell'){
+        }else if(action=='sell'){
             $scope.getBase();
 
             $scope.setCrossProfit = function() {
