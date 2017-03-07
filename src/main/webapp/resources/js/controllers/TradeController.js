@@ -25,7 +25,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
      * Increment/Decrement function (No Problems with these)
      * @type {number}
      */
-    $scope.position = 2500;
+    $scope.position = 75000;
     var max = 5000000;
     var min = 2500;
     $scope.reqSym="";
@@ -115,21 +115,16 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
     $scope.convertRequiredMarginUSD = function(sym){
-        console.log("sym came in as ",sym);
         if(sym.match("EUR/")){
-            console.log("i neeed ask of EUR/USD");
             var symParam = "EUR/USD";
             $scope.getThisConversionPair(symParam);
         }else if(sym.match("GBP/")){
-            console.log("i neeed ask of GBP/USD");
             var symParam = "GBP/USD";
             $scope.getThisConversionPair(symParam);
         }else if(sym.match("AUD/")){
-            console.log("i neeed ask of AUD/USD");
             var symParam = "AUD/USD";
             $scope.getThisConversionPair(symParam);
         }else if(sym.match("NZD/")){
-            console.log("i neeed ask of NZD/USD");
             var symParam = "NZD/USD";
             $scope.getThisConversionPair(symParam);
         }else if(sym.match("USD/")){
@@ -145,7 +140,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             .success(function (data, status) {
                 if(status = 200){
                     $scope.marginConversionPairAsk = data.ask;
-                    console.log("got this from post ",$scope.marginConversionPairAsk);
                     $scope.marginRequiredAccount = $scope.marginRequired *  $scope.marginConversionPairAsk;
                     $scope.marginRequiredAccountView = $scope.marginRequiredAccount.toFixed(2);
                 }
@@ -185,23 +179,14 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
     $scope.trade = function(){
-        var tradeObject = {};
 
+        var tradeObject = {};
         tradeObject.playerID = $scope.currUser.id+"";
         tradeObject.pairSymbols = $scope.pairChosen.symbols;
         tradeObject.stake = $scope.marginRequiredAccount+"";
         tradeObject.action = $scope.action;
+        $http.post('/api/trade/saveTrade',JSON.stringify(tradeObject));
 
-
-
-        $http.post('/api/trade/saveTrade',JSON.stringify(tradeObject))
-            .success(function (data, status) {
-                if(status = 200){
-                    console.log("save trade http.post worked");
-                }
-            }).error(function (error) {
-            console.log("something went wrong in pairs call inside watch markets!!");
-        });
 
 
         $scope.available = $scope.available - $scope.marginRequiredAccount;
@@ -239,19 +224,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         closeParams.id = $scope.currUser.id+"";
         closeParams.sym = x.symbols;
         closeParams.profitAndLoss = $scope.profitAndLoss+"";
-        // console.log("closing : ", x," profit" ,closeParams.profitAndLoss.toFixed(2));
-
-
-        $http.post('/api/trade/closeTrade',JSON.stringify(closeParams))
-            .success(function (data, status) {
-                if(status = 200){
-                    // $scope.pairChosen = data;
-                    console.log("yey");
-                }
-            }).error(function (error) {
-            console.log("something went wrong in closeTrade!!");
-        });
-    }
+        $http.post('/api/trade/closeTrade',JSON.stringify(closeParams));
+    };
 
 
 
@@ -262,7 +236,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 .success(function (data, status) {
                     if(status = 200){
                         $scope.pairChosen = data;
-                        console.log("again");
                     }
                 }).error(function (error) {
                 console.log("something went wrong in pairs call inside watch markets !!");
@@ -278,10 +251,15 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
     $scope.calculatePositions = function(param){
+
+        $scope.closeSellRate = $scope.pairChosen.bid;
+        $scope.closeAskRate = $scope.pairChosen.ask;
+
+
         if(param.match("/USD")){
-            $scope.directQuoteCalc($scope.pairChosen,$scope.action);
+            $scope.directQuoteCalc($scope.action);
         }else if(param.match("USD/")){
-            $scope.indirectQuoteCalc($scope.pairChosen,$scope.action);
+            $scope.indirectQuoteCalc($scope.action);
         }else if(param.match("cross")){
             $scope.crossQuoteCalc($scope.pairChosen,$scope.action);
         }
@@ -289,15 +267,10 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
 
-    $scope.directQuoteCalc = function(pair,action){
-
-        $scope.closeSellRate = pair.bid;
-        $scope.closeAskRate = pair.ask;
+    $scope.directQuoteCalc = function(action){
 
         $scope.longPipDifference = $scope.closeSellRate - $scope.openBuyRate;
         $scope.shortPipDifference = $scope.openSellRate - $scope.closeAskRate;
-
-        // $scope.lotSize = $scope.currUserStake * $scope.leverage;
 
         if(action=='buy'){
             $scope.profitAndLoss = ( $scope.longPipDifference * $scope.position);
@@ -305,25 +278,18 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.marginRequiredAccount));
             $scope.equityView = ($scope.equity.toFixed(2));
 
-
         }else if(action=='sell'){
             $scope.profitAndLoss = ($scope.shortPipDifference * $scope.position);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.marginRequiredAccount));
             $scope.equityView = $scope.equity.toFixed(2);
         }
-    }
+    };
 
-    $scope.indirectQuoteCalc = function(pair,action){
-
-        $scope.closeSellRate = pair.bid;
-        $scope.closeAskRate = pair.ask;
-
+    $scope.indirectQuoteCalc = function(action){
 
         $scope.longPipDifference = $scope.closeSellRate - $scope.openBuyRate;
         $scope.shortPipDifference = $scope.openSellRate - $scope.closeAskRate;
-
-        // $scope.lotSize = $scope.currUserStake * $scope.leverage;
 
         if(action=='buy'){
             $scope.profitAndLoss = ( ($scope.longPipDifference *  $scope.position) / $scope.closeSellRate);
@@ -336,26 +302,26 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.marginRequiredAccount));
             $scope.equityView = $scope.equity.toFixed(2);
         }
-    }
+    };
+
+    $scope.getParamForCrossQuoteCalc = function(symbols){
+        if(symbols=='EUR/GBP'){
+            $scope.param = 'GBP/USD';
+        }else if(symbols=='EUR/AUD'){
+            $scope.param='AUD/USD';
+        }else if(symbols=='EUR/NZD') {
+            $scope.param = 'NZD/USD';
+        }else if(symbols=='AUD/NZD') {
+            $scope.param = 'NZD/USD';
+        }
+    };
 
     $scope.crossQuoteCalc = function(pair,action){
 
-        if(pair.symbols=='EUR/GBP'){
-            $scope.param = 'GBP/USD';
-        }else if(pair.symbols=='EUR/AUD'){
-            $scope.param='AUD/USD';
-        }else if(pair.symbols=='EUR/NZD') {
-            $scope.param = 'NZD/USD';
-        }else if(pair.symbols=='AUD/NZD') {
-            $scope.param = 'NZD/USD';
-        }
-
-        $scope.closeSellRate = pair.bid;
-        $scope.closeAskRate = pair.ask;
+        $scope.getParamForCrossQuoteCalc(pair.symbols);
 
         $scope.longPipDifference = $scope.closeSellRate - $scope.openBuyRate;
         $scope.shortPipDifference = $scope.openSellRate - $scope.closeAskRate;
-        // $scope.lotSize = $scope.currUserStake * $scope.leverage;
 
 
         if(action=='buy'){
@@ -377,7 +343,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 $scope.equityView = $scope.equity.toFixed(2);
             }
         }
-    }
+    };
 
 $scope.getBase = function(){
     $http.post('/api/trade/getThisPair',$scope.param)
