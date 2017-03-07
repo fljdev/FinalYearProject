@@ -49,7 +49,7 @@ public class TradeRestController {
 
 
 
-    @RequestMapping(value = "/saveTrade", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/saveTrade", method = RequestMethod.POST)
     public void saveThisTrade(@RequestBody String json)throws Exception{
         JSONObject jsonObject = new JSONObject(json);
 
@@ -86,7 +86,7 @@ public class TradeRestController {
         iTradeService.saveTrade(trade);
     }//end saveTrade
 
-    @RequestMapping(value = "/closeTrade", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/closeTrade", method = RequestMethod.POST)
     public void closeThisTrade(@RequestBody String json)throws Exception{
         JSONObject jsonObject = new JSONObject(json);
         String playerID = jsonObject.getString("id");

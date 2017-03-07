@@ -232,10 +232,21 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.watch = function(param){
         $scope.watchMarkets = function(){
 
+
+            /**
+             * $scope.pairChosenSym comes in when 'buy' or 'sell' is pressed
+             */
             $http.post('/api/trade/getThisPair',$scope.pairChosenSym)
                 .success(function (data, status) {
                     if(status = 200){
+
+
                         $scope.pairChosen = data;
+
+                        $scope.positionValue = $scope.position + $scope.profitAndLoss;
+                        $scope.positionValueView = $scope.positionValue.toFixed(2);
+
+
                     }
                 }).error(function (error) {
                 console.log("something went wrong in pairs call inside watch markets !!");
@@ -254,7 +265,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
         $scope.closeSellRate = $scope.pairChosen.bid;
         $scope.closeAskRate = $scope.pairChosen.ask;
-
 
         if(param.match("/USD")){
             $scope.directQuoteCalc($scope.action);
@@ -304,17 +314,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         }
     };
 
-    $scope.getParamForCrossQuoteCalc = function(symbols){
-        if(symbols=='EUR/GBP'){
-            $scope.param = 'GBP/USD';
-        }else if(symbols=='EUR/AUD'){
-            $scope.param='AUD/USD';
-        }else if(symbols=='EUR/NZD') {
-            $scope.param = 'NZD/USD';
-        }else if(symbols=='AUD/NZD') {
-            $scope.param = 'NZD/USD';
-        }
-    };
+
 
     $scope.crossQuoteCalc = function(pair,action){
 
@@ -345,7 +345,13 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         }
     };
 
-$scope.getBase = function(){
+
+    /**
+     * Helper Methods for crossQuoteCalculations
+     * getParamForCrossQuoteCalc
+     * getBase
+     */
+    $scope.getBase = function(){
     $http.post('/api/trade/getThisPair',$scope.param)
         .success(function (data, status) {
             if(status = 200){
@@ -358,6 +364,18 @@ $scope.getBase = function(){
     });
 }
 
+
+    $scope.getParamForCrossQuoteCalc = function(symbols){
+        if(symbols=='EUR/GBP'){
+            $scope.param = 'GBP/USD';
+        }else if(symbols=='EUR/AUD'){
+            $scope.param='AUD/USD';
+        }else if(symbols=='EUR/NZD') {
+            $scope.param = 'NZD/USD';
+        }else if(symbols=='AUD/NZD') {
+            $scope.param = 'NZD/USD';
+        }
+    };
 
 });
 
