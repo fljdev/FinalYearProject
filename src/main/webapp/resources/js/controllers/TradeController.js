@@ -246,6 +246,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                         $scope.positionValue = $scope.position + $scope.profitAndLoss;
                         $scope.positionValueView = $scope.positionValue.toFixed(2);
 
+                        $scope.convertPositionValueToAccountCurrency();
+
 
                     }
                 }).error(function (error) {
@@ -258,8 +260,37 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
 
+    $scope.convertPositionValueToAccountCurrency = function(){
+        console.log("got into convertPositionValueToAccountCurrency");
+
+        /**
+         * I need to get the rate to convert
+         * eur
+         * gbp
+         * aud
+         * nzd
+         *
+         * all to dollars
+         *
+         * i need to get the
+         *
+         * EUR/USD ask
+         * GBP/USD ask
+         * AUD/USD ask
+         * NZD/USD ask
+         *
+         * do an if($scope.pairChosen.symbols.match("EUR/")
+         * then if it is, XXXPARAM = "EUR/USD"
+         * findBySymbols this pair
+         * get the ask
+         * get the bid
+         * then calculate the position size in account currency
+         */
 
 
+        // $scope.valueInAccountCurrency = $scope.positionValue * $scope.baseAskConversion;
+        // $scope.valueInAccountCurrencyView = $scope.valueInAccountCurrency.toFixed(2);
+    };
 
     $scope.calculatePositions = function(param){
 
@@ -362,7 +393,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             }
         }).error(function (error) {
     });
-}
+};
 
 
     $scope.getParamForCrossQuoteCalc = function(symbols){
