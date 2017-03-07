@@ -1,7 +1,9 @@
 angular.module('myApp.TradeController',[]).
 controller('TradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav){
 
-
+    /**
+     * User user object from the Database, instead of the browser cookie (No Problems)
+     */
     $scope.setUser = function(){
         $scope.currUser = $cookieStore.get('userCookie');
 
@@ -19,13 +21,13 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.setUser();
 
 
-
-
-
+    /**
+     * Increment/Decrement function (No Problems with these)
+     * @type {number}
+     */
     $scope.position = 2500;
     var max = 5000000;
     var min = 2500;
-
     $scope.reqSym="";
 
     $scope.increment = function() {
@@ -46,21 +48,67 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
 
-
-
-
-
-
-
-
+    /**
+     * Top table values (No Problems with these)
+     */
     $scope.available = $scope.currUser.account.balance;
     $scope.availableView = $scope.available.toFixed(2);
+
     $scope.equity = $scope.available;
     $scope.equityView = ($scope.equity.toFixed(2));
+
     $scope.leverage = 300;
     $scope.mMargin=0;
     $scope.marginRequired = $scope.position/$scope.leverage;
     $scope.marginRequiredView = $scope.marginRequired.toFixed(2);
+
+
+    /**
+     * Find open trades to alter the TradeTable view (Working, possible bug)
+     */
+    $scope.init = function(){
+        $scope.getPairs();
+        $http.post('/api/trade/getOpenTrades',$scope.currUser.id)
+            .success(function (data, status) {
+                if(status = 200){
+                    $scope.openTrades = data;
+                }
+            }).error(function (error) {
+            console.log("something went wrong in getOpenTrades call!!");
+        });
+    };
+
+    $scope.checkForOpenTrades= function (pair) {
+        function findPair(currentPair) {
+            return currentPair.currencyPairOpen.symbols === pair.symbols;
+        }
+        var found = $scope.openTrades.find(findPair);
+        if(found){
+            return true;
+        }
+        return false;
+    };
+
+
+    $scope.getPairs = function(){
+        $http.get('/api/trade/pairs')
+            .success(function (data, status) {
+                if(status = 200){
+                    $scope.pairs = data;
+                }
+            }).error(function (error) {
+            console.log("something went wrong in the pairs controller init function!!");
+        });
+    };
+
+    $scope.init();
+    $interval( function(){ $scope.init(); }, 4000);
+
+
+
+
+
+
 
 
 
@@ -104,46 +152,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             }).error(function (error) {
             console.log("something went wrong in $scope.getThisConversionPair!!");
         });
-    };
-
-    $scope.init = function(){
-        $scope.getPairs();
-
-        $http.post('/api/trade/getOpenTrades',$scope.currUser.id)
-            .success(function (data, status) {
-                if(status = 200){
-                    $scope.openTrades = data;
-                }
-            }).error(function (error) {
-            console.log("something went wrong in getOpenTrades call!!");
-        });
-    };
-
-    $scope.getPairs = function(){
-        $http.get('/api/trade/pairs')
-            .success(function (data, status) {
-                if(status = 200){
-                    $scope.pairs = data;
-                }
-            }).error(function (error) {
-            console.log("something went wrong in the pairs controller init function!!");
-        });
-    };
-
-
-
-    $scope.init();
-    $interval( function(){ $scope.init(); }, 4000);
-
-    $scope.checkForOpenTrades= function (pair) {
-        function findPair(currentPair) {
-            return currentPair.currencyPairOpen.symbols === pair.symbols;
-        }
-        var found = $scope.openTrades.find(findPair);
-        if(found){
-            return true;
-        }
-        return false;
     };
 
 
