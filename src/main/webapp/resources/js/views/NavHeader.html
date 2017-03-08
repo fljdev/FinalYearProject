@@ -50,21 +50,21 @@
                 <!--</li>-->
 
 
-                <li ng-show='loggedIn'><a ng-href="#/allUsers">All Users</a>
-                <li ng-show='loggedIn'><a ng-href="#/onlineUsers">See Who's Online</a>
+                <li ng-show='$root.loggedIn'><a ng-href="#/allUsers">All Users</a>
+                <li ng-show='$root.loggedIn'><a ng-href="#/onlineUsers">See Who's Online</a>
                 <li><a ng-href="#/pairs">Current Forex Prices</a>
 
 
-                <li ng-show='loggedIn'><a ng-href="#/openChallenges" >Challenges <span class="glyphicon glyphicon-envelope"></span></a></li>
-                <li ng-show='loggedIn'><a ng-href="#/trade">Trade</a></li>
-                <li ng-show='loggedIn'><a ng-href="#/rank">Ranks</a></li>
+                <li ng-show='$root.loggedIn'><a ng-href="#/openChallenges" >Challenges <span class="glyphicon glyphicon-envelope"></span></a></li>
+                <li ng-show='$root.loggedIn'><a ng-href="#/trade">Trade</a></li>
+                <li ng-show='$root.loggedIn'><a ng-href="#/rank">Ranks</a></li>
 
 
 
 
-                <li ng-show='loggedIn'><a ng-href="" ng-click = "logOut()" class="btn btn-danger">LogOut<span class="glyphicon glyphicon-user"></span></a></li>
-                <li ng-show='!loggedIn'> <a ng-href="#/logreg" >Access Site<span class="glyphicon glyphicon-user"></span></a></li>
-                <li ng-show='loggedIn'> <a ng-href="" >{{currentUser.username}}</a></li>
+                <li ng-show='$root.loggedIn'><a ng-href="" ng-click = "logOut()" class="btn btn-danger">LogOut<span class="glyphicon glyphicon-user"></span></a></li>
+                <li ng-show='!$root.loggedIn'> <a ng-href="#/logreg" >Access Site<span class="glyphicon glyphicon-user"></span></a></li>
+                <li ng-show='$root.loggedIn'> <a ng-href="" >{{currentUser.username}}</a></li>
 
             </ul>
 
