@@ -1,5 +1,5 @@
 angular.module('myApp.LogRegController',[]).
-controller('LogRegController',function($scope,$http,$state,$cookieStore) {
+controller('LogRegController',function($scope,$http,$state,$cookieStore,$rootScope) {
     $(function () {
 
         $('#login-form-link').click(function (e) {
@@ -36,13 +36,14 @@ controller('LogRegController',function($scope,$http,$state,$cookieStore) {
 
 
     $scope.submitLogin=function(){
-        console.log($scope.login);
 
         $http.post('/api/user/login', JSON.stringify($scope.login))
             .success(function (data, status) {
                 if(status = 200){
 
                     $scope.login = data;
+                    $rootScope.loggedIn = true;
+
                     $state.go('home');
 
                     $cookieStore.put('userCookie',$scope.login);

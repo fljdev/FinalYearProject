@@ -246,6 +246,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                         $scope.positionValue = $scope.position + $scope.profitAndLoss;
                         $scope.positionValueView = $scope.positionValue.toFixed(2);
 
+                        console.log("positionValueView : ",$scope.positionValueView);
                         $scope.convertPositionValueToAccountCurrency();
 
 
@@ -261,7 +262,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
     $scope.convertPositionValueToAccountCurrency = function(){
-        console.log("got into convertPositionValueToAccountCurrency");
+        console.log("got into convertPositionValueToAccountCurrency, chosen pair symbols are :",$scope.pairChosenSym);
 
         /**
          * I need to get the rate to convert
@@ -288,8 +289,42 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
          */
 
 
-        // $scope.valueInAccountCurrency = $scope.positionValue * $scope.baseAskConversion;
-        // $scope.valueInAccountCurrencyView = $scope.valueInAccountCurrency.toFixed(2);
+
+        var conversionpair = "";
+
+        if($scope.pairChosenSym.match("EUR/")){
+            conversionPair ="EUR/USD";
+
+        }else if($scope.pairChosenSym.match("GBP")){
+            conversionPair ="GBP/USD";
+        }else if($scope.pairChosenSym.match("AUD")){
+            conversionPair ="AUD/USD";
+        }else if($scope.pairChosenSym.match("NZD")){
+            conversionPair ="NZD/USD";
+        }else if($scope.pairChosenSym.match("USD/")){
+            conversionpair = "EUR/USD"
+            $scope.accountCurrency = true;
+        }
+
+        console.log("Conversion pair is ",conversionPair);
+
+        $http.post('/api/trade/getThisPair',conversionPair)
+            .success(function (data, status) {
+                if(status = 200){
+
+                    $scope.conversionPairResult = data;
+
+                    if($scope.accountCurrency==true){
+                        $scope.valueInAccountCurrency = $scope.positionValue * 1;
+                        $scope.valueInAccountCurrencyView = $scope.valueInAccountCurrency.toFixed(2);
+                    }else{
+                        $scope.valueInAccountCurrency = $scope.positionValue * $scope.conversionPairResult.ask;
+                        $scope.valueInAccountCurrencyView = $scope.valueInAccountCurrency.toFixed(2);
+                    }
+                }
+            }).error(function (error) {
+            console.log("something went wrong in pairs call inside watch markets !!");
+        });
     };
 
     $scope.calculatePositions = function(param){

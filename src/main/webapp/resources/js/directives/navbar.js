@@ -1,21 +1,24 @@
 angular.module('myApp.navheader',[]).
-directive('navheader', function($cookieStore, $state, $http, $rootScope){
+directive('navheader', function($cookieStore, $state, $http){
     return{
         restrict:'E',
         scope : {},
-        controller: function ($scope) {
+        controller: function ($scope, $rootScope) {
 
-            $scope.loggedIn = false;
+            $rootScope.loggedIn = false;
 
 
             if($cookieStore.get('userCookie')){
-                $scope.loggedIn = true;
+                $rootScope.loggedIn = true;
                 $scope.currentUser = $cookieStore.get('userCookie');
             }
 
             $scope.logOut = function () {
                 var obj = $cookieStore.get('userCookie');
                 $cookieStore.remove('userCookie');
+
+                $rootScope.loggedIn = false;
+
 
                 $http.post('/api/user/logout', JSON.stringify(obj))
                     .success(function (data, status) {
