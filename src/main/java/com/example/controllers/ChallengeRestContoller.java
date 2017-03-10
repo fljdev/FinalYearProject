@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 
@@ -53,7 +54,6 @@ public class ChallengeRestContoller {
 
         String currIDString = jsonObject.getString("currUserID");
         int currID = Integer.parseInt(currIDString);
-
         String opponentID = jsonObject.getString("opponentID");
         int oppID = Integer.parseInt(opponentID);
 
@@ -63,6 +63,14 @@ public class ChallengeRestContoller {
         User oppUserObject = findById(String.valueOf(oppID));
         String oppUsername = oppUserObject.getUsername();
 
+        Timestamp challengeSent = new Timestamp(System.currentTimeMillis());
+
+        String durationString = jsonObject.getString("duration");
+        int duration = Integer.parseInt(durationString);
+
+        String stakeString = jsonObject.getString("stake");
+        double stake = Double.parseDouble(stakeString);
+
 
         Challenge thisChallenge = new Challenge();
 
@@ -71,6 +79,10 @@ public class ChallengeRestContoller {
 
         thisChallenge.setOpponentId(oppID);
         thisChallenge.setOpponentName(oppUsername);
+
+        thisChallenge.setChallengeSent(challengeSent);
+        thisChallenge.setDuration(duration);
+        thisChallenge.setStake(stake);
 
         thisChallenge.setOpen(true);
 
