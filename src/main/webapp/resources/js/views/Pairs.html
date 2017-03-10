@@ -5,6 +5,8 @@
 <table align = "center">
     <thead>
     <tr>
+
+        <th align="center">Change %</th>
         <th align="center">Currency Pair</th>
         <th align="center">Bid</th>
         <th align="center">Spread</th>
@@ -21,6 +23,8 @@
 
     <tbody>
     <tr ng-repeat="x in pairs">
+        <td ng-if="x.symbols=='USD/JPY'" bgcolor="#48D1CC"align="center">{{((x.open - x.ask)).toFixed(2)}}%</td>
+        <td ng-if="x.symbols!='USD/JPY'" bgcolor="#48D1CC"align="center">{{((x.open - x.ask)*100).toFixed(2)}}%</td>
         <td align="center">{{x.symbols}}</td>
         <td bgcolor="#f44e42"align="center">{{x.bid}}</td>
         <td bgcolor="#4286f4" align="center">{{x.spreadPips}}</td>
