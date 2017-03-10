@@ -53,6 +53,6 @@ angular.module('myApp.OnlineController',[]).
             }).error(function (error) {
             console.log("something went wrong!!");
         });
-    }
+    };
     $scope.init();
 });

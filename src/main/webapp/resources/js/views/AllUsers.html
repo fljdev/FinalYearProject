@@ -2,8 +2,7 @@
     <thead>
     <tr>
         <th>Username</th>
-        <th>online</th>
-        <th>Balance</th>
+        <th>Rank</th>
         <th>Player Stats</th>
     </tr>
     </thead>
@@ -11,10 +10,8 @@
     <tbody>
     <tr ng-repeat="x in allUsers">
         <td>{{x.username}}</td>
-        <td>{{x.email}}</td>
-        <td>{{x.account.balance}}</td>
+        <td>{{x.rank.currentRank}}</td>
         <td><button ng-click="getStats()" class="btn btn-success">Stats</button></td>
-
     </tr>
     </tbody>
 
