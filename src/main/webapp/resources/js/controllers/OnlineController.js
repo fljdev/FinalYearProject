@@ -1,21 +1,25 @@
 angular.module('myApp.OnlineController',[]).
     controller('OnlineController', function($scope,$cookieStore,$http,$state){
 
-
+    $scope.gameTimes = [15,30,60];
+    $scope.gameStakes = [250,500,1000,2500,5000];
+    $scope.selectedTime = 15;
+    $scope.selectedStake = 1000;
 
     $scope.currUser = $cookieStore.get('userCookie');
-    // if($scope.currUser){
-    //     $http.post('/api/user/findById', JSON.stringify($scope.currUser.id))
-    //         .success(function (data, status) {
-    //             if(status = 200){
-    //                 $cookieStore.put('userCookie', data);
-    //             }
-    //         }).error(function (error) {
-    //         console.log("something went wrong in findById -> OnlineController!!");
-    //     });
-    // }
+    if($scope.currUser){
+        $http.post('/api/user/findById', JSON.stringify($scope.currUser.id))
+            .success(function (data, status) {
+                if(status = 200){
+                    $cookieStore.put('userCookie', data);
+                }
+            }).error(function (error) {
+            console.log("something went wrong in findById -> OnlineController!!");
+        });
+    }
 
-    $scope.challenge = function(opponent){
+    $scope.challenge = function(opponent,t,s){
+        console.log(opponent,t,s);
 
         var challengeParams = {};
         challengeParams.currUserID = $scope.currUser.id+"";
