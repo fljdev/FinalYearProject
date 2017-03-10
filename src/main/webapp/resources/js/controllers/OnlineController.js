@@ -24,6 +24,8 @@ angular.module('myApp.OnlineController',[]).
         var challengeParams = {};
         challengeParams.currUserID = $scope.currUser.id+"";
         challengeParams.opponentID = opponent.id+"";
+        challengeParams.duration = t+"";
+        challengeParams.stake = s+"";
 
         $http.post('/api/challenge/saveChallenge',JSON.stringify(challengeParams))
             .success(function (data, status) {
