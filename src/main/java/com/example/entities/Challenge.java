@@ -28,13 +28,16 @@ public class Challenge {
     private double stake;
 
     @Column(name = "Sent_Time")
-    private Timestamp challengeSent;
+    private String challengeSent;
 
     @Column(name = "Accept_Time")
-    private Timestamp challengeAccepted;
+    private String challengeAccepted;
 
     @Column(name = "Decline_Time")
-    private Timestamp challengeDeclined;
+    private String challengeDeclined;
+
+    @Column(name = "Withdraw_Time")
+    private String challengeWithdrawen;
 
 
     private boolean accepted;
@@ -49,8 +52,8 @@ public class Challenge {
     }
 
     public Challenge(int challengerId, String challengerName, int opponentId, String opponentName,
-                     int duration, double stake, Timestamp challengeSent, Timestamp challengeAccepted,
-                     Timestamp challengeDeclined,
+                     int duration, double stake, String challengeSent, String challengeAccepted,
+                     String challengeDeclined, String challengeWithdrawen,
                      boolean accepted, boolean declined, boolean withdrawen, boolean open) {
         this.challengerId = challengerId;
         this.challengerName = challengerName;
@@ -61,18 +64,16 @@ public class Challenge {
         this.challengeSent = challengeSent;
         this.challengeAccepted = challengeAccepted;
         this.challengeDeclined = challengeDeclined;
+        this.challengeWithdrawen = challengeWithdrawen;
         this.accepted = accepted;
         this.declined = declined;
         this.withdrawen = withdrawen;
         this.open = open;
     }
 
+
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getChallengerId() {
@@ -123,28 +124,36 @@ public class Challenge {
         this.stake = stake;
     }
 
-    public Timestamp getChallengeSent() {
+    public String getChallengeSent() {
         return challengeSent;
     }
 
-    public void setChallengeSent(Timestamp challengeSent) {
+    public void setChallengeSent(String challengeSent) {
         this.challengeSent = challengeSent;
     }
 
-    public Timestamp getChallengeAccepted() {
+    public String getChallengeAccepted() {
         return challengeAccepted;
     }
 
-    public void setChallengeAccepted(Timestamp challengeAccepted) {
+    public void setChallengeAccepted(String challengeAccepted) {
         this.challengeAccepted = challengeAccepted;
     }
 
-    public Timestamp getChallengeDeclined() {
+    public String getChallengeDeclined() {
         return challengeDeclined;
     }
 
-    public void setChallengeDeclined(Timestamp challengeDeclined) {
+    public void setChallengeDeclined(String challengeDeclined) {
         this.challengeDeclined = challengeDeclined;
+    }
+
+    public String getChallengeWithdrawen() {
+        return challengeWithdrawen;
+    }
+
+    public void setChallengeWithdrawen(String challengeWithdrawen) {
+        this.challengeWithdrawen = challengeWithdrawen;
     }
 
     public boolean isAccepted() {
@@ -189,9 +198,10 @@ public class Challenge {
                 ", opponentName='" + opponentName + '\'' +
                 ", duration=" + duration +
                 ", stake=" + stake +
-                ", challengeSent=" + challengeSent +
-                ", challengeAccepted=" + challengeAccepted +
-                ", challengeDeclined=" + challengeDeclined +
+                ", challengeSent='" + challengeSent + '\'' +
+                ", challengeAccepted='" + challengeAccepted + '\'' +
+                ", challengeDeclined='" + challengeDeclined + '\'' +
+                ", challengeWithdrawen='" + challengeWithdrawen + '\'' +
                 ", accepted=" + accepted +
                 ", declined=" + declined +
                 ", withdrawen=" + withdrawen +

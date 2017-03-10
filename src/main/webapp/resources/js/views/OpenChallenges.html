@@ -24,8 +24,9 @@
 <table align="center">
     <thead>
     <tr>
-        <th>Challenger</th>
+        <th></th>
         <th>Opponent</th>
+        <th>Time</th>
         <th>Status</th>
 
         <th>Option</th>
@@ -35,19 +36,23 @@
     <tbody>
     <tr ng-repeat="x in sentChallenges" >
 
-        <td ng-show="x.open">{{x.challengerName}}</td>
-        <td ng-show="x.open">{{x.opponentName}}</td>
-        <td ng-if="!x.withdrawen">{{"Open"}}</td>
+        <td>You Challenged</td>
+        <td>{{x.opponentName}}</td>
+        <td>{{x.challengeSent}}</td>
+        <td ng-if="!x.withdrawen && !x.declined">{{"Open"}}</td>
         <td ng-if="x.withdrawen">{{"Withdrawen"}}</td>
+        <td ng-if="x.declined">{{"Declined"}}</td>
 
-        <td ng-show="!x.withdrawen"><button ng-click="withdraw(x)" class="btn btn-danger">Withdraw Challenge</button></td>
+        <td ng-show="!x.withdrawen && !x.declined"><button ng-click="withdraw(x)" class="btn btn-danger">Withdraw Challenge</button></td>
         <!--<td ng-show="x.withdrawen"><button ng-click="withdraw(x)" class="btn btn-success">Re-Challenge</button></td>-->
-        <td ng-show="x.withdrawen"><button ng-click="findMore()" class="btn btn-info">Find More Users</button></td>
+        <td ng-show="x.withdrawen || x.declined"><button ng-click="findMore()" class="btn btn-info">Find More Users</button></td>
 
     </tr>
     </tbody>
 
 </table>
+
+
 
 <br>
 <table align="center">
@@ -59,8 +64,10 @@
 <table align="center">
     <thead>
     <tr>
+        <th></th>
         <th>Challenger</th>
-        <th>Opponent</th>
+        <th>Time</th>
+
         <th>Status</th>
         <th colspan="2">Option</th>
     </tr>
@@ -68,12 +75,18 @@
 
     <tbody>
     <tr ng-repeat="x in challengesRecieved" >
+
+        <td>Challenge recieved from</td>
         <td>{{x.challengerName}}</td>
-        <td>{{x.opponentName}}</td>
-        <td ng-if="x.open">{{"Open"}}</td>
-        <td ng-if="x.open ==  false">{{"Completed"}}</td>
-        <td><button ng-click="accept(x)" class="btn btn-success">Accept</button></td>
-        <td><button ng-click="withdraw(x)" class="btn btn-warning">Decline</button></td>
+        <td>{{x.challengeSent}}</td>
+
+        <td ng-if="!x.declined && !x.withdrawen">{{"Open"}}</td>
+        <td ng-if="x.declined">{{"Declined"}}</td>
+        <td ng-if="x.withdrawen">{{"Withdrawen"}}</td>
+        <td ng-show="!x.declined && !x.withdrawen"><button ng-click="accept(x)" class="btn btn-success">Accept</button></td>
+        <td ng-show="!x.declined && !x.withdrawen"><button ng-click="decline(x)" class="btn btn-warning">Decline</button></td>
+        <td ng-show="x.declined || x.withdrawen" colspan="2"><button ng-click="findMore()" class="btn btn-info">Find More Users</button></td>
+
 
 
     </tr>
