@@ -47,4 +47,8 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
 
     }
 
+    $scope.findMore = function(){
+        $state.go('onlineUsers');
+    };
+
 });

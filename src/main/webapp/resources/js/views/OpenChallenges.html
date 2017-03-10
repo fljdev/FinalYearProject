@@ -27,18 +27,22 @@
         <th>Challenger</th>
         <th>Opponent</th>
         <th>Status</th>
+
         <th>Option</th>
     </tr>
     </thead>
 
     <tbody>
     <tr ng-repeat="x in sentChallenges" >
-        <td>{{x.challengerName}}</td>
-        <td>{{x.opponentName}}</td>
-        <td ng-if="x.open">{{"Open"}}</td>
-        <td ng-if="x.open ==  false">{{"Completed"}}</td>
-        <td><button ng-click="withdraw(x)" class="btn btn-danger">Withdraw Challenge</button></td>
 
+        <td ng-show="x.open">{{x.challengerName}}</td>
+        <td ng-show="x.open">{{x.opponentName}}</td>
+        <td ng-if="!x.withdrawen">{{"Open"}}</td>
+        <td ng-if="x.withdrawen">{{"Withdrawen"}}</td>
+
+        <td ng-show="!x.withdrawen"><button ng-click="withdraw(x)" class="btn btn-danger">Withdraw Challenge</button></td>
+        <!--<td ng-show="x.withdrawen"><button ng-click="withdraw(x)" class="btn btn-success">Re-Challenge</button></td>-->
+        <td ng-show="x.withdrawen"><button ng-click="findMore()" class="btn btn-info">Find More Users</button></td>
 
     </tr>
     </tbody>

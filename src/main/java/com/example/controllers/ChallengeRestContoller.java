@@ -135,12 +135,16 @@ public class ChallengeRestContoller {
          ArrayList<Challenge>challenges = new ArrayList<>();
          challenges=(ArrayList<Challenge>) iChallengeService.getAllChallenges();
 
-         Challenge challengeToCancel=null;
+         Challenge challengeToWithdraw=null;
 
         for(Challenge ch:challenges){
             if(ch.getId()==idNo){
-                challengeToCancel = ch;
-                iChallengeService.deleteChallenge(challengeToCancel);
+                challengeToWithdraw = ch;
+
+//                challengeToWithdraw.setOpen(false);
+                challengeToWithdraw.setWithdrawen(true);
+
+                iChallengeService.saveChallenge(challengeToWithdraw);
             }//end if
         }//end for
     }//end withdrawChallenge
