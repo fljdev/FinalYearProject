@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
@@ -63,7 +64,9 @@ public class ChallengeRestContoller {
         User oppUserObject = findById(String.valueOf(oppID));
         String oppUsername = oppUserObject.getUsername();
 
-        Timestamp challengeSent = new Timestamp(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("HH.mm.ss");
+        Timestamp challengeSentMili = new Timestamp(System.currentTimeMillis());
+
 
         String durationString = jsonObject.getString("duration");
         int duration = Integer.parseInt(durationString);
@@ -80,7 +83,8 @@ public class ChallengeRestContoller {
         thisChallenge.setOpponentId(oppID);
         thisChallenge.setOpponentName(oppUsername);
 
-        thisChallenge.setChallengeSent(challengeSent);
+        thisChallenge.setChallengeSent(sdf.format(challengeSentMili));
+
         thisChallenge.setDuration(duration);
         thisChallenge.setStake(stake);
 
@@ -136,18 +140,49 @@ public class ChallengeRestContoller {
          challenges=(ArrayList<Challenge>) iChallengeService.getAllChallenges();
 
          Challenge challengeToWithdraw=null;
+        SimpleDateFormat sdf = new SimpleDateFormat("HH.mm.ss");
+        Timestamp challengeWithdrawenMilli = new Timestamp(System.currentTimeMillis());
 
         for(Challenge ch:challenges){
             if(ch.getId()==idNo){
                 challengeToWithdraw = ch;
 
-//                challengeToWithdraw.setOpen(false);
                 challengeToWithdraw.setWithdrawen(true);
+                challengeToWithdraw.setChallengeWithdrawen(sdf.format(challengeWithdrawenMilli));
+                challengeToWithdraw.setOpen(false);
 
                 iChallengeService.saveChallenge(challengeToWithdraw);
             }//end if
         }//end for
     }//end withdrawChallenge
+
+
+    @RequestMapping(value = "/declineChallenge",method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public void declineChallenge(@RequestBody String id){
+
+        int idNo = Integer.parseInt(id);
+
+        ArrayList<Challenge>challenges = new ArrayList<>();
+        challenges=(ArrayList<Challenge>) iChallengeService.getAllChallenges();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH.mm.ss");
+        Timestamp challengeSentMili = new Timestamp(System.currentTimeMillis());
+
+        Challenge challengeToDecline=null;
+
+        for(Challenge chall:challenges){
+            if(chall.getId()==idNo){
+                challengeToDecline = chall;
+
+                challengeToDecline.setDeclined(true);
+                challengeToDecline.setOpen(false);
+                challengeToDecline.setChallengeDeclined(sdf.format(challengeSentMili));
+
+                iChallengeService.saveChallenge(challengeToDecline);
+            }
+        }
+    }
 
 
 

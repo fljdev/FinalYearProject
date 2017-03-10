@@ -130,6 +130,7 @@ public class CurrencyPair {
     }
 
     public void setTimeStampString(String timeStampString) {
+
         this.timeStampString = timeStampString;
     }
 
