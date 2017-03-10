@@ -7,8 +7,14 @@
     <tr>
         <th align="center">Currency Pair</th>
         <th align="center">Bid</th>
-        <th align="center">Offer</th>
         <th align="center">Spread</th>
+        <th align="center">Offer</th>
+
+        <th align="center">High</th>
+        <th align="center">Low</th>
+        <th align="center">Opened Today At</th>
+
+
         <th align="center">Time</th>
     </tr>
     </thead>
@@ -17,8 +23,11 @@
     <tr ng-repeat="x in pairs">
         <td align="center">{{x.symbols}}</td>
         <td bgcolor="#f44e42"align="center">{{x.bid}}</td>
-        <td bgcolor="#00FF00" align="center">{{x.ask}}</td>
         <td bgcolor="#4286f4" align="center">{{x.spreadPips}}</td>
+        <td bgcolor="#00FF00" align="center">{{x.ask}}</td>
+        <td bgcolor="#f0f4b5" align="center">{{x.high}}</td>
+        <td bgcolor="#f0f4b5" align="center">{{x.low}}</td>
+        <td bgcolor="#f0f4b5" align="center">{{x.open}}</td>
         <td bgcolor="#f0f4b5" align="center">{{x.timeStampString}}</td>
     </tr>
 
