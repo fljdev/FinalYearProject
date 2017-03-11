@@ -48,7 +48,6 @@ public class RankRestController {
     public ArrayList<Rank> saveRank() {
 
         ArrayList<Rank> allTheRanks = iRankService.getALlRanks();
-
         for(Rank r : allTheRanks){
             System.out.println("got into the loop");
             iRankService.deleteRank(r);
@@ -57,22 +56,37 @@ public class RankRestController {
 
         ArrayList<User> users = iUserService.getAllUsers();
         ArrayList<Double> balances = new ArrayList<>();
+
         for(User u : users){
             balances.add(u.getAccount().getBalance());
         }
-        HashSet<Double> uniqueBalances = new HashSet<>(balances);
+        ArrayList<Integer>balancesInteger = new ArrayList<>();
+        for(Double d : balances){
+            int x = (int)d.doubleValue();
+            balancesInteger.add(x);
+        }
+
+        Collections.sort(balancesInteger);
+
+        ArrayList<Double> newBalances = new ArrayList<>();
+        for(Integer i : balancesInteger){
+            double castBack = (double)i;
+            newBalances.add(castBack);
+        }
+        HashSet<Double> uniqueBalances = new HashSet<>(newBalances);
+        System.out.println("Unique Balances SIze : "+uniqueBalances.size());
 
         int count = 1;
         for(Double d : uniqueBalances){
+            System.out.println("u b is "+d);
             for(User u : users){
                 if(u.getAccount().getBalance()==d){
                     Rank rank = new Rank();
                     rank.setCurrentRank(count);
-//                    u.setRank(rank);
                     rank.setUser(u);
 
                     iRankService.saveRank(rank);
-//                    iUserService.register(u);
+                    iUserService.register(u);
                 }
             }
             count++;
