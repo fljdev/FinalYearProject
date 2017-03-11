@@ -60,6 +60,8 @@ public class UserRestController {
         aUser.setAccount(account);
 
         aUser.setOnline(true);
+
+
         iUserService.register(aUser);
         return aUser;
     }

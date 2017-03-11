@@ -38,8 +38,10 @@ public class RankRestController {
     @RequestMapping(value = "/allRanks", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ArrayList<Rank> getAllRanks() {
-        ArrayList<Rank> ranks = new ArrayList();
-        ranks = (ArrayList<Rank>) iRankService.getALlRanks();
+//        ArrayList<Rank> ranks = new ArrayList();
+//        ranks = (ArrayList<Rank>) iRankService.getALlRanks();
+
+        ArrayList<Rank> ranks =iRankService.getALlRanks();
         return ranks;
     }
 
@@ -49,9 +51,7 @@ public class RankRestController {
 
         ArrayList<Rank> allTheRanks = iRankService.getALlRanks();
         for(Rank r : allTheRanks){
-            System.out.println("got into the loop");
             iRankService.deleteRank(r);
-            System.out.println("deleted one");
         }
 
         ArrayList<User> users = iUserService.getAllUsers();
@@ -74,26 +74,32 @@ public class RankRestController {
             newBalances.add(castBack);
         }
         HashSet<Double> uniqueBalances = new HashSet<>(newBalances);
-        System.out.println("Unique Balances SIze : "+uniqueBalances.size());
 
-        int count = 1;
+
+        int count = uniqueBalances.size();
         for(Double d : uniqueBalances){
-            System.out.println("u b is "+d);
             for(User u : users){
-                if(u.getAccount().getBalance()==d){
+                int bal = (int)u.getAccount().getBalance();
+//                if(u.getAccount().getBalance()==d){
+                if(bal==d){
+
                     Rank rank = new Rank();
                     rank.setCurrentRank(count);
                     rank.setUser(u);
 
+                    u.setCurrentRank(count);
+
+                    if(u.getCurrentRank()<u.getBestRank() || u.getBestRank()== 0){
+                        u.setBestRank(count);
+                    }
                     iRankService.saveRank(rank);
                     iUserService.register(u);
                 }
             }
-            count++;
+            count--;
         }
 
         ArrayList<Rank> rankedByBalanceList = iRankService.getALlRanks();
-        System.out.println("rankedByBal: "+rankedByBalanceList.toString());
         return rankedByBalanceList;
     }
 
