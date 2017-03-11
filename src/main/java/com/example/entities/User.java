@@ -1,9 +1,9 @@
 package com.example.entities;
 
-import org.springframework.boot.autoconfigure.web.ResourceProperties;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Generated;
+
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 
 
@@ -17,8 +17,7 @@ public class User {
     @OneToOne
     private BankAccount account;
 
-    @OneToOne
-    private Rank rank;
+
 
     private String firstName;
     private String lastName;
@@ -31,9 +30,8 @@ public class User {
     }
 
 
-    public User(BankAccount account, Rank rank, String firstName, String lastName, String username, String email, String password, boolean online) {
+    public User(BankAccount account, String firstName, String lastName, String username, String email, String password, boolean online) {
         this.account = account;
-        this.rank = rank;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -46,24 +44,12 @@ public class User {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public BankAccount getAccount() {
         return account;
     }
 
     public void setAccount(BankAccount account) {
         this.account = account;
-    }
-
-    public Rank getRank() {
-        return rank;
-    }
-
-    public void setRank(Rank rank) {
-        this.rank = rank;
     }
 
     public String getFirstName() {
@@ -119,7 +105,6 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", account=" + account +
-                ", rank=" + rank +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
@@ -128,6 +113,4 @@ public class User {
                 ", online=" + online +
                 '}';
     }
-
-
 }

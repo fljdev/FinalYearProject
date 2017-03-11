@@ -12,19 +12,23 @@ public class Rank {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private int userID;
     private int currentRank;
 
     @Column(nullable = true)
     private int bestRank;
 
+
+
+    @OneToOne
+    private User user;
+
     public Rank() {
     }
 
-    public Rank(int userID, int currentRank, int bestRank) {
-        this.userID = userID;
+    public Rank(int currentRank, int bestRank, User user) {
         this.currentRank = currentRank;
         this.bestRank = bestRank;
+        this.user = user;
     }
 
     public int getId() {
@@ -33,14 +37,6 @@ public class Rank {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
     }
 
     public int getCurrentRank() {
@@ -59,13 +55,21 @@ public class Rank {
         this.bestRank = bestRank;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Rank{" +
                 "id=" + id +
-                ", userID=" + userID +
                 ", currentRank=" + currentRank +
                 ", bestRank=" + bestRank +
+                ", user=" + user +
                 '}';
     }
 }

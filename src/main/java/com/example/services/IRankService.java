@@ -12,5 +12,7 @@ public interface IRankService {
     void saveRank(Rank rank);
     ArrayList<Rank> getALlRanks();
 
+    void deleteRank(Rank rank);
+
 
 }

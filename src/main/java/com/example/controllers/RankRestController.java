@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 
 /**
  * Created by admin on 02/03/2017.
@@ -44,39 +45,41 @@ public class RankRestController {
 
     @RequestMapping(value = "/saveRank", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ArrayList<User> saveRank() {
+    public ArrayList<Rank> saveRank() {
+
+        ArrayList<Rank> allTheRanks = iRankService.getALlRanks();
+
+        for(Rank r : allTheRanks){
+            System.out.println("got into the loop");
+            iRankService.deleteRank(r);
+            System.out.println("deleted one");
+        }
 
         ArrayList<User> users = iUserService.getAllUsers();
-        ArrayList<User> rankedByBalanceList = new ArrayList<>();
         ArrayList<Double> balances = new ArrayList<>();
-
         for(User u : users){
             balances.add(u.getAccount().getBalance());
         }
-        Collections.sort(balances);
+        HashSet<Double> uniqueBalances = new HashSet<>(balances);
 
-        for(int i = balances.size()-1; i>=0 ; i--){
-
-
+        int count = 1;
+        for(Double d : uniqueBalances){
             for(User u : users){
-                if(u.getAccount().getBalance()==balances.get(i)){
-                    rankedByBalanceList.add(u);
+                if(u.getAccount().getBalance()==d){
+                    Rank rank = new Rank();
+                    rank.setCurrentRank(count);
+//                    u.setRank(rank);
+                    rank.setUser(u);
+
+                    iRankService.saveRank(rank);
+//                    iUserService.register(u);
                 }
             }
+            count++;
         }
 
-
-        for(User u : rankedByBalanceList){
-            Rank rank = new Rank();
-
-            rank.setUserID(u.getId());
-            rank.setCurrentRank(rankedByBalanceList.indexOf(u)+1);
-            u.setRank(rank);
-
-            iRankService.saveRank(rank);
-            iUserService.register(u);
-        }
-
+        ArrayList<Rank> rankedByBalanceList = iRankService.getALlRanks();
+        System.out.println("rankedByBal: "+rankedByBalanceList.toString());
         return rankedByBalanceList;
     }
 
