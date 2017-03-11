@@ -18,7 +18,6 @@ public class User {
     private BankAccount account;
 
 
-
     private String firstName;
     private String lastName;
     private String username;
@@ -26,11 +25,14 @@ public class User {
     private String password;
     private boolean online;
 
+    private int currentRank;
+    private int bestRank;
+
     public User() {
     }
 
-
-    public User(BankAccount account, String firstName, String lastName, String username, String email, String password, boolean online) {
+    public User(BankAccount account, String firstName, String lastName, String username,
+                String email, String password, boolean online, int currentRank, int bestRank) {
         this.account = account;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -38,6 +40,8 @@ public class User {
         this.email = email;
         this.password = password;
         this.online = online;
+        this.currentRank = currentRank;
+        this.bestRank = bestRank;
     }
 
     public int getId() {
@@ -100,6 +104,22 @@ public class User {
         this.online = online;
     }
 
+    public int getCurrentRank() {
+        return currentRank;
+    }
+
+    public void setCurrentRank(int currentRank) {
+        this.currentRank = currentRank;
+    }
+
+    public int getBestRank() {
+        return bestRank;
+    }
+
+    public void setBestRank(int bestRank) {
+        this.bestRank = bestRank;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -111,6 +131,8 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", online=" + online +
+                ", currentRank=" + currentRank +
+                ", bestRank=" + bestRank +
                 '}';
     }
 }
