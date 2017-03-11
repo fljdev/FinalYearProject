@@ -23,7 +23,9 @@ public class RankService implements IRankService {
         this.rankDAO = dao;
     }
 
+
     public void saveRank(Rank rank){
+
         rankDAO.save(rank);
     }
 
@@ -35,5 +37,15 @@ public class RankService implements IRankService {
         }
         return ranks;
     }
+
+    @Override
+    public void deleteRank(Rank rank) {
+        rankDAO.delete(rank);
+    }
+
+
+
+
+
 
 }

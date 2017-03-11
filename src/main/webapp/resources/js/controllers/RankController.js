@@ -31,8 +31,6 @@ controller('RankController',function($scope, $stateParams, $cookieStore, $http){
         $http.get('/api/rank/saveRank')
             .success(function (data, status) {
                 if(status = 200){
-                    // $scope.allRanks = data;\
-                    console.log(",saveRank returned : ",data);
                     $scope.ranks = data;
                 }
             }).error(function (error) {
