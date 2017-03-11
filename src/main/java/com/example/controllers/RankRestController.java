@@ -75,7 +75,6 @@ public class RankRestController {
         }
         HashSet<Double> uniqueBalances = new HashSet<>(newBalances);
 
-
         int count = uniqueBalances.size();
         for(Double d : uniqueBalances){
             for(User u : users){
@@ -100,6 +99,7 @@ public class RankRestController {
         }
 
         ArrayList<Rank> rankedByBalanceList = iRankService.getALlRanks();
+        Collections.reverse(rankedByBalanceList);
         return rankedByBalanceList;
     }
 
