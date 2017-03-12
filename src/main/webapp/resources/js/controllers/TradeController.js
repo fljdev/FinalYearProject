@@ -426,6 +426,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 $scope.equityView = $scope.equity.toFixed(2);
             }
         }else if(action=='sell'){
+
             $scope.getBase();
 
             $scope.setCrossProfit = function() {
