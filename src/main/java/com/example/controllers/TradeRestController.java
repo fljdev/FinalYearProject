@@ -55,8 +55,8 @@ public class TradeRestController {
 
         String playerID = jsonObject.getString("playerID");
         String pairSymbols = jsonObject.getString("pairSymbols");
-        String stakeString = jsonObject.getString("stake");
-        double stake = Double.parseDouble(stakeString);
+        String marginString = jsonObject.getString("margin");
+        double margin = Double.parseDouble(marginString);
         String action = jsonObject.getString("action");
 
         Trade trade = new Trade();
@@ -71,7 +71,7 @@ public class TradeRestController {
 
         BankAccount account = user.getAccount();
         double currentBalance = account.getBalance();
-        double updatedBalance = currentBalance - stake;
+        double updatedBalance = currentBalance - margin;
         account.setBalance(updatedBalance);
         iBankAccountService.register(account);
 
@@ -79,7 +79,7 @@ public class TradeRestController {
 
         trade.setUser(user);
         trade.setCurrencyPairOpen(currencyPair);
-        trade.setStake(stake);
+        trade.setMargin(margin);
         trade.setAction(action);
         trade.setTimestampOpen(timestampOpen);
 
@@ -110,7 +110,7 @@ public class TradeRestController {
 
                 User user = findById(playerID);
                 BankAccount bankAccount = user.getAccount();
-                double marginPayed = t.getStake();
+                double marginPayed = t.getMargin();
                 double currentBalance = bankAccount.getBalance();
                 double updatedBalance = currentBalance+marginPayed;
                 updatedBalance +=profit;

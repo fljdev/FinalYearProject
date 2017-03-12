@@ -11,8 +11,7 @@ public class Trade {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    public Trade() {
-    }
+
 
     @ManyToOne
     private User user;
@@ -28,30 +27,29 @@ public class Trade {
 
     private Timestamp timestampOpen;
     private Timestamp timestampClose;
-    private double stake;
+    private double margin;
     private String action;
 
     @Column(nullable = true)
     private double profitLoss;
 
-    public Trade(User user, CurrencyPair currencyPairOpen, CurrencyPair currencyPairClose,
-                 Timestamp timestampOpen, Timestamp timestampClose, double stake, String action, double profitLoss) {
+    public Trade() {
+    }
+
+    public Trade(User user, CurrencyPair currencyPairOpen, CurrencyPair currencyPairClose, Timestamp timestampOpen,
+                 Timestamp timestampClose, double margin, String action, double profitLoss) {
         this.user = user;
         this.currencyPairOpen = currencyPairOpen;
         this.currencyPairClose = currencyPairClose;
         this.timestampOpen = timestampOpen;
         this.timestampClose = timestampClose;
-        this.stake = stake;
+        this.margin = margin;
         this.action = action;
         this.profitLoss = profitLoss;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public User getUser() {
@@ -94,12 +92,12 @@ public class Trade {
         this.timestampClose = timestampClose;
     }
 
-    public double getStake() {
-        return stake;
+    public double getMargin() {
+        return margin;
     }
 
-    public void setStake(double stake) {
-        this.stake = stake;
+    public void setMargin(double margin) {
+        this.margin = margin;
     }
 
     public String getAction() {
@@ -127,7 +125,7 @@ public class Trade {
                 ", currencyPairClose=" + currencyPairClose +
                 ", timestampOpen=" + timestampOpen +
                 ", timestampClose=" + timestampClose +
-                ", stake=" + stake +
+                ", margin=" + margin +
                 ", action='" + action + '\'' +
                 ", profitLoss=" + profitLoss +
                 '}';
