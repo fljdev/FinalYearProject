@@ -62,7 +62,7 @@ public class UserRestController {
         iBankAccountService.register(account);
 
         GameAccount gameAccount = new GameAccount();
-        gameAccount.setBalance(50);
+        gameAccount.setBalance(0.0);
         iGameAccountService.register(gameAccount);
 
         aUser.setAccount(account);

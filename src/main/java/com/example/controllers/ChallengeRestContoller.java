@@ -184,6 +184,32 @@ public class ChallengeRestContoller {
         }
     }
 
+    @RequestMapping(value = "/acceptChallenge",method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public void acceptChallenge(@RequestBody String id){
+
+        int idNo = Integer.parseInt(id);
+
+        ArrayList<Challenge>challenges =  iChallengeService.getAllChallenges();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH.mm.ss");
+        Timestamp challengeSentMili = new Timestamp(System.currentTimeMillis());
+
+        Challenge challengeToAccept;
+
+        for(Challenge chall:challenges){
+            if(chall.getId()==idNo){
+                challengeToAccept = chall;
+
+                challengeToAccept.setAccepted(true);
+                challengeToAccept.setOpen(true);
+                challengeToAccept.setChallengeAccepted(sdf.format(challengeSentMili));
+
+                iChallengeService.saveChallenge(challengeToAccept);
+            }
+        }
+    }
+
 
 
 

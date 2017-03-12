@@ -49,23 +49,36 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
 
         $http.post('/api/challenge/declineChallenge',obj.id)
             .success(function (data, status) {
-                if(status = 200){
+            if(status = 200){
 
-                    console.log("x.id was no ",obj.id);
-                    console.log("withdraw challenge worked");
-                }
-            }).error(function (error) {
+                console.log("x.id was no ",obj.id);
+                console.log("withdraw challenge worked");
+            }
+        }).error(function (error) {
             console.log("something went wrong in withdraw challenge!!");
         });
     };
 
     $scope.accept = function(x){
-        console.log("challenge that was accepted : ",x);
 
-    }
+        console.log("challenge that was accepted : ",x);
+        $http.post('/api/challenge/acceptChallenge',x.id)
+            .success(function (data, status) {
+                if(status = 200){
+
+                    console.log("x.id was no ",x.id);
+                    console.log("accept challenge worked");
+                }
+            }).error(function (error) {
+            console.log("something went wrong in accept challenge!!");
+        });
+    };
 
     $scope.findMore = function(){
         $state.go('onlineUsers');
     };
 
+    $scope.playNow = function(){
+        $state.go('trade');
+    }
 });
