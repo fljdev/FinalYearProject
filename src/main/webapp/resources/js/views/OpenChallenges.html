@@ -43,13 +43,16 @@
         <td>{{x.challengeSent}}</td>
         <td>{{x.duration}}</td>
         <td>{{x.stake}}</td>
-        <td ng-if="!x.withdrawen && !x.declined">{{"Open"}}</td>
+        <td ng-if="!x.withdrawen && !x.declined && !x.accepted">{{"Open"}}</td>
         <td ng-if="x.withdrawen">{{"Withdrawen"}}</td>
         <td ng-if="x.declined">{{"Declined"}}</td>
+        <td ng-if="x.accepted">{{"Game is ON!!"}}</td>
 
-        <td ng-show="!x.withdrawen && !x.declined"><button ng-click="withdraw(x)" class="btn btn-danger">Withdraw Challenge</button></td>
+        <td ng-show="!x.withdrawen && !x.declined && !x.accepted"><button ng-click="withdraw(x)" class="btn btn-danger">Withdraw Challenge</button></td>
         <!--<td ng-show="x.withdrawen"><button ng-click="withdraw(x)" class="btn btn-success">Re-Challenge</button></td>-->
         <td ng-show="x.withdrawen || x.declined"><button ng-click="findMore()" class="btn btn-info">Find More Users</button></td>
+        <td ng-show="x.accepted" colspan="2"><button ng-click="playNow()" class="btn btn-info">Make Your Play Now!</button></td>
+
 
     </tr>
     </tbody>
@@ -88,12 +91,15 @@
         <td>{{x.duration}}</td>
         <td>{{x.stake}}</td>
 
-        <td ng-if="!x.declined && !x.withdrawen">{{"Open"}}</td>
+        <td ng-if="!x.declined && !x.withdrawen && !x.accepted">{{"Open"}}</td>
         <td ng-if="x.declined">{{"Declined"}}</td>
         <td ng-if="x.withdrawen">{{"Withdrawen"}}</td>
-        <td ng-show="!x.declined && !x.withdrawen"><button ng-click="accept(x)" class="btn btn-success">Accept</button></td>
-        <td ng-show="!x.declined && !x.withdrawen"><button ng-click="decline(x)" class="btn btn-warning">Decline</button></td>
+        <td ng-if="x.accepted">{{"Game is ON!!"}}</td>
+
+        <td ng-show="!x.declined && !x.withdrawen && !x.accepted"><button ng-click="accept(x)" class="btn btn-success">Accept</button></td>
+        <td ng-show="!x.declined && !x.withdrawen && !x.accepted"><button ng-click="decline(x)" class="btn btn-warning">Decline</button></td>
         <td ng-show="x.declined || x.withdrawen" colspan="2"><button ng-click="findMore()" class="btn btn-info">Find More Users</button></td>
+        <td ng-show="x.accepted" colspan="2"><button ng-click="playNow()" class="btn btn-info">Make Your Play Now!</button></td>
 
 
 
