@@ -104,15 +104,18 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
     /**
-     * Top table values (No Problems with these)
+     * INITIAL Top table values ""**BEFORE TRADE**"" (No Problems with these)
      */
     $scope.available = $scope.currUser.account.balance;
     $scope.availableView = $scope.available.toFixed(2);
-
     $scope.equity = $scope.available;
     $scope.equityView = ($scope.equity.toFixed(2));
 
     $scope.leverage = 300;
+
+
+
+
 
     /**
      * Values get initialized now
@@ -120,6 +123,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.mMargin=0;
     $scope.marginRequiredTradedCurrency = $scope.position/$scope.leverage;
     $scope.marginRequiredTradedCurrencyView = $scope.marginRequiredTradedCurrency.toFixed(2);
+
+
 
 
     /**
@@ -163,18 +168,9 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $interval( function(){ $scope.init(); }, 4000);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * All the toggle section is concerned with it the button pressed (buy/sell) and the pair chosen (100% working)
+     */
 
     $scope.toggleLeft = buildToggler('left');
     $scope.toggleRight = buildToggler('right');
@@ -206,14 +202,20 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     $scope.trade = function(){
 
+        $scope.closeToggleLeft();
+
         var tradeObject = {};
         tradeObject.playerID = $scope.currUser.id+"";
         tradeObject.pairSymbols = $scope.pairChosen.symbols;
-        tradeObject.stake = $scope.marginRequiredUSD+"";
+        tradeObject.margin = $scope.marginRequiredUSD+"";
         tradeObject.action = $scope.action;
         $http.post('/api/trade/saveTrade',JSON.stringify(tradeObject));
 
 
+        /**
+         * 1st POST TRADE UPDATE OF AVAILABLE
+         * @type {number}
+         */
 
         $scope.available = $scope.available - $scope.marginRequiredUSD;
         $scope.availableView = $scope.available.toFixed(2);
@@ -288,33 +290,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
     $scope.convertPositionValueToAccountCurrency = function(){
-        console.log("got into convertPositionValueToAccountCurrency, chosen pair symbols are :",$scope.pairChosenSym);
-
-        /**
-         * I need to get the rate to convert
-         * eur
-         * gbp
-         * aud
-         * nzd
-         *
-         * all to dollars
-         *
-         * i need to get the
-         *
-         * EUR/USD ask
-         * GBP/USD ask
-         * AUD/USD ask
-         * NZD/USD ask
-         *
-         * do an if($scope.pairChosen.symbols.match("EUR/")
-         * then if it is, XXXPARAM = "EUR/USD"
-         * findBySymbols this pair
-         * get the ask
-         * get the bid
-         * then calculate the position size in account currency
-         */
-
-
 
         var conversionpair = "";
 
@@ -331,8 +306,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             conversionpair = "EUR/USD"
             $scope.accountCurrency = true;
         }
-
-        console.log("Conversion pair is ",conversionPair);
 
         $http.post('/api/trade/getThisPair',conversionPair)
             .success(function (data, status) {
