@@ -1,10 +1,8 @@
 package com.example.controllers;
 
-import com.example.entities.BankAccount;
-import com.example.entities.CurrencyPair;
-import com.example.entities.Trade;
-import com.example.entities.User;
+import com.example.entities.*;
 import com.example.services.IBankAccountService;
+import com.example.services.IGameAccountService;
 import com.example.services.IUserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,12 @@ public class UserRestController {
 
     IUserService iUserService;
     IBankAccountService iBankAccountService;
+    IGameAccountService iGameAccountService;
+
+    @Autowired
+    public void setiGameAccountService(IGameAccountService iGameAccountService){
+        this.iGameAccountService = iGameAccountService;
+    }
 
     @Autowired
     public void setiUserService(IUserService iUserService) {
@@ -57,7 +61,13 @@ public class UserRestController {
         account.setBalance(50000);
         iBankAccountService.register(account);
 
+        GameAccount gameAccount = new GameAccount();
+        gameAccount.setBalance(50);
+        iGameAccountService.register(gameAccount);
+
         aUser.setAccount(account);
+        aUser.setGameAccount(gameAccount);
+
 
         aUser.setOnline(true);
 
