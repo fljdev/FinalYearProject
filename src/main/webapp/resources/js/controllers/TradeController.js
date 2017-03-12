@@ -28,7 +28,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     /**
      * Increment/Decrement function (No Problems with these)
      */
-    $scope.position = 75000;
+    $scope.position = 2500;
     var max = 5000000;
     var min = 2500;
     $scope.reqSym="";

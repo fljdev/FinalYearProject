@@ -107,6 +107,17 @@ public class TradeRestController {
                 t.setCurrencyPairClose(closingPair);
                 t.setProfitLoss(profit);
                 iTradeService.saveTrade(t);
+
+                User user = findById(playerID);
+                BankAccount bankAccount = user.getAccount();
+                double marginPayed = t.getStake();
+                double currentBalance = bankAccount.getBalance();
+                double updatedBalance = currentBalance+marginPayed;
+                updatedBalance +=profit;
+                bankAccount.setBalance(updatedBalance);
+                iBankAccountService.register(bankAccount);
+
+                iUserService.register(user);
             }
         }
     }
