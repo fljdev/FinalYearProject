@@ -165,7 +165,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
     $scope.init();
-    $interval( function(){ $scope.init(); }, 4000);
+    $interval( function(){ $scope.init(); }, 10000);
 
 
     /**
@@ -284,7 +284,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             });
             $scope.calculatePositions(param);
         };
-        $interval( function(){ $scope.watchMarkets(); }, 4000);
+        $interval( function(){ $scope.watchMarkets(); }, 10000);
         $scope.calculatePositions(param);
     };
 
