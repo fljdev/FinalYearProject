@@ -86,7 +86,7 @@ public class TradeRestController {
         iTradeService.saveTrade(trade);
     }//end saveTrade
 
-    @RequestMapping(value = "/closeTrade", method = RequestMethod.POST)
+    @RequestMapping(value = "/closeLiveTrade", method = RequestMethod.POST)
     public void closeThisTrade(@RequestBody String json)throws Exception{
         JSONObject jsonObject = new JSONObject(json);
         String playerID = jsonObject.getString("id");
@@ -121,6 +121,8 @@ public class TradeRestController {
             }
         }
     }
+
+
 
 
 
