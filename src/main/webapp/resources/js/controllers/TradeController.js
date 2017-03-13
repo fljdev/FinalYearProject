@@ -1,5 +1,9 @@
 angular.module('myApp.TradeController',[]).
-controller('TradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav){
+controller('TradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav,$stateParams){
+
+    var theVar = $stateParams.challengeID;
+
+    console.log("got into trade ",theVar);
 
     /**
      * User user object from the Database, instead of the browser cookie (No Problems)

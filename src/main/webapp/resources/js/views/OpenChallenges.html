@@ -99,7 +99,7 @@
         <td ng-show="!x.declined && !x.withdrawen && !x.accepted"><button ng-click="accept(x)" class="btn btn-success">Accept</button></td>
         <td ng-show="!x.declined && !x.withdrawen && !x.accepted"><button ng-click="decline(x)" class="btn btn-warning">Decline</button></td>
         <td ng-show="x.declined || x.withdrawen" colspan="2"><button ng-click="findMore()" class="btn btn-info">Find More Users</button></td>
-        <td ng-show="x.accepted" colspan="2"><button ng-click="playNow()" class="btn btn-info">Make Your Play Now!</button></td>
+        <td ng-show="x.accepted" colspan="2"><button ng-click="playNow(x)" class="btn btn-info">Make Your Play Now!</button></td>
 
 
 
