@@ -1,7 +1,7 @@
 angular.module('myApp.OnlineController',[]).
     controller('OnlineController', function($scope,$cookieStore,$http,$state){
 
-    $scope.gameTimes = [15,30,60];
+    $scope.gameTimes = [2,15,30,60];
     $scope.gameStakes = [250,500,1000,2500,5000];
     $scope.selectedTime = 15;
     $scope.selectedStake = 1000;

@@ -129,6 +129,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
      * INITIAL Top table values ""**BEFORE TRADE**"" (No Problems with these)
      */
 
+    $scope.check =false;
     $scope.setTradeVariables = function(){
 
         console.log("inside setTrade , stake is ",theStake);
@@ -138,8 +139,11 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
         if(theVar>0){
             $scope.available = theStake;
+            $scope.check = true;
         }else{
             $scope.available = $scope.currUser.account.balance;
+            $scope.check=false;
+
         }
 
 
@@ -286,13 +290,22 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
 
-    $scope.closeTrade = function(x){
+    $scope.closeLiveTrade = function(x){
 
         var closeParams = {};
         closeParams.id = $scope.currUser.id+"";
         closeParams.sym = x.symbols;
         closeParams.profitAndLoss = $scope.profitAndLoss+"";
-        $http.post('/api/trade/closeTrade',JSON.stringify(closeParams));
+        $http.post('/api/trade/closeLiveTrade',JSON.stringify(closeParams));
+    };
+
+    $scope.closeGameTrade = function(x){
+
+        var closeParams = {};
+        closeParams.id = $scope.currUser.id+"";
+        closeParams.sym = x.symbols;
+        closeParams.profitAndLoss = $scope.profitAndLoss+"";
+        $http.post('/api/trade/closeGameTrade',JSON.stringify(closeParams));
     };
 
 
