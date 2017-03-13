@@ -59,7 +59,7 @@ angular.module('myApp',[
             controller: "OpenChallengesController"
         })
         .state('trade',{
-            url: '/trade',
+            url: '/trade/{challengeID}',
             templateUrl: "resources/js/views/Trade.html",
             controller: "TradeController"
         })

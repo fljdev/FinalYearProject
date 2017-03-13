@@ -68,6 +68,7 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
 
                     console.log("x.id was no ",x.id);
                     console.log("accept challenge worked");
+
                 }
             }).error(function (error) {
             console.log("something went wrong in accept challenge!!");
@@ -78,7 +79,10 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
         $state.go('onlineUsers');
     };
 
-    $scope.playNow = function(){
-        $state.go('trade');
+    $scope.playNow = function(x){
+        console.log("got into playNow(x) with ", x);
+        console.log("id is ",x.id);
+
+        $state.go('trade',{challengeID: x.id});
     }
 });
