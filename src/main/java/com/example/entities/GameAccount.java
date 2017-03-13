@@ -1,9 +1,6 @@
 package com.example.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by admin on 12/03/2017.
@@ -20,10 +17,18 @@ public class GameAccount {
     public GameAccount() {
     }
 
-    public GameAccount(double balance) {
+    @ManyToOne
+    private User user;
+
+
+    public GameAccount(double balance, User user) {
         this.balance = balance;
+        this.user = user;
     }
 
+    public int getId() {
+        return id;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -37,11 +42,11 @@ public class GameAccount {
         this.balance = balance;
     }
 
-    @Override
-    public String toString() {
-        return "GameAccount{" +
-                "id=" + id +
-                ", balance=" + balance +
-                '}';
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
