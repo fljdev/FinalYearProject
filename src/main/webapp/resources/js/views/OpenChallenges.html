@@ -51,7 +51,7 @@
         <td ng-show="!x.withdrawen && !x.declined && !x.accepted"><button ng-click="withdraw(x)" class="btn btn-danger">Withdraw Challenge</button></td>
         <!--<td ng-show="x.withdrawen"><button ng-click="withdraw(x)" class="btn btn-success">Re-Challenge</button></td>-->
         <td ng-show="x.withdrawen || x.declined"><button ng-click="findMore()" class="btn btn-info">Find More Users</button></td>
-        <td ng-show="x.accepted" colspan="2"><button ng-click="playNow()" class="btn btn-info">Make Your Play Now!</button></td>
+        <td ng-show="x.accepted" colspan="2"><button ng-click="playNow(x)" class="btn btn-info">Make Your Play Now!</button></td>
 
 
     </tr>
