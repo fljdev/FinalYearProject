@@ -1,9 +1,10 @@
 angular.module('myApp.TradeController',[]).
 controller('TradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav,$stateParams){
 
-    var theVar = $stateParams.challengeID;
 
-    console.log("got into trade ",theVar);
+
+
+
 
     /**
      * User user object from the Database, instead of the browser cookie (No Problems)
@@ -100,22 +101,57 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
 
+    /**
+     * Check if the game is a solo trade or part of a challenge
+     * if part of a challenge, change the balance to the stake
+     */
+    var theVar = $stateParams.challengeID;
+    console.log("got into trade ",theVar);
+    $scope.currentChallenge={}
 
+    $http.post('/api/challenge/findChallengeById',theVar)
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.currentChallenge = data;
+                console.log("current challenge is : ",$scope.currentChallenge);
 
+                theStake = $scope.currentChallenge.stake;
 
+                $scope.setTradeVariables();
 
-
+            }
+        }).error(function (error) {
+        console.log("something went wrong in  findChallengeByID!!");
+    });
 
 
     /**
      * INITIAL Top table values ""**BEFORE TRADE**"" (No Problems with these)
      */
-    $scope.available = $scope.currUser.account.balance;
-    $scope.availableView = $scope.available.toFixed(2);
-    $scope.equity = $scope.available;
-    $scope.equityView = ($scope.equity.toFixed(2));
 
-    $scope.leverage = 300;
+    $scope.setTradeVariables = function(){
+
+        console.log("inside setTrade , stake is ",theStake);
+
+
+        console.log("theVar is : ",theVar);
+
+        if(theVar>0){
+            $scope.available = theStake;
+        }else{
+            $scope.available = $scope.currUser.account.balance;
+        }
+
+
+
+        $scope.availableView = $scope.available.toFixed(2);
+        $scope.equity = $scope.available;
+        $scope.equityView = ($scope.equity.toFixed(2));
+
+        $scope.leverage = 300;
+    };
+
+
 
 
 
@@ -169,7 +205,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
     $scope.init();
-    $interval( function(){ $scope.init(); }, 10000);
+    $interval( function(){ $scope.init(); }, 3000);
 
 
     /**
@@ -288,7 +324,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             });
             $scope.calculatePositions(param);
         };
-        $interval( function(){ $scope.watchMarkets(); }, 10000);
+        $interval( function(){ $scope.watchMarkets(); }, 3000);
         $scope.calculatePositions(param);
     };
 

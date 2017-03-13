@@ -131,7 +131,7 @@ public class ForexDriver {
             if(res.getTd1().contains("JPY")){
                 spread = ((askNumeric - bidNumeric)*100);
             }else{
-                spread = ((askNumeric - bidNumeric)*10000);
+                spread = ((askNumeric - bidNumeric)*3000);
             }
 
             aPair.setSpreadPips(Double.parseDouble(df.format(spread)));

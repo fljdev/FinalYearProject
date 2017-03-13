@@ -73,6 +73,15 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
             }).error(function (error) {
             console.log("something went wrong in accept challenge!!");
         });
+
+        $http.post('/api/challenge/updateGameAccount',x.id)
+            .success(function (data, status) {
+                if(status = 200){
+                    console.log("Updating GameAccount worked , x.id was no ",x.id);
+                }
+            }).error(function (error) {
+            console.log("something went wrong in updateGameAccount!!");
+        });
     };
 
     $scope.findMore = function(){
@@ -82,6 +91,8 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
     $scope.playNow = function(x){
         console.log("got into playNow(x) with ", x);
         console.log("id is ",x.id);
+
+
 
         $state.go('trade',{challengeID: x.id});
     }

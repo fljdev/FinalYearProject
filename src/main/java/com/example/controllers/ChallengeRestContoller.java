@@ -1,8 +1,11 @@
 package com.example.controllers;
 
+import com.example.entities.BankAccount;
 import com.example.entities.Challenge;
+import com.example.entities.GameAccount;
 import com.example.entities.User;
 import com.example.services.IChallengeService;
+import com.example.services.IGameAccountService;
 import com.example.services.IUserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,12 @@ public class ChallengeRestContoller {
 
     IChallengeService iChallengeService;
     IUserService iUserService;
+    IGameAccountService iGameAccountService;
+
+    @Autowired
+    public void setiGameAccountService(IGameAccountService iGameAccountService){
+        this.iGameAccountService = iGameAccountService;
+    }
 
     @Autowired
     public void setiUserService(IUserService iUserService) {
@@ -42,6 +51,20 @@ public class ChallengeRestContoller {
         for(User u : users){
             if(u.getId()== i ){
                 return u;
+            }
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/findChallengeById", method = RequestMethod.POST, produces = "application/json")
+    public Challenge findChallengeById(@RequestBody String id){
+
+        int i = Integer.parseInt(id);
+        ArrayList<Challenge> challenges = iChallengeService.getAllChallenges();
+
+        for(Challenge c : challenges){
+            if(c.getId()== i ){
+                return c;
             }
         }
         return null;
@@ -208,6 +231,46 @@ public class ChallengeRestContoller {
                 iChallengeService.saveChallenge(challengeToAccept);
             }
         }
+    }
+
+    @RequestMapping(value = "/updateGameAccount",method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public void updateGameAccount(@RequestBody String id){
+
+        /**
+         * now i have the id of the challenge
+         */
+        int idNo = Integer.parseInt(id);
+
+        ArrayList<Challenge>challenges =  iChallengeService.getAllChallenges();
+
+        double stake = 0;
+
+        Challenge thisChallenge=null;
+
+        for(Challenge c : challenges){
+            if(c.getId()==idNo){
+                thisChallenge=c;
+            }
+        }
+        stake = thisChallenge.getStake();
+
+
+        User challenger = findById(String.valueOf(thisChallenge.getChallengerId()));
+        GameAccount challengerGameAccount = new GameAccount();
+        challengerGameAccount.setUser(challenger);
+        double challengerGameBalance = stake;
+        challengerGameAccount.setBalance(challengerGameBalance);
+        iGameAccountService.register(challengerGameAccount);
+        iUserService.register(challenger);
+
+        User opponent = findById(String.valueOf(thisChallenge.getOpponentId()));
+        GameAccount opponentGameAccount = new GameAccount();
+        opponentGameAccount.setUser(opponent);
+        double opponentGameBalance = stake;
+        opponentGameAccount.setBalance(opponentGameBalance);
+        iGameAccountService.register(opponentGameAccount);
+        iUserService.register(opponent);
     }
 
 
