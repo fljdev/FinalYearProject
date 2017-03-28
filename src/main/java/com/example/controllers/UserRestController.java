@@ -115,8 +115,7 @@ public class UserRestController {
     @RequestMapping(value ="/allUsers", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ArrayList<User> getAllUsers(){
-        ArrayList<User>users = new ArrayList();
-        users=(ArrayList<User>) iUserService.getAllUsers();
+        ArrayList<User>users = iUserService.getAllUsers();
         return users;
     }
 

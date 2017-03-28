@@ -212,6 +212,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $interval( function(){ $scope.init(); }, 3000);
 
 
+
     /**
      * All the toggle section is concerned with it the button pressed (buy/sell) and the pair chosen (100% working)
      */

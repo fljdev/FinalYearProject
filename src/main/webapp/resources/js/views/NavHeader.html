@@ -1,73 +1,58 @@
-<navbar class="navbar navbar-inverse navbar-fixed-top" id="my-navbar">
+<navbar class="navbar navbar-light bg-fadedp navbar-fixed-top " id="my-navbar">
     <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+        <a class="navbar-brand" ng-href="#">Forex Fighter</a>
 
-            <a class="navbar-brand">ForexFighter</a>
-        </div><!-- Navbar Header-->
         <ul class="collapse navbar-collapse" id="navbar-collapse">
 
-            <!--<a ng-href="" ng-click = "logOut()" class="btn btn-warning navbar-btn navbar-right">Logout</a>-->
-
-            <!--<ul class="nav navbar-nav navbar-left">-->
-                <!--<li class="dropdown">-->
-                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown<span class="caret"></span></a>-->
-                    <!--<ul class="dropdown-menu">-->
-                        <!--<li><a ng-href="#/login">Login</a></li>-->
-                        <!--<li><a ng-href="#/register">Register</a></li>-->
-                        <!--<li><a href="#">Something else here</a></li>-->
-                        <!--<li role="separator" class="divider"></li>-->
-                        <!--<li><a href="#">Separated link</a></li>-->
-                        <!--<li role="separator" class="divider"></li>-->
-                        <!--<li><a href="#">One more separated link</a></li>-->
-                    <!--</ul>-->
-                <!--</li>-->
-            <!--</ul>-->
 
             <ul class="nav navbar-nav">
 
+                <li class="nav-item active">
+                    <a class="nav-link" ng-href="#">Home</a>
+                </li>
 
-                <li><a ng-href="#/welcome">Home</a>
+                <li class="nav-item">
+                    <a class="nav-link" ng-href="#/logreg">Access Site</a>
+                </li>
 
-                <!--<li class="dropdown">-->
-                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Financial Markets Explained<span class="caret"></span></a>-->
-                    <!--<ul class="dropdown-menu">-->
-                        <!--<li><a ng-href="#/shares">Shares</a></li>-->
-                        <!--<li><a ng-href="#/forex">Forex</a></li>-->
-                        <!--<li><a href="#indices">Indices</a></li>-->
-                        <!--&lt;!&ndash;<li role="separator" class="divider"></li>&ndash;&gt;-->
-                        <!--<li><a href="#commodoties">Commodities</a></li>-->
-                        <!--<li><a href="#etfs">ETF's</a></li>-->
-                        <!--<li><a href="#options">Options</a></li>-->
-                        <!--<li><a href="#cfds">CFD's</a></li>-->
-                        <!--<li role="separator" class="divider"></li>-->
-                        <!--<li><a href="#contact">Contact us for further support</a></li>-->
-                    <!--</ul>-->
-                <!--</li>-->
+                <li class="nav-item">
+                    <a class="nav-link" ng-href="#/pairs">Current Forex Prices</a>
+                </li>
 
+                <li class="nav-item">
+                    <a ng-show='$root.loggedIn' class="nav-link" ng-href="#/allUsers">All Users</a>
+                </li>
 
-                <li ng-show='$root.loggedIn'><a ng-href="#/allUsers">All Users</a>
-                <li ng-show='$root.loggedIn'><a ng-href="#/onlineUsers">See Who's Online</a>
-                <li><a ng-href="#/pairs">Current Forex Prices</a>
+                <li class="nav-item">
+                    <a ng-show='$root.loggedIn' class="nav-link" ng-href="#/onlineUsers">Who's Online Now</a>
+                </li>
 
+                <li class="nav-item">
+                    <a ng-show='$root.loggedIn' class="nav-link" ng-href="#/rank">Ranking</a>
+                </li>
 
-                <li ng-show='$root.loggedIn'><a ng-href="#/openChallenges" >Challenges <span class="glyphicon glyphicon-envelope"></span></a></li>
-                <li ng-show='$root.loggedIn'><a ng-href="#/trade/0">Trade</a></li>
-                <li ng-show='$root.loggedIn'><a ng-href="#/rank">Ranks</a></li>
+                <li class="nav-item">
+                    <a ng-show='$root.loggedIn' class="nav-link" ng-href="#/trade/0">Trade</a>
+                </li>
 
-
-
-
-                <li ng-show='$root.loggedIn'><a ng-href="" ng-click = "logOut()" class="btn btn-danger">LogOut<span class="glyphicon glyphicon-user"></span></a></li>
-                <li ng-show='!$root.loggedIn'> <a ng-href="#/logreg" >Access Site<span class="glyphicon glyphicon-user"></span></a></li>
-                <li ng-show='$root.loggedIn'> <a ng-href="" >{{currentUser.username}}</a></li>
+                <li class="nav-item">
+                    <a ng-show='$root.loggedIn' class="nav-link" ng-href="#/openChallenges">Challenges</a>
+                </li>
 
             </ul>
 
-      </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+
+                </li>
+                <li class="nav-item " ng-show='$root.loggedIn' >
+                    <a ng-show="$root.loggedIn" class="nav-link" ng-href="#">{{currentUser.firstName}} Signed In</a>
+                </li>
+                <li>
+                    <a ng-show="$root.loggedIn" class="nav-link" ng-click="logOutUser()">Log Out</a>
+                </li>
+            </ul>
+      </ul>
     </div>
 </navbar><!-- End navbar -->

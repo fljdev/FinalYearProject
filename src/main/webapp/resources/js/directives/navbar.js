@@ -13,7 +13,7 @@ directive('navheader', function($cookieStore, $state, $http){
                 $scope.currentUser = $cookieStore.get('userCookie');
             }
 
-            $scope.logOut = function () {
+            $scope.logOutUser = function () {
                 var obj = $cookieStore.get('userCookie');
                 $cookieStore.remove('userCookie');
 
