@@ -31,7 +31,7 @@ directive('navheader', function($cookieStore, $state, $http){
                 });
             };
         },
-        templateUrl:'resources/js/views/NavHeader.html',
+        templateUrl:'resources/js/directives/NavHeader.html',
         replace:true
     }
 });
