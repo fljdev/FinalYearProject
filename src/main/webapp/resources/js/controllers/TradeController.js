@@ -44,7 +44,9 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
         $scope.marginRequiredTradedCurrency = $scope.position/$scope.leverage;
         $scope.marginRequiredTradedCurrencyView = $scope.marginRequiredTradedCurrency.toFixed(2);
-
+        /**
+         * I will now convert the margin from above to USD (account currency)
+         */
         $scope.convertRequiredMarginToUSD($scope.pairChosenSym);
 
     };
@@ -65,6 +67,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         $scope.convertRequiredMarginToUSD($scope.pairChosenSym);
 
     };
+
+
 
     $scope.convertRequiredMarginToUSD = function(sym){
         if(sym.match("EUR/")){
@@ -106,7 +110,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
      * if part of a challenge, change the balance to the stake
      */
     var theVar = $stateParams.challengeID;
-    console.log("got into trade ",theVar);
     $scope.currentChallenge={}
 
     $http.post('/api/challenge/findChallengeById',theVar)
@@ -132,11 +135,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.check =false;
     $scope.setTradeVariables = function(){
 
-        console.log("inside setTrade , stake is ",theStake);
-
-
-        console.log("theVar is : ",theVar);
-
         if(theVar>0){
             $scope.available = theStake;
             $scope.check = true;
@@ -145,8 +143,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             $scope.check=false;
 
         }
-
-
 
         $scope.availableView = $scope.available.toFixed(2);
         $scope.equity = $scope.available;
@@ -254,7 +250,16 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         tradeObject.pairSymbols = $scope.pairChosen.symbols;
         tradeObject.margin = $scope.marginRequiredUSD+"";
         tradeObject.action = $scope.action;
-        $http.post('/api/trade/saveTrade',JSON.stringify(tradeObject));
+        $http.post('/api/trade/saveTrade',JSON.stringify(tradeObject))
+            .success(function (data, status) {
+                if(status = 200){
+                    console.log("trade is ",data);
+                }
+            }).error(function (error) {
+            console.log("something went wrong in saveTrade -> HomeController!!");
+        });
+
+
 
 
         /**
@@ -297,6 +302,11 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         closeParams.id = $scope.currUser.id+"";
         closeParams.sym = x.symbols;
         closeParams.profitAndLoss = $scope.profitAndLoss+"";
+
+        $scope.mMargin -= ($scope.marginRequiredUSD/2);
+        $scope.mMarginView  = $scope.mMargin.toFixed(2);
+
+
         $http.post('/api/trade/closeLiveTrade',JSON.stringify(closeParams));
     };
 
@@ -406,12 +416,16 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.marginRequiredUSD));
             $scope.equityView = ($scope.equity.toFixed(2));
+            $scope.available +=$scope.profitAndLoss;
+            $scope.availableView=$scope.available.toFixed(2);
 
         }else if(action=='sell'){
             $scope.profitAndLoss = ($scope.shortPipDifference * $scope.position);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.marginRequiredUSD));
             $scope.equityView = $scope.equity.toFixed(2);
+            $scope.available +=$scope.profitAndLoss;
+            $scope.availableView=$scope.available.toFixed(2);
         }
     };
 
@@ -425,11 +439,15 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.marginRequiredUSD));
             $scope.equityView = $scope.equity.toFixed(2);
+            $scope.available +=$scope.profitAndLoss;
+            $scope.availableView=$scope.available.toFixed(2);
         }else if(action=='sell'){
             $scope.profitAndLoss = (($scope.shortPipDifference * $scope.position)/$scope.closeAskRate);
             $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
             $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.marginRequiredUSD));
             $scope.equityView = $scope.equity.toFixed(2);
+            $scope.available +=$scope.profitAndLoss;
+            $scope.availableView=$scope.available.toFixed(2);
         }
     };
 
@@ -451,6 +469,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
                 $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.marginRequiredUSD));
                 $scope.equityView = $scope.equity.toFixed(2);
+                $scope.available +=$scope.profitAndLoss;
+                $scope.availableView=$scope.available.toFixed(2);
             }
         }else if(action=='sell'){
 
@@ -461,6 +481,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
                 $scope.equity = ($scope.available + $scope.profitAndLoss + parseFloat($scope.marginRequiredUSD));
                 $scope.equityView = $scope.equity.toFixed(2);
+                $scope.available +=$scope.profitAndLoss;
+                $scope.availableView=$scope.available.toFixed(2);
             }
         }
     };
