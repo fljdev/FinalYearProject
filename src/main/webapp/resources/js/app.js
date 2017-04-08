@@ -67,6 +67,7 @@ angular.module('myApp',[
             url: '/rank',
             templateUrl: "resources/js/views/Rank.html",
             controller: "RankController"
-        });
+        })
+      ;
 });
 
