@@ -11,8 +11,6 @@ public class Trade {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-
-
     @ManyToOne
     private User user;
 
@@ -23,21 +21,24 @@ public class Trade {
     @ManyToOne
     private CurrencyPair currencyPairClose;
 
-
-
     private Timestamp timestampOpen;
     private Timestamp timestampClose;
     private double margin;
     private String action;
 
-    @Column(nullable = true)
-    private double profitLoss;
+    private double closingProfitLoss;
+
+
+    private double currentProfitLoss;
+    private double currentBid;
+    private double currentAsk;
 
     public Trade() {
     }
 
     public Trade(User user, CurrencyPair currencyPairOpen, CurrencyPair currencyPairClose, Timestamp timestampOpen,
-                 Timestamp timestampClose, double margin, String action, double profitLoss) {
+                 Timestamp timestampClose, double margin, String action, double closingProfitLoss,
+                 double currentProfitLoss, double currentBid, double currentAsk) {
         this.user = user;
         this.currencyPairOpen = currencyPairOpen;
         this.currencyPairClose = currencyPairClose;
@@ -45,11 +46,18 @@ public class Trade {
         this.timestampClose = timestampClose;
         this.margin = margin;
         this.action = action;
-        this.profitLoss = profitLoss;
+        this.closingProfitLoss = closingProfitLoss;
+        this.currentProfitLoss = currentProfitLoss;
+        this.currentBid = currentBid;
+        this.currentAsk = currentAsk;
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -108,12 +116,36 @@ public class Trade {
         this.action = action;
     }
 
-    public double getProfitLoss() {
-        return profitLoss;
+    public double getClosingProfitLoss() {
+        return closingProfitLoss;
     }
 
-    public void setProfitLoss(double profitLoss) {
-        this.profitLoss = profitLoss;
+    public void setClosingProfitLoss(double closingProfitLoss) {
+        this.closingProfitLoss = closingProfitLoss;
+    }
+
+    public double getCurrentProfitLoss() {
+        return currentProfitLoss;
+    }
+
+    public void setCurrentProfitLoss(double currentProfitLoss) {
+        this.currentProfitLoss = currentProfitLoss;
+    }
+
+    public double getCurrentBid() {
+        return currentBid;
+    }
+
+    public void setCurrentBid(double currentBid) {
+        this.currentBid = currentBid;
+    }
+
+    public double getCurrentAsk() {
+        return currentAsk;
+    }
+
+    public void setCurrentAsk(double currentAsk) {
+        this.currentAsk = currentAsk;
     }
 
     @Override
@@ -127,7 +159,10 @@ public class Trade {
                 ", timestampClose=" + timestampClose +
                 ", margin=" + margin +
                 ", action='" + action + '\'' +
-                ", profitLoss=" + profitLoss +
+                ", closingProfitLoss=" + closingProfitLoss +
+                ", currentProfitLoss=" + currentProfitLoss +
+                ", currentBid=" + currentBid +
+                ", currentAsk=" + currentAsk +
                 '}';
     }
 }

@@ -106,7 +106,7 @@ public class TradeRestController {
                 Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
                 t.setTimestampClose(timestampClose);
                 t.setCurrencyPairClose(closingPair);
-                t.setProfitLoss(profit);
+                t.setClosingProfitLoss(profit);
                 iTradeService.saveTrade(t);
 
                 User user = findById(playerID);

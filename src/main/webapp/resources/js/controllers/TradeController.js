@@ -12,6 +12,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 .success(function (data, status) {
                     if(status = 200){
                         $cookieStore.put('userCookie', data);
+
+                        $scope.thisUser = data;
                     }
                 }).error(function (error) {
                 console.log("something went wrong in findById -> TradeController!!");
@@ -119,7 +121,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             var symParam = "NZD/USD";
             $scope.getThisConversionPair(symParam);
         }else if(sym.match("USD/")){
-            $scope.preTrademarginRequiredUSD = $scope.preTradeMarginRequiredTradedCurrency;
+            console.log("got USD/");
+            $scope.preTradeMarginRequiredUSD = $scope.preTradeMarginRequiredTradedCurrency;
             $scope.preTradeMarginRequiredUSDView = $scope.preTradeMarginRequiredUSD.toFixed(2);
         }
     };
@@ -253,7 +256,12 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 if(status = 200){
                     console.log("trade created and persisted ",data);
                     $scope.tradeObject = data;
-                    $scope.calculateThisTrade(data);
+                    $scope.thisUser=$scope.tradeObject.user;
+                    $cookieStore.put('userCookie', $scope.thisUser);
+
+
+
+                    $scope.updateTradeScreenHeader($scope.tradeObject);
 
                 }
             }).error(function (error) {
@@ -262,38 +270,33 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     };
 
-    $scope.calculateThisTrade = function(x){
-        console.log("inside calculateThisTrade with ",x);
-        console.log("margin is ",x.margin);
-        $scope.available -= x.margin;
+    $scope.updateTradeScreenHeader = function(tradeObj){
+        console.log("inside calculateThisTrade with ",tradeObj);
+        console.log("thisUser balance is  ",tradeObj.user.account.balance);
+
+
+
+
+        $scope.available = tradeObj.user.account.balance;
         $scope.availableView = $scope.available.toFixed(2);
 
-        $scope.mMargin += (x.margin/2);
-        $scope.mMarginView  = $scope.mMargin.toFixed(2);
+        // $scope.mMargin += (x.margin/2);
+        // $scope.mMarginView  = $scope.mMargin.toFixed(2);
+
+
+
+        $scope.calcEachTrade(tradeObj);
 
     };
 
-
-        // $scope.available = $scope.available - $scope.tradeObject.margin;
-
+    $scope.calcEachTrade = function(x){
 
 
-        // /**
-        //  * 1st POST TRADE UPDATE OF AVAILABLE
-        //  * @type {number}
-        //  */
-        //
-        // // $scope.available = $scope.available - $scope.marginRequiredUSD;
-        // $scope.available -= $scope.marginRequiredUSD;
-        // $scope.availableView = $scope.available.toFixed(2);
-        //
-        // $scope.mMargin += ($scope.marginRequiredUSD/2);
-        // $scope.mMarginView  = $scope.mMargin.toFixed(2);
-        //
-        //
-        // $scope.openBuyRate = $scope.pairChosen.ask;
-        // $scope.openSellRate = $scope.pairChosen.bid;
-        //
+
+
+
+    };
+
         //
         // if($scope.pairChosenSym.match("/USD")){
         //
@@ -352,6 +355,23 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 //
 //
 //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //     $scope.watch = function(param){
 //         $scope.watchMarkets = function(){
 //
