@@ -65,7 +65,7 @@
 
         <td bgcolor="#F0F8FF" align="center">{{x.bid}}</td>
         <td bgcolor="#F0F8FF" align="center">
-            <md-button ng-click="toggleLeft(x,'sell')" class="md-primary md-raised">
+            <md-button  ng-click="toggleLeft(x,'sell')" class="md-primary md-raised">
             Sell
            </md-button></td>
 
@@ -116,8 +116,8 @@
 
         <table md-table>
             <thead>
-              <th>{{pairChosen.symbols}}</th>
-              <th>{{direction}}</th>
+              <th></th>
+              <th>{{preTradeAction}}</th>
               <th></th>
             </thead>
 
@@ -129,8 +129,8 @@
             </tr>
 
             <tr>
-                <td>{{reqSym}}</td>
-                <td colspan="2">{{marginRequiredTradedCurrencyView}}</td>
+                <td>{{preTradeBasePairChosenSymbols}}</td>
+                <td colspan="2">{{preTradeMarginRequiredTradedCurrencyView}}</td>
             </tr>
 
             <tr>

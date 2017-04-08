@@ -36,18 +36,17 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.position = 2500;
     var max = 5000000;
     var min = 2500;
-    $scope.reqSym="";
 
     $scope.increment = function() {
         if ($scope.position >= max) { return; }
         $scope.position +=2500;
 
-        $scope.marginRequiredTradedCurrency = $scope.position/$scope.leverage;
-        $scope.marginRequiredTradedCurrencyView = $scope.marginRequiredTradedCurrency.toFixed(2);
+        $scope.preTradeMarginRequiredTradedCurrency = $scope.position/$scope.leverage;
+        $scope.preTradeMarginRequiredTradedCurrencyView = $scope.preTradeMarginRequiredTradedCurrency.toFixed(2);
         /**
          * I will now convert the margin from above to USD (account currency)
          */
-        $scope.convertRequiredMarginToUSD($scope.pairChosenSym);
+        $scope.convertRequiredMarginToUSD($scope.preTradePairChosen.symbols);
 
     };
     $scope.decrement = function() {
@@ -58,17 +57,14 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
          * Based on users chosen position size, I will calc the amount of margin required
          * in the chosen currency base pair
          */
-        $scope.marginRequiredTradedCurrency = $scope.position/$scope.leverage;
-        $scope.marginRequiredTradedCurrencyView = $scope.marginRequiredTradedCurrency.toFixed(2);
+        $scope.preTradeMarginRequiredTradedCurrency = $scope.position/$scope.leverage;
+        $scope.preTradeMarginRequiredTradedCurrencyView = $scope.preTradeMarginRequiredTradedCurrency.toFixed(2);
 
         /**
          * I will now convert the margin from above to USD (account currency)
          */
-        $scope.convertRequiredMarginToUSD($scope.pairChosenSym);
-
+        $scope.convertRequiredMarginToUSD($scope.preTradePairChosen.symbols);
     };
-
-
 
     $scope.convertRequiredMarginToUSD = function(sym){
         if(sym.match("EUR/")){
@@ -84,11 +80,9 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             var symParam = "NZD/USD";
             $scope.getThisConversionPair(symParam);
         }else if(sym.match("USD/")){
-            $scope.marginRequiredUSD = $scope.marginRequiredTradedCurrency;
+            $scope.marginRequiredUSD = $scope.preTradeMarginRequiredTradedCurrency;
             $scope.marginRequiredUSDView = $scope.marginRequiredUSD.toFixed(2);
         }
-
-
     };
 
     $scope.getThisConversionPair = function(conversionPair){
@@ -96,7 +90,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             .success(function (data, status) {
                 if(status = 200){
                     $scope.marginConversionPairAsk = data.ask;
-                    $scope.marginRequiredUSD = $scope.marginRequiredTradedCurrency *  $scope.marginConversionPairAsk;
+                    $scope.marginRequiredUSD = $scope.preTradeMarginRequiredTradedCurrency *  $scope.marginConversionPairAsk;
                     $scope.marginRequiredUSDView = $scope.marginRequiredUSD.toFixed(2);
                 }
             }).error(function (error) {
@@ -161,8 +155,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
      * Values get initialized now
      */
     $scope.mMargin=0;
-    $scope.marginRequiredTradedCurrency = $scope.position/$scope.leverage;
-    $scope.marginRequiredTradedCurrencyView = $scope.marginRequiredTradedCurrency.toFixed(2);
+    $scope.preTradeMarginRequiredTradedCurrency = $scope.position/$scope.leverage;
+    $scope.preTradeMarginRequiredTradedCurrencyView = $scope.preTradeMarginRequiredTradedCurrency.toFixed(2);
 
 
 
@@ -218,12 +212,18 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     function buildToggler(componentId) {
         return function(x,y) {
 
-            $scope.action = y;
-            $scope.pairChosen =x;
-            $scope.pairChosenSym = $scope.pairChosen.symbols;
+            $scope.preTradeAction = y;
+            $scope.preTradePairChosen = x;
+            // $scope.action = y;
+            $scope.preTradeBasePairChosenSymbols = x.symbols.charAt(0)+x.symbols.charAt(1)+x.symbols.charAt(2);
+            // $scope.pairChosen =x;
+            // $scope.pairChosenSym = $scope.pairChosen.symbols;
 
-            $scope.reqSym = $scope.pairChosenSym.charAt(0)+$scope.pairChosenSym.charAt(1)+$scope.pairChosenSym.charAt(2);
-            $scope.convertRequiredMarginToUSD($scope.pairChosenSym);
+            // $scope.reqSym = $scope.pairChosenSym.charAt(0)+$scope.pairChosenSym.charAt(1)+$scope.pairChosenSym.charAt(2);
+
+            // $scope.convertRequiredMarginToUSD($scope.pairChosenSym);
+
+            $scope.convertRequiredMarginToUSD($scope.preTradePairChosen.symbols);
 
             $mdSidenav(componentId).toggle();
         };
@@ -254,9 +254,11 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             .success(function (data, status) {
                 if(status = 200){
                     console.log("trade is ",data);
+
+                    $scope.tradeOn = true;
                 }
             }).error(function (error) {
-            console.log("something went wrong in saveTrade -> HomeController!!");
+            console.log("something went wrong in saveTrade");
         });
 
 
@@ -267,7 +269,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
          * @type {number}
          */
 
-        $scope.available = $scope.available - $scope.marginRequiredUSD;
+        // $scope.available = $scope.available - $scope.marginRequiredUSD;
+        $scope.available -= $scope.marginRequiredUSD;
         $scope.availableView = $scope.available.toFixed(2);
 
         $scope.mMargin += ($scope.marginRequiredUSD/2);
@@ -303,11 +306,25 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         closeParams.sym = x.symbols;
         closeParams.profitAndLoss = $scope.profitAndLoss+"";
 
+        $http.post('/api/trade/closeLiveTrade',JSON.stringify(closeParams))
+
+            .success(function (data, status) {
+                if(status = 200){
+                    console.log("trade is ",data);
+
+                    $scope.tradeOn = false;
+                }
+            }).error(function (error) {
+            console.log("something went wrong in closeTrade!!");
+        });
+
+
         $scope.mMargin -= ($scope.marginRequiredUSD/2);
         $scope.mMarginView  = $scope.mMargin.toFixed(2);
+        $scope.profitAndLoss=0;
+        $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
 
 
-        $http.post('/api/trade/closeLiveTrade',JSON.stringify(closeParams));
     };
 
     $scope.closeGameTrade = function(x){
