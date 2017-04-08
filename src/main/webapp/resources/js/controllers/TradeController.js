@@ -2,16 +2,11 @@ angular.module('myApp.TradeController',[]).
 controller('TradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav,$stateParams){
 
 
-
-
-
-
     /**
      * User user object from the Database, instead of the browser cookie (No Problems)
      */
     $scope.setUser = function(){
         $scope.currUser = $cookieStore.get('userCookie');
-
         if($scope.currUser){
             $http.post('/api/user/findById', JSON.stringify($scope.currUser.id))
                 .success(function (data, status) {
@@ -25,6 +20,50 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
     $scope.setUser();
 
+    /**
+     * Find open trades to alter the TradeTable view (Working, possible bug)
+     */
+    $scope.getPairs = function(){
+        $http.get('/api/trade/pairs')
+            .success(function (data, status) {
+                if(status = 200){
+                    $scope.pairs = data;
+                }
+            }).error(function (error) {
+            console.log("something went wrong in the pairs controller init function!!");
+        });
+    };
+
+    $scope.init = function(){
+        $scope.getPairs();
+        $http.post('/api/trade/getOpenTrades',$scope.currUser.id)
+            .success(function (data, status) {
+                if(status = 200){
+                    $scope.openTrades = data;
+                }
+            }).error(function (error) {
+            console.log("something went wrong in getOpenTrades call!!");
+        });
+    };
+
+    $scope.checkForOpenTrades= function (pair) {
+        function findPair(currentPair) {
+            return currentPair.currencyPairOpen.symbols === pair.symbols;
+        }
+        var found = $scope.openTrades.find(findPair);
+        if(found){
+            return true;
+        }
+        return false;
+    };
+
+    $scope.init();
+    $interval( function(){ $scope.init(); }, 3000);
+
+
+
+
+
 
     /**
      * Position size, margin and leverage section
@@ -33,11 +72,20 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     /**
      * Increment/Decrement function (No Problems with these)
      */
-    $scope.position = 2500;
+
+    /**
+     * Values get initialized now
+     */
     var max = 5000000;
     var min = 2500;
+    $scope.position = 2500;
+    $scope.mMargin=0;
+    $scope.preTradeMarginRequiredTradedCurrency = $scope.position/$scope.leverage;
+    $scope.preTradeMarginRequiredTradedCurrencyView = $scope.preTradeMarginRequiredTradedCurrency.toFixed(2);
+
 
     $scope.increment = function() {
+
         if ($scope.position >= max) { return; }
         $scope.position +=2500;
 
@@ -50,6 +98,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     };
     $scope.decrement = function() {
+
         if ($scope.position <= min) { return; }
         $scope.position -=2500;
 
@@ -80,8 +129,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             var symParam = "NZD/USD";
             $scope.getThisConversionPair(symParam);
         }else if(sym.match("USD/")){
-            $scope.marginRequiredUSD = $scope.preTradeMarginRequiredTradedCurrency;
-            $scope.marginRequiredUSDView = $scope.marginRequiredUSD.toFixed(2);
+            $scope.preTrademarginRequiredUSD = $scope.preTradeMarginRequiredTradedCurrency;
+            $scope.preTradeMarginRequiredUSDView = $scope.preTradeMarginRequiredUSD.toFixed(2);
         }
     };
 
@@ -89,9 +138,9 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         $http.post('/api/trade/getThisPair',conversionPair)
             .success(function (data, status) {
                 if(status = 200){
-                    $scope.marginConversionPairAsk = data.ask;
-                    $scope.marginRequiredUSD = $scope.preTradeMarginRequiredTradedCurrency *  $scope.marginConversionPairAsk;
-                    $scope.marginRequiredUSDView = $scope.marginRequiredUSD.toFixed(2);
+                    $scope.preTradeMarginConversionPairAsk = data.ask;
+                    $scope.preTradeMarginRequiredUSD = $scope.preTradeMarginRequiredTradedCurrency *  $scope.preTradeMarginConversionPairAsk;
+                    $scope.preTradeMarginRequiredUSDView = $scope.preTradeMarginRequiredUSD.toFixed(2);
                 }
             }).error(function (error) {
             console.log("something went wrong in $scope.getThisConversionPair!!");
@@ -100,12 +149,14 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
     /**
+     * Worry about this section (challenge) as soon as multiple trades allowed in soo trade works!!
+     */
+    /**
      * Check if the game is a solo trade or part of a challenge
      * if part of a challenge, change the balance to the stake
      */
     var theVar = $stateParams.challengeID;
-    $scope.currentChallenge={}
-
+    $scope.currentChallenge={};
     $http.post('/api/challenge/findChallengeById',theVar)
         .success(function (data, status) {
             if(status = 200){
@@ -120,12 +171,9 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         }).error(function (error) {
         console.log("something went wrong in  findChallengeByID!!");
     });
-
-
     /**
      * INITIAL Top table values ""**BEFORE TRADE**"" (No Problems with these)
      */
-
     $scope.check =false;
     $scope.setTradeVariables = function(){
 
@@ -151,55 +199,13 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
 
-    /**
-     * Values get initialized now
-     */
-    $scope.mMargin=0;
-    $scope.preTradeMarginRequiredTradedCurrency = $scope.position/$scope.leverage;
-    $scope.preTradeMarginRequiredTradedCurrencyView = $scope.preTradeMarginRequiredTradedCurrency.toFixed(2);
 
 
 
 
-    /**
-     * Find open trades to alter the TradeTable view (Working, possible bug)
-     */
-    $scope.init = function(){
-        $scope.getPairs();
-        $http.post('/api/trade/getOpenTrades',$scope.currUser.id)
-            .success(function (data, status) {
-                if(status = 200){
-                    $scope.openTrades = data;
-                }
-            }).error(function (error) {
-            console.log("something went wrong in getOpenTrades call!!");
-        });
-    };
 
-    $scope.getPairs = function(){
-        $http.get('/api/trade/pairs')
-            .success(function (data, status) {
-                if(status = 200){
-                    $scope.pairs = data;
-                }
-            }).error(function (error) {
-            console.log("something went wrong in the pairs controller init function!!");
-        });
-    };
 
-    $scope.checkForOpenTrades= function (pair) {
-        function findPair(currentPair) {
-            return currentPair.currencyPairOpen.symbols === pair.symbols;
-        }
-        var found = $scope.openTrades.find(findPair);
-        if(found){
-            return true;
-        }
-        return false;
-    };
 
-    $scope.init();
-    $interval( function(){ $scope.init(); }, 3000);
 
 
 
@@ -214,14 +220,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
             $scope.preTradeAction = y;
             $scope.preTradePairChosen = x;
-            // $scope.action = y;
             $scope.preTradeBasePairChosenSymbols = x.symbols.charAt(0)+x.symbols.charAt(1)+x.symbols.charAt(2);
-            // $scope.pairChosen =x;
-            // $scope.pairChosenSym = $scope.pairChosen.symbols;
-
-            // $scope.reqSym = $scope.pairChosenSym.charAt(0)+$scope.pairChosenSym.charAt(1)+$scope.pairChosenSym.charAt(2);
-
-            // $scope.convertRequiredMarginToUSD($scope.pairChosenSym);
 
             $scope.convertRequiredMarginToUSD($scope.preTradePairChosen.symbols);
 
@@ -235,6 +234,22 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             $mdSidenav(componentId).toggle();
         };
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
