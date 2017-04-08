@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -26,7 +27,7 @@ public class TradeService implements ITradeService {
     }
 
     @Override
-    public ArrayList<Trade> getAllTrades() {
+    public List<Trade> getAllTrades() {
         ArrayList<Trade> trades = new ArrayList<Trade>();
         for(Trade t : tradeDAO.findAll()){
             trades.add(t);

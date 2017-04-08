@@ -2,6 +2,7 @@ package com.example.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 @Entity
@@ -29,16 +30,15 @@ public class Trade {
     private double closingProfitLoss;
 
 
-    private double currentProfitLoss;
-    private double currentBid;
-    private double currentAsk;
+    @ManyToMany
+    private List<LiveTradeInfo> liveTradeInfo;
 
     public Trade() {
     }
 
     public Trade(User user, CurrencyPair currencyPairOpen, CurrencyPair currencyPairClose, Timestamp timestampOpen,
                  Timestamp timestampClose, double margin, String action, double closingProfitLoss,
-                 double currentProfitLoss, double currentBid, double currentAsk) {
+                 List<LiveTradeInfo> liveTradeInfo) {
         this.user = user;
         this.currencyPairOpen = currencyPairOpen;
         this.currencyPairClose = currencyPairClose;
@@ -47,9 +47,7 @@ public class Trade {
         this.margin = margin;
         this.action = action;
         this.closingProfitLoss = closingProfitLoss;
-        this.currentProfitLoss = currentProfitLoss;
-        this.currentBid = currentBid;
-        this.currentAsk = currentAsk;
+        this.liveTradeInfo = liveTradeInfo;
     }
 
     public int getId() {
@@ -124,28 +122,12 @@ public class Trade {
         this.closingProfitLoss = closingProfitLoss;
     }
 
-    public double getCurrentProfitLoss() {
-        return currentProfitLoss;
+    public List<LiveTradeInfo> getLiveTradeInfo() {
+        return liveTradeInfo;
     }
 
-    public void setCurrentProfitLoss(double currentProfitLoss) {
-        this.currentProfitLoss = currentProfitLoss;
-    }
-
-    public double getCurrentBid() {
-        return currentBid;
-    }
-
-    public void setCurrentBid(double currentBid) {
-        this.currentBid = currentBid;
-    }
-
-    public double getCurrentAsk() {
-        return currentAsk;
-    }
-
-    public void setCurrentAsk(double currentAsk) {
-        this.currentAsk = currentAsk;
+    public void setLiveTradeInfo(List<LiveTradeInfo> liveTradeInfo) {
+        this.liveTradeInfo = liveTradeInfo;
     }
 
     @Override
@@ -160,9 +142,7 @@ public class Trade {
                 ", margin=" + margin +
                 ", action='" + action + '\'' +
                 ", closingProfitLoss=" + closingProfitLoss +
-                ", currentProfitLoss=" + currentProfitLoss +
-                ", currentBid=" + currentBid +
-                ", currentAsk=" + currentAsk +
+                ", liveTradeInfo=" + liveTradeInfo +
                 '}';
     }
 }

@@ -3,6 +3,7 @@ package com.example.services;
 import com.example.entities.Rank;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by admin on 02/03/2017.
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 public interface IRankService {
 
     void saveRank(Rank rank);
-    ArrayList<Rank> getALlRanks();
+    List<Rank> getALlRanks();
 
     void deleteRank(Rank rank);
 

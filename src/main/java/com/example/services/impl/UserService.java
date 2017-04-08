@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -24,7 +25,7 @@ public class UserService implements IUserService{
 
 
     @Override
-    public ArrayList<User> getAllUsers() {
+    public List<User> getAllUsers() {
 
         ArrayList<User>usersFound = new ArrayList<User>();
         for(User aUser: userDAO.findAll()){
@@ -34,7 +35,7 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public ArrayList<User> onlineUsers() {
+    public List<User> onlineUsers() {
 
         ArrayList<User>usersOnline = new ArrayList<User>();
         for(User aUser: userDAO.findAll()){

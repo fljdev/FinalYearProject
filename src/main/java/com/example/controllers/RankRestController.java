@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by admin on 02/03/2017.
@@ -37,30 +38,24 @@ public class RankRestController {
 
     @RequestMapping(value = "/allRanks", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ArrayList<Rank> getAllRanks() {
-//        ArrayList<Rank> ranks = new ArrayList();
-//        ranks = (ArrayList<Rank>) iRankService.getALlRanks();
-
-        ArrayList<Rank> ranks =iRankService.getALlRanks();
-        return ranks;
+    public List<Rank> getAllRanks() {
+        return iRankService.getALlRanks();
     }
 
     @RequestMapping(value = "/saveRank", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ArrayList<Rank> saveRank() {
+    public List<Rank> saveRank() {
 
-        ArrayList<Rank> allTheRanks = iRankService.getALlRanks();
-        for(Rank r : allTheRanks){
+        for(Rank r : iRankService.getALlRanks()){
             iRankService.deleteRank(r);
         }
 
-        ArrayList<User> users = iUserService.getAllUsers();
-        ArrayList<Double> balances = new ArrayList<>();
+        List<Double> balances = new ArrayList<>();
 
-        for(User u : users){
+        for(User u : iUserService.getAllUsers()){
             balances.add(u.getAccount().getBalance());
         }
-        ArrayList<Integer>balancesInteger = new ArrayList<>();
+        List<Integer>balancesInteger = new ArrayList<>();
         for(Double d : balances){
             int x = (int)d.doubleValue();
             balancesInteger.add(x);
@@ -68,7 +63,7 @@ public class RankRestController {
 
         Collections.sort(balancesInteger);
 
-        ArrayList<Double> newBalances = new ArrayList<>();
+        List<Double> newBalances = new ArrayList<>();
         for(Integer i : balancesInteger){
             double castBack = (double)i;
             newBalances.add(castBack);
@@ -77,11 +72,9 @@ public class RankRestController {
 
         int count = uniqueBalances.size();
         for(Double d : uniqueBalances){
-            for(User u : users){
+            for(User u : iUserService.getAllUsers()){
                 int bal = (int)u.getAccount().getBalance();
-//                if(u.getAccount().getBalance()==d){
                 if(bal==d){
-
                     Rank rank = new Rank();
                     rank.setCurrentRank(count);
                     rank.setUser(u);
@@ -98,7 +91,7 @@ public class RankRestController {
             count--;
         }
 
-        ArrayList<Rank> rankedByBalanceList = iRankService.getALlRanks();
+        List<Rank> rankedByBalanceList = iRankService.getALlRanks();
         Collections.reverse(rankedByBalanceList);
         return rankedByBalanceList;
     }

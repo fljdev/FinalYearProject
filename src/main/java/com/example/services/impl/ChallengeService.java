@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 @Service
@@ -28,7 +28,7 @@ public class ChallengeService implements IChallengeService{
 
 
     @Override
-    public ArrayList<Challenge> getAllChallenges() {
+    public List<Challenge> getAllChallenges() {
         ArrayList<Challenge> challenges = new ArrayList<Challenge>();
         for(Challenge ch : challengeDAO.findAll()){
             challenges.add(ch);

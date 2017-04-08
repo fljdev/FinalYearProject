@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by admin on 02/03/2017.
@@ -30,7 +31,7 @@ public class RankService implements IRankService {
     }
 
     @Override
-    public ArrayList<Rank> getALlRanks() {
+    public List<Rank> getALlRanks() {
         ArrayList<Rank>ranks = new ArrayList<>();
         for(Rank r : rankDAO.findAll()){
             ranks.add(r);
