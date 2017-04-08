@@ -34,7 +34,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         });
     };
 
-    $scope.init = function(){
+    $scope.showOpenTrades = function(){
         $scope.getPairs();
         $http.post('/api/trade/getOpenTrades',$scope.currUser.id)
             .success(function (data, status) {
@@ -57,8 +57,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         return false;
     };
 
-    $scope.init();
-    $interval( function(){ $scope.init(); }, 3000);
+    $scope.showOpenTrades();
+    $interval( function(){ $scope.showOpenTrades(); }, 3000);
 
 
 
@@ -68,7 +68,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     var max = 5000000;
     var min = 2500;
     $scope.position = 2500;
-    $scope.leverage = 300;
+    $scope.leverage = 100;
     $scope.mMargin=0;
     $scope.preTradeMarginRequiredTradedCurrency = $scope.position/$scope.leverage;
     $scope.preTradeMarginRequiredTradedCurrencyView = $scope.preTradeMarginRequiredTradedCurrency.toFixed(2);
@@ -252,12 +252,29 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             .success(function (data, status) {
                 if(status = 200){
                     console.log("trade created and persisted ",data);
+                    $scope.tradeObject = data;
+                    $scope.calculateThisTrade(data);
 
                 }
             }).error(function (error) {
             console.log("something went wrong in saveTrade");
         });
 
+    };
+
+    $scope.calculateThisTrade = function(x){
+        console.log("inside calculateThisTrade with ",x);
+        console.log("margin is ",x.margin);
+        $scope.available -= x.margin;
+        $scope.availableView = $scope.available.toFixed(2);
+
+        $scope.mMargin += (x.margin/2);
+        $scope.mMarginView  = $scope.mMargin.toFixed(2);
+
+    };
+
+
+        // $scope.available = $scope.available - $scope.tradeObject.margin;
 
 
 
@@ -289,7 +306,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         // }else{
         //     $scope.watch("cross")
         // }
-    };
+    // };
 
 
 
