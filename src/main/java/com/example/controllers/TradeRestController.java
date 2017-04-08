@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 @RestController
@@ -100,7 +100,7 @@ public class TradeRestController {
         CurrencyPair closingPair = thisPair(pairSymbols);
         iCurrencyPairService.saveCurrencyPair(closingPair);
 
-        ArrayList<Trade> openTrades = findOpenTrades(playerID);
+        List<Trade> openTrades = findOpenTrades(playerID);
         for(Trade t : openTrades){
             if(t.getCurrencyPairOpen().getSymbols().equalsIgnoreCase(pairSymbols)){
                 Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
@@ -164,7 +164,7 @@ public class TradeRestController {
     public User findById(@RequestBody String id){
 
         int i = Integer.parseInt(id);
-        ArrayList<User> users = iUserService.getAllUsers();
+        List<User> users = iUserService.getAllUsers();
 
         for(User u : users){
             if(u.getId()== i ){
@@ -176,18 +176,17 @@ public class TradeRestController {
 
     @RequestMapping(value = "/getAllTrades", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ArrayList<Trade> findAllTrades(){
-        ArrayList<Trade> trades = new ArrayList<>();
-        trades=    iTradeService.getAllTrades();
-        return trades;
+    public List<Trade> findAllTrades(){
+
+        return iTradeService.getAllTrades();
     }
 
     @RequestMapping(value = "/getOpenTrades", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ArrayList<Trade> findOpenTrades(@RequestBody String userId){
+    public List<Trade> findOpenTrades(@RequestBody String userId){
 
         int i = Integer.parseInt(userId);
-        ArrayList<User> users = iUserService.getAllUsers();
+        List<User> users = iUserService.getAllUsers();
         User currentUser = null;
         for(User u : users){
             if(u.getId()== i ){
@@ -195,8 +194,8 @@ public class TradeRestController {
             }
         }
 
-        ArrayList<Trade> allTrades= findAllTrades();
-        ArrayList<Trade> openTrades = new ArrayList<>();
+        List<Trade> allTrades= findAllTrades();
+        List<Trade> openTrades = new ArrayList<>();
 
         for(Trade trade : allTrades){
             if((trade.getUser().getId()== currentUser.getId()) && (trade.getTimestampClose()==null)){

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 @RestController
@@ -46,9 +46,8 @@ public class ChallengeRestContoller {
     public User findById(@RequestBody String id){
 
         int i = Integer.parseInt(id);
-        ArrayList<User> users = iUserService.getAllUsers();
 
-        for(User u : users){
+        for(User u : iUserService.getAllUsers()){
             if(u.getId()== i ){
                 return u;
             }
@@ -60,9 +59,8 @@ public class ChallengeRestContoller {
     public Challenge findChallengeById(@RequestBody String id){
 
         int i = Integer.parseInt(id);
-        ArrayList<Challenge> challenges = iChallengeService.getAllChallenges();
 
-        for(Challenge c : challenges){
+        for(Challenge c : iChallengeService.getAllChallenges()){
             if(c.getId()== i ){
                 return c;
             }
@@ -119,15 +117,13 @@ public class ChallengeRestContoller {
 
     @RequestMapping(value ="/challengesSent", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ArrayList<Challenge> getAllSentChallenges(@RequestBody String id){
+    public List<Challenge> getAllSentChallenges(@RequestBody String id){
 
         int idNo =Integer.parseInt(id);
-        ArrayList<Challenge>challenges = new ArrayList();
-        challenges=(ArrayList<Challenge>) iChallengeService.getAllChallenges();
 
         ArrayList<Challenge>sentChallenges = new ArrayList<>();
 
-        for(Challenge c : challenges){
+        for(Challenge c : iChallengeService.getAllChallenges()){
             if(c.getChallengerId()==idNo){
                 sentChallenges.add(c);
             }
@@ -137,14 +133,13 @@ public class ChallengeRestContoller {
 
     @RequestMapping(value ="/challengesRecieved", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ArrayList<Challenge> getAllRecievedChallenges(@RequestBody String id){
+    public List<Challenge> getAllRecievedChallenges(@RequestBody String id){
 
         int idNo =Integer.parseInt(id);
-        ArrayList<Challenge>challenges = new ArrayList();
-        challenges=(ArrayList<Challenge>) iChallengeService.getAllChallenges();
+
         ArrayList<Challenge>challengesRecieved = new ArrayList<>();
 
-        for(Challenge c : challenges){
+        for(Challenge c : iChallengeService.getAllChallenges()){
             if(c.getOpponentId()==idNo){
                 challengesRecieved.add(c);
             }
@@ -213,14 +208,13 @@ public class ChallengeRestContoller {
 
         int idNo = Integer.parseInt(id);
 
-        ArrayList<Challenge>challenges =  iChallengeService.getAllChallenges();
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH.mm.ss");
         Timestamp challengeSentMili = new Timestamp(System.currentTimeMillis());
 
         Challenge challengeToAccept;
 
-        for(Challenge chall:challenges){
+        for(Challenge chall:iChallengeService.getAllChallenges()){
             if(chall.getId()==idNo){
                 challengeToAccept = chall;
 
@@ -242,13 +236,12 @@ public class ChallengeRestContoller {
          */
         int idNo = Integer.parseInt(id);
 
-        ArrayList<Challenge>challenges =  iChallengeService.getAllChallenges();
 
         double stake = 0;
 
         Challenge thisChallenge=null;
 
-        for(Challenge c : challenges){
+        for(Challenge c : iChallengeService.getAllChallenges()){
             if(c.getId()==idNo){
                 thisChallenge=c;
             }

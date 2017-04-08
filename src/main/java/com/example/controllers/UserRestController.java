@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -75,7 +76,7 @@ public class UserRestController {
         String handle = jsonObject.getString("handle");
         String password = jsonObject.getString("password");
 
-        ArrayList<User> users = iUserService.getAllUsers();
+        List<User> users = iUserService.getAllUsers();
 
         for(User u : users){
 
@@ -98,7 +99,7 @@ public class UserRestController {
     public String logout(@RequestBody User user){
 
         String username = user.getUsername();
-        ArrayList<User> users = iUserService.getAllUsers();
+        List<User> users = iUserService.getAllUsers();
         for(User u : users){
             if(u.getUsername().equalsIgnoreCase(username)){
 
@@ -114,20 +115,19 @@ public class UserRestController {
 
     @RequestMapping(value ="/allUsers", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ArrayList<User> getAllUsers(){
-        ArrayList<User>users = iUserService.getAllUsers();
-        return users;
+    public List<User> getAllUsers(){
+        return iUserService.getAllUsers();
     }
 
     @RequestMapping(value = "/onlineUsers", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ArrayList<User> onlineUsers(@RequestBody String username){
+    public List<User> onlineUsers(@RequestBody String username){
 
 
 
 
-        ArrayList<User>users = new ArrayList((ArrayList<User>) iUserService.getAllUsers());
-        ArrayList<User> onlineUsers = new ArrayList<>();
+        List<User>users = iUserService.getAllUsers();
+        List<User> onlineUsers = new ArrayList<>();
 
         for(User u : users ){
             if(u.isOnline() &&(!u.getUsername().equalsIgnoreCase(username))){
@@ -148,9 +148,8 @@ public class UserRestController {
     public User findById(@RequestBody String id){
 
         int i = Integer.parseInt(id);
-        ArrayList<User> users = iUserService.getAllUsers();
 
-        for(User u : users){
+        for(User u : iUserService.getAllUsers()){
             if(u.getId()== i ){
                 return u;
             }
@@ -164,10 +163,9 @@ public class UserRestController {
     @ResponseBody
     public String deleteUser(){
 
-        ArrayList<User>users = iUserService.getAllUsers();
 
         User userToDelete=null;
-        for(User aUser:users){
+        for(User aUser:iUserService.getAllUsers()){
             if(aUser.getUsername().equalsIgnoreCase("Joni")){
                 userToDelete=aUser;
             }

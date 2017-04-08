@@ -3,11 +3,12 @@ package com.example.services;
 import com.example.entities.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface IUserService {
 
-    ArrayList<User> getAllUsers();
-    ArrayList<User> onlineUsers();
+    List<User> getAllUsers();
+    List<User> onlineUsers();
 
     void register(User user);
     void deleteUser(User user);
