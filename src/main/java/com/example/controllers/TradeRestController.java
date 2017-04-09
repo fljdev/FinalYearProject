@@ -83,6 +83,8 @@ public class TradeRestController {
         trade.setAction(action);
         trade.setTimestampOpen(timestampOpen);
 
+
+
         iTradeService.saveTrade(trade);
         return trade;
     }//end saveTrade

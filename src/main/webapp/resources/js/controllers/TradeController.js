@@ -280,8 +280,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         $scope.available = tradeObj.user.account.balance;
         $scope.availableView = $scope.available.toFixed(2);
 
-        // $scope.mMargin += (x.margin/2);
-        // $scope.mMarginView  = $scope.mMargin.toFixed(2);
+        $scope.mMargin += (tradeObj.margin/2);
+        $scope.mMarginView  = $scope.mMargin.toFixed(2);
 
 
 
@@ -291,11 +291,9 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     $scope.calcEachTrade = function(x){
 
-
-
-
-
     };
+
+
 
         //
         // if($scope.pairChosenSym.match("/USD")){
