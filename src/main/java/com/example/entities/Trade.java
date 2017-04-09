@@ -29,6 +29,8 @@ public class Trade {
 
     private double closingProfitLoss;
 
+    private double position;
+
 
     @ManyToMany
     private List<LiveTradeInfo> liveTradeInfoList;
@@ -38,7 +40,7 @@ public class Trade {
 
     public Trade(User user, CurrencyPair currencyPairOpen, CurrencyPair currencyPairClose, Timestamp timestampOpen,
                  Timestamp timestampClose, double margin, String action, double closingProfitLoss,
-                 List<LiveTradeInfo> liveTradeInfoList) {
+                 double position, List<LiveTradeInfo> liveTradeInfoList) {
         this.user = user;
         this.currencyPairOpen = currencyPairOpen;
         this.currencyPairClose = currencyPairClose;
@@ -47,6 +49,7 @@ public class Trade {
         this.margin = margin;
         this.action = action;
         this.closingProfitLoss = closingProfitLoss;
+        this.position = position;
         this.liveTradeInfoList = liveTradeInfoList;
     }
 
@@ -122,6 +125,14 @@ public class Trade {
         this.closingProfitLoss = closingProfitLoss;
     }
 
+    public double getPosition() {
+        return position;
+    }
+
+    public void setPosition(double position) {
+        this.position = position;
+    }
+
     public List<LiveTradeInfo> getLiveTradeInfoList() {
         return liveTradeInfoList;
     }
@@ -142,6 +153,7 @@ public class Trade {
                 ", margin=" + margin +
                 ", action='" + action + '\'' +
                 ", closingProfitLoss=" + closingProfitLoss +
+                ", position=" + position +
                 ", liveTradeInfoList=" + liveTradeInfoList +
                 '}';
     }

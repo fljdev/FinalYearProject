@@ -62,6 +62,7 @@ public class TradeRestController {
         String marginString = jsonObject.getString("margin");
         double margin = Double.parseDouble(marginString);
         String action = jsonObject.getString("action");
+        double position = jsonObject.getDouble("position");
 
         Trade trade = new Trade();
 
@@ -86,8 +87,7 @@ public class TradeRestController {
         trade.setMargin(margin);
         trade.setAction(action);
         trade.setTimestampOpen(timestampOpen);
-
-        List<LiveTradeInfo> thisTradeLiveInfoList = new ArrayList<>();
+        trade.setPosition(position);
 
         iTradeService.saveTrade(trade);
 
@@ -113,10 +113,35 @@ public class TradeRestController {
 
         List<Trade>open = findOpenTrades(idString);
         System.out.println("open trades is "+open.size());
-//        String thisTradePairSymbols = thisTrade.getCurrencyPairOpen().getSymbols();
 
-//        double thisTradePairOpenAsk = t.getCurrencyPairOpen().getAsk();
-//        double thisTradePairOpenBid = t.getCurrencyPairOpen().getBid();
+        List<LiveTradeInfo> liveTradeInfoList = thisTrade.getLiveTradeInfoList();
+
+        LiveTradeInfo liveTradeInfo;
+
+        for(Trade t : open){
+            liveTradeInfo = new LiveTradeInfo();
+
+            CurrencyPair thisCurrencyPair = thisPair(t.getCurrencyPairOpen().getSymbols());
+
+            Timestamp tickTime = new Timestamp(System.currentTimeMillis());
+
+            liveTradeInfo.setTradeID(t.getId());
+            System.out.println("t.getId() is "+t.getId());
+            liveTradeInfo.setTickTime(tickTime);
+
+            liveTradeInfo.setCurrentAsk(thisCurrencyPair.getAsk());
+            liveTradeInfo.setCurrentBid(thisCurrencyPair.getBid());
+
+            liveTradeInfoList.add(liveTradeInfo);
+
+
+            calcThisProfitAndLoss(t,thisCurrencyPair);
+            iLiveTradeInfo.saveLiveTradeInfo(liveTradeInfo);
+
+            Thread.sleep(50);
+        }
+
+
 
 
 
@@ -158,38 +183,54 @@ public class TradeRestController {
         return id;
     }
 
+    private double calcThisProfitAndLoss(Trade t, CurrencyPair cp){
+
+        System.out.println("inside calcThisProfitAndLoss with  "+t.toString());
+        CurrencyPair thisPair = cp;
+        Trade thisTrade = t;
+
+
+
+
+        return 0;
+    }
+
     @RequestMapping(value = "/closeLiveTrade", method = RequestMethod.POST)
     public void closeThisTrade(@RequestBody String json)throws Exception{
+
+        System.out.println("testing got here");
         JSONObject jsonObject = new JSONObject(json);
-        String playerID = jsonObject.getString("id");
-        String pairSymbols = jsonObject.getString("sym");
-        String profitString = jsonObject.getString("profitAndLoss");
-        double profit = Double.parseDouble(profitString);
+        String playerID = jsonObject.getString("userID");
+        String pairSymbols = jsonObject.getString("symbols");
+//        String profitString = jsonObject.getString("profitAndLoss");
+//        double profit = Double.parseDouble(profitString);
 
 
 
         CurrencyPair closingPair = thisPair(pairSymbols);
         iCurrencyPairService.saveCurrencyPair(closingPair);
 
+
         List<Trade> openTrades = findOpenTrades(playerID);
+
         for(Trade t : openTrades){
             if(t.getCurrencyPairOpen().getSymbols().equalsIgnoreCase(pairSymbols)){
                 Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
                 t.setTimestampClose(timestampClose);
                 t.setCurrencyPairClose(closingPair);
-                t.setClosingProfitLoss(profit);
+//                t.setClosingProfitLoss(profit);
                 iTradeService.saveTrade(t);
 
-                User user = findById(playerID);
-                BankAccount bankAccount = user.getAccount();
-                double marginPayed = t.getMargin();
-                double currentBalance = bankAccount.getBalance();
-                double updatedBalance = currentBalance+marginPayed;
-                updatedBalance +=profit;
-                bankAccount.setBalance(updatedBalance);
-                iBankAccountService.register(bankAccount);
-
-                iUserService.register(user);
+//                User user = findById(playerID);
+//                BankAccount bankAccount = user.getAccount();
+//                double marginPayed = t.getMargin();
+//                double currentBalance = bankAccount.getBalance();
+//                double updatedBalance = currentBalance+marginPayed;
+//                updatedBalance +=profit;
+//                bankAccount.setBalance(updatedBalance);
+//                iBankAccountService.register(bankAccount);
+//
+//                iUserService.register(user);
             }
         }
     }
