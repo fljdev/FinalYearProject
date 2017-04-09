@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.sql.Timestamp;
 
 /**
  * Created by admin on 08/04/2017.
@@ -20,13 +21,19 @@ public class LiveTradeInfo {
     private double currentBid;
     private double currentAsk;
 
+    private Timestamp tickTime;
+
+    private int  tradeID;
+
     public LiveTradeInfo() {
     }
 
-    public LiveTradeInfo(double currentProfitAndLoss, double currentBid, double currentAsk) {
+    public LiveTradeInfo(double currentProfitAndLoss, double currentBid, double currentAsk, Timestamp tickTime, int tradeID) {
         this.currentProfitAndLoss = currentProfitAndLoss;
         this.currentBid = currentBid;
         this.currentAsk = currentAsk;
+        this.tickTime = tickTime;
+        this.tradeID = tradeID;
     }
 
     public int getId() {
@@ -61,6 +68,23 @@ public class LiveTradeInfo {
         this.currentAsk = currentAsk;
     }
 
+    public Timestamp getTickTime() {
+        return tickTime;
+    }
+
+    public void setTickTime(Timestamp tickTime) {
+        this.tickTime = tickTime;
+    }
+
+    public int getTradeID() {
+        return tradeID;
+    }
+
+    public void setTradeID(int tradeID) {
+        this.tradeID = tradeID;
+    }
+
+
     @Override
     public String toString() {
         return "LiveTradeInfo{" +
@@ -68,6 +92,8 @@ public class LiveTradeInfo {
                 ", currentProfitAndLoss=" + currentProfitAndLoss +
                 ", currentBid=" + currentBid +
                 ", currentAsk=" + currentAsk +
+                ", tickTime=" + tickTime +
+                ", tradeID=" + tradeID +
                 '}';
     }
 }

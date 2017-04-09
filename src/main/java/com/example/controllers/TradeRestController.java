@@ -2,15 +2,13 @@ package com.example.controllers;
 
 import com.example.entities.*;
 import com.example.forex.ForexDriver;
-import com.example.services.IBankAccountService;
-import com.example.services.ICurrencyPairService;
-import com.example.services.ITradeService;
-import com.example.services.IUserService;
+import com.example.services.*;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +20,12 @@ public class TradeRestController {
     ICurrencyPairService iCurrencyPairService;
     IUserService iUserService;
     IBankAccountService iBankAccountService;
+    ILiveTradeInfo iLiveTradeInfo;
+
+    @Autowired
+    public void setiLiveTradeInfo(ILiveTradeInfo info){
+        this.iLiveTradeInfo=info;
+    }
 
     @Autowired
     public void setiBankAccountService(IBankAccountService iBankAccountService) {
@@ -83,11 +87,76 @@ public class TradeRestController {
         trade.setAction(action);
         trade.setTimestampOpen(timestampOpen);
 
-
+        List<LiveTradeInfo> thisTradeLiveInfoList = new ArrayList<>();
 
         iTradeService.saveTrade(trade);
+
         return trade;
     }//end saveTrade
+
+    @RequestMapping(value ="/updateEachTrade", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public String live(@RequestBody String json)throws Exception{
+
+        /**
+         * Finding the trade will give me the user, which will allow me
+         * to find all the open trades for that user
+         */
+        JSONObject jsonObject = new JSONObject(json);
+        int tradeID = jsonObject.getInt("id");
+        String id=String.valueOf(tradeID);
+
+        Trade thisTrade = iTradeService.findTradeById(tradeID);
+        User user = thisTrade.getUser();
+        System.out.println("user is "+user.getUsername());
+        String idString = String.valueOf(user.getId());
+
+        List<Trade>open = findOpenTrades(idString);
+        System.out.println("open trades is "+open.size());
+//        String thisTradePairSymbols = thisTrade.getCurrencyPairOpen().getSymbols();
+
+//        double thisTradePairOpenAsk = t.getCurrencyPairOpen().getAsk();
+//        double thisTradePairOpenBid = t.getCurrencyPairOpen().getBid();
+
+
+
+//        List<LiveTradeInfo> liveTradeInfoList = thisTrade.getLiveTradeInfoList();
+//        thisTrade.setLiveTradeInfoList(liveTradeInfoList);
+//
+//
+//
+//
+//                System.out.println("xxxxxx"+thisTradePairSymbols);
+//
+//                LiveTradeInfo liveTradeInfo = new LiveTradeInfo();
+//
+//                CurrencyPair thisCurrencyPair = thisPair(thisTradePairSymbols);
+//
+//                Timestamp tickTime = new Timestamp(System.currentTimeMillis());
+//
+//                liveTradeInfo.setTradeID(tradeID);
+//
+//                liveTradeInfo.setTickTime(tickTime);
+//
+//                liveTradeInfo.setCurrentAsk(thisCurrencyPair.getAsk());
+//
+//                liveTradeInfo.setCurrentBid(thisCurrencyPair.getBid());
+//
+//
+//                liveTradeInfoList.add(liveTradeInfo);
+//
+//                iLiveTradeInfo.saveLiveTradeInfo(liveTradeInfo);
+//
+//                iTradeService.saveTrade(thisTrade);
+//
+//
+//                Thread.sleep(2000);
+
+
+
+
+        return id;
+    }
 
     @RequestMapping(value = "/closeLiveTrade", method = RequestMethod.POST)
     public void closeThisTrade(@RequestBody String json)throws Exception{
@@ -124,6 +193,7 @@ public class TradeRestController {
             }
         }
     }
+
 
 
 

@@ -16,4 +16,7 @@ public interface ILiveTradeInfo {
     List<LiveTradeInfo> getAllLiveTradeInfo();
 
     void saveLiveTradeInfo(LiveTradeInfo liveTradeInfo);
+
+    LiveTradeInfo findLiveTradeInfoObjectByTradeID(int tradeID);
+
 }

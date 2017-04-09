@@ -285,11 +285,20 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
 
-        $scope.calcEachTrade(tradeObj);
+        $scope.updateEachTrade(tradeObj);
 
     };
 
-    $scope.calcEachTrade = function(x){
+    $scope.updateEachTrade = function(tradeObj){
+
+        $http.post('/api/trade/updateEachTrade',JSON.stringify(tradeObj))
+            .success(function (data, status) {
+                if(status = 200){
+                    console.log(data);
+                }
+            }).error(function (error) {
+            console.log("something went wrong in updateEachTrade");
+        });
 
     };
 

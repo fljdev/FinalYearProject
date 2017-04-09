@@ -11,4 +11,6 @@ public interface ITradeService {
     void saveTrade(Trade trade);
     List<Trade> getAllTrades();
 
+    Trade findTradeById(int id);
+
 }

@@ -34,4 +34,9 @@ public class TradeService implements ITradeService {
         }
         return trades;
     }
+
+    @Override
+    public Trade findTradeById(int id) {
+        return tradeDAO.findTradeById(id);
+    }
 }
