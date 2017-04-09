@@ -36,4 +36,9 @@ public class LiveTradeInfoService implements ILiveTradeInfo {
         liveTradeInfoDAO.save(liveTradeInfo);
 
     }
+
+    @Override
+    public LiveTradeInfo findLiveTradeInfoObjectByTradeID(int tradeID) {
+        return liveTradeInfoDAO.findLiveTradeInfoObjectByTradeID(tradeID);
+    }
 }

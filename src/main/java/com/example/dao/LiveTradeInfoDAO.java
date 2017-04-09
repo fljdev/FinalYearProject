@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface LiveTradeInfoDAO extends JpaRepository<LiveTradeInfo,Integer> {
 
+    LiveTradeInfo findLiveTradeInfoObjectByTradeID(int tradeID);
+
 }

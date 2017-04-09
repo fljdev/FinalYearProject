@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface TradeDAO extends JpaRepository<Trade,Integer> {
+    Trade findTradeById(int id);
 
 }
