@@ -249,6 +249,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         tradeObject.pairSymbols=$scope.preTradePairChosen.symbols;
         tradeObject.margin = $scope.preTradeMarginRequiredUSD+"";
         tradeObject.action = $scope.preTradeAction;
+        tradeObject.position = $scope.position;
+        console.log("pos",tradeObject.position);
 
 
         $http.post('/api/trade/saveTrade',JSON.stringify(tradeObject))
@@ -321,35 +323,53 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
 
+    $scope.closeLiveTrade = function(x){
+        console.log("trade id is ",x);
+        var closeParams = {};
+        closeParams.userID = $scope.thisUser.id+"";
+        closeParams.symbols = x.symbols;
+            $http.post('/api/trade/closeLiveTrade',JSON.stringify(closeParams))
+
+                .success(function (data, status) {
+                    if(status = 200){
+                        console.log("trade is ",data);
+
+                        // $scope.tradeOn = false;
+                    }
+                }).error(function (error) {
+                console.log("something went wrong in closeTrade!!");
+            });
+
+    };
 
 
-//     $scope.closeLiveTrade = function(x){
-//
-//         var closeParams = {};
-//         closeParams.id = $scope.currUser.id+"";
-//         closeParams.sym = x.symbols;
-//         closeParams.profitAndLoss = $scope.profitAndLoss+"";
-//
-//         $http.post('/api/trade/closeLiveTrade',JSON.stringify(closeParams))
-//
-//             .success(function (data, status) {
-//                 if(status = 200){
-//                     console.log("trade is ",data);
-//
-//                     $scope.tradeOn = false;
-//                 }
-//             }).error(function (error) {
-//             console.log("something went wrong in closeTrade!!");
-//         });
-//
-//
-//         $scope.mMargin -= ($scope.marginRequiredUSD/2);
-//         $scope.mMarginView  = $scope.mMargin.toFixed(2);
-//         $scope.profitAndLoss=0;
-//         $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
-//
-//
-//     };
+    // $scope.closeLiveTrade = function(x){
+    //
+    //     var closeParams = {};
+    //     closeParams.id = $scope.currUser.id+"";
+    //     closeParams.sym = x.symbols;
+    //     closeParams.profitAndLoss = $scope.profitAndLoss+"";
+    //
+    //     $http.post('/api/trade/closeLiveTrade',JSON.stringify(closeParams))
+    //
+    //         .success(function (data, status) {
+    //             if(status = 200){
+    //                 console.log("trade is ",data);
+    //
+    //                 $scope.tradeOn = false;
+    //             }
+    //         }).error(function (error) {
+    //         console.log("something went wrong in closeTrade!!");
+    //     });
+    //
+    //
+    //     $scope.mMargin -= ($scope.marginRequiredUSD/2);
+    //     $scope.mMarginView  = $scope.mMargin.toFixed(2);
+    //     $scope.profitAndLoss=0;
+    //     $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+    //
+    //
+    // };
 //
 //     $scope.closeGameTrade = function(x){
 //
