@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -62,7 +63,7 @@ public class TradeRestController {
         String marginString = jsonObject.getString("margin");
         double margin = Double.parseDouble(marginString);
         String action = jsonObject.getString("action");
-        double position = jsonObject.getDouble("position");
+        double positionUnits = jsonObject.getDouble("positionUnits");
 
         Trade trade = new Trade();
 
@@ -87,60 +88,57 @@ public class TradeRestController {
         trade.setMargin(margin);
         trade.setAction(action);
         trade.setTimestampOpen(timestampOpen);
-        trade.setPosition(position);
+        trade.setPositionUnits(positionUnits);
 
         iTradeService.saveTrade(trade);
 
         return trade;
     }//end saveTrade
 
+
     @RequestMapping(value ="/updateEachTrade", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public String live(@RequestBody String json)throws Exception{
+    public List<Trade> live(@RequestBody String userJson)throws Exception{
 
-        /**
-         * Finding the trade will give me the user, which will allow me
-         * to find all the open trades for that user
-         */
-        JSONObject jsonObject = new JSONObject(json);
-        int tradeID = jsonObject.getInt("id");
-        String id=String.valueOf(tradeID);
+        JSONObject jsonObject = new JSONObject(userJson);
 
-        Trade thisTrade = iTradeService.findTradeById(tradeID);
-        User user = thisTrade.getUser();
-        System.out.println("user is "+user.getUsername());
-        String idString = String.valueOf(user.getId());
+        User user = iUserService.findById(jsonObject.getInt("id"));
+        List<Trade> openTrades = new ArrayList<>();
+        if(user!=null){
 
-        List<Trade>open = findOpenTrades(idString);
-        System.out.println("open trades is "+open.size());
-
-        List<LiveTradeInfo> liveTradeInfoList = thisTrade.getLiveTradeInfoList();
-
-        LiveTradeInfo liveTradeInfo;
-
-        for(Trade t : open){
-            liveTradeInfo = new LiveTradeInfo();
-
-            CurrencyPair thisCurrencyPair = thisPair(t.getCurrencyPairOpen().getSymbols());
-
-            Timestamp tickTime = new Timestamp(System.currentTimeMillis());
-
-            liveTradeInfo.setTradeID(t.getId());
-            System.out.println("t.getId() is "+t.getId());
-            liveTradeInfo.setTickTime(tickTime);
-
-            liveTradeInfo.setCurrentAsk(thisCurrencyPair.getAsk());
-            liveTradeInfo.setCurrentBid(thisCurrencyPair.getBid());
-
-            liveTradeInfoList.add(liveTradeInfo);
+            //Finds trades by user obj, filters via open trades, adds to collection (LIST)
+            openTrades = iTradeService.findByUser(user).stream().filter(Trade::isOpen).collect(Collectors.toList());
 
 
-            calcThisProfitAndLoss(t,thisCurrencyPair);
-            iLiveTradeInfo.saveLiveTradeInfo(liveTradeInfo);
+            LiveTradeInfo liveTradeInfo;
 
-            Thread.sleep(50);
+            for(Trade t : openTrades){
+
+                liveTradeInfo = new LiveTradeInfo();
+
+                CurrencyPair thisCurrencyPair = thisPair(t.getCurrencyPairOpen().getSymbols());
+
+                Timestamp tickTime = new Timestamp(System.currentTimeMillis());
+
+                liveTradeInfo.setTradeID(t.getId());
+
+                liveTradeInfo.setTickTime(tickTime);
+
+                liveTradeInfo.setCurrentAsk(thisCurrencyPair.getAsk());
+
+                liveTradeInfo.setCurrentBid(thisCurrencyPair.getBid());
+
+                calcThisProfitAndLoss(t,thisCurrencyPair);
+
+                iLiveTradeInfo.saveLiveTradeInfo(liveTradeInfo);
+
+                t.getLiveTradeInfoList().add(liveTradeInfo);
+
+                iTradeService.saveTrade(t);
+            }
         }
-
+        return openTrades;
+    }
 
 
 
@@ -180,60 +178,131 @@ public class TradeRestController {
 
 
 
-        return id;
-    }
-
-    private double calcThisProfitAndLoss(Trade t, CurrencyPair cp){
-
-        System.out.println("inside calcThisProfitAndLoss with  "+t.toString());
-        CurrencyPair thisPair = cp;
-        Trade thisTrade = t;
 
 
+    private double calcThisProfitAndLoss(Trade thisTrade, CurrencyPair thisPairOpen)throws Exception{
 
+        /**
+         * Opening position size
+         */
+        double openAsk = thisPairOpen.getAsk();
+        double openBid = thisPairOpen.getBid();
+
+        double positionUnits = thisTrade.getPositionUnits();
+        String action = thisTrade.getAction();
+        double openPositionSize;
+        if(action.equalsIgnoreCase("buy")){
+            openPositionSize = positionUnits * openAsk;
+            System.out.println("open position size is "+openPositionSize);
+
+
+        }else{
+            openPositionSize = positionUnits * openBid;
+            System.out.println("open position size is "+openPositionSize);
+        }
+
+        CurrencyPair thisPairCurrent = thisPair(thisPairOpen.getSymbols());
 
         return 0;
     }
 
     @RequestMapping(value = "/closeLiveTrade", method = RequestMethod.POST)
-    public void closeThisTrade(@RequestBody String json)throws Exception{
+    public void closeThisTrade(@RequestBody String closeParams)throws Exception {
 
-        System.out.println("testing got here");
-        JSONObject jsonObject = new JSONObject(json);
-        String playerID = jsonObject.getString("userID");
-        String pairSymbols = jsonObject.getString("symbols");
-//        String profitString = jsonObject.getString("profitAndLoss");
-//        double profit = Double.parseDouble(profitString);
+        System.out.println("got here "+ closeParams);
 
+        JSONObject jsonObject = new JSONObject(closeParams);
+        String symbols = jsonObject.getString("sym");
+        String userID = jsonObject.getString("id");
+        int userId = Integer.parseInt(userID);
 
+        User user = iUserService.findById(userId);
+        Trade tradeToClose = null;
 
-        CurrencyPair closingPair = thisPair(pairSymbols);
-        iCurrencyPairService.saveCurrencyPair(closingPair);
-
-
-        List<Trade> openTrades = findOpenTrades(playerID);
-
-        for(Trade t : openTrades){
-            if(t.getCurrencyPairOpen().getSymbols().equalsIgnoreCase(pairSymbols)){
-                Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
-                t.setTimestampClose(timestampClose);
-                t.setCurrencyPairClose(closingPair);
-//                t.setClosingProfitLoss(profit);
-                iTradeService.saveTrade(t);
-
-//                User user = findById(playerID);
-//                BankAccount bankAccount = user.getAccount();
-//                double marginPayed = t.getMargin();
-//                double currentBalance = bankAccount.getBalance();
-//                double updatedBalance = currentBalance+marginPayed;
-//                updatedBalance +=profit;
-//                bankAccount.setBalance(updatedBalance);
-//                iBankAccountService.register(bankAccount);
-//
-//                iUserService.register(user);
+        for(Trade t : iTradeService.getAllTrades()){
+            if(t.getUser()==user && t.getCurrencyPairOpen().getSymbols().equalsIgnoreCase(symbols)){
+                tradeToClose = t;
             }
         }
+
+        if(tradeToClose!=null){
+            System.out.println("verigied  ");
+
+            tradeToClose.setOpen(false);
+
+            Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
+            tradeToClose.setTimestampClose(timestampClose);
+
+            CurrencyPair closingPair = thisPair(symbols);
+            tradeToClose.setCurrencyPairClose(closingPair);
+            iCurrencyPairService.saveCurrencyPair(closingPair);
+            iTradeService.updateAndSaveTrade(tradeToClose);
+        }
+
+
+
+
+//        Trade trade;
+//        try{
+//            trade = iTradeService.findTradeById(Integer.parseInt(jsonID));
+//            System.out.println("got something "+trade.toString());
+//        }catch (Exception e){
+//            System.out.println("got nothing");
+//            e.printStackTrace();
+//        }
+
+
+
+
+//        System.out.println("trade is " + trade.toString());
+//
+//        Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
+//        trade.setTimestampClose(timestampClose);
+//
+//        trade.setOpen(false);
+//
+//        CurrencyPair closingPair = thisPair(trade.getCurrencyPairOpen().getSymbols());
+//        trade.setCurrencyPairClose(closingPair);
+//        iCurrencyPairService.saveCurrencyPair(closingPair);
+//
+//
+//        iTradeService.saveTrade(trade);
     }
+
+
+
+
+//        List<Trade> openTrades = findOpenTrades(playerID);
+//
+//        for(Trade t : openTrades){
+//            if(t.getCurrencyPairOpen().getSymbols().equalsIgnoreCase(pairSymbols)){
+//
+//                System.out.println("This trade is "+t.getId());
+//
+//                Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
+//
+//                t.setTimestampClose(timestampClose);
+//                t.setCurrencyPairClose(closingPair);
+//
+//
+//
+//
+////                t.setClosingProfitLoss(profit);
+//                iTradeService.saveTrade(t);
+//
+////                User user = findById(playerID);
+////                BankAccount bankAccount = user.getAccount();
+////                double marginPayed = t.getMargin();
+////                double currentBalance = bankAccount.getBalance();
+////                double updatedBalance = currentBalance+marginPayed;
+////                updatedBalance +=profit;
+////                bankAccount.setBalance(updatedBalance);
+////                iBankAccountService.register(bankAccount);
+////
+////                iUserService.register(user);
+//            }
+
+
 
 
 
@@ -299,22 +368,10 @@ public class TradeRestController {
     public List<Trade> findOpenTrades(@RequestBody String userId){
 
         int i = Integer.parseInt(userId);
-        List<User> users = iUserService.getAllUsers();
-        User currentUser = null;
-        for(User u : users){
-            if(u.getId()== i ){
-                currentUser = u;
-            }
-        }
+        User currentUser = iUserService.findById(i);
 
-        List<Trade> allTrades= findAllTrades();
-        List<Trade> openTrades = new ArrayList<>();
+        List<Trade> openTrades = iTradeService.findByUser(currentUser).stream().filter(Trade::isOpen).collect(Collectors.toList());
 
-        for(Trade trade : allTrades){
-            if((trade.getUser().getId()== currentUser.getId()) && (trade.getTimestampClose()==null)){
-                openTrades.add(trade);
-            }
-        }
         return openTrades;
     }
 

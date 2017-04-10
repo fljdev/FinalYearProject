@@ -27,9 +27,12 @@ public class Trade {
     private double margin;
     private String action;
 
+
+    private boolean open;
+
     private double closingProfitLoss;
 
-    private double position;
+    private double positionUnits;
 
 
     @ManyToMany
@@ -39,8 +42,8 @@ public class Trade {
     }
 
     public Trade(User user, CurrencyPair currencyPairOpen, CurrencyPair currencyPairClose, Timestamp timestampOpen,
-                 Timestamp timestampClose, double margin, String action, double closingProfitLoss,
-                 double position, List<LiveTradeInfo> liveTradeInfoList) {
+                 Timestamp timestampClose, double margin, String action, boolean open, double closingProfitLoss,
+                 double positionUnits, List<LiveTradeInfo> liveTradeInfoList) {
         this.user = user;
         this.currencyPairOpen = currencyPairOpen;
         this.currencyPairClose = currencyPairClose;
@@ -48,8 +51,9 @@ public class Trade {
         this.timestampClose = timestampClose;
         this.margin = margin;
         this.action = action;
+        this.open = open;
         this.closingProfitLoss = closingProfitLoss;
-        this.position = position;
+        this.positionUnits = positionUnits;
         this.liveTradeInfoList = liveTradeInfoList;
     }
 
@@ -117,6 +121,14 @@ public class Trade {
         this.action = action;
     }
 
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
+
     public double getClosingProfitLoss() {
         return closingProfitLoss;
     }
@@ -125,12 +137,12 @@ public class Trade {
         this.closingProfitLoss = closingProfitLoss;
     }
 
-    public double getPosition() {
-        return position;
+    public double getPositionUnits() {
+        return positionUnits;
     }
 
-    public void setPosition(double position) {
-        this.position = position;
+    public void setPositionUnits(double positionUnits) {
+        this.positionUnits = positionUnits;
     }
 
     public List<LiveTradeInfo> getLiveTradeInfoList() {
@@ -152,8 +164,9 @@ public class Trade {
                 ", timestampClose=" + timestampClose +
                 ", margin=" + margin +
                 ", action='" + action + '\'' +
+                ", open=" + open +
                 ", closingProfitLoss=" + closingProfitLoss +
-                ", position=" + position +
+                ", positionUnits=" + positionUnits +
                 ", liveTradeInfoList=" + liveTradeInfoList +
                 '}';
     }

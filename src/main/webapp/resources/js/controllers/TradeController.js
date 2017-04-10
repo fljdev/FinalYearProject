@@ -69,19 +69,19 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
      */
     var max = 5000000;
     var min = 2500;
-    $scope.position = 2500;
+    $scope.positionUnits = 2500;
     $scope.leverage = 100;
     $scope.mMargin=0;
-    $scope.preTradeMarginRequiredTradedCurrency = $scope.position/$scope.leverage;
+    $scope.preTradeMarginRequiredTradedCurrency = $scope.positionUnits/$scope.leverage;
     $scope.preTradeMarginRequiredTradedCurrencyView = $scope.preTradeMarginRequiredTradedCurrency.toFixed(2);
 
 
     $scope.increment = function() {
 
-        if ($scope.position >= max) { return; }
-        $scope.position +=2500;
+        if ($scope.positionUnits >= max) { return; }
+        $scope.positionUnits +=2500;
 
-        $scope.preTradeMarginRequiredTradedCurrency = $scope.position/$scope.leverage;
+        $scope.preTradeMarginRequiredTradedCurrency = $scope.positionUnits/$scope.leverage;
         $scope.preTradeMarginRequiredTradedCurrencyView = $scope.preTradeMarginRequiredTradedCurrency.toFixed(2);
         /**
          * I will now convert the margin from above to USD (account currency)
@@ -91,14 +91,14 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
     $scope.decrement = function() {
 
-        if ($scope.position <= min) { return; }
-        $scope.position -=2500;
+        if ($scope.positionUnits <= min) { return; }
+        $scope.positionUnits -=2500;
 
         /**
-         * Based on users chosen position size, I will calc the amount of margin required
+         * Based on users chosen positionUnits size, I will calc the amount of margin required
          * in the chosen currency base pair
          */
-        $scope.preTradeMarginRequiredTradedCurrency = $scope.position/$scope.leverage;
+        $scope.preTradeMarginRequiredTradedCurrency = $scope.positionUnits/$scope.leverage;
         $scope.preTradeMarginRequiredTradedCurrencyView = $scope.preTradeMarginRequiredTradedCurrency.toFixed(2);
 
         /**
@@ -249,8 +249,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         tradeObject.pairSymbols=$scope.preTradePairChosen.symbols;
         tradeObject.margin = $scope.preTradeMarginRequiredUSD+"";
         tradeObject.action = $scope.preTradeAction;
-        tradeObject.position = $scope.position;
-        console.log("pos",tradeObject.position);
+        tradeObject.positionUnits = $scope.positionUnits;
+        console.log("pos",tradeObject.positionUnits);
 
 
         $http.post('/api/trade/saveTrade',JSON.stringify(tradeObject))
@@ -273,9 +273,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
     $scope.updateTradeScreenHeader = function(tradeObj){
-        console.log("inside calculateThisTrade with ",tradeObj);
-        console.log("thisUser balance is  ",tradeObj.user.account.balance);
-
 
 
 
@@ -287,13 +284,13 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
 
-        $scope.updateEachTrade(tradeObj);
+        $scope.updateEachTrade();
 
     };
 
-    $scope.updateEachTrade = function(tradeObj){
+    $scope.updateEachTrade = function(){
 
-        $http.post('/api/trade/updateEachTrade',JSON.stringify(tradeObj))
+        $http.post('/api/trade/updateEachTrade',JSON.stringify($scope.thisUser))
             .success(function (data, status) {
                 if(status = 200){
                     console.log(data);
@@ -324,11 +321,11 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
     $scope.closeLiveTrade = function(x){
-        console.log("trade id is ",x);
         var closeParams = {};
-        closeParams.userID = $scope.thisUser.id+"";
-        closeParams.symbols = x.symbols;
-            $http.post('/api/trade/closeLiveTrade',JSON.stringify(closeParams))
+        closeParams.id = $scope.currUser.id+"";
+        closeParams.sym = x.symbols;
+
+        $http.post('/api/trade/closeLiveTrade',JSON.stringify(closeParams))
 
                 .success(function (data, status) {
                     if(status = 200){
