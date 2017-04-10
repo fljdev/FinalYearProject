@@ -13,4 +13,6 @@ public interface IUserService {
     void register(User user);
     void deleteUser(User user);
 
+    User findById(int id);
+
 }
