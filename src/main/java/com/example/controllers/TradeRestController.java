@@ -220,9 +220,13 @@ public class TradeRestController {
         Trade tradeToClose = null;
 
         for(Trade t : iTradeService.getAllTrades()){
-            if(t.getUser()==user && t.getCurrencyPairOpen().getSymbols().equalsIgnoreCase(symbols)){
-                tradeToClose = t;
+            if(t.isOpen()){
+                if(t.getUser()==user && t.getCurrencyPairOpen().getSymbols().equalsIgnoreCase(symbols)){
+                    System.out.println("found a trade to close "+t);
+                    tradeToClose = t;
+                }
             }
+
         }
 
         if(tradeToClose!=null){
