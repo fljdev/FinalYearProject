@@ -322,7 +322,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     $scope.closeLiveTrade = function(x){
         var closeParams = {};
-        closeParams.id = $scope.currUser.id+"";
+        closeParams.id = $scope.thisUser.id+"";
         closeParams.sym = x.symbols;
 
         $http.post('/api/trade/closeLiveTrade',JSON.stringify(closeParams))
