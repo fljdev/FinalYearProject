@@ -26,16 +26,12 @@ public class TradeService implements ITradeService {
 
     @Override
     public List<Trade> getAllTrades() {
-        ArrayList<Trade> trades = new ArrayList<Trade>();
-        for(Trade t : tradeDAO.findAll()){
-            trades.add(t);
-        }
-        return trades;
+        return tradeDAO.findAll();
     }
 
     @Override
     public Trade findTradeById(int id) {
-        return tradeDAO.findTradeById(id);
+        return tradeDAO.findOne(id);
     }
 
     @Override
@@ -55,5 +51,17 @@ public class TradeService implements ITradeService {
         tradeDAO.save(trade);
 
 
+    }
+
+    @Override
+    public Trade findBySymbols(String symbols, User user) {
+        for(Trade t : tradeDAO.findAll()){
+            if(t.isOpen()){
+                if(t.getUser()==user && t.getCurrencyPairOpen().getSymbols().equalsIgnoreCase(symbols)){
+                    return  t;
+                }
+            }
+        }
+        return null;
     }
 }

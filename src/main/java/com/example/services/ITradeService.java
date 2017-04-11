@@ -17,4 +17,6 @@ public interface ITradeService {
 
     List<Trade> findByUser(User user);
 
+    Trade findBySymbols(String symbols, User user);
+
 }

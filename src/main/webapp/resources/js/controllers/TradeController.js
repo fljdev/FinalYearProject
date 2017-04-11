@@ -7,9 +7,9 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
      * User user object from the Database, instead of the browser cookie (No Problems)
      */
     $scope.setUser = function(){
-        $scope.currUser = $cookieStore.get('userCookie');
-        if($scope.currUser){
-            $http.post('/api/user/findById', JSON.stringify($scope.currUser.id))
+        $scope.thisUser = $cookieStore.get('userCookie');
+        if($scope.thisUser){
+            $http.post('/api/user/findById', JSON.stringify($scope.thisUser.id))
                 .success(function (data, status) {
                     if(status = 200){
                         $cookieStore.put('userCookie', data);
@@ -39,7 +39,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     $scope.showOpenTrades = function(){
         $scope.getPairs();
-        $http.post('/api/trade/getOpenTrades',$scope.currUser.id)
+        $http.post('/api/trade/getOpenTrades',$scope.thisUser.id)
             .success(function (data, status) {
                 if(status = 200){
                     $scope.openTrades = data;
@@ -178,14 +178,16 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             $scope.available = theStake;
             $scope.check = true;
         }else{
-            $scope.available = $scope.currUser.account.balance;
+            $scope.available = $scope.thisUser.account.balance;
             $scope.check=false;
+            $scope.PLV = $scope.thisUser.currentProfit;
 
         }
 
         $scope.availableView = $scope.available.toFixed(2);
         $scope.equity = $scope.available;
         $scope.equityView = ($scope.equity.toFixed(2));
+
 
     };
 
@@ -247,7 +249,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
         var tradeObject = {};
 
-        tradeObject.playerID = $scope.currUser.id+"";
+        tradeObject.playerID = $scope.thisUser.id+"";
         tradeObject.pairSymbols=$scope.preTradePairChosen.symbols;
         tradeObject.margin = $scope.preTradeMarginRequiredUSD+"";
         tradeObject.action = $scope.preTradeAction;
@@ -301,9 +303,12 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                         .success(function (data, status) {
                             if(status = 200){
 
-                                $scope.profitAndLoss = data;
-                                console.log("pl ",data);
+                                $scope.thisUser = data;
+                                $scope.profitAndLoss = $scope.thisUser.currentProfit;
                                 $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+
+                                $cookieStore.put('userCookie', $scope.thisUser);
+                                $scope.PLV = $scope.thisUser.currentProfit;
 
                             }
                         }).error(function (error) {
@@ -346,15 +351,16 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
                 .success(function (data, status) {
                     if(status = 200){
-                        console.log("trade is ",data);
 
                         $scope.mMargin -= data.margin/2;
                         $scope.mMarginView  = $scope.mMargin.toFixed(2);
 
-                        $scope.profitAndLoss -= data.closingProfitLoss;
-                        console.log("after close pl ",data.closingProfitLoss);
-                        $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+                        // $scope.profitAndLoss -= data.closingProfitLoss;
+                        // console.log("after close pl ",data.closingProfitLoss);
+                        // $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
                         // $scope.tradeOn = false;
+
+
                     }
                 }).error(function (error) {
                 console.log("something went wrong in closeTrade!!");
@@ -366,7 +372,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     // $scope.closeLiveTrade = function(x){
     //
     //     var closeParams = {};
-    //     closeParams.id = $scope.currUser.id+"";
+    //     closeParams.id = $scope.thisUser.id+"";
     //     closeParams.sym = x.symbols;
     //     closeParams.profitAndLoss = $scope.profitAndLoss+"";
     //
@@ -394,7 +400,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 //     $scope.closeGameTrade = function(x){
 //
 //         var closeParams = {};
-//         closeParams.id = $scope.currUser.id+"";
+//         closeParams.id = $scope.thisUser.id+"";
 //         closeParams.sym = x.symbols;
 //         closeParams.profitAndLoss = $scope.profitAndLoss+"";
 //         $http.post('/api/trade/closeGameTrade',JSON.stringify(closeParams));
