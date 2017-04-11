@@ -2,6 +2,7 @@ angular.module('myApp.TradeController',[]).
 controller('TradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav,$stateParams){
 
 
+
     /**
      * User user object from the Database, instead of the browser cookie (No Problems)
      */
@@ -72,6 +73,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.positionUnits = 2500;
     $scope.leverage = 100;
     $scope.mMargin=0;
+    $scope.mMarginView=$scope.mMargin;
     $scope.preTradeMarginRequiredTradedCurrency = $scope.positionUnits/$scope.leverage;
     $scope.preTradeMarginRequiredTradedCurrencyView = $scope.preTradeMarginRequiredTradedCurrency.toFixed(2);
 
@@ -272,43 +274,48 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     };
 
+
     $scope.updateTradeScreenHeader = function(tradeObj){
 
 
 
-        $scope.available = tradeObj.user.account.balance;
-        $scope.availableView = $scope.available.toFixed(2);
+        // $scope.available = tradeObj.user.account.balance;
+        // $scope.availableView = $scope.available.toFixed(2);
+
+        $scope.availableView = tradeObj.user.account.balance.toFixed(2);
+
 
         $scope.mMargin += (tradeObj.margin/2);
         $scope.mMarginView  = $scope.mMargin.toFixed(2);
 
 
-
         $scope.updateEachTrade();
-
     };
 
     $scope.updateEachTrade = function(){
-
         $http.post('/api/trade/updateEachTrade',JSON.stringify($scope.thisUser))
             .success(function (data, status) {
                 if(status = 200){
-                    console.log("lala ",data);
-                    // for(i=0; i < data.length;i++){
-                    //     console.log(data[i].action);
-                    //     if(data[i].currencyPairOpen.symbols == $scope.sy ){
-                    //
-                    //         $scope.pl = data[i].closingProfitLoss;
-                    //         console.log($scope.sy);
-                    //     }
-                    // }
+
+                    $http.post('/api/trade/getTotalProfitAndLoss',JSON.stringify($scope.thisUser))
+                        .success(function (data, status) {
+                            if(status = 200){
+
+                                $scope.profitAndLoss = data;
+                                console.log("pl ",data);
+                                $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
+
+                            }
+                        }).error(function (error) {
+                        console.log("something went wrong in updateEachTrade");
+                    });
+
                     $scope.showOpenTrades();
 
                 }
             }).error(function (error) {
             console.log("something went wrong in updateEachTrade");
         });
-
     };
 
 
@@ -341,6 +348,12 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                     if(status = 200){
                         console.log("trade is ",data);
 
+                        $scope.mMargin -= data.margin/2;
+                        $scope.mMarginView  = $scope.mMargin.toFixed(2);
+
+                        $scope.profitAndLoss -= data.closingProfitLoss;
+                        console.log("after close pl ",data.closingProfitLoss);
+                        $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
                         // $scope.tradeOn = false;
                     }
                 }).error(function (error) {

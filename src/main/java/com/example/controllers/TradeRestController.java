@@ -95,6 +95,30 @@ public class TradeRestController {
         return trade;
     }//end saveTrade
 
+    @RequestMapping(value ="/getTotalProfitAndLoss", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public double totalProfit(@RequestBody String userJson)throws Exception{
+
+        JSONObject jsonObject = new JSONObject(userJson);
+
+        User user = iUserService.findById(jsonObject.getInt("id"));
+        List<Trade> openTrades = new ArrayList<>();
+
+        double totalProfit=0;
+        if(user!=null){
+            openTrades = iTradeService.findByUser(user).stream().filter(Trade::isOpen).collect(Collectors.toList());
+            for(Trade t : openTrades){
+                System.out.println("ttttt "+t.toString());
+                System.out.println("this pl : "+t.getClosingProfitLoss());
+
+                totalProfit += t.getClosingProfitLoss();
+                System.out.println("pl is now "+totalProfit);
+
+            }
+
+        }
+        return totalProfit;
+    }
 
     @RequestMapping(value ="/updateEachTrade", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
@@ -227,7 +251,7 @@ public class TradeRestController {
     }
 
     @RequestMapping(value = "/closeLiveTrade", method = RequestMethod.POST)
-    public void closeThisTrade(@RequestBody String closeParams)throws Exception {
+    public Trade closeThisTrade(@RequestBody String closeParams)throws Exception {
 
         System.out.println("got here "+ closeParams);
 
@@ -250,8 +274,6 @@ public class TradeRestController {
         }
 
         if(tradeToClose!=null){
-            System.out.println("verigied  ");
-
             tradeToClose.setOpen(false);
 
             Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
@@ -263,7 +285,7 @@ public class TradeRestController {
             iTradeService.updateAndSaveTrade(tradeToClose);
         }
 
-
+        return tradeToClose;
 
 
 //        Trade trade;
