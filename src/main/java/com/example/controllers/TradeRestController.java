@@ -128,11 +128,16 @@ public class TradeRestController {
 
                 liveTradeInfo.setCurrentBid(thisCurrencyPair.getBid());
 
-                calcThisProfitAndLoss(t,thisCurrencyPair);
+                double profit = calcThisProfitAndLoss(t,thisCurrencyPair);
+                System.out.println("profit is "+profit);
+                t.setClosingProfitLoss(profit);
+
+                liveTradeInfo.setCurrentProfitAndLoss(profit);
 
                 iLiveTradeInfo.saveLiveTradeInfo(liveTradeInfo);
 
                 t.getLiveTradeInfoList().add(liveTradeInfo);
+
 
                 iTradeService.saveTrade(t);
             }
@@ -190,12 +195,12 @@ public class TradeRestController {
 
         double positionUnits = thisTrade.getPositionUnits();
         String action = thisTrade.getAction();
-        double openPositionSize;
+        double openPositionSize=0;
+        double closePositionSize=0;
+
         if(action.equalsIgnoreCase("buy")){
             openPositionSize = positionUnits * openAsk;
             System.out.println("open position size is "+openPositionSize);
-
-
         }else{
             openPositionSize = positionUnits * openBid;
             System.out.println("open position size is "+openPositionSize);
@@ -203,7 +208,22 @@ public class TradeRestController {
 
         CurrencyPair thisPairCurrent = thisPair(thisPairOpen.getSymbols());
 
-        return 0;
+        double profit=0;
+        if(action.equalsIgnoreCase("buy")){
+
+            closePositionSize =positionUnits * thisPairCurrent.getBid();
+
+
+        }else if (action.equalsIgnoreCase("sell")){
+            closePositionSize = positionUnits * thisPairCurrent.getAsk();
+        }
+        profit =   closePositionSize - openPositionSize;
+        System.out.println("open : "+openPositionSize + " -  close : "+ closePositionSize+ " = :"+profit);
+
+
+
+
+        return profit;
     }
 
     @RequestMapping(value = "/closeLiveTrade", method = RequestMethod.POST)

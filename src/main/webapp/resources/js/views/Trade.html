@@ -81,26 +81,15 @@
     <tr ng-repeat-end="" ng-show="checkForOpenTrades(x)">
 
         <td>{{action}}</td>
-        <td>{{x.symbols}}</td>
+        <td >{{x.symbols}}</td>
         <td colspan="5">Value:  {{reqSym}}: {{positionValueView}}  ${{valueInAccountCurrencyView}}</td>
-        <td colspan="2">P/L :${{profitAndLossView}}</td>
+        <td colspan="2">P/L :${{checkForOpenTrades(x).closingProfitLoss.toFixed(2)}}</td>
         <td ng-show='!check'><button class="btn btn-default btn-block btn-danger"ng-click="closeLiveTrade(x)"  >Close</button></td>
         <td ng-show='check'><button class="btn btn-default btn-block btn-warning"ng-click="closeGameTrade(x)"  >Close</button></td>
-
-
 
     </tr>
     </tbody>
 </table>
-
-
-
-
-
-
-
-
-
 
 
 
