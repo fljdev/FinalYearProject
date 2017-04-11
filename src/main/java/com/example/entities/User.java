@@ -32,10 +32,12 @@ public class User {
     private int currentRank;
     private int bestRank;
 
+    private double currentProfit;
+
     public User() {
     }
 
-    public User(BankAccount account, String firstName, String lastName, String username, String email, String password, boolean online, int currentRank, int bestRank) {
+    public User(BankAccount account, String firstName, String lastName, String username, String email, String password, boolean online, int currentRank, int bestRank, double currentProfit) {
         this.account = account;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -45,6 +47,7 @@ public class User {
         this.online = online;
         this.currentRank = currentRank;
         this.bestRank = bestRank;
+        this.currentProfit = currentProfit;
     }
 
     public int getId() {
@@ -127,5 +130,28 @@ public class User {
         this.bestRank = bestRank;
     }
 
+    public double getCurrentProfit() {
+        return currentProfit;
+    }
 
+    public void setCurrentProfit(double currentProfit) {
+        this.currentProfit = currentProfit;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", account=" + account +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", online=" + online +
+                ", currentRank=" + currentRank +
+                ", bestRank=" + bestRank +
+                ", currentProfit=" + currentProfit +
+                '}';
+    }
 }

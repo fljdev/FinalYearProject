@@ -8,8 +8,6 @@ import java.util.List;
 
 
 public interface TradeDAO extends JpaRepository<Trade,Integer> {
-    Trade findTradeById(int id);
 
     List<Trade> findByUser(User user);
-
 }

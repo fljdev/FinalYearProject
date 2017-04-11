@@ -97,7 +97,7 @@ public class TradeRestController {
 
     @RequestMapping(value ="/getTotalProfitAndLoss", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public double totalProfit(@RequestBody String userJson)throws Exception{
+    public User totalProfit(@RequestBody String userJson)throws Exception{
 
         JSONObject jsonObject = new JSONObject(userJson);
 
@@ -114,10 +114,13 @@ public class TradeRestController {
                 totalProfit += t.getClosingProfitLoss();
                 System.out.println("pl is now "+totalProfit);
 
+                user.setCurrentProfit(totalProfit);
+                iUserService.register(user);
+
             }
 
         }
-        return totalProfit;
+        return user;
     }
 
     @RequestMapping(value ="/updateEachTrade", method = RequestMethod.POST, produces = "application/json")
@@ -253,25 +256,12 @@ public class TradeRestController {
     @RequestMapping(value = "/closeLiveTrade", method = RequestMethod.POST)
     public Trade closeThisTrade(@RequestBody String closeParams)throws Exception {
 
-        System.out.println("got here "+ closeParams);
-
         JSONObject jsonObject = new JSONObject(closeParams);
         String symbols = jsonObject.getString("sym");
-        String userID = jsonObject.getString("id");
-        int userId = Integer.parseInt(userID);
+//        int userId = Integer.parseInt(jsonObject.getString("id"));
 
-        User user = iUserService.findById(userId);
-        Trade tradeToClose = null;
-
-        for(Trade t : iTradeService.getAllTrades()){
-            if(t.isOpen()){
-                if(t.getUser()==user && t.getCurrencyPairOpen().getSymbols().equalsIgnoreCase(symbols)){
-                    System.out.println("found a trade to close "+t);
-                    tradeToClose = t;
-                }
-            }
-
-        }
+        User user = iUserService.findById(Integer.parseInt(jsonObject.getString("id")));
+        Trade tradeToClose = iTradeService.findBySymbols(symbols,user);
 
         if(tradeToClose!=null){
             tradeToClose.setOpen(false);
