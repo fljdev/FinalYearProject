@@ -52,9 +52,9 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         function findPair(currentPair) {
             return currentPair.currencyPairOpen.symbols === pair.symbols;
         }
-        var found = $scope.openTrades.find(findPair);
-        if(found){
-            return true;
+        var trade = $scope.openTrades.find(findPair);
+        if(trade){
+            return trade;
         }
         return false;
     };
@@ -293,7 +293,17 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         $http.post('/api/trade/updateEachTrade',JSON.stringify($scope.thisUser))
             .success(function (data, status) {
                 if(status = 200){
-                    console.log(data);
+                    console.log("lala ",data);
+                    // for(i=0; i < data.length;i++){
+                    //     console.log(data[i].action);
+                    //     if(data[i].currencyPairOpen.symbols == $scope.sy ){
+                    //
+                    //         $scope.pl = data[i].closingProfitLoss;
+                    //         console.log($scope.sy);
+                    //     }
+                    // }
+                    $scope.showOpenTrades();
+
                 }
             }).error(function (error) {
             console.log("something went wrong in updateEachTrade");
