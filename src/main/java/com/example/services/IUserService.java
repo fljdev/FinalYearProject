@@ -8,11 +8,14 @@ import java.util.List;
 public interface IUserService {
 
     List<User> getAllUsers();
-    List<User> onlineUsers();
+    List<User> onlineUsers(User user);
 
     void register(User user);
-    void deleteUser(User user);
+    User deleteUser(User user);
 
     User findById(int id);
+    User findByUsernameAndPassword(String username, String password);
+    User findByUsername(String username);
+
 
 }

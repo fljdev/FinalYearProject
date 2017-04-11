@@ -18,23 +18,21 @@ public class UserRestController {
     IUserService iUserService;
     IBankAccountService iBankAccountService;
     IGameAccountService iGameAccountService;
-
     @Autowired
     public void setiGameAccountService(IGameAccountService iGameAccountService){
         this.iGameAccountService = iGameAccountService;
     }
-
     @Autowired
     public void setiUserService(IUserService iUserService) {
 
         this.iUserService = iUserService;
     }
-
     @Autowired
     public void setiBankAccountService(IBankAccountService iBankAccountService) {
 
         this.iBankAccountService = iBankAccountService;
     }
+
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
     public User register(@RequestBody String jsonRegister){
@@ -69,48 +67,27 @@ public class UserRestController {
         return aUser;
     }
 
+
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     public User login(@RequestBody String jsonLogin){
-
         JSONObject jsonObject = new JSONObject(jsonLogin);
         String handle = jsonObject.getString("handle");
         String password = jsonObject.getString("password");
-
-        List<User> users = iUserService.getAllUsers();
-
-        for(User u : users){
-
-            if(u.getUsername().equalsIgnoreCase(handle)|| u.getEmail().equalsIgnoreCase(handle)){
-                if(u.getPassword().equals(password)){
-
-                    if(u.getUsername().equalsIgnoreCase("j")){
-                        u.getAccount().setBalance(u.getAccount().getBalance()+1666);
-                    }
-                    u.setOnline(true);
-                    iUserService.register(u);
-                    return u;
-                }
-            }
-        }
-        return null;
+        User u = iUserService.findByUsernameAndPassword(handle,password);
+        u.setOnline(true);
+        return u;
     }
+
+
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")
-    public String logout(@RequestBody User user){
-
-        String username = user.getUsername();
-        List<User> users = iUserService.getAllUsers();
-        for(User u : users){
-            if(u.getUsername().equalsIgnoreCase(username)){
-
-                u.setOnline(false);
-                iUserService.register(u);
-
-                return null;
-            }
-        }
-        return null;
+    public User logout(@RequestBody User user){
+        User userToLogout = iUserService.findByUsername(user.getUsername());
+        userToLogout.setOnline(false);
+        iUserService.register(userToLogout);
+        return userToLogout;
     }
+
 
 
     @RequestMapping(value ="/allUsers", method = RequestMethod.GET, produces = "application/json")
@@ -119,68 +96,26 @@ public class UserRestController {
         return iUserService.getAllUsers();
     }
 
+
+
     @RequestMapping(value = "/onlineUsers", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public List<User> onlineUsers(@RequestBody String username){
-
-
-
-
-        List<User>users = iUserService.getAllUsers();
-        List<User> onlineUsers = new ArrayList<>();
-
-        for(User u : users ){
-            if(u.isOnline() &&(!u.getUsername().equalsIgnoreCase(username))){
-
-                onlineUsers.add(u);
-            }
-        }
-
-        if(onlineUsers.size()>0){
-            return onlineUsers;
-        }else{
-            return null ;
-        }
+    public List<User> onlineUsers(@RequestBody User user){
+        return iUserService.onlineUsers(user);
     }
+
 
 
     @RequestMapping(value = "/findById", method = RequestMethod.POST, produces = "application/json")
     public User findById(@RequestBody String id){
-
-        int i = Integer.parseInt(id);
-
-        for(User u : iUserService.getAllUsers()){
-            if(u.getId()== i ){
-                return u;
-            }
-        }
-        return null;
+        return iUserService.findById(Integer.parseInt(id));
     }
-
 
 
     @RequestMapping(value = "/deleteUser",method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public String deleteUser(){
-
-
-        User userToDelete=null;
-        for(User aUser:iUserService.getAllUsers()){
-            if(aUser.getUsername().equalsIgnoreCase("Joni")){
-                userToDelete=aUser;
-            }
-        }
-
-        if(userToDelete!=null){
-            iUserService.deleteUser(userToDelete);
-
-            return userToDelete.getUsername()+ " has been deleted";
-        }else{
-            return "Could not find user in db";
-        }
+    public User deleteUser(User user){
+        return iUserService.deleteUser(user);
     }
-
-
-
 
 }

@@ -24,6 +24,8 @@ directive('navheader', function($cookieStore, $state, $http){
                     .success(function (data, status) {
 
                         if(status = 200){
+                            console.log("logged out ",data);
+
                             $state.go('welcome');
                         }
                     }).error(function (error) {

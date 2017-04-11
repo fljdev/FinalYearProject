@@ -35,14 +35,10 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public List<User> onlineUsers() {
-
+    public List<User> onlineUsers(User user) {
         ArrayList<User>usersOnline = new ArrayList<User>();
         for(User aUser: userDAO.findAll()){
-
-            if(aUser.isOnline()){
-
-
+            if(aUser.isOnline() && (!aUser.getUsername().equalsIgnoreCase(user.getUsername()))){
                 usersOnline.add(aUser);
             }
         }
@@ -56,12 +52,23 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public void deleteUser(User user) {
+    public User deleteUser(User user) {
         userDAO.delete(user);
+        return user;
     }
 
     @Override
     public User findById(int id) {
         return userDAO.findOne(id);
+    }
+
+    @Override
+    public User findByUsernameAndPassword(String username, String password) {
+        return userDAO.findByUsernameAndPassword(username,password);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userDAO.findByUsername(username);
     }
 }

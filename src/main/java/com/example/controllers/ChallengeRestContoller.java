@@ -21,88 +21,120 @@ import java.util.List;
 @RequestMapping("/api/challenge")
 public class ChallengeRestContoller {
 
+    SimpleDateFormat sdf = new SimpleDateFormat("HH.mm.ss");
+
+
     IChallengeService iChallengeService;
     IUserService iUserService;
     IGameAccountService iGameAccountService;
-
     @Autowired
     public void setiGameAccountService(IGameAccountService iGameAccountService){
         this.iGameAccountService = iGameAccountService;
     }
-
     @Autowired
     public void setiUserService(IUserService iUserService) {
 
         this.iUserService = iUserService;
     }
-
     @Autowired
     public void setiChallengeService(IChallengeService service){
 
         this.iChallengeService = service;
     }
 
+
+
     @RequestMapping(value = "/findById", method = RequestMethod.POST, produces = "application/json")
     public User findById(@RequestBody String id){
-
-        int i = Integer.parseInt(id);
-
-        for(User u : iUserService.getAllUsers()){
-            if(u.getId()== i ){
-                return u;
-            }
-        }
-        return null;
+        return iUserService.findById(Integer.parseInt(id));
     }
+
+
 
     @RequestMapping(value = "/findChallengeById", method = RequestMethod.POST, produces = "application/json")
     public Challenge findChallengeById(@RequestBody String id){
-
-        int i = Integer.parseInt(id);
-
-        for(Challenge c : iChallengeService.getAllChallenges()){
-            if(c.getId()== i ){
-                return c;
-            }
-        }
-        return null;
+        return iChallengeService.findById(Integer.parseInt(id));
     }
+
+    @RequestMapping(value = "/withdrawChallenge",method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public void withdrawChallenge(@RequestBody String id){
+        Timestamp challengeWithdrawenMilli = new Timestamp(System.currentTimeMillis());
+
+        Challenge challengeToWithdraw=iChallengeService.findById(Integer.parseInt(id));
+
+        challengeToWithdraw.setWithdrawen(true);
+        challengeToWithdraw.setChallengeWithdrawen(sdf.format(challengeWithdrawenMilli));
+        challengeToWithdraw.setOpen(false);
+
+        iChallengeService.saveChallenge(challengeToWithdraw);
+    }//end withdrawChallenge
+
+
+    @RequestMapping(value = "/declineChallenge",method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public void declineChallenge(@RequestBody String id){
+        Timestamp challengeSentMili = new Timestamp(System.currentTimeMillis());
+
+        Challenge challengeToDecline=iChallengeService.findById(Integer.parseInt(id));
+
+        challengeToDecline.setDeclined(true);
+        challengeToDecline.setOpen(false);
+        challengeToDecline.setChallengeDeclined(sdf.format(challengeSentMili));
+
+        iChallengeService.saveChallenge(challengeToDecline);
+    }
+
+
+    @RequestMapping(value = "/acceptChallenge",method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public void acceptChallenge(@RequestBody String id){
+        Timestamp challengeSentMili = new Timestamp(System.currentTimeMillis());
+
+        Challenge challengeToAccept = iChallengeService.findById(Integer.parseInt(id));
+
+        challengeToAccept.setAccepted(true);
+        challengeToAccept.setOpen(true);
+        challengeToAccept.setChallengeAccepted(sdf.format(challengeSentMili));
+
+        iChallengeService.saveChallenge(challengeToAccept);
+    }
+
+
+    @RequestMapping(value ="/challengesSent", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public List<Challenge> getAllSentChallenges(@RequestBody User user){
+        return iChallengeService.getAllChallengesSent(user);
+    }
+
+
+
+    @RequestMapping(value ="/challengesRecieved", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public List<Challenge> getAllRecievedChallenges(@RequestBody User user){
+        return iChallengeService.getAllChallengesRecieved(user);
+    }
+
+
+
 
     @RequestMapping(value = "/saveChallenge", method = RequestMethod.POST, produces = "application/json")
     public void saveThisChallenge(@RequestBody String params){
         JSONObject jsonObject = new JSONObject(params);
-
-        System.out.println(jsonObject.toString());
-
-        String currIDString = jsonObject.getString("currUserID");
-        int currID = Integer.parseInt(currIDString);
-        String opponentID = jsonObject.getString("opponentID");
-        int oppID = Integer.parseInt(opponentID);
-
-        User currUserObject = findById(String.valueOf(currID));
-        String currUsername =currUserObject.getUsername();
-
-        User oppUserObject = findById(String.valueOf(oppID));
-        String oppUsername = oppUserObject.getUsername();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("HH.mm.ss");
         Timestamp challengeSentMili = new Timestamp(System.currentTimeMillis());
 
-
-        String durationString = jsonObject.getString("duration");
-        int duration = Integer.parseInt(durationString);
-
-        String stakeString = jsonObject.getString("stake");
-        double stake = Double.parseDouble(stakeString);
-
-
         Challenge thisChallenge = new Challenge();
+        User currUserObject =iUserService.findById(Integer.parseInt(jsonObject.getString("currUserID")));
+        User oppUserObject = iUserService.findById(Integer.parseInt(jsonObject.getString("opponentID")));
 
-        thisChallenge.setChallengerId(currID);
-        thisChallenge.setChallengerName(currUsername);
+        int duration = Integer.parseInt(jsonObject.getString("duration"));
+        double stake = Double.parseDouble(jsonObject.getString("stake"));
 
-        thisChallenge.setOpponentId(oppID);
-        thisChallenge.setOpponentName(oppUsername);
+        thisChallenge.setChallengerId(currUserObject.getId());
+        thisChallenge.setChallengerName(currUserObject.getUsername());
+
+        thisChallenge.setOpponentId(oppUserObject.getId());
+        thisChallenge.setOpponentName(oppUserObject.getUsername());
 
         thisChallenge.setChallengeSent(sdf.format(challengeSentMili));
 
@@ -112,156 +144,29 @@ public class ChallengeRestContoller {
         thisChallenge.setOpen(true);
 
         iChallengeService.saveChallenge(thisChallenge);
-    }//end saveThidChallenge
-
-
-    @RequestMapping(value ="/challengesSent", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public List<Challenge> getAllSentChallenges(@RequestBody String id){
-
-        int idNo =Integer.parseInt(id);
-
-        ArrayList<Challenge>sentChallenges = new ArrayList<>();
-
-        for(Challenge c : iChallengeService.getAllChallenges()){
-            if(c.getChallengerId()==idNo){
-                sentChallenges.add(c);
-            }
-        }
-        return sentChallenges;
     }
 
-    @RequestMapping(value ="/challengesRecieved", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public List<Challenge> getAllRecievedChallenges(@RequestBody String id){
-
-        int idNo =Integer.parseInt(id);
-
-        ArrayList<Challenge>challengesRecieved = new ArrayList<>();
-
-        for(Challenge c : iChallengeService.getAllChallenges()){
-            if(c.getOpponentId()==idNo){
-                challengesRecieved.add(c);
-            }
-        }
-
-        return challengesRecieved;
-    }
-
-    @RequestMapping(value = "/withdrawChallenge",method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public void withdrawChallenge(@RequestBody String id){
-
-        int idNo = Integer.parseInt(id);
-
-         ArrayList<Challenge>challenges = new ArrayList<>();
-         challenges=(ArrayList<Challenge>) iChallengeService.getAllChallenges();
-
-         Challenge challengeToWithdraw=null;
-        SimpleDateFormat sdf = new SimpleDateFormat("HH.mm.ss");
-        Timestamp challengeWithdrawenMilli = new Timestamp(System.currentTimeMillis());
-
-        for(Challenge ch:challenges){
-            if(ch.getId()==idNo){
-                challengeToWithdraw = ch;
-
-                challengeToWithdraw.setWithdrawen(true);
-                challengeToWithdraw.setChallengeWithdrawen(sdf.format(challengeWithdrawenMilli));
-                challengeToWithdraw.setOpen(false);
-
-                iChallengeService.saveChallenge(challengeToWithdraw);
-            }//end if
-        }//end for
-    }//end withdrawChallenge
 
 
-    @RequestMapping(value = "/declineChallenge",method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public void declineChallenge(@RequestBody String id){
 
-        int idNo = Integer.parseInt(id);
-
-        ArrayList<Challenge>challenges = new ArrayList<>();
-        challenges=(ArrayList<Challenge>) iChallengeService.getAllChallenges();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("HH.mm.ss");
-        Timestamp challengeSentMili = new Timestamp(System.currentTimeMillis());
-
-        Challenge challengeToDecline=null;
-
-        for(Challenge chall:challenges){
-            if(chall.getId()==idNo){
-                challengeToDecline = chall;
-
-                challengeToDecline.setDeclined(true);
-                challengeToDecline.setOpen(false);
-                challengeToDecline.setChallengeDeclined(sdf.format(challengeSentMili));
-
-                iChallengeService.saveChallenge(challengeToDecline);
-            }
-        }
-    }
-
-    @RequestMapping(value = "/acceptChallenge",method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public void acceptChallenge(@RequestBody String id){
-
-        int idNo = Integer.parseInt(id);
-
-
-        SimpleDateFormat sdf = new SimpleDateFormat("HH.mm.ss");
-        Timestamp challengeSentMili = new Timestamp(System.currentTimeMillis());
-
-        Challenge challengeToAccept;
-
-        for(Challenge chall:iChallengeService.getAllChallenges()){
-            if(chall.getId()==idNo){
-                challengeToAccept = chall;
-
-                challengeToAccept.setAccepted(true);
-                challengeToAccept.setOpen(true);
-                challengeToAccept.setChallengeAccepted(sdf.format(challengeSentMili));
-
-                iChallengeService.saveChallenge(challengeToAccept);
-            }
-        }
-    }
 
     @RequestMapping(value = "/updateGameAccount",method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public void updateGameAccount(@RequestBody String id){
-
-        /**
-         * now i have the id of the challenge
-         */
-        int idNo = Integer.parseInt(id);
-
-
-        double stake = 0;
-
-        Challenge thisChallenge=null;
-
-        for(Challenge c : iChallengeService.getAllChallenges()){
-            if(c.getId()==idNo){
-                thisChallenge=c;
-            }
-        }
-        stake = thisChallenge.getStake();
-
+        Challenge thisChallenge=iChallengeService.findById(Integer.parseInt(id));
 
         User challenger = findById(String.valueOf(thisChallenge.getChallengerId()));
+        User opponent = findById(String.valueOf(thisChallenge.getOpponentId()));
+
         GameAccount challengerGameAccount = new GameAccount();
         challengerGameAccount.setUser(challenger);
-        double challengerGameBalance = stake;
-        challengerGameAccount.setBalance(challengerGameBalance);
+        challengerGameAccount.setBalance(thisChallenge.getStake());
         iGameAccountService.register(challengerGameAccount);
         iUserService.register(challenger);
 
-        User opponent = findById(String.valueOf(thisChallenge.getOpponentId()));
         GameAccount opponentGameAccount = new GameAccount();
         opponentGameAccount.setUser(opponent);
-        double opponentGameBalance = stake;
-        opponentGameAccount.setBalance(opponentGameBalance);
+        opponentGameAccount.setBalance(thisChallenge.getStake());
         iGameAccountService.register(opponentGameAccount);
         iUserService.register(opponent);
     }
@@ -271,4 +176,4 @@ public class ChallengeRestContoller {
 
 
 
-}//end Controller
+}

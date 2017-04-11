@@ -2,6 +2,7 @@ package com.example.services.impl;
 
 import com.example.dao.ChallengeDAO;
 import com.example.entities.Challenge;
+import com.example.entities.User;
 import com.example.services.IChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,14 @@ import java.util.List;
 public class ChallengeService implements IChallengeService{
 
     ChallengeDAO challengeDAO;
-
     @Autowired
     public void setChallengeDAO(ChallengeDAO dao){
         this.challengeDAO = dao;
     }
 
+
+
+    @Override
     public void saveChallenge(Challenge challenge){
         challengeDAO.save(challenge);
     }
@@ -29,17 +32,42 @@ public class ChallengeService implements IChallengeService{
 
     @Override
     public List<Challenge> getAllChallenges() {
-        ArrayList<Challenge> challenges = new ArrayList<Challenge>();
-        for(Challenge ch : challengeDAO.findAll()){
-            challenges.add(ch);
-        }
-        return challenges;
+        return challengeDAO.findAll();
     }
 
 
     @Override
-    public void deleteChallenge(Challenge challenge) {
+    public Challenge deleteChallenge(Challenge challenge) {
 
         challengeDAO.delete(challenge);
+        return challenge;
+    }
+
+
+    @Override
+    public Challenge findById(int id) {
+        return challengeDAO.findOne(id);
+    }
+
+    @Override
+    public List<Challenge> getAllChallengesSent(User user) {
+        List<Challenge> sent =new ArrayList<>();
+        for(Challenge c : challengeDAO.findAll()){
+            if(c.getChallengerId()==user.getId()){
+                sent.add(c);
+            }
+        }
+        return sent;
+    }
+
+    @Override
+    public List<Challenge> getAllChallengesRecieved(User user) {
+        List<Challenge>recieved=new ArrayList<>();
+        for(Challenge c : challengeDAO.findAll()){
+            if(c.getOpponentId()==user.getId()){
+                recieved.add(c);
+            }
+        }
+        return recieved;
     }
 }

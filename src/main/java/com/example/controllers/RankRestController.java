@@ -36,11 +36,15 @@ public class RankRestController {
         this.iRankService = service;
     }
 
+
+
     @RequestMapping(value = "/allRanks", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<Rank> getAllRanks() {
         return iRankService.getALlRanks();
     }
+
+
 
     @RequestMapping(value = "/saveRank", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
