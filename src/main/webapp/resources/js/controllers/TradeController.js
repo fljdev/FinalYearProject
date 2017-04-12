@@ -43,6 +43,12 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             .success(function (data, status) {
                 if(status = 200){
                     $scope.openTrades = data;
+                    console.log($scope.openTrades.length)
+                    if($scope.openTrades.length>0){
+                        $scope.activeTrades = true;
+                    }else{
+                        $scope.activeTrades = false;
+                    }
                 }
             }).error(function (error) {
             console.log("something went wrong in getOpenTrades call!!");
@@ -54,6 +60,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             return currentPair.currencyPairOpen.symbols === pair.symbols;
         }
         var trade = $scope.openTrades.find(findPair);
+
         if(trade){
             return trade;
         }
