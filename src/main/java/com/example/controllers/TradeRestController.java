@@ -229,33 +229,20 @@ public class TradeRestController {
         }  else if(thisTrade.getCurrencyPairOpen().getSymbols().contains("USD/")){
 
             profit = calculateIndirectQuote(thisTrade,thisPairOpen,longPipDiff,shortPipDiff,positionUnits);
-        } else {
-
-            profit = calculateCrossQuote(thisTrade,thisPairOpen);
         }
         return profit;
     }
 
     private double calculateDirectQuote(Trade thisTrade , CurrencyPair thisPairOpen,double longPipDiff,double shortPipDiff,double positionUnits){
-
-        if(thisTrade.getAction().equalsIgnoreCase("buy")){
-            return longPipDiff * positionUnits;
-        }
-        return shortPipDiff * positionUnits;
+        return (thisTrade.getAction().equalsIgnoreCase("buy")) ? longPipDiff * positionUnits : shortPipDiff * positionUnits;
     }
 
 
     private double calculateIndirectQuote(Trade thisTrade , CurrencyPair thisPairOpen,double longPipDiff,double shortPipDiff,double positionUnits){
-
-        if(thisTrade.getAction().equalsIgnoreCase("buy")){
-            return (longPipDiff * positionUnits) /thisTrade.getCurrencyPairOpen().getBid();
-        }
-        return (shortPipDiff * positionUnits) /thisTrade.getCurrencyPairOpen().getAsk();
+        return (thisTrade.getAction().equalsIgnoreCase("buy"))?(longPipDiff * positionUnits) /thisTrade.getCurrencyPairOpen().getBid() : (shortPipDiff * positionUnits) /thisTrade.getCurrencyPairOpen().getAsk();
     }
 
-    private double calculateCrossQuote(Trade thisTrade, CurrencyPair thisPairOpen){
-        return 1234;
-    }
+
 
 
 //        List<Trade> openTrades = findOpenTrades(playerID);
