@@ -218,6 +218,14 @@ public class TradeRestController {
     private double calcThisProfitAndLoss(Trade thisTrade, CurrencyPair thisPairOpen)throws Exception{
 
 
+        System.out.println("this pair sym "+thisTrade.getCurrencyPairOpen().getSymbols());
+
+        if(thisTrade.getCurrencyPairOpen().getSymbols().contains("/USD")){
+            calculateDirectQuote(thisTrade,thisPairOpen);
+        }  else if(thisTrade.getCurrencyPairOpen().getSymbols().contains("USD/")){
+            calculateIndirectQuote(thisTrade,thisPairOpen);
+        }
+
         double openAsk = thisPairOpen.getAsk();
         double openBid = thisPairOpen.getBid();
 
@@ -251,7 +259,30 @@ public class TradeRestController {
     }
 
 
+    private double calculateDirectQuote(Trade thisTrade , CurrencyPair thisPairOpen){
 
+        double positionUnits = thisTrade.getPositionUnits();
+        double longPipDiff = thisTrade.getCurrencyPairOpen().getBid() - thisPairOpen.getAsk();
+        double shortPipDiff = thisPairOpen.getBid() - thisTrade.getCurrencyPairOpen().getAsk();
+        double profit=0;
+        if(thisTrade.getAction().equalsIgnoreCase("buy")){
+            profit = longPipDiff * positionUnits;
+            System.out.println("calculateDirectQuote profit : "+profit);
+        }else{
+            profit = shortPipDiff * positionUnits;
+            System.out.println("calculateDirectQuote profit : "+profit);
+        }
+        return 0;
+    }
+
+
+
+    private double calculateIndirectQuote(Trade thisTrade , CurrencyPair thisPairOpen){
+
+        System.out.println("got into indirect quote calc with "+thisTrade.getId()+ " and pair "+thisPairOpen.getSymbols());
+
+        return 0;
+    }
 
 
 //        List<Trade> openTrades = findOpenTrades(playerID);
