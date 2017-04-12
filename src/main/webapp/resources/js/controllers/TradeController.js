@@ -266,6 +266,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             .success(function (data, status) {
                 if(status = 200){
                     console.log("trade created and persisted ",data);
+                    swal(data.action  +" " + data.currencyPairOpen.symbols + " "+ data.positionUnits+ " units", " position opened!", "success");
+
                     $scope.tradeObject = data;
                     $scope.thisUser=$scope.tradeObject.user;
                     $cookieStore.put('userCookie', $scope.thisUser);
@@ -326,6 +328,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
                 .success(function (data, status) {
                     if(status = 200){
+
+                        swal(data.action+ " "+ data.currencyPairOpen.symbols+ " position", "successfully closed", "error");
 
                         $scope.thisUser = data.user;
                         $cookieStore.put('userCookie', $scope.thisUser);
