@@ -1,9 +1,6 @@
 package com.example.entities;
 
 
-
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 
 
@@ -33,11 +30,13 @@ public class User {
     private int bestRank;
 
     private double currentProfit;
+    private double totalMargin;
 
     public User() {
     }
 
-    public User(BankAccount account, String firstName, String lastName, String username, String email, String password, boolean online, int currentRank, int bestRank, double currentProfit) {
+    public User(BankAccount account, String firstName, String lastName, String username, String email,
+                String password, boolean online, int currentRank, int bestRank, double currentProfit, double totalMargin) {
         this.account = account;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -48,6 +47,7 @@ public class User {
         this.currentRank = currentRank;
         this.bestRank = bestRank;
         this.currentProfit = currentProfit;
+        this.totalMargin = totalMargin;
     }
 
     public int getId() {
@@ -138,6 +138,14 @@ public class User {
         this.currentProfit = currentProfit;
     }
 
+    public double getTotalMargin() {
+        return totalMargin;
+    }
+
+    public void setTotalMargin(double totalMargin) {
+        this.totalMargin = totalMargin;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -152,6 +160,7 @@ public class User {
                 ", currentRank=" + currentRank +
                 ", bestRank=" + bestRank +
                 ", currentProfit=" + currentProfit +
+                ", totalMargin=" + totalMargin +
                 '}';
     }
 }
