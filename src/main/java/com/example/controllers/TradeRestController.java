@@ -216,20 +216,28 @@ public class TradeRestController {
 
 
     private double calcThisProfitAndLoss(Trade thisTrade, CurrencyPair thisPairOpen)throws Exception{
+        String symbols = thisTrade.getCurrencyPairOpen().getSymbols();
         double profit=0;
-        if(thisTrade.getCurrencyPairOpen().getSymbols().contains("/USD")){
-            profit = calculateDirectQuote(thisTrade,thisPairOpen);
+        double positionUnits = thisTrade.getPositionUnits();
+        double longPipDiff = thisTrade.getCurrencyPairOpen().getBid() - thisPairOpen.getAsk();
+        double shortPipDiff = thisPairOpen.getBid() - thisTrade.getCurrencyPairOpen().getAsk();
+
+
+        if(symbols.contains("/USD")){
+
+            profit = calculateDirectQuote(thisTrade,thisPairOpen,longPipDiff,shortPipDiff,positionUnits);
         }  else if(thisTrade.getCurrencyPairOpen().getSymbols().contains("USD/")){
-            profit = calculateIndirectQuote(thisTrade,thisPairOpen);
+
+            profit = calculateIndirectQuote(thisTrade,thisPairOpen,longPipDiff,shortPipDiff,positionUnits);
+        } else {
+
+            profit = calculateCrossQuote(thisTrade,thisPairOpen);
         }
         return profit;
     }
 
-    private double calculateDirectQuote(Trade thisTrade , CurrencyPair thisPairOpen){
+    private double calculateDirectQuote(Trade thisTrade , CurrencyPair thisPairOpen,double longPipDiff,double shortPipDiff,double positionUnits){
 
-        double positionUnits = thisTrade.getPositionUnits();
-        double longPipDiff = thisTrade.getCurrencyPairOpen().getBid() - thisPairOpen.getAsk();
-        double shortPipDiff = thisPairOpen.getBid() - thisTrade.getCurrencyPairOpen().getAsk();
         if(thisTrade.getAction().equalsIgnoreCase("buy")){
             return longPipDiff * positionUnits;
         }
@@ -237,15 +245,16 @@ public class TradeRestController {
     }
 
 
-    private double calculateIndirectQuote(Trade thisTrade , CurrencyPair thisPairOpen){
+    private double calculateIndirectQuote(Trade thisTrade , CurrencyPair thisPairOpen,double longPipDiff,double shortPipDiff,double positionUnits){
 
-        double positionUnits = thisTrade.getPositionUnits();
-        double longPipDiff = thisTrade.getCurrencyPairOpen().getBid() - thisPairOpen.getAsk();
-        double shortPipDiff = thisPairOpen.getBid() - thisTrade.getCurrencyPairOpen().getAsk();
         if(thisTrade.getAction().equalsIgnoreCase("buy")){
             return (longPipDiff * positionUnits) /thisTrade.getCurrencyPairOpen().getBid();
         }
         return (shortPipDiff * positionUnits) /thisTrade.getCurrencyPairOpen().getAsk();
+    }
+
+    private double calculateCrossQuote(Trade thisTrade, CurrencyPair thisPairOpen){
+        return 1234;
     }
 
 
