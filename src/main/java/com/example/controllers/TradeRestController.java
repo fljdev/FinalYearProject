@@ -191,6 +191,12 @@ public class TradeRestController {
             tradeToClose.setCurrencyPairClose(closingPair);
             iCurrencyPairService.saveCurrencyPair(closingPair);
             iTradeService.updateAndSaveTrade(tradeToClose);
+
+            double currBal = user.getCurrentProfit();
+            double thisTradePL = tradeToClose.getClosingProfitLoss();
+            currBal -= thisTradePL;
+            user.setCurrentProfit(currBal);
+            iUserService.register(user);
         }
         return tradeToClose;
     }

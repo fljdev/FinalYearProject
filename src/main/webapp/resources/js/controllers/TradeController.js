@@ -352,6 +352,12 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 .success(function (data, status) {
                     if(status = 200){
 
+                        $scope.thisUser = data.user;
+                        $cookieStore.put('userCookie', $scope.thisUser);
+                        $scope.PLV = $scope.thisUser.currentProfit;
+
+
+
                         $scope.mMargin -= data.margin/2;
                         $scope.mMarginView  = $scope.mMargin.toFixed(2);
 
