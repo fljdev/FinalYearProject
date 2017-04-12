@@ -72,8 +72,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     var min = 2500;
     $scope.positionUnits = 2500;
     $scope.leverage = 100;
-    $scope.mMargin=0;
-    $scope.mMarginView=$scope.mMargin;
     $scope.preTradeMarginRequiredTradedCurrency = $scope.positionUnits/$scope.leverage;
     $scope.preTradeMarginRequiredTradedCurrencyView = $scope.preTradeMarginRequiredTradedCurrency.toFixed(2);
 
@@ -251,7 +249,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
         tradeObject.playerID = $scope.thisUser.id+"";
         tradeObject.pairSymbols=$scope.preTradePairChosen.symbols;
-        tradeObject.margin = $scope.preTradeMarginRequiredUSD+"";
+        tradeObject.margin = $scope.preTradeMarginRequiredUSD;
         tradeObject.action = $scope.preTradeAction;
         tradeObject.positionUnits = $scope.positionUnits;
         console.log("pos",tradeObject.positionUnits);
@@ -264,32 +262,20 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                     $scope.tradeObject = data;
                     $scope.thisUser=$scope.tradeObject.user;
                     $cookieStore.put('userCookie', $scope.thisUser);
-
-
-
                     $scope.updateTradeScreenHeader($scope.tradeObject);
-
                 }
             }).error(function (error) {
             console.log("something went wrong in saveTrade");
         });
-
     };
 
 
     $scope.updateTradeScreenHeader = function(tradeObj){
-
-
-
-        // $scope.available = tradeObj.user.account.balance;
-        // $scope.availableView = $scope.available.toFixed(2);
+        $scope.thisUser = tradeObj.user;
+        $cookieStore.put('userCookie', $scope.thisUser);
 
         $scope.availableView = tradeObj.user.account.balance.toFixed(2);
-
-
-        $scope.mMargin += (tradeObj.margin/2);
-        $scope.mMarginView  = $scope.mMargin.toFixed(2);
-
+        $scope.mMargin =$scope.thisUser.totalMargin;
 
         $scope.updateEachTrade();
     };
@@ -302,21 +288,15 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                     $http.post('/api/trade/getTotalProfitAndLoss',JSON.stringify($scope.thisUser))
                         .success(function (data, status) {
                             if(status = 200){
-
                                 $scope.thisUser = data;
-                                $scope.profitAndLoss = $scope.thisUser.currentProfit;
-                                $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
-
                                 $cookieStore.put('userCookie', $scope.thisUser);
                                 $scope.PLV = $scope.thisUser.currentProfit;
-
+                                $scope.mMargin = $scope.thisUser.totalMargin;
                             }
                         }).error(function (error) {
                         console.log("something went wrong in updateEachTrade");
                     });
-
                     $scope.showOpenTrades();
-
                 }
             }).error(function (error) {
             console.log("something went wrong in updateEachTrade");
@@ -325,19 +305,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
 
-        //
-        // if($scope.pairChosenSym.match("/USD")){
-        //
-        //     $scope.watch("/USD");
-        //
-        // }else if($scope.pairChosenSym.match("USD/")){
-        //
-        //     $scope.watch("USD/");
-        //
-        // }else{
-        //     $scope.watch("cross")
-        // }
-    // };
+
 
 
 
@@ -354,18 +322,9 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
                         $scope.thisUser = data.user;
                         $cookieStore.put('userCookie', $scope.thisUser);
+
                         $scope.PLV = $scope.thisUser.currentProfit;
-
-
-
-                        $scope.mMargin -= data.margin/2;
-                        $scope.mMarginView  = $scope.mMargin.toFixed(2);
-
-                        // $scope.profitAndLoss -= data.closingProfitLoss;
-                        // console.log("after close pl ",data.closingProfitLoss);
-                        // $scope.profitAndLossView = $scope.profitAndLoss.toFixed(2);
-                        // $scope.tradeOn = false;
-
+                        $scope.mMargin = $scope.thisUser.totalMargin;
 
                     }
                 }).error(function (error) {
@@ -373,6 +332,20 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             });
 
     };
+
+    //
+    // if($scope.pairChosenSym.match("/USD")){
+    //
+    //     $scope.watch("/USD");
+    //
+    // }else if($scope.pairChosenSym.match("USD/")){
+    //
+    //     $scope.watch("USD/");
+    //
+    // }else{
+    //     $scope.watch("cross")
+    // }
+    // };
 
 
     // $scope.closeLiveTrade = function(x){

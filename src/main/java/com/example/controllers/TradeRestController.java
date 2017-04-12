@@ -55,29 +55,32 @@ public class TradeRestController {
     @RequestMapping(value = "/saveTrade", method = RequestMethod.POST)
     public Trade saveThisTrade(@RequestBody String json)throws Exception{
         JSONObject jsonObject = new JSONObject(json);
+        Timestamp timestampOpen = new Timestamp(System.currentTimeMillis());
 
-        String playerID = jsonObject.getString("playerID");
+
         String pairSymbols = jsonObject.getString("pairSymbols");
-        String marginString = jsonObject.getString("margin");
-        double margin = Double.parseDouble(marginString);
+        double margin = jsonObject.getDouble("margin");
         String action = jsonObject.getString("action");
         double positionUnits = jsonObject.getDouble("positionUnits");
 
         Trade trade = new Trade();
 
-        Timestamp timestampOpen = new Timestamp(System.currentTimeMillis());
 
         CurrencyPair currencyPair = thisPair(pairSymbols);
         currencyPair.setActive(true);
         iCurrencyPairService.saveCurrencyPair(currencyPair);
 
-        User user = iUserService.findById(Integer.parseInt(playerID));
+        User user = iUserService.findById(Integer.parseInt(jsonObject.getString("playerID")));
 
         BankAccount account = user.getAccount();
         double currentBalance = account.getBalance();
         double updatedBalance = currentBalance - margin;
         account.setBalance(updatedBalance);
         iBankAccountService.register(account);
+
+        double existingMargin = user.getTotalMargin();
+        double updatedMargin = existingMargin + margin;
+        user.setTotalMargin(updatedMargin);
 
         iUserService.register(user);
 
@@ -196,6 +199,10 @@ public class TradeRestController {
             double thisTradePL = tradeToClose.getClosingProfitLoss();
             currBal -= thisTradePL;
             user.setCurrentProfit(currBal);
+
+            double existingMargin = user.getTotalMargin();
+            double updatedMargin = existingMargin - tradeToClose.getMargin();
+            user.setTotalMargin(updatedMargin);
             iUserService.register(user);
         }
         return tradeToClose;
