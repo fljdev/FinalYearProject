@@ -96,6 +96,45 @@ public class TradeRestController {
         return trade;
     }//end saveTrade
 
+    @RequestMapping(value = "/closeLiveTrade", method = RequestMethod.POST)
+    public Trade closeThisTrade(@RequestBody String closeParams)throws Exception {
+
+        JSONObject jsonObject = new JSONObject(closeParams);
+        String symbols = jsonObject.getString("sym");
+
+        User user = iUserService.findById(Integer.parseInt(jsonObject.getString("id")));
+        Trade tradeToClose = iTradeService.findBySymbols(symbols,user);
+
+        if(tradeToClose!=null){
+            tradeToClose.setOpen(false);
+
+            BankAccount bankAccount = user.getAccount();
+            double currentBalance = bankAccount.getBalance();
+            double balanceUpdate = currentBalance + tradeToClose.getMargin() + tradeToClose.getClosingProfitLoss();
+            bankAccount.setBalance(balanceUpdate);
+            iBankAccountService.register(bankAccount);
+
+
+            Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
+            tradeToClose.setTimestampClose(timestampClose);
+            CurrencyPair closingPair = thisPair(symbols);
+            tradeToClose.setCurrencyPairClose(closingPair);
+            iCurrencyPairService.saveCurrencyPair(closingPair);
+            iTradeService.updateAndSaveTrade(tradeToClose);
+
+            double currBal = user.getCurrentProfit();
+            double thisTradePL = tradeToClose.getClosingProfitLoss();
+            currBal -= thisTradePL;
+            user.setCurrentProfit(currBal);
+
+            double existingMargin = user.getTotalMargin();
+            double updatedMargin = existingMargin - tradeToClose.getMargin();
+            user.setTotalMargin(updatedMargin);
+            iUserService.register(user);
+        }
+        return tradeToClose;
+    }
+
 
 
     @RequestMapping(value ="/getTotalProfitAndLoss", method = RequestMethod.POST, produces = "application/json")
@@ -176,37 +215,7 @@ public class TradeRestController {
 
 
 
-    @RequestMapping(value = "/closeLiveTrade", method = RequestMethod.POST)
-    public Trade closeThisTrade(@RequestBody String closeParams)throws Exception {
 
-        JSONObject jsonObject = new JSONObject(closeParams);
-        String symbols = jsonObject.getString("sym");
-
-        User user = iUserService.findById(Integer.parseInt(jsonObject.getString("id")));
-        Trade tradeToClose = iTradeService.findBySymbols(symbols,user);
-
-        if(tradeToClose!=null){
-            tradeToClose.setOpen(false);
-
-            Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
-            tradeToClose.setTimestampClose(timestampClose);
-            CurrencyPair closingPair = thisPair(symbols);
-            tradeToClose.setCurrencyPairClose(closingPair);
-            iCurrencyPairService.saveCurrencyPair(closingPair);
-            iTradeService.updateAndSaveTrade(tradeToClose);
-
-            double currBal = user.getCurrentProfit();
-            double thisTradePL = tradeToClose.getClosingProfitLoss();
-            currBal -= thisTradePL;
-            user.setCurrentProfit(currBal);
-
-            double existingMargin = user.getTotalMargin();
-            double updatedMargin = existingMargin - tradeToClose.getMargin();
-            user.setTotalMargin(updatedMargin);
-            iUserService.register(user);
-        }
-        return tradeToClose;
-    }
 
 
 
