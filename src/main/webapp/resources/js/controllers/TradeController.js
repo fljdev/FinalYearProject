@@ -1,4 +1,4 @@
-angular.module('myApp.TradeController',[]).
+angular.module('myApp.TradeController',['chart.js']).
 controller('TradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav,$stateParams){
 
 
@@ -31,6 +31,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             .success(function (data, status) {
                 if(status = 200){
                     $scope.pairs = data;
+
+                    $scope.setGraph1(data);
                 }
             }).error(function (error) {
             console.log("something went wrong in the pairs controller init function!!");
@@ -196,6 +198,16 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         $scope.equityView = ($scope.equity.toFixed(2));
     };
 
+
+    $scope.setGraph1 = function(data){
+
+        $scope.labels=[];
+        $scope.data=[];
+        for( i = 0; i < data.length; i++){
+            $scope.labels.push(data[i].symbols);
+            $scope.data.push(data[i].spreadPips);
+        }
+    };
 
 
 
