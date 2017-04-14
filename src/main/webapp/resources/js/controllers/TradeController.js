@@ -15,6 +15,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                         $cookieStore.put('userCookie', data);
 
                         $scope.thisUser = data;
+
+                        $scope.watchForChanges($scope.thisUser);
                     }
                 }).error(function (error) {
                 console.log("something went wrong in findById -> TradeController!!");
@@ -22,6 +24,37 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         }
     };
     $scope.setUser();
+
+    var count=0;
+
+    $scope.watchForChanges = function(thisUser){
+        console.log("this user is ",thisUser);
+        count = count+1;
+        console.log("count is ",count);
+
+        $http.post('/api/trade/watchForChangesPost',JSON.stringify(thisUser))
+            .success(function (data, status) {
+                if(status = 200){
+
+                    $scope.thisUser=data;
+                    $cookieStore.put('userCookie', $scope.thisUser);
+
+                    console.log("user now profit is ",$scope.thisUser.currentProfit);
+                    $scope.updateUserSummaryTable();
+
+                    if($scope.tradeObject){
+                        $scope.updateTradeScreenHeader($scope.tradeObject);
+                    }
+
+                    // $scope.updateUserSummaryTable();
+
+                }
+            }).error(function (error) {
+            console.log("something went wrong in  watchForChanges()!!");
+        });
+    };
+    $interval( function(){ $scope.watchForChanges($scope.thisUser); }, 3000);
+
 
     /**
      * Find open trades to alter the TradeTable view (Working, possible bug)
@@ -167,7 +200,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
                 $scope.theStake = $scope.currentChallenge.stake;
 
-                $scope.setTradeVariables();
+                $scope.updateUserSummaryTable();
 
             }
         }).error(function (error) {
@@ -179,7 +212,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.check =false;
 
 
-    $scope.setTradeVariables = function(){
+    $scope.updateUserSummaryTable = function(){
 
         /**
          * Set
