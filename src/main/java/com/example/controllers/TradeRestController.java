@@ -137,30 +137,24 @@ public class TradeRestController {
 
 
 
-    @RequestMapping(value ="/getTotalProfitAndLoss", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public User totalProfit(@RequestBody String userJson)throws Exception{
 
+
+    @RequestMapping(value ="/watchForChangesPost", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public User watchChanges(@RequestBody String userJson)throws Exception{
+        System.out.println("got in anyway...");
         JSONObject jsonObject = new JSONObject(userJson);
 
+
+        live(userJson);
+        totalProfit(userJson);
+
         User user = iUserService.findById(jsonObject.getInt("id"));
-        List<Trade> openTrades = new ArrayList<>();
 
-        double totalProfit=0;
 
-        if(user!=null){
-            openTrades = iTradeService.findByUser(user).stream().filter(Trade::isOpen).collect(Collectors.toList());
-            for(Trade t : openTrades){
-
-                totalProfit += t.getClosingProfitLoss();
-                user.setCurrentProfit(totalProfit);
-
-                iUserService.register(user);
-            }
-
-        }
         return user;
     }
+
 
 
 
@@ -197,6 +191,7 @@ public class TradeRestController {
                 liveTradeInfo.setCurrentBid(thisCurrencyPair.getBid());
 
                 double profit = calcThisProfitAndLoss(t,thisCurrencyPair);
+                System.out.println("in updateEachTrade and profit is "+profit);
                 System.out.println("profit is "+profit);
                 t.setClosingProfitLoss(profit);
 
@@ -214,7 +209,30 @@ public class TradeRestController {
     }
 
 
+    @RequestMapping(value ="/getTotalProfitAndLoss", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public User totalProfit(@RequestBody String userJson)throws Exception{
 
+        JSONObject jsonObject = new JSONObject(userJson);
+
+        User user = iUserService.findById(jsonObject.getInt("id"));
+        List<Trade> openTrades = new ArrayList<>();
+
+        double totalProfit=0;
+
+        if(user!=null){
+            openTrades = iTradeService.findByUser(user).stream().filter(Trade::isOpen).collect(Collectors.toList());
+            for(Trade t : openTrades){
+
+                totalProfit += t.getClosingProfitLoss();
+                user.setCurrentProfit(totalProfit);
+
+                iUserService.register(user);
+            }
+
+        }
+        return user;
+    }
 
 
 
