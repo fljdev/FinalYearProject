@@ -139,7 +139,7 @@ public class TradeRestController {
 
 
 
-    @RequestMapping(value ="/watchForChangesPost", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value ="/watchForChanges", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public User watchChanges(@RequestBody String userJson)throws Exception{
         System.out.println("got in anyway...");
