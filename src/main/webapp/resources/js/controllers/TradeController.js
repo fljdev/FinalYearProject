@@ -13,9 +13,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 .success(function (data, status) {
                     if(status = 200){
                         $cookieStore.put('userCookie', data);
-
                         $scope.thisUser = data;
-
                         $scope.watchForChanges($scope.thisUser);
                     }
                 }).error(function (error) {
@@ -28,28 +26,15 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     var count=0;
 
     $scope.watchForChanges = function(thisUser){
-        console.log("this user is ",thisUser);
         count = count+1;
-        console.log("count is ",count);
+        console.log("Wach for changes method entered ",count," times");
 
         $http.post('/api/trade/watchForChanges',JSON.stringify(thisUser))
             .success(function (data, status) {
                 if(status = 200){
-
                     $scope.thisUser=data;
                     $cookieStore.put('userCookie', $scope.thisUser);
-
-                    console.log("user now profit is ",$scope.thisUser.currentProfit);
                     $scope.updateUserSummaryTable();
-
-                    if($scope.tradeObject){
-                        $scope.updateTradeScreenHeader($scope.tradeObject);
-
-
-                    }
-
-                    // $scope.updateUserSummaryTable();
-
                 }
             }).error(function (error) {
             console.log("something went wrong in  watchForChanges()!!");
@@ -57,16 +42,11 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
     $interval( function(){ $scope.watchForChanges($scope.thisUser); }, 5000);
 
-
-    /**
-     * Find open trades to alter the TradeTable view (Working, possible bug)
-     */
     $scope.getPairs = function(){
         $http.get('/api/trade/pairs')
             .success(function (data, status) {
                 if(status = 200){
                     $scope.pairs = data;
-
                     $scope.setGraph1(data);
                 }
             }).error(function (error) {
@@ -80,7 +60,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             .success(function (data, status) {
                 if(status = 200){
                     $scope.openTrades = data;
-                    console.log($scope.openTrades.length)
                     if($scope.openTrades.length>0){
                         $scope.activeTrades = true;
                     }else{
@@ -185,9 +164,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
 
-    /**
-     * Worry about this section (challenge) as soon as multiple trades allowed in soo trade works!!
-     */
+
     /**
      * Check if the game is a solo trade or part of a challenge
      * if part of a challenge, change the balance to the stake
@@ -199,11 +176,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             if(status = 200){
                 $scope.currentChallenge = data;
                 console.log("current challenge is : ",$scope.currentChallenge);
-
                 $scope.theStake = $scope.currentChallenge.stake;
-
-                $scope.updateUserSummaryTable();
-
             }
         }).error(function (error) {
         console.log("something went wrong in  findChallengeByID!!");
@@ -212,13 +185,9 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
      * INITIAL Top table values ""**BEFORE TRADE**"" (No Problems with these)
      */
     $scope.check =false;
-
-
     $scope.updateUserSummaryTable = function(){
+        console.log("inti the updateUserSummary methot");
 
-        /**
-         * Set
-         */
         if(theVar>0){
             $scope.available = $scope.theStake;
             $scope.check = true;
@@ -228,9 +197,11 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             $scope.PLV = $scope.thisUser.currentProfit;
 
         }
-        $scope.availableView = $scope.available.toFixed(2);
+        // $scope.availableView = $scope.available.toFixed(2);
         $scope.equity = $scope.available;
         $scope.equityView = ($scope.equity.toFixed(2));
+        $scope.updateEachTrade();
+
     };
 
 
@@ -302,7 +273,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                     $scope.thisUser=$scope.tradeObject.user;
                     $cookieStore.put('userCookie', $scope.thisUser);
 
-                    $scope.updateTradeScreenHeader($scope.tradeObject);
                 }
             }).error(function (error) {
             console.log("something went wrong in saveTrade");
@@ -310,14 +280,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
 
-    $scope.updateTradeScreenHeader = function(tradeObj){
-        $scope.thisUser = tradeObj.user;
-        $cookieStore.put('userCookie', $scope.thisUser);
-        $scope.availableView = tradeObj.user.account.balance.toFixed(2);
-        $scope.mMargin =$scope.thisUser.totalMargin;
 
-        $scope.updateEachTrade();
-    };
 
     $scope.updateEachTrade = function(){
         $http.post('/api/trade/updateEachTrade',JSON.stringify($scope.thisUser))
