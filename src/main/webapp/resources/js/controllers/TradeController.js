@@ -53,7 +53,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             console.log("something went wrong in  watchForChanges()!!");
         });
     };
-    $interval( function(){ $scope.watchForChanges($scope.thisUser); }, 3000);
+    $interval( function(){ $scope.watchForChanges($scope.thisUser); }, 5000);
 
 
     /**
@@ -103,7 +103,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
     $scope.showOpenTrades();
-    $interval( function(){ $scope.showOpenTrades(); }, 3000);
+    $interval( function(){ $scope.showOpenTrades(); }, 5000);
 
 
 
