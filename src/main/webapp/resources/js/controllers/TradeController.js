@@ -32,7 +32,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         count = count+1;
         console.log("count is ",count);
 
-        $http.post('/api/trade/watchForChangesPost',JSON.stringify(thisUser))
+        $http.post('/api/trade/watchForChanges',JSON.stringify(thisUser))
             .success(function (data, status) {
                 if(status = 200){
 
@@ -44,6 +44,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
                     if($scope.tradeObject){
                         $scope.updateTradeScreenHeader($scope.tradeObject);
+
+
                     }
 
                     // $scope.updateUserSummaryTable();
