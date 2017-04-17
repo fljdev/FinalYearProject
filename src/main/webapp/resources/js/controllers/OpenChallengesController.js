@@ -65,10 +65,10 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
         $http.post('/api/challenge/acceptChallenge',x.id)
             .success(function (data, status) {
                 if(status = 200){
-
+                    var name = x.challengerName + " Vs " + x.opponentName;
                     console.log("x.id was no ",x.id);
-                    console.log("accept challenge worked");
-
+                    swal("Let's Trade",name,"success");
+                    $state.go('trade',{challengeID: x.id});
                 }
             }).error(function (error) {
             console.log("something went wrong in accept challenge!!");
