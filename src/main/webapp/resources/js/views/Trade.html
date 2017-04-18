@@ -133,7 +133,7 @@
         <div class="panel-heading">
             <h4 align="center"><b>Spread Depth Indicator</b></h4>
         </div>
-        <canvas id="chartLine" class="chart chart-line"
+        <canvas id="bar" class="chart chart-bar" chart-options="options"
                 chart-data="data" chart-labels="labels" >
         </canvas>
     </div>
@@ -151,13 +151,18 @@
 
 </div>
 
-<div >
+<div class="well">
     <canvas  id="doughnut" class="chart chart-doughnut"
             chart-data="data" chart-labels="labels" height="68px">
     </canvas>
 </div>
 
-
+<div class="well" style="height:500px;width:800px;">
+<canvas id="line" class="chart chart-line" chart-data="data2"
+        chart-labels="labels2" chart-series="series2" chart-options="options"
+        chart-dataset-override="datasetOverride" chart-click="onClick">
+</canvas>
+</div>
 
 <!--<table align="center" width=100% style= 'table-layout:fixed'>-->
 <!--<col width="300px" />-->
