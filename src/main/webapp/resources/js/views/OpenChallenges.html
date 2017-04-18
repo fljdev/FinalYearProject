@@ -10,14 +10,14 @@
 
 <table align="center">
     <thead>
-    <tr><th colspan="9">Hi <b>{{currUser.username}}</b> here's the challenges you are involved in are found here</th> </tr>
+    <tr><th colspan="9">Hi <b>{{$root.currentUser.username}}</b> here's the challenges you are involved in are found here</th> </tr>
     </thead>
 </table>
 
 <br>
 <table align="center">
     <thead>
-    <tr><th colspan="9">Challenges sent by {{currUser.username}}</th> </tr>
+    <tr><th colspan="9">Challenges you sent {{$root.currentUser.username}}</th> </tr>
     </thead>
 </table>
 
@@ -64,7 +64,7 @@
 <br>
 <table align="center">
     <thead>
-    <tr><th colspan="9">Challenges recieved by {{currUser.username}}</th> </tr>
+    <tr><th colspan="9">Challenges you recieved {{$root.currentUser.username}}</th> </tr>
     </thead>
 </table>
 

@@ -19,15 +19,41 @@ controller('LogRegController',function($scope,$http,$state,$cookieStore,$rootSco
 
     });
 
+
+
+    // /**
+    //  * User user object from the Database, instead of the browser cookie (No Problems)
+    //  */
+    // $scope.setUser = function(){
+    //     $rootScope.currentUser = $cookieStore.get('userCookie');
+    //     if($rootScope.currentUser){
+    //         $http.post('/api/user/findById', JSON.stringify($rootScope.currentUser.id))
+    //             .success(function (data, status) {
+    //                 if(status = 200){
+    //                     $cookieStore.put('userCookie', data);
+    //                     $rootScope.currentUser = data;
+    //                 }
+    //             }).error(function (error) {
+    //             console.log("something went wrong in findById -> TradeController!!");
+    //         });
+    //     }
+    // };
+
     $scope.submitRegistration =function(){
 
         $http.post('/api/user/register', JSON.stringify($scope.register))
             .success(function (data, status) {
                 if(status = 200){
 
-                    $scope.register = data;
+                    $rootScope.loggedIn = true;
+
+                    $rootScope.currentUser = data;
+                    $cookieStore.put('userCookie',$rootScope.currentUser);
+
+                    var welcomeString = "Welcome to Forex Fighter "+$rootScope.currentUser.username;
+                    swal(welcomeString," thanks for joining us ","success");
+
                     $state.go('home');
-                    $cookieStore.put('userCookie',$scope.register);
                 }
             }).error(function (error) {
             console.log("something went wrong!!");
@@ -41,12 +67,16 @@ controller('LogRegController',function($scope,$http,$state,$cookieStore,$rootSco
             .success(function (data, status) {
                 if(status = 200){
 
-                    $scope.login = data;
                     $rootScope.loggedIn = true;
+
+                    $rootScope.currentUser= data;
+                    $cookieStore.put('userCookie',$rootScope.currentUser);
+
+                    var welcomeString = "Welcome Back "+$rootScope.currentUser.username;
+                    swal(welcomeString," we've missed you ","success");
 
                     $state.go('home');
 
-                    $cookieStore.put('userCookie',$scope.login);
                 }
             }).error(function (error) {
             console.log("something went wrong!!");

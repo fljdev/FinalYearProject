@@ -62,7 +62,8 @@
 
                 </li>
                 <li class="nav-item " ng-show='$root.loggedIn' >
-                    <a ng-show="$root.loggedIn" class="nav-link" ng-href="#">{{currentUser.firstName}} Signed In</a>
+
+                    <a ng-show="$root.loggedIn" class="nav-link" ng-href="#">{{$root.currentUser.firstName}} Signed In</a>
                 </li>
                 <li>
                     <a ng-show="$root.loggedIn" class="nav-link" ng-click="logOutUser()">Log Out</a>

@@ -1,5 +1,5 @@
 angular.module('myApp.navheader',[]).
-directive('navheader', function($cookieStore, $state, $http){
+directive('navheader', function($cookieStore, $state, $http,$rootScope){
     return{
         restrict:'E',
         scope : {},
@@ -10,7 +10,7 @@ directive('navheader', function($cookieStore, $state, $http){
 
             if($cookieStore.get('userCookie')){
                 $rootScope.loggedIn = true;
-                $scope.currentUser = $cookieStore.get('userCookie');
+                $rootScope.currentUser = $cookieStore.get('userCookie');
             }
 
             $scope.logOutUser = function () {

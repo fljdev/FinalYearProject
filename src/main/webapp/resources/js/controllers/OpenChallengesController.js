@@ -1,10 +1,28 @@
 angular.module('myApp.OpenChallengesController',[]).
-controller('OpenChallengesController', function($scope,$cookieStore,$http,$state){
+controller('OpenChallengesController', function($scope,$cookieStore,$http,$state,$rootScope){
 
-    $scope.currUser = $cookieStore.get('userCookie');
+    /**
+     * User user object from the Database, instead of the browser cookie (No Problems)
+     */
+    $scope.setUser = function(){
+        $rootScope.currentUser = $cookieStore.get('userCookie');
+        if($rootScope.currentUser){
+            $http.post('/api/user/findById', JSON.stringify($rootScope.currentUser.id))
+                .success(function (data, status) {
+                    if(status = 200){
+                        $cookieStore.put('userCookie', data);
+                        $rootScope.currentUser = data;
+                    }
+                }).error(function (error) {
+                console.log("something went wrong in findById -> AllUsersController!!");
+            });
+        }
+    };
+    $scope.setUser();
+
 
     $scope.init = function(){
-        $http.post('/api/challenge/challengesSent',$scope.currUser)
+        $http.post('/api/challenge/challengesSent',$rootScope.currentUser)
             .success(function (data, status) {
                 if(status = 200){
                     $scope.sentChallenges = data;
@@ -13,7 +31,7 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
             console.log("something went wrong in challengesSent !!");
         });
 
-        $http.post('/api/challenge/challengesRecieved',$scope.currUser)
+        $http.post('/api/challenge/challengesRecieved',$rootScope.currentUser)
             .success(function (data, status) {
                 if(status = 200){
                     $scope.challengesRecieved = data;

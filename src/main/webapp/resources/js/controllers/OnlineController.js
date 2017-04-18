@@ -1,14 +1,34 @@
 angular.module('myApp.OnlineController',[]).
-    controller('OnlineController', function($scope,$cookieStore,$http,$state,$interval){
+    controller('OnlineController', function($scope,$cookieStore,$http,$state,$interval,$rootScope){
+
+    /**
+     * User user object from the Database, instead of the browser cookie (No Problems)
+     */
+    $scope.setUser = function(){
+        $rootScope.currentUser = $cookieStore.get('userCookie');
+        if($rootScope.currentUser){
+            $http.post('/api/user/findById', JSON.stringify($rootScope.currentUser.id))
+                .success(function (data, status) {
+                    if(status = 200){
+                        $cookieStore.put('userCookie', data);
+                        $rootScope.currentUser = data;
+                    }
+                }).error(function (error) {
+                console.log("something went wrong in findById -> AllUsersController!!");
+            });
+        }
+    };
+    $scope.setUser();
 
     $scope.gameTimes = [2,15,30,60];
     $scope.gameStakes = [250,500,1000,2500,5000];
     $scope.selectedTime = 15;
     $scope.selectedStake = 1000;
 
-    $scope.currUser = $cookieStore.get('userCookie');
-    if($scope.currUser){
-        $http.post('/api/user/findById', JSON.stringify($scope.currUser.id))
+
+
+    if($rootScope.currentUser){
+        $http.post('/api/user/findById', JSON.stringify($rootScope.currentUser.id))
             .success(function (data, status) {
                 if(status = 200){
                     $cookieStore.put('userCookie', data);
@@ -22,7 +42,7 @@ angular.module('myApp.OnlineController',[]).
         console.log(opponent,t,s);
 
         var challengeParams = {};
-        challengeParams.currUserID = $scope.currUser.id+"";
+        challengeParams.currUserID = $rootScope.currentUser.id+"";
         challengeParams.opponentID = opponent.id+"";
         challengeParams.duration = t+"";
         challengeParams.stake = s+"";
@@ -30,7 +50,7 @@ angular.module('myApp.OnlineController',[]).
         $http.post('/api/challenge/saveChallenge',JSON.stringify(challengeParams))
             .success(function (data, status) {
                 if(status = 200){
-                    console.log($scope.currUser.username,"vs",opponent.username,"Challenge Saved");
+                    console.log($rootScope.currentUser.username,"vs",opponent.username,"Challenge Saved");
                     console.log(data);
                     $scope.challID = data.id;
                     $scope.waitForReply($scope.challID);
@@ -70,7 +90,7 @@ angular.module('myApp.OnlineController',[]).
     }
 
     $scope.init = function(){
-        $http.post('/api/user/onlineUsers',$scope.currUser)
+        $http.post('/api/user/onlineUsers',$rootScope.currentUser)
             .success(function (data, status) {
                 if(status = 200){
                     //data will be equal to the arraylist returned by the UserRestController onlineUsers method
