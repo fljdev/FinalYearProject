@@ -1,8 +1,5 @@
 angular.module('myApp.TradeController',['chart.js']).
 controller('TradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav,$stateParams){
-
-
-
     /**
      * User user object from the Database, instead of the browser cookie (No Problems)
      */
@@ -195,11 +192,11 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             $scope.available = $scope.thisUser.account.balance;
             $scope.check=false;
             $scope.PLV = $scope.thisUser.currentProfit;
-
+            $scope.equity = $scope.available + $scope.PLV + $scope.thisUser.totalMargin;
         }
         // $scope.availableView = $scope.available.toFixed(2);
-        $scope.equity = $scope.available;
-        $scope.equityView = ($scope.equity.toFixed(2));
+        // $scope.equity = $scope.available;
+        // $scope.equityView = ($scope.equity.toFixed(2));
         $scope.updateEachTrade();
 
     };
