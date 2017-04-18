@@ -1,5 +1,5 @@
 angular.module('myApp.OnlineController',[]).
-    controller('OnlineController', function($scope,$cookieStore,$http,$state){
+    controller('OnlineController', function($scope,$cookieStore,$http,$state,$interval){
 
     $scope.gameTimes = [2,15,30,60];
     $scope.gameStakes = [250,500,1000,2500,5000];
@@ -31,12 +31,36 @@ angular.module('myApp.OnlineController',[]).
             .success(function (data, status) {
                 if(status = 200){
                     console.log($scope.currUser.username,"vs",opponent.username,"Challenge Saved");
+                    console.log(data);
+                    $scope.challID = data.id;
+                    $scope.waitForReply($scope.challID);
+
                 }
             }).error(function (error) {
             console.log("something went wrong in saveChallenge!!");
         });
 
     };
+
+    $scope.waitForReply = function(id){
+        console.log("inside waitForReply ",id);
+        $http.post('/api/challenge/waitForReply',id)
+            .success(function (data, status) {
+                if(status = 200){
+
+                    console.log("challenge accepted  ",data.accepted)
+                    if(data.accepted){
+                        $state.go('trade',{challengeID: data.id});
+                    }
+
+                }
+            }).error(function (error) {
+            console.log("something went wrong in waitForReply!!");
+        });
+
+    };
+    $interval( function(){ $scope.waitForReply($scope.challID); }, 3000);
+
 
     var name="";
     if(!$cookieStore.get('userCookie')){

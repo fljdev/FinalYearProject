@@ -119,7 +119,7 @@ public class ChallengeRestContoller {
 
 
     @RequestMapping(value = "/saveChallenge", method = RequestMethod.POST, produces = "application/json")
-    public void saveThisChallenge(@RequestBody String params){
+    public Challenge saveThisChallenge(@RequestBody String params){
         JSONObject jsonObject = new JSONObject(params);
         Timestamp challengeSentMili = new Timestamp(System.currentTimeMillis());
 
@@ -144,8 +144,17 @@ public class ChallengeRestContoller {
         thisChallenge.setOpen(true);
 
         iChallengeService.saveChallenge(thisChallenge);
+
+        return thisChallenge;
     }
 
+
+    @RequestMapping(value = "/waitForReply", method = RequestMethod.POST, produces = "application/json")
+    public Challenge waitForReply(@RequestBody String id){
+        Challenge challenge = iChallengeService.findById(Integer.parseInt(id));
+
+        return challenge;
+    }
 
 
 

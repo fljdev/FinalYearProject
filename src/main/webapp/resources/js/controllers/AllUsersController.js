@@ -48,8 +48,11 @@ controller('AllUsersController', function($scope,$http){
             for( i = 0; i < data.length; i++){
                 $scope.labels.push(data[i].username);
                 $scope.data.push(data[i].account.balance);
+
             }
         }
+
+
     };
 
 
