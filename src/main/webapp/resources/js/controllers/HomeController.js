@@ -1,18 +1,24 @@
 angular.module('myApp.HomeController',[]).
-    controller('HomeController',function($scope, $stateParams, $cookieStore,$http){
+    controller('HomeController',function($scope, $stateParams, $cookieStore,$http,$rootScope){
 
-    $scope.currUser = $cookieStore.get('userCookie').username;
-    $scope.currUser = $cookieStore.get('userCookie');
-    if($scope.currUser){
-        $http.post('/api/user/findById', JSON.stringify($scope.currUser.id))
-            .success(function (data, status) {
-                if(status = 200){
-                    $cookieStore.put('userCookie', data);
-                }
-            }).error(function (error) {
-            console.log("something went wrong in findById -> HomeController!!");
-        });
-    }
+    /**
+     * User user object from the Database, instead of the browser cookie (No Problems)
+     */
+    $scope.setUser = function(){
+        $rootScope.currentUser = $cookieStore.get('userCookie');
+        if($rootScope.currentUser){
+            $http.post('/api/user/findById', JSON.stringify($rootScope.currentUser.id))
+                .success(function (data, status) {
+                    if(status = 200){
+                        $cookieStore.put('userCookie', data);
+                        $rootScope.currentUser = data;
+                    }
+                }).error(function (error) {
+                console.log("something went wrong in findById -> HomeController!!");
+            });
+        }
+    };
+    $scope.setUser();
 
 
 });

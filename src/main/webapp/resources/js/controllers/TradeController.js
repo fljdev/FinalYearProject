@@ -1,17 +1,17 @@
 angular.module('myApp.TradeController',['chart.js']).
-controller('TradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav,$stateParams){
+controller('TradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav,$stateParams,$rootScope){
     /**
      * User user object from the Database, instead of the browser cookie (No Problems)
      */
     $scope.setUser = function(){
-        $scope.thisUser = $cookieStore.get('userCookie');
-        if($scope.thisUser){
-            $http.post('/api/user/findById', JSON.stringify($scope.thisUser.id))
+        $rootScope.currentUser = $cookieStore.get('userCookie');
+        if($rootScope.currentUser){
+            $http.post('/api/user/findById', JSON.stringify($rootScope.currentUser.id))
                 .success(function (data, status) {
                     if(status = 200){
                         $cookieStore.put('userCookie', data);
-                        $scope.thisUser = data;
-                        $scope.watchForChanges($scope.thisUser);
+                        $rootScope.currentUser = data;
+                        $scope.watchForChanges($rootScope.currentUser);
                     }
                 }).error(function (error) {
                 console.log("something went wrong in findById -> TradeController!!");
@@ -29,15 +29,15 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         $http.post('/api/trade/watchForChanges',JSON.stringify(thisUser))
             .success(function (data, status) {
                 if(status = 200){
-                    $scope.thisUser=data;
-                    $cookieStore.put('userCookie', $scope.thisUser);
+                    $rootScope.currentUser=data;
+                    $cookieStore.put('userCookie', $rootScope.currentUser);
                     $scope.updateUserSummaryTable();
                 }
             }).error(function (error) {
             console.log("something went wrong in  watchForChanges()!!");
         });
     };
-    $interval( function(){ $scope.watchForChanges($scope.thisUser); }, 3500);
+    $interval( function(){ $scope.watchForChanges($rootScope.currentUser); }, 3500);
 
     $scope.getPairs = function(){
         $http.get('/api/trade/pairs')
@@ -53,7 +53,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     $scope.showOpenTrades = function(){
         $scope.getPairs();
-        $http.post('/api/trade/getOpenTrades',$scope.thisUser.id)
+        $http.post('/api/trade/getOpenTrades',$rootScope.currentUser.id)
             .success(function (data, status) {
                 if(status = 200){
                     $scope.openTrades = data;
@@ -183,22 +183,16 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
      */
     $scope.check =false;
     $scope.updateUserSummaryTable = function(){
-        console.log("inti the updateUserSummary methot");
-
         if(theVar>0){
             $scope.available = $scope.theStake;
             $scope.check = true;
         }else{
-            $scope.available = $scope.thisUser.account.balance;
+            $scope.available = $rootScope.currentUser.account.balance + $rootScope.currentUser.currentProfit;
             $scope.check=false;
-            $scope.PLV = $scope.thisUser.currentProfit;
-            $scope.equity = $scope.available + $scope.PLV + $scope.thisUser.totalMargin;
+            $scope.PLV = $rootScope.currentUser.currentProfit;
+            $scope.equity = $scope.available + $scope.PLV + $rootScope.currentUser.totalMargin;
         }
-        // $scope.availableView = $scope.available.toFixed(2);
-        // $scope.equity = $scope.available;
-        // $scope.equityView = ($scope.equity.toFixed(2));
         $scope.updateEachTrade();
-
     };
 
 
@@ -256,7 +250,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         $scope.closeToggleLeft();
 
         var tradeObject = {};
-        tradeObject.playerID = $scope.thisUser.id+"";
+        tradeObject.playerID = $rootScope.currentUser.id+"";
         tradeObject.pairSymbols=$scope.preTradePairChosen.symbols;
         tradeObject.margin = $scope.preTradeMarginRequiredUSD;
         tradeObject.action = $scope.preTradeAction;
@@ -267,8 +261,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                 if(status = 200){
                     swal(data.action  +" " + data.currencyPairOpen.symbols + " "+ data.positionUnits+ " units", " position opened!", "success");
                     $scope.tradeObject = data;
-                    $scope.thisUser=$scope.tradeObject.user;
-                    $cookieStore.put('userCookie', $scope.thisUser);
+                    $rootScope.currentUser=$scope.tradeObject.user;
+                    $cookieStore.put('userCookie', $rootScope.currentUser);
 
                 }
             }).error(function (error) {
@@ -280,16 +274,16 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
     $scope.updateEachTrade = function(){
-        $http.post('/api/trade/updateEachTrade',JSON.stringify($scope.thisUser))
+        $http.post('/api/trade/updateEachTrade',JSON.stringify($rootScope.currentUser))
             .success(function (data, status) {
                 if(status = 200){
-                    $http.post('/api/trade/getTotalProfitAndLoss',JSON.stringify($scope.thisUser))
+                    $http.post('/api/trade/getTotalProfitAndLoss',JSON.stringify($rootScope.currentUser))
                         .success(function (data, status) {
                             if(status = 200){
-                                $scope.thisUser = data;
-                                $cookieStore.put('userCookie', $scope.thisUser);
-                                $scope.PLV = $scope.thisUser.currentProfit;
-                                $scope.mMargin = $scope.thisUser.totalMargin;
+                                $rootScope.currentUser = data;
+                                $cookieStore.put('userCookie', $rootScope.currentUser);
+                                $scope.PLV = $rootScope.currentUser.currentProfit;
+                                $scope.mMargin = $rootScope.currentUser.totalMargin;
                             }
                         }).error(function (error) {
                         console.log("something went wrong in updateEachTrade");
@@ -310,16 +304,16 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     $scope.closeLiveTrade = function(x){
         var closeParams = {};
-        closeParams.id = $scope.thisUser.id+"";
+        closeParams.id = $rootScope.currentUser.id+"";
         closeParams.sym = x.symbols;
         $http.post('/api/trade/closeLiveTrade',JSON.stringify(closeParams))
                 .success(function (data, status) {
                     if(status = 200){
                         swal(data.action+ " "+ data.currencyPairOpen.symbols+ " position", "successfully closed", "error");
-                        $scope.thisUser = data.user;
-                        $cookieStore.put('userCookie', $scope.thisUser);
-                        $scope.PLV = $scope.thisUser.currentProfit;
-                        $scope.mMargin = $scope.thisUser.totalMargin;
+                        $rootScope.currentUser = data.user;
+                        $cookieStore.put('userCookie', $rootScope.currentUser);
+                        $scope.PLV = $rootScope.currentUser.currentProfit;
+                        $scope.mMargin = $rootScope.currentUser.totalMargin;
                     }
                 }).error(function (error) {
                 console.log("something went wrong in closeTrade!!");
