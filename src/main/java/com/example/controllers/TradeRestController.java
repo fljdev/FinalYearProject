@@ -352,6 +352,13 @@ public class TradeRestController {
         return iTradeService.findByUser(currentUser).stream().filter(Trade::isOpen).collect(Collectors.toList());
     }
 
+    @RequestMapping(value = "/findTradesByUser", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public List<Trade> findTradesByUser(@RequestBody String id){
+        System.out.println("id is "+id);
+        User currentUser = iUserService.findById(Integer.parseInt(id));
+        return iTradeService.findByUser(currentUser);
+    }
 
 
 }

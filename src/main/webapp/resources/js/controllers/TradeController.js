@@ -40,7 +40,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             console.log("something went wrong in  watchForChanges()!!");
         });
     };
-    $interval( function(){ $scope.watchForChanges($scope.thisUser); }, 5000);
+    $interval( function(){ $scope.watchForChanges($scope.thisUser); }, 3500);
 
     $scope.getPairs = function(){
         $http.get('/api/trade/pairs')
@@ -84,7 +84,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
     $scope.showOpenTrades();
-    $interval( function(){ $scope.showOpenTrades(); }, 5000);
+    $interval( function(){ $scope.showOpenTrades(); }, 3500);
 
 
 
@@ -329,6 +329,41 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             });
     };
 
+
+
+    $scope.labels2 = ["January", "February", "March", "April", "May", "June", "July"];
+    $scope.series2 = ['Series A', 'Series B'];
+    $scope.data2 = [
+        [65, 59, 80, 81, 56, 55, 40],
+        [28, 48, 40, 19, 86, 27, 90]
+    ];
+    $scope.onClick = function (points, evt) {
+        console.log(points, evt);
+    };
+    $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
+    $scope.options = {
+        scales: {
+            yAxes: [
+                {
+                    id: 'y-axis-1',
+                    type: 'linear',
+                    display: true,
+                    position: 'left'
+                },
+                {
+                    id: 'y-axis-2',
+                    type: 'linear',
+                    display: true,
+                    position: 'right'
+                }
+            ]
+        },
+        elements: {
+            line: {
+                tension: 0
+            }
+        }
+    };
 
 
 
