@@ -276,7 +276,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
     $scope.tradeChart = function(x){
-        $http.post('/api/liveTradeInfoController/findLiveTradeInfoObjectByTradeID',x+"")
+        $http.post('/api/liveTradeInfoController/findLiveTradeInfoObjectByTradeID',x)
             .success(function (data, status) {
                 if(status = 200){
                     console.log("call got ",data);

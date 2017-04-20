@@ -93,6 +93,16 @@ public class ChallengeRestContoller {
 
         Challenge challengeToAccept = iChallengeService.findById(Integer.parseInt(id));
 
+        User challenger = iUserService.findById(challengeToAccept.getChallengerId());
+        challenger.setBusy(true);
+        System.out.println("challenger is "+challenger.isBusy());
+        iUserService.register(challenger);
+
+        User opponent = iUserService.findById(challengeToAccept.getOpponentId());
+        opponent.setBusy(true);
+        System.out.println("opponent is "+opponent.isBusy());
+        iUserService.register(opponent);
+
         challengeToAccept.setAccepted(true);
         challengeToAccept.setOpen(true);
         challengeToAccept.setChallengeAccepted(sdf.format(challengeSentMili));
