@@ -1,109 +1,104 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html" ng-app="myApp" ng-controller="OpenChallengesController">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+                <div align="center">
+                <img src="../../../resources/img/yourChallenges4.png"  height="242" width="342">
+                </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-4">
+            <div align="center">
+            <img src="../../../resources/img/sent.png"  height="142" width="242">
+            </div>
+
+            <table >
+            <thead>
+            <tr>
+            <th bgcolor="#4286f4"></th>
+            <th bgcolor="#4286f4">Opponent</th>
+            <th>Time</th>
+            <th>Duration</th>
+            <th>Stake</th>
+            <th>Status</th>
+
+            <th>Option</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr ng-repeat="x in sentChallenges" >
+
+            <td>Sent to</td>
+            <td>{{x.opponentName}}</td>
+            <td>{{x.challengeSent}}</td>
+            <td>{{x.duration}}</td>
+            <td>{{x.stake}}</td>
+            <td ng-if="!x.withdrawen && !x.declined && !x.accepted">{{"Open"}}</td>
+            <td ng-if="x.withdrawen">{{"Withdrawen"}}</td>
+            <td ng-if="x.declined">{{"Declined"}}</td>
+            <td ng-if="x.accepted">{{"Game is ON!!"}}</td>
+
+            <td ng-show="!x.withdrawen && !x.declined && !x.accepted"><button ng-click="withdraw(x)" class="btn btn-danger">Withdraw Challenge</button></td>
+            <!--<td ng-show="x.withdrawen"><button ng-click="withdraw(x)" class="btn btn-success">Re-Challenge</button></td>-->
+            <td ng-show="x.withdrawen || x.declined"><button ng-click="findMore()" class="btn btn-info">Find More Users</button></td>
+            <td ng-show="x.accepted" colspan="2"><button ng-click="playNow(x)" class="btn btn-info">Make Your Play Now!</button></td>
 
 
-</head>
-<body>
+            </tr>
+            </tbody>
 
-<table align="center">
-    <thead>
-    <tr><th colspan="9">Hi <b>{{$root.currentUser.username}}</b> here's the challenges you are involved in are found here</th> </tr>
-    </thead>
-</table>
+            </table>
+        </div>
 
-<br>
-<table align="center">
-    <thead>
-    <tr><th colspan="9">Challenges you sent {{$root.currentUser.username}}</th> </tr>
-    </thead>
-</table>
+        <div class="col-md-4">
+        </div>
 
-<table align="center">
-    <thead>
-    <tr>
-        <th></th>
-        <th>Opponent</th>
-        <th>Time</th>
-        <th>Duration</th>
-        <th>Stake</th>
-        <th>Status</th>
+        <div class="col-md-4">
+            <div align="center">
+            <img src="../../../resources/img/received.png" alt="Smiley face" height="142" width="242">
+            </div>
+            <table class="floatedTableRight" >
+            <thead>
+            <tr>
+            <th></th>
+            <th>Challenger</th>
+            <th>Time</th>
+            <th>Duration</th>
+            <th>Stake</th>
 
-        <th>Option</th>
-    </tr>
-    </thead>
+            <th>Status</th>
+            <th colspan="2">Option</th>
+            </tr>
+            </thead>
 
-    <tbody>
-    <tr ng-repeat="x in sentChallenges" >
+            <tbody>
+            <tr ng-repeat="x in challengesRecieved" >
 
-        <td>You Challenged</td>
-        <td>{{x.opponentName}}</td>
-        <td>{{x.challengeSent}}</td>
-        <td>{{x.duration}}</td>
-        <td>{{x.stake}}</td>
-        <td ng-if="!x.withdrawen && !x.declined && !x.accepted">{{"Open"}}</td>
-        <td ng-if="x.withdrawen">{{"Withdrawen"}}</td>
-        <td ng-if="x.declined">{{"Declined"}}</td>
-        <td ng-if="x.accepted">{{"Game is ON!!"}}</td>
+            <td>From</td>
+            <td>{{x.challengerName}}</td>
+            <td>{{x.challengeSent}}</td>
+            <td>{{x.duration}}</td>
+            <td>{{x.stake}}</td>
 
-        <td ng-show="!x.withdrawen && !x.declined && !x.accepted"><button ng-click="withdraw(x)" class="btn btn-danger">Withdraw Challenge</button></td>
-        <!--<td ng-show="x.withdrawen"><button ng-click="withdraw(x)" class="btn btn-success">Re-Challenge</button></td>-->
-        <td ng-show="x.withdrawen || x.declined"><button ng-click="findMore()" class="btn btn-info">Find More Users</button></td>
-        <td ng-show="x.accepted" colspan="2"><button ng-click="playNow(x)" class="btn btn-info">Make Your Play Now!</button></td>
+            <td ng-if="!x.declined && !x.withdrawen && !x.accepted">{{"Open"}}</td>
+            <td ng-if="x.declined">{{"Declined"}}</td>
+            <td ng-if="x.withdrawen">{{"Withdrawen"}}</td>
+            <td ng-if="x.accepted">{{"Game is ON!!"}}</td>
 
-
-    </tr>
-    </tbody>
-
-</table>
-
-
-
-<br>
-<table align="center">
-    <thead>
-    <tr><th colspan="9">Challenges you recieved {{$root.currentUser.username}}</th> </tr>
-    </thead>
-</table>
-
-<table align="center">
-    <thead>
-    <tr>
-        <th></th>
-        <th>Challenger</th>
-        <th>Time</th>
-        <th>Duration</th>
-        <th>Stake</th>
-
-        <th>Status</th>
-        <th colspan="2">Option</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <tr ng-repeat="x in challengesRecieved" >
-
-        <td>Challenge recieved from</td>
-        <td>{{x.challengerName}}</td>
-        <td>{{x.challengeSent}}</td>
-        <td>{{x.duration}}</td>
-        <td>{{x.stake}}</td>
-
-        <td ng-if="!x.declined && !x.withdrawen && !x.accepted">{{"Open"}}</td>
-        <td ng-if="x.declined">{{"Declined"}}</td>
-        <td ng-if="x.withdrawen">{{"Withdrawen"}}</td>
-        <td ng-if="x.accepted">{{"Game is ON!!"}}</td>
-
-        <td ng-show="!x.declined && !x.withdrawen && !x.accepted"><button ng-click="accept(x)" class="btn btn-success">Accept</button></td>
-        <td ng-show="!x.declined && !x.withdrawen && !x.accepted"><button ng-click="decline(x)" class="btn btn-warning">Decline</button></td>
-        <td ng-show="x.declined || x.withdrawen" colspan="2"><button ng-click="findMore()" class="btn btn-info">Find More Users</button></td>
-        <td ng-show="x.accepted" colspan="2"><button ng-click="playNow(x)" class="btn btn-info">Make Your Play Now!</button></td>
+            <td ng-show="!x.declined && !x.withdrawen && !x.accepted"><button ng-click="accept(x)" class="btn btn-success">Accept</button></td>
+            <td ng-show="!x.declined && !x.withdrawen && !x.accepted"><button ng-click="decline(x)" class="btn btn-warning">Decline</button></td>
+            <td ng-show="x.declined || x.withdrawen" colspan="2"><button ng-click="findMore()" class="btn btn-info">Find More Users</button></td>
+            <td ng-show="x.accepted" colspan="2"><button ng-click="playNow(x)" class="btn btn-info">Make Your Play Now!</button></td>
 
 
 
-    </tr>
-    </tbody>
+            </tr>
+            </tbody>
 
-</table>
+            </table>
+        </div>
+    </div>
+</div>
+
