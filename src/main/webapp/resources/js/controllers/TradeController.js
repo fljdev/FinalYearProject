@@ -37,7 +37,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             console.log("something went wrong in  watchForChanges()!!");
         });
     };
-    $interval( function(){ $scope.watchForChanges($rootScope.currentUser); }, 3500);
+    $interval( function(){ $scope.watchForChanges($rootScope.currentUser); }, 5000);
 
     $scope.getPairs = function(){
         $http.get('/api/trade/pairs')
@@ -81,17 +81,17 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
     $scope.showOpenTrades();
-    $interval( function(){ $scope.showOpenTrades(); }, 3500);
+    $interval( function(){ $scope.showOpenTrades(); }, 5000);
 
 
 
     /**
      * Increment/Decrement function (No Problems with these)
      */
-    var max = 5000000;
-    var min = 2500;
-    $scope.positionUnits = 2500;
-    $scope.leverage = 100;
+    var max = 10000000;
+    var min = 10000;
+    $scope.positionUnits = 1000000;
+    $scope.leverage = 200;
     $scope.preTradeMarginRequiredTradedCurrency = $scope.positionUnits/$scope.leverage;
     $scope.preTradeMarginRequiredTradedCurrencyView = $scope.preTradeMarginRequiredTradedCurrency.toFixed(2);
 
@@ -99,7 +99,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.increment = function() {
 
         if ($scope.positionUnits >= max) { return; }
-        $scope.positionUnits +=2500;
+        $scope.positionUnits +=10000;
 
         $scope.preTradeMarginRequiredTradedCurrency = $scope.positionUnits/$scope.leverage;
         $scope.preTradeMarginRequiredTradedCurrencyView = $scope.preTradeMarginRequiredTradedCurrency.toFixed(2);
@@ -112,7 +112,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.decrement = function() {
 
         if ($scope.positionUnits <= min) { return; }
-        $scope.positionUnits -=2500;
+        $scope.positionUnits -=10000;
 
         /**
          * Based on users chosen positionUnits size, I will calc the amount of margin required
@@ -264,6 +264,10 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                     $rootScope.currentUser=$scope.tradeObject.user;
                     $cookieStore.put('userCookie', $rootScope.currentUser);
 
+                    $scope.xID =data.id;
+
+                    $scope.tradeChart($scope.xID =data.id);
+
                 }
             }).error(function (error) {
             console.log("something went wrong in saveTrade");
@@ -271,6 +275,24 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
 
+    $scope.tradeChart = function(x){
+        $http.post('/api/liveTradeInfoController/findLiveTradeInfoObjectByTradeID',x+"")
+            .success(function (data, status) {
+                if(status = 200){
+                    console.log("call got ",data);
+                    if(data.length>0){
+                        console.log(data[data.length-1].currentAsk)
+                        console.log(data[data.length-1].currentBid)
+                        console.log(data[data.length-1].currentProfitAndLoss)
+                        console.log(data[data.length-1].tickTime)
+
+                    }
+                }
+            }).error(function (error) {
+            console.log("something went wrong in updateEachTrade");
+        });
+    };
+    $interval( function(){ $scope.tradeChart($scope.xID); }, 5000);
 
 
     $scope.updateEachTrade = function(){
@@ -323,24 +345,16 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
     $scope.labels2 = ["January", "February", "March", "April", "May", "June", "July"];
-    $scope.series2 = ['Series A', 'Series B'];
-    $scope.data2 = [
-        [65, 59, 80, 81, 56, 55, 40],
-        [28, 48, 40, 19, 86, 27, 90]
-    ];
+    $scope.series2 = ['Series A'];
+    $scope.data2 = [[65, 59, 80, 81, 56, 55, 40]];
     $scope.onClick = function (points, evt) {
         console.log(points, evt);
     };
-    $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
+    $scope.datasetOverride = [{ yAxisID: 'y-axis-2' }];
     $scope.options = {
         scales: {
             yAxes: [
-                {
-                    id: 'y-axis-1',
-                    type: 'linear',
-                    display: true,
-                    position: 'left'
-                },
+
                 {
                     id: 'y-axis-2',
                     type: 'linear',
@@ -355,6 +369,10 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             }
         }
     };
+
+
+
+
 
 
 

@@ -57,7 +57,7 @@ public class UserRestController {
         aUser.setPassword(password);
 
         BankAccount account = new BankAccount();
-        account.setBalance(30000);
+        account.setBalance(100000);
         iBankAccountService.register(account);
 
         aUser.setAccount(account);
@@ -70,11 +70,13 @@ public class UserRestController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     public User login(@RequestBody String jsonLogin){
+        System.out.println("log with "+jsonLogin);
         JSONObject jsonObject = new JSONObject(jsonLogin);
         String handle = jsonObject.getString("handle");
         String password = jsonObject.getString("password");
         User u = iUserService.findByUsernameAndPassword(handle,password);
         u.setOnline(true);
+        iUserService.register(u);
         return u;
     }
 

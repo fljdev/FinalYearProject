@@ -11,12 +11,12 @@ import java.util.List;
 /**
  * Created by admin on 08/04/2017.
  */
-public interface ILiveTradeInfo {
+public interface ILiveTradeInfoService {
 
     List<LiveTradeInfo> getAllLiveTradeInfo();
 
     void saveLiveTradeInfo(LiveTradeInfo liveTradeInfo);
 
-    LiveTradeInfo findLiveTradeInfoObjectByTradeID(int tradeID);
+    List<LiveTradeInfo> findLiveTradeInfoObjectByTradeID(int tradeID);
 
 }

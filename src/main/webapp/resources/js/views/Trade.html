@@ -15,10 +15,10 @@
 
 <tbody>
 <tr>
-<td>${{available.toFixed(2)}}</td>
-<td>${{equity.toFixed(2)}}</td>
-<td>${{mMargin.toFixed(2)}}</td>
-<td>${{PLV.toFixed(2)}}</td>
+<td>${{available.toFixed(2) | number : fractionSize}}</td>
+<td>${{equity.toFixed(2) | number : fractionSize}}</td>
+<td>${{mMargin.toFixed(2) | number : fractionSize}}</td>
+<td>${{PLV.toFixed(2) | number : fractionSize}}</td>
 </tr>
 </tbody>
 </table>
@@ -95,6 +95,11 @@
                 <td><button ng-click="increment();">+</button></td>
                 <td>   Position: {{positionUnits}} </td>
                 <td> <button ng-click="decrement();">-</button></td>
+
+
+            </tr>
+            <tr>
+                <input ng-model="item.quantity" type="number" min="1" max="{{product.stockLevel}}" id="addon1" class="form-control add-to-basket-item-quantity" required>
             </tr>
 
             <tr>

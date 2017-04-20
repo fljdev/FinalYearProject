@@ -4,12 +4,11 @@ package com.example.services.impl;
 
 import com.example.dao.LiveTradeInfoDAO;
 import com.example.entities.LiveTradeInfo;
-import com.example.services.ILiveTradeInfo;
+import com.example.services.ILiveTradeInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class LiveTradeInfoService implements ILiveTradeInfo {
+public class LiveTradeInfoService implements ILiveTradeInfoService {
 
     LiveTradeInfoDAO liveTradeInfoDAO;
 
@@ -38,7 +37,7 @@ public class LiveTradeInfoService implements ILiveTradeInfo {
     }
 
     @Override
-    public LiveTradeInfo findLiveTradeInfoObjectByTradeID(int tradeID) {
+    public List<LiveTradeInfo> findLiveTradeInfoObjectByTradeID(int tradeID) {
         return liveTradeInfoDAO.findLiveTradeInfoObjectByTradeID(tradeID);
     }
 }
