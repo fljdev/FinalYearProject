@@ -37,8 +37,8 @@ directive('navheader', function($cookieStore, $state, $http,$rootScope,$interval
 
                             if(openChallenges>0){
                                 $rootScope.liveChallenge = true;
-                                $scope.openChallengesCount = openChallenges;
-                                $.snackbar({content: $scope.openChallengesCount + " open challenges"});
+                                $rootScope.openChallengesCount = openChallenges;
+                                $.snackbar({content: $rootScope.openChallengesCount + " open challenges"});
                             }else{
                                 $rootScope.liveChallenge=false;
                             }

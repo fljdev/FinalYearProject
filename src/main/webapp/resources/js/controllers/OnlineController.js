@@ -55,6 +55,10 @@ angular.module('myApp.OnlineController',[]).
                     $scope.challID = data.id;
                     $scope.waitForReply($scope.challID);
 
+                    var msg = "Your Challenge to "+opponent.username+" was sent";
+                    swal(msg,"Wait for their response","success");
+                    $state.go('openChallenges');
+
                 }
             }).error(function (error) {
             console.log("something went wrong in saveChallenge!!");

@@ -51,7 +51,7 @@
                 </li>
 
                 <li  class="nav-item">
-                    <a ng-show='$root.loggedIn && $root.liveChallenge' class="nav-link" ng-href="#/openChallenges"><i class="glyphicon glyphicon-bell"> <span class="label label-danger">{{openChallengesCount}}</span></i>Challenges</a>
+                    <a ng-show='$root.loggedIn && $root.liveChallenge' class="nav-link" ng-href="#/openChallenges"><i class="glyphicon glyphicon-bell" style="color:red"> <span class="label label-danger">{{$root.openChallengesCount}}</span></i>Challenges</a>
                 </li>
                 <li  class="nav-item">
                     <a ng-show='$root.loggedIn && !$root.liveChallenge' class="nav-link" ng-href="#/openChallenges">Challenges</a>
