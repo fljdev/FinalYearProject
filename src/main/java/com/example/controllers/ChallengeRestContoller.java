@@ -104,7 +104,7 @@ public class ChallengeRestContoller {
         iUserService.register(opponent);
 
         challengeToAccept.setAccepted(true);
-        challengeToAccept.setOpen(true);
+        challengeToAccept.setOpen(false);
         challengeToAccept.setChallengeAccepted(sdf.format(challengeSentMili));
 
         iChallengeService.saveChallenge(challengeToAccept);

@@ -86,7 +86,9 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
                     var name = x.challengerName + " Vs " + x.opponentName;
                     console.log("x.id was no ",x.id);
                     swal("Let's Trade",name,"success");
+                    $rootScope.openChallengesCount--;
                     $state.go('trade',{challengeID: x.id});
+
                 }
             }).error(function (error) {
             console.log("something went wrong in accept challenge!!");
