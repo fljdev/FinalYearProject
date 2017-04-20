@@ -25,6 +25,7 @@ public class User {
     private String email;
     private String password;
     private boolean online;
+    private boolean busy;
 
     private int currentRank;
     private int bestRank;
@@ -35,8 +36,8 @@ public class User {
     public User() {
     }
 
-    public User(BankAccount account, String firstName, String lastName, String username, String email,
-                String password, boolean online, int currentRank, int bestRank, double currentProfit, double totalMargin) {
+    public User(BankAccount account, String firstName, String lastName, String username, String email, String password,
+                boolean online, boolean busy, int currentRank, int bestRank, double currentProfit, double totalMargin) {
         this.account = account;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -44,6 +45,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.online = online;
+        this.busy = busy;
         this.currentRank = currentRank;
         this.bestRank = bestRank;
         this.currentProfit = currentProfit;
@@ -114,6 +116,14 @@ public class User {
         this.online = online;
     }
 
+    public boolean isBusy() {
+        return busy;
+    }
+
+    public void setBusy(boolean busy) {
+        this.busy = busy;
+    }
+
     public int getCurrentRank() {
         return currentRank;
     }
@@ -157,6 +167,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", online=" + online +
+                ", busy=" + busy +
                 ", currentRank=" + currentRank +
                 ", bestRank=" + bestRank +
                 ", currentProfit=" + currentProfit +

@@ -92,6 +92,9 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
             console.log("something went wrong in accept challenge!!");
         });
 
+
+
+
         $http.post('/api/challenge/updateGameAccount',x.id)
             .success(function (data, status) {
                 if(status = 200){

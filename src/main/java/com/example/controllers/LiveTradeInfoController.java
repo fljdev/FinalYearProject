@@ -31,9 +31,8 @@ public class LiveTradeInfoController {
     }
 
     @RequestMapping(value = "/findLiveTradeInfoObjectByTradeID", method = RequestMethod.POST, produces = "application/json")
-    public List<LiveTradeInfo> findById(@RequestBody String id){
-        System.out.println("yooo "+"id is "+id+" and obj is "+iLiveTradeInfoService.findLiveTradeInfoObjectByTradeID(Integer.parseInt(id)));
-        return iLiveTradeInfoService.findLiveTradeInfoObjectByTradeID(Integer.parseInt(id));
+    public List<LiveTradeInfo> findById(@RequestBody int id){
+        return iLiveTradeInfoService.findLiveTradeInfoObjectByTradeID(id);
     }
 
 }
