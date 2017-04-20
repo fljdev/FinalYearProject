@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,10 +21,10 @@ public class TradeRestController {
     ICurrencyPairService iCurrencyPairService;
     IUserService iUserService;
     IBankAccountService iBankAccountService;
-    ILiveTradeInfo iLiveTradeInfo;
+    ILiveTradeInfoService iLiveTradeInfoService;
     @Autowired
-    public void setiLiveTradeInfo(ILiveTradeInfo info){
-        this.iLiveTradeInfo=info;
+    public void setiLiveTradeInfoService(ILiveTradeInfoService info){
+        this.iLiveTradeInfoService =info;
     }
     @Autowired
     public void setiBankAccountService(IBankAccountService iBankAccountService) {
@@ -197,7 +196,7 @@ public class TradeRestController {
 
                 liveTradeInfo.setCurrentProfitAndLoss(profit);
 
-                iLiveTradeInfo.saveLiveTradeInfo(liveTradeInfo);
+                iLiveTradeInfoService.saveLiveTradeInfo(liveTradeInfo);
 
                 t.getLiveTradeInfoList().add(liveTradeInfo);
 
@@ -359,6 +358,8 @@ public class TradeRestController {
         User currentUser = iUserService.findById(Integer.parseInt(id));
         return iTradeService.findByUser(currentUser);
     }
+
+
 
 
 }

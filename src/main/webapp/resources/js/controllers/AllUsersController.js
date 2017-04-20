@@ -47,7 +47,6 @@ controller('AllUsersController', function($scope,$http,$rootScope,$cookieStore){
                 .success(function (data, status) {
                     if(status = 200){
                         $scope.trades.push(data.length);
-                        console.log($scope.allUsers[i]," has ",data.length);
                     }
                 }).error(function (error) {
                 console.log("something went wrong!!");
