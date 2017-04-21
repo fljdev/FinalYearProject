@@ -1,5 +1,8 @@
-<navbar class="navbar navbar-light bg-fadedp navbar-fixed-top " id="my-navbar">
-    <div class="container">
+
+<div class="navbar-wrapper">
+
+<div class="container-fluid">
+<navbar class="navbar navbar-inverse bg-inverse navbar-fixed-top " id="my-navbar">
         <a class="navbar-brand" ng-href="#">Forex Fighter</a>
 
         <ul class="collapse navbar-collapse" id="navbar-collapse">
@@ -26,9 +29,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" ng-href="#/logreg"><b>Access Site</b></a>
-                </li>
+
 
                 <li class="nav-item">
                     <a class="nav-link" ng-href="#/pairs">Live FOREX</a>
@@ -63,10 +64,8 @@
             </ul>
 
 
-            <ul class="nav navbar-nav navbar-right">
-                <li>
+            <ul class="nav navbar-nav  pull-right">
 
-                </li>
                 <li class="nav-item " ng-show='$root.loggedIn' >
 
                     <a ng-show="$root.loggedIn" class="nav-link" ng-href="#">Hi {{$root.currentUser.firstName}}!</a>
@@ -74,7 +73,13 @@
                 <li>
                     <a ng-show="$root.loggedIn" class="nav-link" ng-click="logOutUser()">Log Out</a>
                 </li>
+
+                <li class="nav-item">
+                    <a ng-show="$root.loggedIn==false" class="nav-link" ng-href="#/logreg"><b>Login/Register</b></a>
+                </li>
             </ul>
       </ul>
-    </div>
+
 </navbar><!-- End navbar -->
+</div>
+</div>

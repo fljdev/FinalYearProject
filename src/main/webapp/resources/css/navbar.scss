@@ -34,3 +34,25 @@
 .glyphicon.glyphicon-bell {
   font-size: 20px;
 }
+
+
+
+.navbar-wrapper .navbar {
+  padding-right: 15px;
+  padding-left: 15px;
+  width: 100% !important;
+}
+
+.navbar-inverse {
+  width: 100% !important;
+  background-color: rgb(28, 122, 122) !important;
+  border-radius: 0;
+}
+
+.navbar-inverse .nav > li > a {
+  color: #000000;
+}
+
+.navbar-inverse .nav > li > a:hover {
+  background: #09e2e2;
+}
