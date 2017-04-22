@@ -77,7 +77,9 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
         });
     };
 
+
     $scope.accept = function(x){
+
 
         console.log("challenge that was accepted : ",x);
         $http.post('/api/challenge/acceptChallenge',x.id)
@@ -87,7 +89,9 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
                     console.log("x.id was no ",x.id);
                     swal("Let's Trade",name,"success");
                     $rootScope.openChallengesCount--;
+
                     $state.go('trade',{challengeID: x.id});
+
 
                 }
             }).error(function (error) {
@@ -112,11 +116,6 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
     };
 
     $scope.playNow = function(x){
-        console.log("got into playNow(x) with ", x);
-        console.log("id is ",x.id);
-
-
-
         $state.go('trade',{challengeID: x.id});
     }
 });

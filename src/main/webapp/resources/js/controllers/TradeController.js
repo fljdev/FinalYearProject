@@ -269,8 +269,6 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                     $cookieStore.put('userCookie', $rootScope.currentUser);
 
                     $scope.xID =data.id;
-
-
                 }
             }).error(function (error) {
             console.log("something went wrong in saveGameTrade");
@@ -313,14 +311,14 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         $http.post('/api/liveTradeInfoController/findLiveTradeInfoObjectByTradeID',x)
             .success(function (data, status) {
                 if(status = 200){
-                    console.log("call got ",data);
-                    if(data.length>0){
-                        console.log(data[data.length-1].currentAsk)
-                        console.log(data[data.length-1].currentBid)
-                        console.log(data[data.length-1].currentProfitAndLoss)
-                        console.log(data[data.length-1].tickTime)
-
-                    }
+                    // console.log("call got ",data);
+                    // if(data.length>0){
+                    //     console.log(data[data.length-1].currentAsk)
+                    //     console.log(data[data.length-1].currentBid)
+                    //     console.log(data[data.length-1].currentProfitAndLoss)
+                    //     console.log(data[data.length-1].tickTime)
+                    //
+                    // }
                 }
             }).error(function (error) {
             console.log("something went wrong in updateEachTrade");
@@ -356,14 +354,16 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     $scope.closeGameTrade = function(x){
         var closeParams = {};
-        closeParams.id = $rootScope.currentUser.id+"";
-        closeParams.sym = x.symbols;
+        closeParams.tradeId = x.id+"";
+        closeParams.challengeId = x.challenge.id+"";
+        closeParams.userId = x.user.id+"";
+
         $http.post('/api/gameTrade/closeGameTrade',JSON.stringify(closeParams))
             .success(function (data, status) {
                 if(status = 200){
                     swal(data.action+ " "+ data.currencyPairOpen.symbols+ " position", "successfully closed", "error");
-                    $rootScope.currentUser = data.user;
-                    $cookieStore.put('userCookie', $rootScope.currentUser);
+                    // $rootScope.currentUser = data.user;
+                    // $cookieStore.put('userCookie', $rootScope.currentUser);
                     // $scope.PLV = $rootScope.currentUser.currentProfit;
                     // $scope.mMargin = $rootScope.currentUser.totalMargin;
                 }

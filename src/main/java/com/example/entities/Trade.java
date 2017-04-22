@@ -22,8 +22,7 @@ public class Trade {
     @ManyToOne
     private CurrencyPair currencyPairClose;
 
-    @ManyToOne
-    private Challenge challenge;
+
 
     private Timestamp timestampOpen;
     private Timestamp timestampClose;
@@ -37,6 +36,9 @@ public class Trade {
 
     private double positionUnits;
 
+    @ManyToOne
+    private Challenge challenge;
+
 
     @ManyToMany
     private List<LiveTradeInfo> liveTradeInfoList;
@@ -44,13 +46,13 @@ public class Trade {
     public Trade() {
     }
 
-    public Trade(User user, CurrencyPair currencyPairOpen, CurrencyPair currencyPairClose,
-                 Challenge challenge, Timestamp timestampOpen, Timestamp timestampClose, double margin, String action, boolean open, double closingProfitLoss, double positionUnits,
+    public Trade(User user, CurrencyPair currencyPairOpen, CurrencyPair currencyPairClose, Timestamp timestampOpen,
+                 Timestamp timestampClose, double margin, String action,
+                 boolean open, double closingProfitLoss, double positionUnits, Challenge challenge,
                  List<LiveTradeInfo> liveTradeInfoList) {
         this.user = user;
         this.currencyPairOpen = currencyPairOpen;
         this.currencyPairClose = currencyPairClose;
-        this.challenge = challenge;
         this.timestampOpen = timestampOpen;
         this.timestampClose = timestampClose;
         this.margin = margin;
@@ -58,6 +60,7 @@ public class Trade {
         this.open = open;
         this.closingProfitLoss = closingProfitLoss;
         this.positionUnits = positionUnits;
+        this.challenge = challenge;
         this.liveTradeInfoList = liveTradeInfoList;
     }
 
@@ -91,14 +94,6 @@ public class Trade {
 
     public void setCurrencyPairClose(CurrencyPair currencyPairClose) {
         this.currencyPairClose = currencyPairClose;
-    }
-
-    public Challenge getChallenge() {
-        return challenge;
-    }
-
-    public void setChallenge(Challenge challenge) {
-        this.challenge = challenge;
     }
 
     public Timestamp getTimestampOpen() {
@@ -157,30 +152,19 @@ public class Trade {
         this.positionUnits = positionUnits;
     }
 
+    public Challenge getChallenge() {
+        return challenge;
+    }
+
+    public void setChallenge(Challenge challenge) {
+        this.challenge = challenge;
+    }
+
     public List<LiveTradeInfo> getLiveTradeInfoList() {
         return liveTradeInfoList;
     }
 
     public void setLiveTradeInfoList(List<LiveTradeInfo> liveTradeInfoList) {
         this.liveTradeInfoList = liveTradeInfoList;
-    }
-
-    @Override
-    public String toString() {
-        return "Trade{" +
-                "id=" + id +
-                ", user=" + user +
-                ", currencyPairOpen=" + currencyPairOpen +
-                ", currencyPairClose=" + currencyPairClose +
-                ", challenge=" + challenge +
-                ", timestampOpen=" + timestampOpen +
-                ", timestampClose=" + timestampClose +
-                ", margin=" + margin +
-                ", action='" + action + '\'' +
-                ", open=" + open +
-                ", closingProfitLoss=" + closingProfitLoss +
-                ", positionUnits=" + positionUnits +
-                ", liveTradeInfoList=" + liveTradeInfoList +
-                '}';
     }
 }

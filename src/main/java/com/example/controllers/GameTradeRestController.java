@@ -56,38 +56,29 @@ public class GameTradeRestController {
     public Trade closeThisTrade(@RequestBody String closeParams)throws Exception {
 
         JSONObject jsonObject = new JSONObject(closeParams);
-        String symbols = jsonObject.getString("sym");
 
-        User user = iUserService.findById(Integer.parseInt(jsonObject.getString("id")));
-        Trade tradeToClose = iTradeService.findBySymbols(symbols,user);
+        Trade tradeToClose = iTradeService.findTradeById(Integer.parseInt(jsonObject.getString("tradeId")));
+        User user = iUserService.findById(Integer.parseInt(jsonObject.getString("userId")));
+        Challenge challenge = iChallengeService.findById(Integer.parseInt(jsonObject.getString("challengeId")));
+        GameAccount gameAccount = iGameAccountService.findGameAccountByUserAndChallenge(user,challenge);
 
-        if(tradeToClose!=null){
-            tradeToClose.setOpen(false);
+        tradeToClose.setOpen(false);
 
-            GameAccount gameAccount = user.getGameAccount();
-            double currentBalance = gameAccount.getBalance();
-            double balanceUpdate = currentBalance + tradeToClose.getMargin() + tradeToClose.getClosingProfitLoss();
-            gameAccount.setBalance(balanceUpdate);
-            iGameAccountService.register(gameAccount);
+        double currentBalance = gameAccount.getBalance();
+        double balanceUpdate = currentBalance + tradeToClose.getMargin() + tradeToClose.getClosingProfitLoss();
+        gameAccount.setBalance(balanceUpdate);
+        iGameAccountService.register(gameAccount);
 
+        Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
+        tradeToClose.setTimestampClose(timestampClose);
 
-            Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
-            tradeToClose.setTimestampClose(timestampClose);
-            CurrencyPair closingPair = thisPair(symbols);
-            tradeToClose.setCurrencyPairClose(closingPair);
-            iCurrencyPairService.saveCurrencyPair(closingPair);
-            iTradeService.updateAndSaveTrade(tradeToClose);
+        CurrencyPair closingPair = thisPair(tradeToClose.getCurrencyPairOpen().getSymbols());
+        tradeToClose.setCurrencyPairClose(closingPair);
 
-//            double currBal = user.getCurrentProfit();
-//            double thisTradePL = tradeToClose.getClosingProfitLoss();
-//            currBal -= thisTradePL;
-//            user.setCurrentProfit(currBal);
+        iCurrencyPairService.saveCurrencyPair(closingPair);
+        iTradeService.updateAndSaveTrade(tradeToClose);
 
-//            double existingMargin = user.getTotalMargin();
-//            double updatedMargin = existingMargin - tradeToClose.getMargin();
-//            user.setTotalMargin(updatedMargin);
-            iUserService.register(user);
-        }
+        iUserService.register(user);
         return tradeToClose;
     }
 
@@ -96,45 +87,37 @@ public class GameTradeRestController {
         JSONObject jsonObject = new JSONObject(json);
         Timestamp timestampOpen = new Timestamp(System.currentTimeMillis());
 
-        System.out.println("select * frava");
-
         String pairSymbols = jsonObject.getString("pairSymbols");
         double margin = jsonObject.getDouble("margin");
         String action = jsonObject.getString("action");
         double positionUnits = jsonObject.getDouble("positionUnits");
 
         Challenge chall = iChallengeService.findById(jsonObject.getInt("challengeID"));
-
-        Trade trade = new Trade();
-
+        User user = iUserService.findById(Integer.parseInt(jsonObject.getString("playerID")));
 
         CurrencyPair currencyPair = thisPair(pairSymbols);
         currencyPair.setActive(true);
         iCurrencyPairService.saveCurrencyPair(currencyPair);
 
-        User user = iUserService.findById(Integer.parseInt(jsonObject.getString("playerID")));
+        Trade trade = new Trade();
+        GameAccount gameAccount = iGameAccountService.findGameAccountByUserAndChallenge(user,chall);
 
-        GameAccount account = user.getGameAccount();
-        double currentBalance = account.getBalance();
+        double currentBalance = gameAccount.getBalance();
         double updatedBalance = currentBalance - margin;
-        account.setBalance(updatedBalance);
-        iGameAccountService.register(account);
-
-        double existingMargin = user.getTotalMargin();
-        double updatedMargin = existingMargin + margin;
-        user.setTotalMargin(updatedMargin);
+        gameAccount.setBalance(updatedBalance);
+        gameAccount.setUser(user);
+        gameAccount.setChallenge(chall);
+        iGameAccountService.register(gameAccount);
 
         iUserService.register(user);
 
-        trade.setUser(user);
         trade.setCurrencyPairOpen(currencyPair);
         trade.setMargin(margin);
         trade.setAction(action);
         trade.setTimestampOpen(timestampOpen);
         trade.setPositionUnits(positionUnits);
-
+        trade.setUser(user);
         trade.setChallenge(chall);
-
         iTradeService.saveTrade(trade);
 
         return trade;
