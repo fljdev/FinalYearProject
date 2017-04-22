@@ -100,7 +100,6 @@ public class ChallengeRestContoller {
 
         User opponent = iUserService.findById(challengeToAccept.getOpponentId());
         opponent.setBusy(true);
-        System.out.println("opponent is "+opponent.isBusy());
         iUserService.register(opponent);
 
         challengeToAccept.setAccepted(true);
@@ -159,12 +158,6 @@ public class ChallengeRestContoller {
     }
 
 
-    @RequestMapping(value = "/waitForReply", method = RequestMethod.POST, produces = "application/json")
-    public Challenge waitForReply(@RequestBody String id){
-        Challenge challenge = iChallengeService.findById(Integer.parseInt(id));
-
-        return challenge;
-    }
 
 
 
@@ -175,25 +168,31 @@ public class ChallengeRestContoller {
         Challenge thisChallenge=iChallengeService.findById(Integer.parseInt(id));
 
         User challenger = findById(String.valueOf(thisChallenge.getChallengerId()));
-        User opponent = findById(String.valueOf(thisChallenge.getOpponentId()));
-
         GameAccount challengerGameAccount = new GameAccount();
         challengerGameAccount.setBalance(thisChallenge.getStake());
-        challenger.setGameAccount(challengerGameAccount);
+        challengerGameAccount.setUser(challenger);
+        challengerGameAccount.setChallenge(thisChallenge);
+
         iGameAccountService.register(challengerGameAccount);
         iUserService.register(challenger);
 
 
-
+        User opponent = findById(String.valueOf(thisChallenge.getOpponentId()));
         GameAccount opponentGameAccount = new GameAccount();
         opponentGameAccount.setBalance(thisChallenge.getStake());
-        opponent.setGameAccount(opponentGameAccount);
+        opponentGameAccount.setUser(opponent);
+        opponentGameAccount.setChallenge(thisChallenge);
+
         iGameAccountService.register(opponentGameAccount);
         iUserService.register(opponent);
     }
 
 
 
+    @RequestMapping(value = "/waitForReply", method = RequestMethod.POST, produces = "application/json")
+    public Challenge waitForReply(@RequestBody String id){
+        return iChallengeService.findById(Integer.parseInt(id));
+    }
 
 
 

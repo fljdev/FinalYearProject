@@ -14,12 +14,19 @@ public class GameAccount {
 
     private double balance;
 
+    @ManyToOne
+    private User user;
+
+    @OneToOne
+    private Challenge challenge;
+
     public GameAccount() {
     }
 
-
-    public GameAccount(double balance) {
+    public GameAccount(double balance, User user, Challenge challenge) {
         this.balance = balance;
+        this.user = user;
+        this.challenge = challenge;
     }
 
     public int getId() {
@@ -36,5 +43,21 @@ public class GameAccount {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Challenge getChallenge() {
+        return challenge;
+    }
+
+    public void setChallenge(Challenge challenge) {
+        this.challenge = challenge;
     }
 }
