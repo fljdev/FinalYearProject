@@ -14,10 +14,6 @@ public class User {
     @OneToOne
     private BankAccount account;
 
-
-
-
-
     private String firstName;
     private String lastName;
     private String username;
