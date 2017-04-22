@@ -167,6 +167,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
      * if part of a challenge, change the balance to the stake
      */
     var theVar = $stateParams.challengeID;
+
     $scope.currentChallenge={};
     $http.post('/api/challenge/findChallengeById',theVar)
         .success(function (data, status) {
@@ -181,6 +182,8 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     /**
      * INITIAL Top table values ""**BEFORE TRADE**"" (No Problems with these)
      */
+
+
     $scope.check =false;
     $scope.updateUserSummaryTable = function(){
         if(theVar>0){
@@ -243,9 +246,13 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
      * ******************************************************************************************************************************************************************************************************
      */
 
+    $scope.gameTrade = function(){
+      swal("in a game controller , boo yaa","cunt","success");
+    };
 
 
     $scope.trade = function(){
+
 
         $scope.closeToggleLeft();
 

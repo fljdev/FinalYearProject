@@ -22,6 +22,9 @@ public class Trade {
     @ManyToOne
     private CurrencyPair currencyPairClose;
 
+    @ManyToOne
+    private Challenge challenge;
+
     private Timestamp timestampOpen;
     private Timestamp timestampClose;
     private double margin;
@@ -41,12 +44,13 @@ public class Trade {
     public Trade() {
     }
 
-    public Trade(User user, CurrencyPair currencyPairOpen, CurrencyPair currencyPairClose, Timestamp timestampOpen,
-                 Timestamp timestampClose, double margin, String action, boolean open, double closingProfitLoss,
-                 double positionUnits, List<LiveTradeInfo> liveTradeInfoList) {
+    public Trade(User user, CurrencyPair currencyPairOpen, CurrencyPair currencyPairClose,
+                 Challenge challenge, Timestamp timestampOpen, Timestamp timestampClose, double margin, String action, boolean open, double closingProfitLoss, double positionUnits,
+                 List<LiveTradeInfo> liveTradeInfoList) {
         this.user = user;
         this.currencyPairOpen = currencyPairOpen;
         this.currencyPairClose = currencyPairClose;
+        this.challenge = challenge;
         this.timestampOpen = timestampOpen;
         this.timestampClose = timestampClose;
         this.margin = margin;
@@ -87,6 +91,14 @@ public class Trade {
 
     public void setCurrencyPairClose(CurrencyPair currencyPairClose) {
         this.currencyPairClose = currencyPairClose;
+    }
+
+    public Challenge getChallenge() {
+        return challenge;
+    }
+
+    public void setChallenge(Challenge challenge) {
+        this.challenge = challenge;
     }
 
     public Timestamp getTimestampOpen() {
@@ -160,6 +172,7 @@ public class Trade {
                 ", user=" + user +
                 ", currencyPairOpen=" + currencyPairOpen +
                 ", currencyPairClose=" + currencyPairClose +
+                ", challenge=" + challenge +
                 ", timestampOpen=" + timestampOpen +
                 ", timestampClose=" + timestampClose +
                 ", margin=" + margin +
