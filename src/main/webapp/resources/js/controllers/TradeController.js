@@ -247,7 +247,31 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
      */
 
     $scope.gameTrade = function(){
-      swal("in a game controller , boo yaa","cunt","success");
+      swal("in a game controller , boo yaa","ok","success");
+        $scope.closeToggleLeft();
+        var tradeObject = {};
+        tradeObject.playerID = $rootScope.currentUser.id+"";
+        tradeObject.pairSymbols=$scope.preTradePairChosen.symbols;
+        tradeObject.margin = $scope.preTradeMarginRequiredUSD;
+        tradeObject.action = $scope.preTradeAction;
+        tradeObject.positionUnits = $scope.positionUnits;
+        tradeObject.challengeID=$stateParams.challengeID;
+
+        $http.post('/api/gameTrade/saveGameTrade',JSON.stringify(tradeObject))
+            .success(function (data, status) {
+                if(status = 200){
+                    swal(data.action  +" " + data.currencyPairOpen.symbols + " "+ data.positionUnits+ " units", " position opened!", "success");
+                    $scope.tradeObject = data;
+                    $rootScope.currentUser=$scope.tradeObject.user;
+                    $cookieStore.put('userCookie', $rootScope.currentUser);
+
+                    $scope.xID =data.id;
+
+
+                }
+            }).error(function (error) {
+            console.log("something went wrong in saveGameTrade");
+        });
     };
 
 

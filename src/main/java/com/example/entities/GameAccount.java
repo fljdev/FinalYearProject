@@ -17,13 +17,9 @@ public class GameAccount {
     public GameAccount() {
     }
 
-    @ManyToOne
-    private User user;
 
-
-    public GameAccount(double balance, User user) {
+    public GameAccount(double balance) {
         this.balance = balance;
-        this.user = user;
     }
 
     public int getId() {
@@ -40,13 +36,5 @@ public class GameAccount {
 
     public void setBalance(double balance) {
         this.balance = balance;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

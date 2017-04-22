@@ -178,14 +178,16 @@ public class ChallengeRestContoller {
         User opponent = findById(String.valueOf(thisChallenge.getOpponentId()));
 
         GameAccount challengerGameAccount = new GameAccount();
-        challengerGameAccount.setUser(challenger);
         challengerGameAccount.setBalance(thisChallenge.getStake());
+        challenger.setGameAccount(challengerGameAccount);
         iGameAccountService.register(challengerGameAccount);
         iUserService.register(challenger);
 
+
+
         GameAccount opponentGameAccount = new GameAccount();
-        opponentGameAccount.setUser(opponent);
         opponentGameAccount.setBalance(thisChallenge.getStake());
+        opponent.setGameAccount(opponentGameAccount);
         iGameAccountService.register(opponentGameAccount);
         iUserService.register(opponent);
     }
