@@ -166,10 +166,13 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
      * Check if the game is a solo trade or part of a challenge
      * if part of a challenge, change the balance to the stake
      */
-    var theVar = $stateParams.challengeID;
+    $scope.challID=0;
+    if($stateParams.challengeID){
+        $scope.challID = $stateParams.challengeID;
+    }
 
     $scope.currentChallenge={};
-    $http.post('/api/challenge/findChallengeById',theVar)
+    $http.post('/api/challenge/findChallengeById',$scope.challID)
         .success(function (data, status) {
             if(status = 200){
                 $scope.currentChallenge = data;
@@ -186,7 +189,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
     $scope.check =false;
     $scope.updateUserSummaryTable = function(){
-        if(theVar>0){
+        if($scope.challID>0){
             $scope.available = $scope.theStake;
             $scope.check = true;
         }else{
@@ -255,7 +258,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         tradeObject.margin = $scope.preTradeMarginRequiredUSD;
         tradeObject.action = $scope.preTradeAction;
         tradeObject.positionUnits = $scope.positionUnits;
-        tradeObject.challengeID=$stateParams.challengeID;
+        tradeObject.challengeID=$scope.challID;
 
         $http.post('/api/gameTrade/saveGameTrade',JSON.stringify(tradeObject))
             .success(function (data, status) {
@@ -351,7 +354,23 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
 
-
+    $scope.closeGameTrade = function(x){
+        var closeParams = {};
+        closeParams.id = $rootScope.currentUser.id+"";
+        closeParams.sym = x.symbols;
+        $http.post('/api/gameTrade/closeGameTrade',JSON.stringify(closeParams))
+            .success(function (data, status) {
+                if(status = 200){
+                    swal(data.action+ " "+ data.currencyPairOpen.symbols+ " position", "successfully closed", "error");
+                    $rootScope.currentUser = data.user;
+                    $cookieStore.put('userCookie', $rootScope.currentUser);
+                    // $scope.PLV = $rootScope.currentUser.currentProfit;
+                    // $scope.mMargin = $rootScope.currentUser.totalMargin;
+                }
+            }).error(function (error) {
+            console.log("something went wrong in closeTrade!!");
+        });
+    };
 
 
 

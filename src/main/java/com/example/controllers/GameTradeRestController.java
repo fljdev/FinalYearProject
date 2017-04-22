@@ -21,6 +21,12 @@ public class GameTradeRestController {
     IUserService iUserService;
     ILiveTradeInfoService iLiveTradeInfoService;
     IGameAccountService iGameAccountService;
+    IChallengeService iChallengeService;
+
+    @Autowired
+    public void setiChallengeService(IChallengeService  service){
+        this.iChallengeService=service;
+    }
 
     @Autowired
     public void setiLiveTradeInfoService(ILiveTradeInfoService info){
@@ -46,6 +52,44 @@ public class GameTradeRestController {
     }
 
 
+    @RequestMapping(value = "/closeGameTrade", method = RequestMethod.POST)
+    public Trade closeThisTrade(@RequestBody String closeParams)throws Exception {
+
+        JSONObject jsonObject = new JSONObject(closeParams);
+        String symbols = jsonObject.getString("sym");
+
+        User user = iUserService.findById(Integer.parseInt(jsonObject.getString("id")));
+        Trade tradeToClose = iTradeService.findBySymbols(symbols,user);
+
+        if(tradeToClose!=null){
+            tradeToClose.setOpen(false);
+
+            GameAccount gameAccount = user.getGameAccount();
+            double currentBalance = gameAccount.getBalance();
+            double balanceUpdate = currentBalance + tradeToClose.getMargin() + tradeToClose.getClosingProfitLoss();
+            gameAccount.setBalance(balanceUpdate);
+            iGameAccountService.register(gameAccount);
+
+
+            Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
+            tradeToClose.setTimestampClose(timestampClose);
+            CurrencyPair closingPair = thisPair(symbols);
+            tradeToClose.setCurrencyPairClose(closingPair);
+            iCurrencyPairService.saveCurrencyPair(closingPair);
+            iTradeService.updateAndSaveTrade(tradeToClose);
+
+//            double currBal = user.getCurrentProfit();
+//            double thisTradePL = tradeToClose.getClosingProfitLoss();
+//            currBal -= thisTradePL;
+//            user.setCurrentProfit(currBal);
+
+//            double existingMargin = user.getTotalMargin();
+//            double updatedMargin = existingMargin - tradeToClose.getMargin();
+//            user.setTotalMargin(updatedMargin);
+            iUserService.register(user);
+        }
+        return tradeToClose;
+    }
 
     @RequestMapping(value = "/saveGameTrade", method = RequestMethod.POST)
     public Trade saveThisTrade(@RequestBody String json)throws Exception{
@@ -58,6 +102,8 @@ public class GameTradeRestController {
         double margin = jsonObject.getDouble("margin");
         String action = jsonObject.getString("action");
         double positionUnits = jsonObject.getDouble("positionUnits");
+
+        Challenge chall = iChallengeService.findById(jsonObject.getInt("challengeID"));
 
         Trade trade = new Trade();
 
@@ -86,6 +132,8 @@ public class GameTradeRestController {
         trade.setAction(action);
         trade.setTimestampOpen(timestampOpen);
         trade.setPositionUnits(positionUnits);
+
+        trade.setChallenge(chall);
 
         iTradeService.saveTrade(trade);
 
