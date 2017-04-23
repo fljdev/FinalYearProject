@@ -39,6 +39,9 @@ public class Challenge {
     @Column(name = "Withdraw_Time")
     private String challengeWithdrawen;
 
+    private double challengerProfit;
+    private double opponentProfit;
+
 
     private boolean accepted;
 
@@ -51,10 +54,7 @@ public class Challenge {
     public Challenge() {
     }
 
-    public Challenge(int challengerId, String challengerName, int opponentId, String opponentName,
-                     int duration, double stake, String challengeSent, String challengeAccepted,
-                     String challengeDeclined, String challengeWithdrawen,
-                     boolean accepted, boolean declined, boolean withdrawen, boolean open) {
+    public Challenge(int challengerId, String challengerName, int opponentId, String opponentName, int duration, double stake, String challengeSent, String challengeAccepted, String challengeDeclined, String challengeWithdrawen, double challengerProfit, double opponentProfit, boolean accepted, boolean declined, boolean withdrawen, boolean open) {
         this.challengerId = challengerId;
         this.challengerName = challengerName;
         this.opponentId = opponentId;
@@ -65,15 +65,20 @@ public class Challenge {
         this.challengeAccepted = challengeAccepted;
         this.challengeDeclined = challengeDeclined;
         this.challengeWithdrawen = challengeWithdrawen;
+        this.challengerProfit = challengerProfit;
+        this.opponentProfit = opponentProfit;
         this.accepted = accepted;
         this.declined = declined;
         this.withdrawen = withdrawen;
         this.open = open;
     }
 
-
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getChallengerId() {
@@ -156,6 +161,22 @@ public class Challenge {
         this.challengeWithdrawen = challengeWithdrawen;
     }
 
+    public double getChallengerProfit() {
+        return challengerProfit;
+    }
+
+    public void setChallengerProfit(double challengerProfit) {
+        this.challengerProfit = challengerProfit;
+    }
+
+    public double getOpponentProfit() {
+        return opponentProfit;
+    }
+
+    public void setOpponentProfit(double opponentProfit) {
+        this.opponentProfit = opponentProfit;
+    }
+
     public boolean isAccepted() {
         return accepted;
     }
@@ -202,6 +223,8 @@ public class Challenge {
                 ", challengeAccepted='" + challengeAccepted + '\'' +
                 ", challengeDeclined='" + challengeDeclined + '\'' +
                 ", challengeWithdrawen='" + challengeWithdrawen + '\'' +
+                ", challengerProfit=" + challengerProfit +
+                ", opponentProfit=" + opponentProfit +
                 ", accepted=" + accepted +
                 ", declined=" + declined +
                 ", withdrawen=" + withdrawen +

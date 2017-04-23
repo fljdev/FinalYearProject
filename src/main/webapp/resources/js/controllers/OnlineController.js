@@ -20,9 +20,9 @@ angular.module('myApp.OnlineController',[]).
     };
     $scope.setUser();
 
-    $scope.gameTimes = [2,5,10];
+    $scope.gameTimes = [1,2,5];
     $scope.gameStakes = [250,500,1000,2500,5000];
-    $scope.selectedTime = 15;
+    $scope.selectedTime = 1;
     $scope.selectedStake = 1000;
 
 
@@ -66,6 +66,34 @@ angular.module('myApp.OnlineController',[]).
 
     };
 
+
+
+
+    var name="";
+    if(!$cookieStore.get('userCookie')){
+        name = "xyz";
+    }else{
+        name = $cookieStore.get('userCookie').username
+    }
+
+    $scope.init = function(){
+        $http.post('/api/user/onlineUsers',$rootScope.currentUser)
+            .success(function (data, status) {
+                if(status = 200){
+                    //data will be equal to the arraylist returned by the UserRestController onlineUsers method
+                    $scope.online = data;
+                }
+            }).error(function (error) {
+            console.log("something went wrong!!");
+        });
+    };
+    $scope.init();
+
+
+    /**
+     * Challenger game timer area
+     */
+
     $scope.waitForReply = function(id){
         console.log("inside waitForReply ",id);
         $http.post('/api/challenge/waitForReply',id)
@@ -91,37 +119,27 @@ angular.module('myApp.OnlineController',[]).
 
 
     $scope.startTimer = function(duration){
-        $rootScope.gameCounter = duration * 60;
+        $rootScope.gameCounter = duration * 6;
         $scope.onTimeout = function(){
             $rootScope.gameCounter--;
             console.log("game time left ",$rootScope.gameCounter);
             mytimeout = $timeout($scope.onTimeout,1000);
+
+            if($rootScope.gameCounter==0){
+                $scope.stop();
+            }
         };
         var mytimeout = $timeout($scope.onTimeout,1000);
 
         $scope.stop = function(){
             $timeout.cancel(mytimeout);
+            var msg = "This Game has ended "+$rootScope.currentUser.firstName
+            // swal(msg,"thanks for playing","error")
+            swal({
+                title: msg,
+                text: 'Thanks for playing',
+                timer: 2000
+            });
         }
     };
-
-
-    var name="";
-    if(!$cookieStore.get('userCookie')){
-        name = "xyz";
-    }else{
-        name = $cookieStore.get('userCookie').username
-    }
-
-    $scope.init = function(){
-        $http.post('/api/user/onlineUsers',$rootScope.currentUser)
-            .success(function (data, status) {
-                if(status = 200){
-                    //data will be equal to the arraylist returned by the UserRestController onlineUsers method
-                    $scope.online = data;
-                }
-            }).error(function (error) {
-            console.log("something went wrong!!");
-        });
-    };
-    $scope.init();
 });
