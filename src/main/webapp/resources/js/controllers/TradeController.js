@@ -1,5 +1,5 @@
 angular.module('myApp.TradeController',['chart.js']).
-controller('TradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav,$stateParams,$rootScope){
+controller('TradeController',function($scope,$http,$state,$cookieStore,$interval,$mdSidenav,$stateParams,$rootScope,$timeout){
     /**
      * User user object from the Database, instead of the browser cookie (No Problems)
      */
@@ -426,7 +426,17 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
 
 
-});
+})
+
+    .filter('toMinSec', function(){
+        return function(input){
+            var minutes = parseInt(input/60, 10);
+            var seconds = input%60;
+
+            return minutes+' mins'+(seconds ? ' and '+seconds+' seconds' : '');
+        }
+    });
+
 
 
 

@@ -1,5 +1,5 @@
 angular.module('myApp.OnlineController',[]).
-    controller('OnlineController', function($scope,$cookieStore,$http,$state,$interval,$rootScope){
+    controller('OnlineController', function($scope,$cookieStore,$http,$state,$interval,$rootScope,$timeout){
 
     /**
      * User user object from the Database, instead of the browser cookie (No Problems)
@@ -20,7 +20,7 @@ angular.module('myApp.OnlineController',[]).
     };
     $scope.setUser();
 
-    $scope.gameTimes = [2,15,30,60];
+    $scope.gameTimes = [2,5,10];
     $scope.gameStakes = [250,500,1000,2500,5000];
     $scope.selectedTime = 15;
     $scope.selectedStake = 1000;
@@ -75,6 +75,9 @@ angular.module('myApp.OnlineController',[]).
                     console.log("challenge accepted  ",data.accepted)
                     if(data.accepted){
 
+                        $scope.startTimer(data.duration);
+
+
                         $state.go('trade',{challengeID: data.id});
                         $interval.cancel(promise);
                     }
@@ -85,6 +88,21 @@ angular.module('myApp.OnlineController',[]).
 
     };
     var promise = $interval( function(){ $scope.waitForReply($scope.challID); }, 3000);
+
+
+    $scope.startTimer = function(duration){
+        $rootScope.gameCounter = duration * 60;
+        $scope.onTimeout = function(){
+            $rootScope.gameCounter--;
+            console.log("game time left ",$rootScope.gameCounter);
+            mytimeout = $timeout($scope.onTimeout,1000);
+        };
+        var mytimeout = $timeout($scope.onTimeout,1000);
+
+        $scope.stop = function(){
+            $timeout.cancel(mytimeout);
+        }
+    };
 
 
     var name="";
