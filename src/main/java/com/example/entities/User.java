@@ -28,14 +28,15 @@ public class User {
     private double currentProfit;
     private double totalMargin;
 
-
+    private double gameProfit;
+    private double gameMargin;
 
     public User() {
     }
 
     public User(BankAccount account, String firstName, String lastName, String username, String email,
-                String password, boolean online, boolean busy,
-                int currentRank, int bestRank, double currentProfit, double totalMargin) {
+                String password, boolean online, boolean busy, int currentRank, int bestRank,
+                double currentProfit, double totalMargin, double gameProfit, double gameMargin) {
         this.account = account;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -48,6 +49,8 @@ public class User {
         this.bestRank = bestRank;
         this.currentProfit = currentProfit;
         this.totalMargin = totalMargin;
+        this.gameProfit = gameProfit;
+        this.gameMargin = gameMargin;
     }
 
     public int getId() {
@@ -154,6 +157,22 @@ public class User {
         this.totalMargin = totalMargin;
     }
 
+    public double getGameProfit() {
+        return gameProfit;
+    }
+
+    public void setGameProfit(double gameProfit) {
+        this.gameProfit = gameProfit;
+    }
+
+    public double getGameMargin() {
+        return gameMargin;
+    }
+
+    public void setGameMargin(double gameMargin) {
+        this.gameMargin = gameMargin;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -170,6 +189,8 @@ public class User {
                 ", bestRank=" + bestRank +
                 ", currentProfit=" + currentProfit +
                 ", totalMargin=" + totalMargin +
+                ", gameProfit=" + gameProfit +
+                ", gameMargin=" + gameMargin +
                 '}';
     }
 }

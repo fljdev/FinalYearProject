@@ -228,7 +228,6 @@ public class TradeRestController {
 
                 iUserService.register(user);
             }
-
         }
         return user;
     }
