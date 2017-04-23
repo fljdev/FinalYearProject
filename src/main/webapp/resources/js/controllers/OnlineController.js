@@ -74,16 +74,17 @@ angular.module('myApp.OnlineController',[]).
 
                     console.log("challenge accepted  ",data.accepted)
                     if(data.accepted){
-                        $state.go('trade',{challengeID: data.id});
-                    }
 
+                        $state.go('trade',{challengeID: data.id});
+                        $interval.cancel(promise);
+                    }
                 }
             }).error(function (error) {
             console.log("something went wrong in waitForReply!!");
         });
 
     };
-    $interval( function(){ $scope.waitForReply($scope.challID); }, 3000);
+    var promise = $interval( function(){ $scope.waitForReply($scope.challID); }, 3000);
 
 
     var name="";
