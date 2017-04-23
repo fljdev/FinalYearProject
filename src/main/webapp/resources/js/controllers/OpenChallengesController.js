@@ -103,16 +103,29 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
 
 
         $scope.startTimer = function(duration){
-            $rootScope.gameCounter = duration * 60;
+            $rootScope.gameCounter = duration * 6;
             $scope.onTimeout = function(){
                 $rootScope.gameCounter--;
                 console.log("game time left ",$rootScope.gameCounter);
                 mytimeout = $timeout($scope.onTimeout,1000);
+
+                if($rootScope.gameCounter==0){
+                    $scope.stop();
+                }
             };
             var mytimeout = $timeout($scope.onTimeout,1000);
 
             $scope.stop = function(){
                 $timeout.cancel(mytimeout);
+                var msg = "This Game has ended "+$rootScope.currentUser.firstName
+
+                // swal(msg,"thanks for playing","info")
+                swal({
+                    title: msg,
+                    text: 'Thanks for playing',
+                    timer: 2000
+                });
+
             }
         };
 
