@@ -1,5 +1,5 @@
 angular.module('myApp.OpenChallengesController',[]).
-controller('OpenChallengesController', function($scope,$cookieStore,$http,$state,$rootScope){
+controller('OpenChallengesController', function($scope,$cookieStore,$http,$state,$rootScope,$timeout){
 
     /**
      * User user object from the Database, instead of the browser cookie (No Problems)
@@ -90,6 +90,8 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
                     swal("Let's Trade",name,"success");
                     $rootScope.openChallengesCount--;
 
+                    $scope.startTimer(x.duration);
+
                     $state.go('trade',{challengeID: x.id});
 
 
@@ -99,6 +101,20 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
         });
 
 
+
+        $scope.startTimer = function(duration){
+            $rootScope.gameCounter = duration * 60;
+            $scope.onTimeout = function(){
+                $rootScope.gameCounter--;
+                console.log("game time left ",$rootScope.gameCounter);
+                mytimeout = $timeout($scope.onTimeout,1000);
+            };
+            var mytimeout = $timeout($scope.onTimeout,1000);
+
+            $scope.stop = function(){
+                $timeout.cancel(mytimeout);
+            }
+        };
 
 
         $http.post('/api/challenge/updateGameAccount',x.id)

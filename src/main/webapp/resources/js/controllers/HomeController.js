@@ -1,5 +1,5 @@
 angular.module('myApp.HomeController',[]).
-    controller('HomeController',function($scope, $stateParams, $cookieStore,$http,$rootScope){
+    controller('HomeController',function($scope, $stateParams, $cookieStore,$http,$rootScope,$timeout){
 
     /**
      * User user object from the Database, instead of the browser cookie (No Problems)
@@ -21,5 +21,25 @@ angular.module('myApp.HomeController',[]).
     $scope.setUser();
 
 
+    $scope.counter = 0;
+    $scope.onTimeout = function(){
+        $scope.counter++;
+        mytimeout = $timeout($scope.onTimeout,1000);
+    }
+    var mytimeout = $timeout($scope.onTimeout,1000);
+
+    $scope.stop = function(){
+        $timeout.cancel(mytimeout);
+    }
+
+
+})
+.filter('toMinSec', function(){
+    return function(input){
+        var minutes = parseInt(input/60, 10);
+        var seconds = input%60;
+
+        return minutes+' mins'+(seconds ? ' and '+seconds+' secs' : '');
+    }
 });
 
