@@ -187,19 +187,73 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
      */
 
 
-    $scope.check =false;
+    $scope.checkIfGame =false;
     $scope.updateUserSummaryTable = function(){
+
         if($scope.challID>0){
-            $scope.available = $scope.theStake;
-            $scope.check = true;
+            $scope.updateGameSummary();
+            // $scope.available = $scope.theStake;
+            // $scope.checkIfGame = true;
         }else{
             $scope.available = $rootScope.currentUser.account.balance + $rootScope.currentUser.currentProfit;
-            $scope.check=false;
+            $scope.checkIfGame=false;
             $scope.PLV = $rootScope.currentUser.currentProfit;
             $scope.equity = $scope.available + $scope.PLV + $rootScope.currentUser.totalMargin;
+            $scope.updateEachTrade();
+
         }
-        $scope.updateEachTrade();
     };
+
+
+    $scope.updateGameSummary = function(){
+
+        $scope.checkIfGame = true;
+
+        var param = {};
+        param.userId = $rootScope.currentUser.id+"";
+        param.challId=$scope.challID+"";
+
+
+        $http.post('/api/gameTrade/findUserChallengeGameAccount',JSON.stringify(param))
+            .success(function (data, status) {
+                if(status = 200){
+                    console.log("game acount ",data);
+                    $scope.gameAccount = data;
+                    $scope.available = $scope.gameAccount.balance;
+                    $scope.mMargin=$rootScope.currentUser.gameMargin;
+                    $scope.PLV = $rootScope.currentUser.gameProfit;
+                    $scope.equity = $scope.available + $scope.PLV + $scope.mMargin;
+                }
+            }).error(function (error) {
+            console.log("something went wrong in findUserChallengeGameAccount");
+        });
+
+        $scope.updateEachGameTrade();
+
+    };
+
+    $scope.updateEachGameTrade = function(){
+        $http.post('/api/trade/updateEachTrade',JSON.stringify($rootScope.currentUser))
+            .success(function (data, status) {
+                if(status = 200){
+                    $http.post('/api/gameTrade/getTotalProfitAndLoss',JSON.stringify($rootScope.currentUser))
+                        .success(function (data, status) {
+                            if(status = 200){
+                                $rootScope.currentUser = data;
+                                $cookieStore.put('userCookie', $rootScope.currentUser);
+                                $scope.PLV = $rootScope.currentUser.gameProfit;
+                                $scope.mMargin = $rootScope.currentUser.gameMargin;
+                            }
+                        }).error(function (error) {
+                        console.log("something went wrong in getTotalProfitAndLoss");
+                    });
+                    $scope.showOpenTrades();
+                }
+            }).error(function (error) {
+            console.log("something went wrong in updateEachTrade");
+        });
+    };
+
 
 
     $scope.setGraph1 = function(data){
@@ -298,7 +352,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
                     $scope.xID =data.id;
 
-                    $scope.tradeChart($scope.xID =data.id);
+                    $scope.tradeChart($scope.xID);
 
                 }
             }).error(function (error) {
@@ -321,7 +375,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                     // }
                 }
             }).error(function (error) {
-            console.log("something went wrong in updateEachTrade");
+            console.log("something went wrong in findLiveTradeInfoObjectByTradeID");
         });
     };
     $interval( function(){ $scope.tradeChart($scope.xID); }, 5000);
@@ -340,7 +394,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                                 $scope.mMargin = $rootScope.currentUser.totalMargin;
                             }
                         }).error(function (error) {
-                        console.log("something went wrong in updateEachTrade");
+                        console.log("something went wrong in getTotalProfitAndLoss");
                     });
                     $scope.showOpenTrades();
                 }

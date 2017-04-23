@@ -4,14 +4,23 @@
 <col width="300px" />
 <col width="300px" />
 
-<thead>
+<thead ng-show='checkIfGame'>
 <tr>
-<th >Available</th>
-<th >Equity</th>
-<th >Margin</th>
-<th >Profit/Loss</th>
+<th >Game Funds Available</th>
+<th >Game Equity</th>
+<th >Game Margin</th>
+<th >Game Profit/Loss</th>
 </tr>
 </thead>
+
+    <thead    ng-show='!checkIfGame'>
+    <tr>
+        <th >Available</th>
+        <th >Equity</th>
+        <th >Margin</th>
+        <th >Profit/Loss</th>
+    </tr>
+    </thead>
 
 <tbody>
 <tr>
@@ -25,7 +34,7 @@
 <div class="container">
     <div class="row">
         <div class="panel panel-default">
-            <div class="panel-heading">
+            <div ng-show='checkIfGame' class="panel-heading">
                 <h4 align="center"><b>{{$root.gameCounter | toMinSec}} remaining in this game!</b></h4>
             </div>
             <div class="panel-heading">
@@ -64,8 +73,8 @@
                 <tr ng-repeat-end="" ng-show="checkForOpenTrades(x)">
                     <td height="60" class="col-xs-2">{{x.symbols}}</td>
                     <td height="60" class="col-xs-7">P/L :${{checkForOpenTrades(x).closingProfitLoss.toFixed(2)}}</td>
-                    <td height="60" class="col-xs-3"ng-show='!check'><button class="btn btn-default btn-block btn-danger"ng-click="closeLiveTrade(x)"  >Close Live Position</button></td>
-                    <td height="60" class="col-xs-3"ng-show='check'><button class="btn btn-default btn-block btn-warning"ng-click="closeGameTrade(checkForOpenTrades(x))"  >Close Game Position</button></td>
+                    <td height="60" class="col-xs-3"ng-show='!checkIfGame'><button class="btn btn-default btn-block btn-danger"ng-click="closeLiveTrade(x)"  >Close Live Position</button></td>
+                    <td height="60" class="col-xs-3"ng-show='checkIfGame'><button class="btn btn-default btn-block btn-warning"ng-click="closeGameTrade(checkForOpenTrades(x))"  >Close Game Position</button></td>
                 </tr>
                 </tbody>
             </table>
@@ -127,8 +136,8 @@
         </md-button>
 
     </md-content>
-    <button ng-show='!check' class="btn btn-default btn-block btn-info"ng-click="trade()"  >Open Position!!</button>
-    <button ng-show='check' class="btn btn-default btn-block btn-info"ng-click="gameTrade()"  >Open Position!!</button>
+    <button ng-show='!checkIfGame' class="btn btn-default btn-block btn-info"ng-click="trade()"  >Open Position!!</button>
+    <button ng-show='checkIfGame' class="btn btn-default btn-block btn-info"ng-click="gameTrade()"  >Open Position!!</button>
 
 
 </md-sidenav>

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by admin on 22/04/2017.
@@ -109,6 +111,10 @@ public class GameTradeRestController {
         gameAccount.setChallenge(chall);
         iGameAccountService.register(gameAccount);
 
+        double existingGameMargin = user.getGameMargin();
+        double updatedGameMargin = existingGameMargin + margin;
+        user.setGameMargin(updatedGameMargin);
+
         iUserService.register(user);
 
         trade.setCurrencyPairOpen(currencyPair);
@@ -151,4 +157,40 @@ public class GameTradeRestController {
         pairs = test.getCurrencyPairs();
         return pairs;
     }
+
+
+    @RequestMapping(value = "/findUserChallengeGameAccount", method = RequestMethod.POST)
+    public GameAccount findUserChallengeGameAccount(@RequestBody String json)throws Exception {
+
+        JSONObject jsonObject = new JSONObject(json);
+        User u = iUserService.findById(Integer.parseInt(jsonObject.getString("userId")));
+        Challenge c = iChallengeService.findById(Integer.parseInt(jsonObject.getString("challId")));
+        GameAccount ga = iGameAccountService.findGameAccountByUserAndChallenge(u,c);
+        System.out.println("pppp "+ u.getUsername()+ " "+c.getId());
+        return ga;
+    }
+
+
+    @RequestMapping(value ="/getTotalProfitAndLoss", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public User totalProfit(@RequestBody String userJson)throws Exception{
+
+        JSONObject jsonObject = new JSONObject(userJson);
+
+        User user = iUserService.findById(jsonObject.getInt("id"));
+
+        double gameProfit=0;
+
+        if(user!=null){
+            for(Trade t : iTradeService.findByUser(user).stream().filter(Trade::isOpen).collect(Collectors.toList())){
+
+                gameProfit += t.getClosingProfitLoss();
+                user.setGameProfit(gameProfit);
+                iUserService.register(user);
+            }
+        }
+        return user;
+    }
+
+
 }
