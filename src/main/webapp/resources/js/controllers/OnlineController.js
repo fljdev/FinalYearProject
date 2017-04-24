@@ -129,28 +129,26 @@ angular.module('myApp.OnlineController',[]).
             }
         };
         var mytimeout = $timeout($scope.onTimeout,1000);
-
         $scope.stop = function(){
             $timeout.cancel(mytimeout);
-
             $http.post('/api/challenge/completeChallenge',JSON.stringify($scope.challID))
                 .success(function (data, status) {
                     if(status = 200){
                         console.log("got back from completeChallenge");
+                        msg = "Winner Winner "+data.firstName+" gets Dinner!!";
+                        swal(msg,"congratulations","success");
                     }
                 }).error(function (error) {
                 console.log("something went wrong in waitForReply!!");
             });
-
             var msg = "This Game has ended "+$rootScope.currentUser.firstName;
             swal({
                 title: msg,
                 text: 'Thanks for playing',
                 timer: 2000
             });
-
-
         }
     };
+
 });
 

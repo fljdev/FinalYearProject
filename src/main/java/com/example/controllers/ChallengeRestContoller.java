@@ -198,7 +198,7 @@ public class ChallengeRestContoller {
 
     @RequestMapping(value ="/completeChallenge", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public void completeChallenge(@RequestBody String id){
+    public User completeChallenge(@RequestBody String id){
         Challenge challenge = iChallengeService.findById(Integer.parseInt(id));
 
         int opponentId = challenge.getOpponentId();
@@ -215,6 +215,18 @@ public class ChallengeRestContoller {
         }
         iUserService.register(challenger);
 
+        double opponentProfit = opponent.getGameProfit();
+        double challengerProfit = challenger.getGameProfit();
 
+        opponent.setGameMargin(0);
+        opponent.setGameProfit(0);
+        challenger.setGameMargin(0);
+        challenger.setGameProfit(0);
+
+        iUserService.register(opponent);
+        iUserService.register(challenger);
+
+
+        return(challengerProfit>opponentProfit)?challenger:opponent;
     }
 }
