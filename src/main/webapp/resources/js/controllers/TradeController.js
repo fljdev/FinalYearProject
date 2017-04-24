@@ -195,12 +195,11 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             // $scope.available = $scope.theStake;
             // $scope.checkIfGame = true;
         }else{
-            $scope.available = $rootScope.currentUser.account.balance + $rootScope.currentUser.currentProfit;
-            $scope.checkIfGame=false;
-            $scope.PLV = $rootScope.currentUser.currentProfit;
-            $scope.equity = $scope.available + $scope.PLV + $rootScope.currentUser.totalMargin;
+            // $scope.available = $rootScope.currentUser.account.balance + $rootScope.currentUser.currentProfit;
+            // $scope.checkIfGame=false;
+            // $scope.PLV = $rootScope.currentUser.currentProfit;
+            // $scope.equity = $scope.available + $scope.PLV + $rootScope.currentUser.totalMargin;
             $scope.updateEachTrade();
-
         }
     };
 
@@ -217,12 +216,14 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         $http.post('/api/gameTrade/findUserChallengeGameAccount',JSON.stringify(param))
             .success(function (data, status) {
                 if(status = 200){
+
+
                     console.log("game acount ",data);
                     $scope.gameAccount = data;
-                    $scope.available = $scope.gameAccount.balance;
+                    $scope.available = $scope.gameAccount.balance + $rootScope.currentUser.gameProfit;
                     $scope.mMargin=$rootScope.currentUser.gameMargin;
                     $scope.PLV = $rootScope.currentUser.gameProfit;
-                    $scope.equity = $scope.available + $scope.PLV + $scope.mMargin;
+                    $scope.equity = $scope.available + $scope.PLV + $rootScope.currentUser.gameMargin;
                 }
             }).error(function (error) {
             console.log("something went wrong in findUserChallengeGameAccount");
@@ -241,8 +242,11 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                             if(status = 200){
                                 $rootScope.currentUser = data;
                                 $cookieStore.put('userCookie', $rootScope.currentUser);
+                                $scope.available = $scope.gameAccount.balance + $rootScope.currentUser.gameProfit;
                                 $scope.PLV = $rootScope.currentUser.gameProfit;
                                 $scope.mMargin = $rootScope.currentUser.gameMargin;
+                                $scope.equity = $scope.available + $scope.PLV + $rootScope.currentUser.gameMargin;
+
                             }
                         }).error(function (error) {
                         console.log("something went wrong in getTotalProfitAndLoss");

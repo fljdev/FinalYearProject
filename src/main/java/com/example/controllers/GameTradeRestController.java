@@ -54,36 +54,6 @@ public class GameTradeRestController {
     }
 
 
-    @RequestMapping(value = "/closeGameTrade", method = RequestMethod.POST)
-    public Trade closeThisTrade(@RequestBody String closeParams)throws Exception {
-
-        JSONObject jsonObject = new JSONObject(closeParams);
-
-        Trade tradeToClose = iTradeService.findTradeById(Integer.parseInt(jsonObject.getString("tradeId")));
-        User user = iUserService.findById(Integer.parseInt(jsonObject.getString("userId")));
-        Challenge challenge = iChallengeService.findById(Integer.parseInt(jsonObject.getString("challengeId")));
-        GameAccount gameAccount = iGameAccountService.findGameAccountByUserAndChallenge(user,challenge);
-
-        tradeToClose.setOpen(false);
-
-        double currentBalance = gameAccount.getBalance();
-        double balanceUpdate = currentBalance + tradeToClose.getMargin() + tradeToClose.getClosingProfitLoss();
-        gameAccount.setBalance(balanceUpdate);
-        iGameAccountService.register(gameAccount);
-
-        Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
-        tradeToClose.setTimestampClose(timestampClose);
-
-        CurrencyPair closingPair = thisPair(tradeToClose.getCurrencyPairOpen().getSymbols());
-        tradeToClose.setCurrencyPairClose(closingPair);
-
-        iCurrencyPairService.saveCurrencyPair(closingPair);
-        iTradeService.updateAndSaveTrade(tradeToClose);
-
-        iUserService.register(user);
-        return tradeToClose;
-    }
-
     @RequestMapping(value = "/saveGameTrade", method = RequestMethod.POST)
     public Trade saveThisTrade(@RequestBody String json)throws Exception{
         JSONObject jsonObject = new JSONObject(json);
@@ -94,16 +64,17 @@ public class GameTradeRestController {
         String action = jsonObject.getString("action");
         double positionUnits = jsonObject.getDouble("positionUnits");
 
-        Challenge chall = iChallengeService.findById(jsonObject.getInt("challengeID"));
-        User user = iUserService.findById(Integer.parseInt(jsonObject.getString("playerID")));
+        Trade trade = new Trade();
 
         CurrencyPair currencyPair = thisPair(pairSymbols);
         currencyPair.setActive(true);
         iCurrencyPairService.saveCurrencyPair(currencyPair);
 
-        Trade trade = new Trade();
-        GameAccount gameAccount = iGameAccountService.findGameAccountByUserAndChallenge(user,chall);
+        User user = iUserService.findById(Integer.parseInt(jsonObject.getString("playerID")));
 
+        Challenge chall = iChallengeService.findById(jsonObject.getInt("challengeID"));
+
+        GameAccount gameAccount = iGameAccountService.findGameAccountByUserAndChallenge(user,chall);
         double currentBalance = gameAccount.getBalance();
         double updatedBalance = currentBalance - margin;
         gameAccount.setBalance(updatedBalance);
@@ -129,6 +100,91 @@ public class GameTradeRestController {
         return trade;
     }//end saveTrade
 
+    @RequestMapping(value = "/closeGameTrade", method = RequestMethod.POST)
+    public Trade closeThisTrade(@RequestBody String closeParams)throws Exception {
+
+        JSONObject jsonObject = new JSONObject(closeParams);
+
+        User user = iUserService.findById(Integer.parseInt(jsonObject.getString("userId")));
+        Trade tradeToClose = iTradeService.findTradeById(Integer.parseInt(jsonObject.getString("tradeId")));
+
+        Challenge challenge = iChallengeService.findById(Integer.parseInt(jsonObject.getString("challengeId")));
+
+        if(tradeToClose!=null){
+            tradeToClose.setOpen(false);
+
+            GameAccount gameAccount = iGameAccountService.findGameAccountByUserAndChallenge(user,challenge);
+
+            double currentBalance = gameAccount.getBalance();
+            double balanceUpdate = currentBalance + tradeToClose.getMargin() + tradeToClose.getClosingProfitLoss();
+            gameAccount.setBalance(balanceUpdate);
+            iGameAccountService.register(gameAccount);
+
+            Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
+            tradeToClose.setTimestampClose(timestampClose);
+
+            CurrencyPair closingPair = thisPair(tradeToClose.getCurrencyPairOpen().getSymbols());
+            tradeToClose.setCurrencyPairClose(closingPair);
+
+            iCurrencyPairService.saveCurrencyPair(closingPair);
+            iTradeService.updateAndSaveTrade(tradeToClose);
+
+            double currGameProfit = user.getGameProfit();
+            double thisTradePL = tradeToClose.getClosingProfitLoss();
+            currGameProfit -= thisTradePL;
+            user.setGameProfit(currGameProfit);
+
+            double existingGameMargin = user.getGameMargin();
+            double updatedGameMargin = existingGameMargin - tradeToClose.getMargin();
+            user.setGameMargin(updatedGameMargin);
+
+            iUserService.register(user);
+        }
+
+        return tradeToClose;
+    }
+
+
+
+
+
+    @RequestMapping(value ="/getTotalProfitAndLoss", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public User totalProfit(@RequestBody String userJson)throws Exception{
+
+        JSONObject jsonObject = new JSONObject(userJson);
+
+        User user = iUserService.findById(jsonObject.getInt("id"));
+
+        double gameProfit=0;
+        if(user!=null){
+            for(Trade t : iTradeService.findByUser(user).stream().filter(Trade::isOpen).collect(Collectors.toList())){
+
+                gameProfit += t.getClosingProfitLoss();
+                user.setGameProfit(gameProfit);
+
+                iUserService.register(user);
+            }
+        }
+        return user;
+    }
+
+
+
+
+
+
+
+
+    @RequestMapping(value = "/findUserChallengeGameAccount", method = RequestMethod.POST)
+    public GameAccount findUserChallengeGameAccount(@RequestBody String json)throws Exception {
+
+        JSONObject jsonObject = new JSONObject(json);
+        User u = iUserService.findById(Integer.parseInt(jsonObject.getString("userId")));
+        Challenge c = iChallengeService.findById(Integer.parseInt(jsonObject.getString("challId")));
+        GameAccount ga = iGameAccountService.findGameAccountByUserAndChallenge(u,c);
+        return ga;
+    }
 
     @RequestMapping(value ="/getThisPair", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
@@ -157,40 +213,4 @@ public class GameTradeRestController {
         pairs = test.getCurrencyPairs();
         return pairs;
     }
-
-
-    @RequestMapping(value = "/findUserChallengeGameAccount", method = RequestMethod.POST)
-    public GameAccount findUserChallengeGameAccount(@RequestBody String json)throws Exception {
-
-        JSONObject jsonObject = new JSONObject(json);
-        User u = iUserService.findById(Integer.parseInt(jsonObject.getString("userId")));
-        Challenge c = iChallengeService.findById(Integer.parseInt(jsonObject.getString("challId")));
-        GameAccount ga = iGameAccountService.findGameAccountByUserAndChallenge(u,c);
-        System.out.println("pppp "+ u.getUsername()+ " "+c.getId());
-        return ga;
-    }
-
-
-    @RequestMapping(value ="/getTotalProfitAndLoss", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public User totalProfit(@RequestBody String userJson)throws Exception{
-
-        JSONObject jsonObject = new JSONObject(userJson);
-
-        User user = iUserService.findById(jsonObject.getInt("id"));
-
-        double gameProfit=0;
-
-        if(user!=null){
-            for(Trade t : iTradeService.findByUser(user).stream().filter(Trade::isOpen).collect(Collectors.toList())){
-
-                gameProfit += t.getClosingProfitLoss();
-                user.setGameProfit(gameProfit);
-                iUserService.register(user);
-            }
-        }
-        return user;
-    }
-
-
 }

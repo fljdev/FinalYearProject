@@ -89,7 +89,6 @@ public class TradeRestController {
         trade.setAction(action);
         trade.setTimestampOpen(timestampOpen);
         trade.setPositionUnits(positionUnits);
-
         iTradeService.saveTrade(trade);
 
         return trade;
@@ -116,15 +115,19 @@ public class TradeRestController {
 
             Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
             tradeToClose.setTimestampClose(timestampClose);
+
             CurrencyPair closingPair = thisPair(symbols);
             tradeToClose.setCurrencyPairClose(closingPair);
+
             iCurrencyPairService.saveCurrencyPair(closingPair);
             iTradeService.updateAndSaveTrade(tradeToClose);
 
-            double currBal = user.getCurrentProfit();
+
+
+            double currProfit = user.getCurrentProfit();
             double thisTradePL = tradeToClose.getClosingProfitLoss();
-            currBal -= thisTradePL;
-            user.setCurrentProfit(currBal);
+            currProfit -= thisTradePL;
+            user.setCurrentProfit(currProfit);
 
             double existingMargin = user.getTotalMargin();
             double updatedMargin = existingMargin - tradeToClose.getMargin();
