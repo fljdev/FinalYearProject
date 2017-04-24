@@ -119,6 +119,15 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
                 $timeout.cancel(mytimeout);
                 var msg = "This Game has ended "+$rootScope.currentUser.firstName
 
+                // $http.post('/api/challenge/completeChallenge',JSON.stringify($scope.challID))
+                //     .success(function (data, status) {
+                //         if(status = 200){
+                //             console.log("got back from completeChallenge");
+                //         }
+                //     }).error(function (error) {
+                //     console.log("something went wrong in waitForReply!!");
+                // });
+
                 // swal(msg,"thanks for playing","info")
                 swal({
                     title: msg,

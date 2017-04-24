@@ -199,18 +199,22 @@ public class ChallengeRestContoller {
     @RequestMapping(value ="/completeChallenge", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public void completeChallenge(@RequestBody String id){
-        System.out.println("inside complete challenge with "+id);
         Challenge challenge = iChallengeService.findById(Integer.parseInt(id));
+
         int opponentId = challenge.getOpponentId();
         User opponent = iUserService.findById(opponentId);
         if(opponent.isBusy()){
             opponent.setBusy(false);
         }
+        iUserService.register(opponent);
+
         int challengerId = challenge.getChallengerId();
         User challenger = iUserService.findById(challengerId);
         if(challenger.isBusy()){
             challenger.setBusy(false);
         }
+        iUserService.register(challenger);
+
 
     }
 }
