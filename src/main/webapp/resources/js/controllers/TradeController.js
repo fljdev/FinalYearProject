@@ -51,6 +51,23 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
         });
     };
 
+    $scope.showOpenGameTrades = function(){
+        $scope.getPairs();
+        $http.post('/api/gameTrade/getOpenGameTrades',$rootScope.currentUser.id)
+            .success(function (data, status) {
+                if(status = 200){
+                    $scope.openGameTrades = data;
+                    if($scope.openGameTrades.length>0){
+                        $scope.activeTrades = true;
+                    }else{
+                        $scope.activeTrades = false;
+                    }
+                }
+            }).error(function (error) {
+            console.log("something went wrong in getOpenTrades call!!");
+        });
+    };
+
     $scope.showOpenTrades = function(){
         $scope.getPairs();
         $http.post('/api/trade/getOpenTrades',$rootScope.currentUser.id)
@@ -83,6 +100,20 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.showOpenTrades();
     $interval( function(){ $scope.showOpenTrades(); }, 5000);
 
+    $scope.checkForOpenGameTrades= function (pair) {
+        function findPair(currentPair) {
+            return currentPair.currencyPairOpen.symbols === pair.symbols;
+        }
+        var trade = $scope.openGameTrades.find(findPair);
+
+        if(trade){
+            return trade;
+        }
+        return false;
+    };
+
+    $scope.showOpenGameTrades();
+    $interval( function(){ $scope.showOpenGameTrades(); }, 5000);
 
 
     /**
@@ -234,7 +265,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
     $scope.updateEachGameTrade = function(){
-        $http.post('/api/trade/updateEachTrade',JSON.stringify($rootScope.currentUser))
+        $http.post('/api/gameTrade/updateEachGameTrade',JSON.stringify($rootScope.currentUser))
             .success(function (data, status) {
                 if(status = 200){
                     $http.post('/api/gameTrade/getTotalProfitAndLoss',JSON.stringify($rootScope.currentUser))
@@ -251,7 +282,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                         }).error(function (error) {
                         console.log("something went wrong in getTotalProfitAndLoss");
                     });
-                    $scope.showOpenTrades();
+                    $scope.showOpenGameTrades();
                 }
             }).error(function (error) {
             console.log("something went wrong in updateEachTrade");
@@ -365,24 +396,24 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
 
-    $scope.tradeChart = function(x){
-        $http.post('/api/liveTradeInfoController/findLiveTradeInfoObjectByTradeID',x)
-            .success(function (data, status) {
-                if(status = 200){
-                    // console.log("call got ",data);
-                    // if(data.length>0){
-                    //     console.log(data[data.length-1].currentAsk)
-                    //     console.log(data[data.length-1].currentBid)
-                    //     console.log(data[data.length-1].currentProfitAndLoss)
-                    //     console.log(data[data.length-1].tickTime)
-                    //
-                    // }
-                }
-            }).error(function (error) {
-            console.log("something went wrong in findLiveTradeInfoObjectByTradeID");
-        });
-    };
-    $interval( function(){ $scope.tradeChart($scope.xID); }, 5000);
+    // $scope.tradeChart = function(x){
+    //     $http.post('/api/liveTradeInfoController/findLiveTradeInfoObjectByTradeID',x)
+    //         .success(function (data, status) {
+    //             if(status = 200){
+    //                 // console.log("call got ",data);
+    //                 // if(data.length>0){
+    //                 //     console.log(data[data.length-1].currentAsk)
+    //                 //     console.log(data[data.length-1].currentBid)
+    //                 //     console.log(data[data.length-1].currentProfitAndLoss)
+    //                 //     console.log(data[data.length-1].tickTime)
+    //                 //
+    //                 // }
+    //             }
+    //         }).error(function (error) {
+    //         console.log("something went wrong in findLiveTradeInfoObjectByTradeID");
+    //     });
+    // };
+    // $interval( function(){ $scope.tradeChart($scope.xID); }, 5000);
 
 
     $scope.updateEachTrade = function(){

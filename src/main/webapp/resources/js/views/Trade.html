@@ -70,12 +70,21 @@
 
                 </tr>
 
-                <tr ng-repeat-end="" ng-show="checkForOpenTrades(x)">
+                <tr ng-if="checkIfGame" ng-show="checkForOpenGameTrades(x)">
+                    <td height="60" class="col-xs-2">{{x.symbols}}</td>
+                    <td height="60" class="col-xs-7">P/L :${{checkForOpenTrades(x).closingProfitLoss.toFixed(2)}}</td>
+                    <td height="60" class="col-xs-3"ng-show='!checkIfGame'><button class="btn btn-default btn-block btn-danger"ng-click="closeLiveTrade(x)"  >Close Live Position</button></td>
+                    <td height="60" class="col-xs-3"ng-show='checkIfGame'><button class="btn btn-default btn-block btn-warning"ng-click="closeGameTrade(checkForOpenGameTrades(x))"  >Close Game Position</button></td>
+                </tr>
+
+                <tr ng-if="!checkIfGame" ng-repeat-end="" ng-show="checkForOpenTrades(x)">
                     <td height="60" class="col-xs-2">{{x.symbols}}</td>
                     <td height="60" class="col-xs-7">P/L :${{checkForOpenTrades(x).closingProfitLoss.toFixed(2)}}</td>
                     <td height="60" class="col-xs-3"ng-show='!checkIfGame'><button class="btn btn-default btn-block btn-danger"ng-click="closeLiveTrade(x)"  >Close Live Position</button></td>
                     <td height="60" class="col-xs-3"ng-show='checkIfGame'><button class="btn btn-default btn-block btn-warning"ng-click="closeGameTrade(checkForOpenTrades(x))"  >Close Game Position</button></td>
                 </tr>
+
+
                 </tbody>
             </table>
         </div>

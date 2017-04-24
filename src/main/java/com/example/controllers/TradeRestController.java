@@ -167,16 +167,20 @@ public class TradeRestController {
         JSONObject jsonObject = new JSONObject(userJson);
 
         User user = iUserService.findById(jsonObject.getInt("id"));
-        List<Trade> openTrades = new ArrayList<>();
+        List<Trade> openTradesWithoutChallenges = new ArrayList<>();
         if(user!=null){
 
-            //Finds trades by user obj, filters via open trades, adds to collection (LIST)
-            openTrades = iTradeService.findByUser(user).stream().filter(Trade::isOpen).collect(Collectors.toList());
-
+            List<Trade> openTrades = iTradeService.findByUser(user).stream().filter(Trade::isOpen).collect(Collectors.toList());
+            for(Trade t : openTrades){
+                if(t.getChallenge()==null){
+                    openTradesWithoutChallenges.add(t);
+                }
+            }
 
             LiveTradeInfo liveTradeInfo;
 
-            for(Trade t : openTrades){
+            for(Trade t : openTradesWithoutChallenges){
+
 
                 liveTradeInfo = new LiveTradeInfo();
 
@@ -207,7 +211,7 @@ public class TradeRestController {
                 iTradeService.saveTrade(t);
             }
         }
-        return openTrades;
+        return openTradesWithoutChallenges;
     }
 
 
@@ -218,14 +222,22 @@ public class TradeRestController {
         JSONObject jsonObject = new JSONObject(userJson);
 
         User user = iUserService.findById(jsonObject.getInt("id"));
-        List<Trade> openTrades = new ArrayList<>();
 
         double totalProfit=0;
 
         if(user!=null){
-            openTrades = iTradeService.findByUser(user).stream().filter(Trade::isOpen).collect(Collectors.toList());
-            for(Trade t : openTrades){
+            List<Trade> openTrades = iTradeService.findByUser(user).stream().filter(Trade::isOpen).collect(Collectors.toList());
 
+
+
+            List<Trade> openTradesWithoutChallenges = new ArrayList<>();
+            for(Trade t : openTrades){
+                if(t.getChallenge()==null){
+                    openTradesWithoutChallenges.add(t);
+                }
+            }
+
+            for(Trade t : openTradesWithoutChallenges){
                 totalProfit += t.getClosingProfitLoss();
                 user.setCurrentProfit(totalProfit);
 
@@ -271,45 +283,6 @@ public class TradeRestController {
     }
 
 
-
-
-//        List<Trade> openTrades = findOpenTrades(playerID);
-//
-//        for(Trade t : openTrades){
-//            if(t.getCurrencyPairOpen().getSymbols().equalsIgnoreCase(pairSymbols)){
-//
-//                System.out.println("This trade is "+t.getId());
-//
-//                Timestamp timestampClose = new Timestamp(System.currentTimeMillis());
-//
-//                t.setTimestampClose(timestampClose);
-//                t.setCurrencyPairClose(closingPair);
-//
-//
-//
-//
-////                t.setClosingProfitLoss(profit);
-//                iTradeService.saveTrade(t);
-//
-////                User user = findById(playerID);
-////                BankAccount bankAccount = user.getAccount();
-////                double marginPayed = t.getMargin();
-////                double currentBalance = bankAccount.getBalance();
-////                double updatedBalance = currentBalance+marginPayed;
-////                updatedBalance +=profit;
-////                bankAccount.setBalance(updatedBalance);
-////                iBankAccountService.register(bankAccount);
-////
-////                iUserService.register(user);
-//            }
-
-
-
-
-
-
-
-
     @RequestMapping(value ="/getThisPair", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public CurrencyPair thisPair(@RequestBody String symbols)throws Exception{
@@ -350,7 +323,16 @@ public class TradeRestController {
     @ResponseBody
     public List<Trade> findOpenTrades(@RequestBody String userId){
         User currentUser = iUserService.findById(Integer.parseInt(userId));
-        return iTradeService.findByUser(currentUser).stream().filter(Trade::isOpen).collect(Collectors.toList());
+
+        List<Trade>openTrades = iTradeService.findByUser(currentUser).stream().filter(Trade::isOpen).collect(Collectors.toList());
+
+        List<Trade> openTradesWithoutChallenges = new ArrayList<>();
+        for(Trade t : openTrades){
+            if(t.getChallenge()==null){
+                openTradesWithoutChallenges.add(t);
+            }
+        }
+        return openTradesWithoutChallenges;
     }
 
     @RequestMapping(value = "/findTradesByUser", method = RequestMethod.POST, produces = "application/json")

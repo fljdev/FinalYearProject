@@ -140,12 +140,63 @@ public class GameTradeRestController {
 
             iUserService.register(user);
         }
-
         return tradeToClose;
     }
 
 
 
+    @RequestMapping(value ="/updateEachGameTrade", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public List<Trade> live(@RequestBody String userJson)throws Exception{
+
+        JSONObject jsonObject = new JSONObject(userJson);
+
+        User user = iUserService.findById(jsonObject.getInt("id"));
+        List<Trade> openTradesWithChallenges = new ArrayList<>();
+        if(user!=null){
+
+            List<Trade> openTrades = iTradeService.findByUser(user).stream().filter(Trade::isOpen).collect(Collectors.toList());
+            for(Trade t : openTrades){
+                if(t.getChallenge()!=null){
+                    openTradesWithChallenges.add(t);
+                }
+            }
+
+            LiveTradeInfo liveTradeInfo;
+
+            for(Trade t : openTradesWithChallenges){
+
+                liveTradeInfo = new LiveTradeInfo();
+
+                CurrencyPair thisCurrencyPair = thisPair(t.getCurrencyPairOpen().getSymbols());
+
+                Timestamp tickTime = new Timestamp(System.currentTimeMillis());
+
+                liveTradeInfo.setTradeID(t.getId());
+
+                liveTradeInfo.setTickTime(tickTime);
+
+                liveTradeInfo.setCurrentAsk(thisCurrencyPair.getAsk());
+
+                liveTradeInfo.setCurrentBid(thisCurrencyPair.getBid());
+
+                double profit = calcThisProfitAndLoss(t,thisCurrencyPair);
+                System.out.println("in updateEachGemeTrade and profit is "+profit);
+                System.out.println("profit is "+profit);
+                t.setClosingProfitLoss(profit);
+
+                liveTradeInfo.setCurrentProfitAndLoss(profit);
+
+                iLiveTradeInfoService.saveLiveTradeInfo(liveTradeInfo);
+
+                t.getLiveTradeInfoList().add(liveTradeInfo);
+
+
+                iTradeService.saveTrade(t);
+            }
+        }
+        return openTradesWithChallenges;
+    }
 
 
     @RequestMapping(value ="/getTotalProfitAndLoss", method = RequestMethod.POST, produces = "application/json")
@@ -160,18 +211,16 @@ public class GameTradeRestController {
         if(user!=null){
             for(Trade t : iTradeService.findByUser(user).stream().filter(Trade::isOpen).collect(Collectors.toList())){
 
-                gameProfit += t.getClosingProfitLoss();
-                user.setGameProfit(gameProfit);
+                if(t.getChallenge()!=null){
+                    gameProfit += t.getClosingProfitLoss();
+                    user.setGameProfit(gameProfit);
 
-                iUserService.register(user);
+                    iUserService.register(user);
+                }
             }
         }
         return user;
     }
-
-
-
-
 
 
 
@@ -212,5 +261,49 @@ public class GameTradeRestController {
         ArrayList<CurrencyPair>pairs= new ArrayList<CurrencyPair>();
         pairs = test.getCurrencyPairs();
         return pairs;
+    }
+
+
+    private double calcThisProfitAndLoss(Trade thisTrade, CurrencyPair thisPairOpen)throws Exception{
+        String symbols = thisTrade.getCurrencyPairOpen().getSymbols();
+        double profit=0;
+        double positionUnits = thisTrade.getPositionUnits();
+        double longPipDiff = thisTrade.getCurrencyPairOpen().getBid() - thisPairOpen.getAsk();
+        double shortPipDiff = thisPairOpen.getBid() - thisTrade.getCurrencyPairOpen().getAsk();
+
+
+        if(symbols.contains("/USD")){
+
+            profit = calculateDirectQuote(thisTrade,thisPairOpen,longPipDiff,shortPipDiff,positionUnits);
+        }  else if(thisTrade.getCurrencyPairOpen().getSymbols().contains("USD/")){
+
+            profit = calculateIndirectQuote(thisTrade,thisPairOpen,longPipDiff,shortPipDiff,positionUnits);
+        }
+        return profit;
+    }
+
+    private double calculateDirectQuote(Trade thisTrade , CurrencyPair thisPairOpen,double longPipDiff,double shortPipDiff,double positionUnits){
+        return (thisTrade.getAction().equalsIgnoreCase("buy")) ? longPipDiff * positionUnits : shortPipDiff * positionUnits;
+    }
+
+
+    private double calculateIndirectQuote(Trade thisTrade , CurrencyPair thisPairOpen,double longPipDiff,double shortPipDiff,double positionUnits){
+        return (thisTrade.getAction().equalsIgnoreCase("buy"))?(longPipDiff * positionUnits) /thisTrade.getCurrencyPairOpen().getBid() : (shortPipDiff * positionUnits) /thisTrade.getCurrencyPairOpen().getAsk();
+    }
+
+    @RequestMapping(value = "/getOpenGameTrades", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public List<Trade> findOpenGameTrades(@RequestBody String userId){
+        User currentUser = iUserService.findById(Integer.parseInt(userId));
+
+        List<Trade>openTrades = iTradeService.findByUser(currentUser).stream().filter(Trade::isOpen).collect(Collectors.toList());
+
+        List<Trade> openTradesWithChallenges = new ArrayList<>();
+        for(Trade t : openTrades){
+            if(t.getChallenge()!=null){
+                openTradesWithChallenges.add(t);
+            }
+        }
+        return openTradesWithChallenges;
     }
 }
