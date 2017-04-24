@@ -122,7 +122,6 @@ angular.module('myApp.OnlineController',[]).
         $rootScope.gameCounter = duration * 6;
         $scope.onTimeout = function(){
             $rootScope.gameCounter--;
-            console.log("game time left ",$rootScope.gameCounter);
             mytimeout = $timeout($scope.onTimeout,1000);
 
             if($rootScope.gameCounter==0){
@@ -133,13 +132,25 @@ angular.module('myApp.OnlineController',[]).
 
         $scope.stop = function(){
             $timeout.cancel(mytimeout);
-            var msg = "This Game has ended "+$rootScope.currentUser.firstName
-            // swal(msg,"thanks for playing","error")
+
+            $http.post('/api/challenge/completeChallenge',JSON.stringify($scope.challID))
+                .success(function (data, status) {
+                    if(status = 200){
+                        console.log("got back from completeChallenge");
+                    }
+                }).error(function (error) {
+                console.log("something went wrong in waitForReply!!");
+            });
+
+            var msg = "This Game has ended "+$rootScope.currentUser.firstName;
             swal({
                 title: msg,
                 text: 'Thanks for playing',
                 timer: 2000
             });
+
+
         }
     };
 });
+

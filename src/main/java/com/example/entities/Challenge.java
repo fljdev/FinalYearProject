@@ -43,6 +43,7 @@ public class Challenge {
     private double opponentProfit;
 
 
+
     private boolean accepted;
 
     private boolean declined;
@@ -51,10 +52,16 @@ public class Challenge {
 
     private boolean open;
 
+    private boolean completed;
+
     public Challenge() {
     }
 
-    public Challenge(int challengerId, String challengerName, int opponentId, String opponentName, int duration, double stake, String challengeSent, String challengeAccepted, String challengeDeclined, String challengeWithdrawen, double challengerProfit, double opponentProfit, boolean accepted, boolean declined, boolean withdrawen, boolean open) {
+    public Challenge(int challengerId, String challengerName, int opponentId, String opponentName, int duration,
+                     double stake, String challengeSent, String challengeAccepted,
+                     String challengeDeclined, String challengeWithdrawen, double challengerProfit,
+                     double opponentProfit, boolean accepted, boolean declined, boolean withdrawen,
+                     boolean open, boolean completed) {
         this.challengerId = challengerId;
         this.challengerName = challengerName;
         this.opponentId = opponentId;
@@ -71,6 +78,7 @@ public class Challenge {
         this.declined = declined;
         this.withdrawen = withdrawen;
         this.open = open;
+        this.completed = completed;
     }
 
     public int getId() {
@@ -209,6 +217,14 @@ public class Challenge {
         this.open = open;
     }
 
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
     @Override
     public String toString() {
         return "Challenge{" +
@@ -229,6 +245,7 @@ public class Challenge {
                 ", declined=" + declined +
                 ", withdrawen=" + withdrawen +
                 ", open=" + open +
+                ", completed=" + completed +
                 '}';
     }
 }
