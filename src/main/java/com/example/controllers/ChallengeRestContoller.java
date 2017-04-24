@@ -169,7 +169,7 @@ public class ChallengeRestContoller {
 
         User challenger = findById(String.valueOf(thisChallenge.getChallengerId()));
         GameAccount challengerGameAccount = new GameAccount();
-        challengerGameAccount.setBalance(thisChallenge.getStake()*200);
+        challengerGameAccount.setBalance(thisChallenge.getStake()*100);
         challengerGameAccount.setUser(challenger);
         challengerGameAccount.setChallenge(thisChallenge);
 
@@ -179,7 +179,7 @@ public class ChallengeRestContoller {
 
         User opponent = findById(String.valueOf(thisChallenge.getOpponentId()));
         GameAccount opponentGameAccount = new GameAccount();
-        opponentGameAccount.setBalance(thisChallenge.getStake()*200);
+        opponentGameAccount.setBalance(thisChallenge.getStake()*100);
         opponentGameAccount.setUser(opponent);
         opponentGameAccount.setChallenge(thisChallenge);
 
