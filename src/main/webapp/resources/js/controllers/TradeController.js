@@ -427,6 +427,9 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                                 $cookieStore.put('userCookie', $rootScope.currentUser);
                                 $scope.PLV = $rootScope.currentUser.currentProfit;
                                 $scope.mMargin = $rootScope.currentUser.totalMargin;
+                                $scope.available = $rootScope.currentUser.account.balance;
+                                $scope.equity = $scope.available + $scope.PLV + $rootScope.currentUser.totalMargin;
+
                             }
                         }).error(function (error) {
                         console.log("something went wrong in getTotalProfitAndLoss");
