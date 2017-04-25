@@ -76,6 +76,17 @@ controller('AllUsersController', function($scope,$http,$rootScope,$cookieStore,$
     $scope.getStats = function(){
         console.log("into method");
         $state.go('stats');
-    }
+    };
 
+    $scope.options = {
+        responsive: true,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    suggestedMax : 20,
+                    beginAtZero:true
+                }
+            }]
+        }
+    };
 });
