@@ -1,9 +1,7 @@
 package com.example.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 /**
  * Created by admin on 04/03/2017.
@@ -16,55 +14,76 @@ public class Result {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private int winnerID;
-    private int loserID;
-    private double amount;
+    @ManyToOne
+    private User winner;
+
+    @ManyToOne
+    private User loser;
+
+    @OneToOne
+    private Challenge challenge;
+
+    private double prize;
+
 
     public Result() {
     }
 
-    public Result(int winnerID, int loserID, double amount) {
-        this.winnerID = winnerID;
-        this.loserID = loserID;
-        this.amount = amount;
+    public Result(User winner, User loser, Challenge challenge, double prize) {
+        this.winner = winner;
+        this.loser = loser;
+        this.challenge = challenge;
+        this.prize = prize;
     }
 
     public int getId() {
         return id;
     }
 
-
-    public int getWinnerID() {
-        return winnerID;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setWinnerID(int winnerID) {
-        this.winnerID = winnerID;
+    public User getWinner() {
+        return winner;
     }
 
-    public int getLoserID() {
-        return loserID;
+    public void setWinner(User winner) {
+        this.winner = winner;
     }
 
-    public void setLoserID(int loserID) {
-        this.loserID = loserID;
+    public User getLoser() {
+        return loser;
     }
 
-    public double getAmount() {
-        return amount;
+    public void setLoser(User loser) {
+        this.loser = loser;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public Challenge getChallenge() {
+        return challenge;
+    }
+
+    public void setChallenge(Challenge challenge) {
+        this.challenge = challenge;
+    }
+
+    public double getPrize() {
+        return prize;
+    }
+
+    public void setPrize(double prize) {
+        this.prize = prize;
     }
 
     @Override
     public String toString() {
         return "Result{" +
                 "id=" + id +
-                ", winnerID=" + winnerID +
-                ", loserID=" + loserID +
-                ", amount=" + amount +
+                ", winner=" + winner +
+                ", loser=" + loser +
+                ", challenge=" + challenge +
+                ", prize=" + prize +
                 '}';
     }
 }
