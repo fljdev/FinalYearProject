@@ -1,1 +1,79 @@
-{{statsMessage}}
+
+<div class="container-fluid">
+    <div class="row">
+
+
+
+        <div class="col-md-4" align="center">
+            <div class="panel-heading">
+                <h4 align="center"><b>Matches you Won {{$root.currentUser.firstName}}</b></h4>
+            </div>
+            <div >
+                <table align="center">
+                    <thead>
+                    <tr>
+                        <th>Match</th>
+                        <th>Winner</th>
+                        <th>Loser</th>
+                        <th>$$Prize$$</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr ng-repeat="x in victoriesList">
+                        <td>{{x.id}}</td>
+                        <td>{{x.winner.firstName}} {{x.winner.lastName}}</td>
+                        <td>{{x.loser.firstName}} {{x.loser.lastName}}</td>
+                        <td>${{x.prize}}</td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+
+        <div class="col-md-4" align="center">
+            <div class="panel-heading">
+                <h4 align="center"><b>Something here</b></h4>
+            </div>
+            <div class = "well" style="height:400px;width:400px;">
+                <!--<canvas id="pie" class="chart chart-pie"-->
+                        <!--chart-data="data" chart-labels="labels" chart-options="pieOptions" label="labels" height="248px" >-->
+                <!--</canvas>-->
+            </div>
+        </div>
+
+
+
+
+        <div class="col-md-4" align="center">
+            <div class="panel-heading">
+                <h4 align="center"><b>Matches you Lost {{$root.currentUser.firstName}}</b></h4>
+            </div>
+            <div >
+                <table align="center">
+                    <thead>
+                    <tr>
+                        <th>Match</th>
+                        <th>Winner</th>
+                        <th>Loser</th>
+                        <th>$$Prize$$</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr ng-repeat="x in lossesList">
+                        <td>{{x.id}}</td>
+                        <td>{{x.winner.firstName}} {{x.winner.lastName}}</td>
+                        <td>{{x.loser.firstName}} {{x.loser.lastName}}</td>
+                        <td>${{x.prize}}</td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

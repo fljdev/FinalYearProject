@@ -21,13 +21,42 @@ controller('StatsController',function($scope, $stateParams, $cookieStore, $http,
         }
     };
     $scope.setUser();
-    $scope.statsMessage = $scope.currentUser.firstName + " in the stat page";
+    $scope.statsMessage = $rootScope.currentUser.firstName + " in the stat page";
 
 
 
 
 
 
+    $http.post('/api/stats/findByUser',$rootScope.currentUser.id)
+        .success(function (data, status) {
+            if(status = 200){
+                console.log("got back results ",data)
+                $scope.resultList = data;
+            }
+        }).error(function (error) {
+        console.log("something went wrong in /api/stats/findByUser!!");
+    });
+
+    $http.post('/api/stats/findWinsByUser',$rootScope.currentUser.id)
+        .success(function (data, status) {
+            if(status = 200){
+                console.log("got back results ",data)
+                $scope.victoriesList = data;
+            }
+        }).error(function (error) {
+        console.log("something went wrong in /api/stats/findByUser!!");
+    });
+
+    $http.post('/api/stats/findLossesByUser',$rootScope.currentUser.id)
+        .success(function (data, status) {
+            if(status = 200){
+                console.log("got back results ",data)
+                $scope.lossesList = data;
+            }
+        }).error(function (error) {
+        console.log("something went wrong in /api/stats/findByUser!!");
+    });
 
 
 
