@@ -457,7 +457,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
                     // $rootScope.currentUser = data.user;
                     // $cookieStore.put('userCookie', $rootScope.currentUser);
                     // $scope.PLV = $rootScope.currentUser.currentProfit;
-                    // $scope.mMargin = $rootScope.currentUser.totalMargin;
+                    // $scope.mMargin = $rootScope$scope.data.currentUser.totalMargin;
                 }
             }).error(function (error) {
             console.log("something went wrong in closeTrade!!");

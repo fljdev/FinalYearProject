@@ -26,6 +26,8 @@
                         <td>{{x.loser.firstName}} {{x.loser.lastName}}</td>
                         <td>${{x.prize}}</td>
                     </tr>
+                    <tr><td colspan="4">Total winnings {{totalWinnings}}</td></tr>
+
                     </tbody>
 
                 </table>
@@ -38,9 +40,9 @@
                 <h4 align="center"><b>Something here</b></h4>
             </div>
             <div class = "well" style="height:400px;width:400px;">
-                <!--<canvas id="pie" class="chart chart-pie"-->
-                        <!--chart-data="data" chart-labels="labels" chart-options="pieOptions" label="labels" height="248px" >-->
-                <!--</canvas>-->
+                <canvas id="bar" class="chart chart-bar"
+                        chart-data="number" chart-labels="result" chart-options="options" height="248px">
+                </canvas>
             </div>
         </div>
 
@@ -69,6 +71,7 @@
                         <td>{{x.loser.firstName}} {{x.loser.lastName}}</td>
                         <td>${{x.prize}}</td>
                     </tr>
+                    <tr><td colspan="4">Total losses {{totalLosses}}</td></tr>
                     </tbody>
 
                 </table>

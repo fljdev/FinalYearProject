@@ -66,6 +66,30 @@ public class StatsRestController {
         return victories;
     }
 
+    @RequestMapping(value = "/findTotalWinnings", method = RequestMethod.POST, produces = "application/json")
+    public double findTotalWinnings(@RequestBody int id){
+        User thisUser = iUserService.findById(id);
+        double total = 0;
+        for(Result r : iResultService.getAllResults()){
+            if(r.getWinner()==thisUser){
+                total+=r.getPrize();
+            }
+        }
+        return total;
+    }
+
+    @RequestMapping(value = "/findTotalLosses", method = RequestMethod.POST, produces = "application/json")
+    public double findTotalLosses(@RequestBody int id){
+        User thisUser = iUserService.findById(id);
+        double total = 0;
+        for(Result r : iResultService.getAllResults()){
+            if(r.getLoser()==thisUser){
+                total+=r.getPrize();
+            }
+        }
+        return total;
+    }
+
     @RequestMapping(value = "/findLossesByUser", method = RequestMethod.POST, produces = "application/json")
     public List<Result> findLossesByUser(@RequestBody int id){
         User thisUser = iUserService.findById(id);
@@ -78,6 +102,7 @@ public class StatsRestController {
         }
         return losses;
     }
+
 
 
 
