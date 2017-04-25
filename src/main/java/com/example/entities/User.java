@@ -14,6 +14,9 @@ public class User {
     @OneToOne
     private BankAccount account;
 
+    @OneToOne
+    private Stats stats;
+
     private String firstName;
     private String lastName;
     private String username;
@@ -34,10 +37,11 @@ public class User {
     public User() {
     }
 
-    public User(BankAccount account, String firstName, String lastName, String username, String email,
-                String password, boolean online, boolean busy, int currentRank, int bestRank,
-                double currentProfit, double totalMargin, double gameProfit, double gameMargin) {
+    public User(BankAccount account, Stats stats, String firstName, String lastName, String username, String email,
+                String password, boolean online, boolean busy, int currentRank, int bestRank, double currentProfit,
+                double totalMargin, double gameProfit, double gameMargin) {
         this.account = account;
+        this.stats = stats;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -67,6 +71,14 @@ public class User {
 
     public void setAccount(BankAccount account) {
         this.account = account;
+    }
+
+    public Stats getStats() {
+        return stats;
+    }
+
+    public void setStats(Stats stats) {
+        this.stats = stats;
     }
 
     public String getFirstName() {
@@ -178,6 +190,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", account=" + account +
+                ", stats=" + stats +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
