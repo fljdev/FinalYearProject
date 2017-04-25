@@ -1,5 +1,5 @@
 angular.module('myApp.AllUsersController',[]).
-controller('AllUsersController', function($scope,$http,$rootScope,$cookieStore){
+controller('AllUsersController', function($scope,$http,$rootScope,$cookieStore,$state){
 
     /**
      * User user object from the Database, instead of the browser cookie (No Problems)
@@ -73,5 +73,9 @@ controller('AllUsersController', function($scope,$http,$rootScope,$cookieStore){
 
     };
 
+    $scope.getStats = function(){
+        console.log("into method");
+        $state.go('stats');
+    }
 
 });

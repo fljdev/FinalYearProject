@@ -119,7 +119,7 @@ angular.module('myApp.OnlineController',[]).
 
 
     $scope.startTimer = function(duration){
-        $rootScope.gameCounter = duration * 6;
+        $rootScope.gameCounter = duration * 30;
         $scope.onTimeout = function(){
             $rootScope.gameCounter--;
             mytimeout = $timeout($scope.onTimeout,1000);
