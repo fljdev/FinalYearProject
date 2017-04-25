@@ -1,11 +1,9 @@
 package com.example.controllers;
 
-import com.example.entities.BankAccount;
-import com.example.entities.Challenge;
-import com.example.entities.GameAccount;
-import com.example.entities.User;
+import com.example.entities.*;
 import com.example.services.IChallengeService;
 import com.example.services.IGameAccountService;
+import com.example.services.IResultService;
 import com.example.services.IUserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +25,12 @@ public class ChallengeRestContoller {
     IChallengeService iChallengeService;
     IUserService iUserService;
     IGameAccountService iGameAccountService;
+    IResultService iResultService;
+
+    @Autowired
+    public void setiResultService(IResultService service){
+        this.iResultService = service;
+    }
     @Autowired
     public void setiGameAccountService(IGameAccountService iGameAccountService){
         this.iGameAccountService = iGameAccountService;
@@ -203,20 +207,35 @@ public class ChallengeRestContoller {
 
         int opponentId = challenge.getOpponentId();
         User opponent = iUserService.findById(opponentId);
-        if(opponent.isBusy()){
-            opponent.setBusy(false);
-        }
-        iUserService.register(opponent);
+        opponent.setBusy(false);
+        double opponentProfit = opponent.getGameProfit();
+        BankAccount opponentAccount = opponent.getAccount();
 
         int challengerId = challenge.getChallengerId();
         User challenger = iUserService.findById(challengerId);
-        if(challenger.isBusy()){
-            challenger.setBusy(false);
-        }
-        iUserService.register(challenger);
-
-        double opponentProfit = opponent.getGameProfit();
+        challenger.setBusy(false);
         double challengerProfit = challenger.getGameProfit();
+        BankAccount challengerAccount =challenger.getAccount();
+
+
+        User winner;
+        User loser;
+        if(challengerProfit>opponentProfit){
+            winner=challenger;
+            loser=opponent;
+        }else{
+            winner=opponent;
+            loser=challenger;
+        }
+
+        Result result = new Result();
+        double prize = challenge.getStake();
+        result.setWinner(winner);
+        result.setLoser(loser);
+        result.setPrize(prize);
+        iResultService.saveResult(result);
+        System.out.println("rrssss "+result.toString());
+
 
         opponent.setGameMargin(0);
         opponent.setGameProfit(0);
@@ -226,7 +245,6 @@ public class ChallengeRestContoller {
         iUserService.register(opponent);
         iUserService.register(challenger);
 
-
-        return(challengerProfit>opponentProfit)?challenger:opponent;
+        return winner;
     }
 }
