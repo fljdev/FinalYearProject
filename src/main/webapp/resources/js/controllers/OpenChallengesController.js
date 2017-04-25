@@ -103,7 +103,7 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
 
 
         $scope.startTimer = function(duration){
-            $rootScope.gameCounter = duration * 6;
+            $rootScope.gameCounter = duration * 30;
             $scope.onTimeout = function(){
                 $rootScope.gameCounter--;
                 console.log("game time left ",$rootScope.gameCounter);

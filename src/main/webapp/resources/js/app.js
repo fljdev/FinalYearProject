@@ -16,7 +16,8 @@ angular.module('myApp',[
     'myApp.LogRegController',
     'myApp.OpenChallengesController',
     'myApp.TradeController',
-    'myApp.RankController'
+    'myApp.RankController',
+    'myApp.StatsController'
 ]).
     config(function ($stateProvider,$urlRouterProvider) {
 
@@ -67,6 +68,11 @@ angular.module('myApp',[
             url: '/rank',
             templateUrl: "resources/js/views/Rank.html",
             controller: "RankController"
+        })
+        .state('stats',{
+            url: '/stats',
+            templateUrl: "resources/js/views/Stats.html",
+            controller: "StatsController"
         })
       ;
 });
