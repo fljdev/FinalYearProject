@@ -138,11 +138,11 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
         });
     };
 
-    $scope.findMore = function(){
-        $state.go('onlineUsers');
-    };
+    // $scope.findMore = function(){
+    //     $state.go('onlineUsers');
+    // };
 
-    $scope.playNow = function(x){
-        $state.go('trade',{challengeID: x.id});
-    }
+    // $scope.playNow = function(x){
+    //     $state.go('trade',{challengeID: x.id});
+    // }
 });

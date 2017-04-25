@@ -41,6 +41,7 @@ angular.module('myApp.OnlineController',[]).
     $scope.challenge = function(opponent,t,s){
         console.log(opponent,t,s);
 
+        $scope.iAmLive = true;
         var challengeParams = {};
         challengeParams.currUserID = $rootScope.currentUser.id+"";
         challengeParams.opponentID = opponent.id+"";
@@ -54,10 +55,11 @@ angular.module('myApp.OnlineController',[]).
                     console.log(data);
                     $scope.challID = data.id;
                     $scope.waitForReply($scope.challID);
+                    $scope.startChallengeValidTimer();
 
                     var msg = "Your Challenge to "+opponent.username+" was sent";
                     swal(msg,"Wait for their response","success");
-                    $state.go('openChallenges');
+                    // $state.go('openChallenges');
 
                 }
             }).error(function (error) {
@@ -95,17 +97,12 @@ angular.module('myApp.OnlineController',[]).
      */
 
     $scope.waitForReply = function(id){
-        console.log("inside waitForReply ",id);
         $http.post('/api/challenge/waitForReply',id)
             .success(function (data, status) {
                 if(status = 200){
 
-                    console.log("challenge accepted  ",data.accepted)
                     if(data.accepted){
-
                         $scope.startTimer(data.duration);
-
-
                         $state.go('trade',{challengeID: data.id});
                         $interval.cancel(promise);
                     }
@@ -150,5 +147,41 @@ angular.module('myApp.OnlineController',[]).
         }
     };
 
-});
+
+
+    $rootScope.challengeValidTime=10;
+    var x = 10;
+    $scope.startChallengeValidTimer = function(){
+        $scope.onTimeout = function(){
+            $rootScope.challengeValidTime--;
+            mytimeout = $timeout($scope.onTimeout,1000);
+
+
+            if($rootScope.challengeValidTime==0){
+                $scope.stop();
+            }
+        };
+        var mytimeout = $timeout($scope.onTimeout,1000);
+        $scope.stop = function(){
+            $timeout.cancel(mytimeout);
+            swal("Challenge not accepted","They Chickened Out!","error");
+                $http.post('/api/challenge/withdrawMyChallenge',$rootScope.currentUser.id)
+                    .success(function (data, status) {
+                        if(status = 200){
+                            $scope.iAmLive = false;
+                            $rootScope.challengeValidTime=10;
+                        }
+                    }).error(function (error) {
+                    console.log("something went wrong in withdrawMyChallenge!!");
+                });
+        }
+    };
+})
+    .filter('toMinSec', function(){
+        return function(input){
+            var minutes = parseInt(input/60, 10);
+            var seconds = input%60;
+            return minutes+' mins'+(seconds ? ' and '+seconds+' seconds' : '');
+        }
+    });
 

@@ -74,6 +74,24 @@ public class ChallengeRestContoller {
         iChallengeService.saveChallenge(challengeToWithdraw);
     }//end withdrawChallenge
 
+    @RequestMapping(value = "/withdrawMyChallenge",method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public void withdrawMyChallenge(@RequestBody int id){
+        Timestamp challengeWithdrawenMilli = new Timestamp(System.currentTimeMillis());
+        User user = iUserService.findById(id);
+        List<Challenge>challenges = iChallengeService.getAllChallenges();
+        Challenge challengeToWithdraw = null;
+        for(Challenge c : challenges){
+            if(c.getChallengerId()==id){
+                challengeToWithdraw=c;
+            }
+        }
+        challengeToWithdraw.setWithdrawen(true);
+        challengeToWithdraw.setChallengeWithdrawen(sdf.format(challengeWithdrawenMilli));
+        challengeToWithdraw.setOpen(false);
+        iChallengeService.saveChallenge(challengeToWithdraw);
+    }//end withdrawChallenge
+
 
     @RequestMapping(value = "/declineChallenge",method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
