@@ -1,2 +1,316 @@
-{{$root.currentUser.username}}
-{{counter | toMinSec}}
+
+
+<main>
+
+
+
+
+    <div class="container">
+        <!--First row-->
+        <div class="row">
+            <div class="col-md-7">
+                <!--Featured image -->
+                <div class="view overlay hm-white-light z-depth-1-half">
+                    <img src="../../../resources/img/summary.jpg" class="img-fluid " alt="">
+                    <div class="mask">
+                    </div>
+                </div>
+                <br>
+            </div>
+
+            <!--Main information-->
+            <div class="col-md-5">
+                <h2 class="h2-responsive"><b>{{$root.currentUser.firstName}} {{$root.currentUser.lastName}}'s Profile Page</b></h2>
+                <hr>
+                <p>Here is a visual summary of your history in the Forex Gym </p>
+                <a hre class="btn default-color">Get back to trading!!!</a>
+            </div>
+        </div>
+        <!--/.First row-->
+
+
+
+
+
+
+        <div class="tab">
+            <button class="tablinks" ng-click="personalView()">Personal Stats</button>
+            <button class="tablinks" ng-click="soloHistoryView()">Solo Trade History</button>
+            <button class="tablinks" ng-click="gameHistoryView()">Game History</button>
+        </div>
+
+        <hr class="extra-margins"/>
+
+
+        <!--Personal View-->
+
+        <div ng-show="personalViewVisible" class="row">
+            <div class="col-md-6">
+                <div class="well">
+
+                    <div class="view overlay hm-white-slight">
+                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
+                        <a href="#">
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+
+                    <div class="well-block">
+                        <h4 class="well-title">Balance</h4>
+                        <p class="well-text">View your balance</p>
+                        <a ng-href="#/laptopCategory" class="btn default-color">View </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="well">
+
+                    <div class="view overlay hm-white-slight">
+                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
+                        <a href="#">
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+
+                    <div class="well-block">
+                        <h4 class="well-title">Rank</h4>
+                        <p class="well-text">Overdose on our tablets</p>
+                        <a ng-href="#/tabletCategory" class="btn default-color">Our range</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div ng-show="personalViewVisible" class="row">
+            <div class="col-md-6">
+                <div class="well">
+
+                    <div class="view overlay hm-white-slight">
+                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
+                        <a href="#">
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+
+                    <div class="well-block">
+                        <h4 class="well-title">Balance</h4>
+                        <p class="well-text">View your balance</p>
+                        <a ng-href="#/laptopCategory" class="btn default-color">View </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="well">
+
+                    <div class="view overlay hm-white-slight">
+                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
+                        <a href="#">
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+
+                    <div class="well-block">
+                        <h4 class="well-title">Rank</h4>
+                        <p class="well-text">Overdose on our tablets</p>
+                        <a ng-href="#/tabletCategory" class="btn default-color">Our range</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!--Personal View End-->
+
+
+
+
+
+        <!--soloHistory View-->
+
+        <div ng-show="soloHistoryViewVisible" class="row">
+            <div class="col-md-6">
+                <div class="well">
+
+                    <div class="view overlay hm-white-slight">
+                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
+                        <a href="#">
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+
+                    <div class="well-block">
+                        <h4 class="well-title">Balance</h4>
+                        <p class="well-text">View your balance</p>
+                        <a ng-href="#/laptopCategory" class="btn default-color">View </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="well">
+
+                    <div class="view overlay hm-white-slight">
+                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
+                        <a href="#">
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+
+                    <div class="well-block">
+                        <h4 class="well-title">Rank</h4>
+                        <p class="well-text">Overdose on our tablets</p>
+                        <a ng-href="#/tabletCategory" class="btn default-color">Our range</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div ng-show="soloHistoryViewVisible" class="row">
+            <div class="col-md-6">
+                <div class="well">
+
+                    <div class="view overlay hm-white-slight">
+                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
+                        <a href="#">
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+
+                    <div class="well-block">
+                        <h4 class="well-title">Balance</h4>
+                        <p class="well-text">View your balance</p>
+                        <a ng-href="#/laptopCategory" class="btn default-color">View </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="well">
+
+                    <div class="view overlay hm-white-slight">
+                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
+                        <a href="#">
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+
+                    <div class="well-block">
+                        <h4 class="well-title">Rank</h4>
+                        <p class="well-text">Overdose on our tablets</p>
+                        <a ng-href="#/tabletCategory" class="btn default-color">Our range</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!--soloHistory View End-->
+
+
+
+
+
+
+        <!--gameHistory View-->
+
+        <div ng-show="gameHistoryViewVisible" class="row">
+            <div class="col-md-6">
+                <div class="well">
+
+                    <div class="view overlay hm-white-slight">
+                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
+                        <a href="#">
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+
+                    <div class="well-block">
+                        <h4 class="well-title">Balance</h4>
+                        <p class="well-text">View your balance</p>
+                        <a ng-href="#/laptopCategory" class="btn default-color">View </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="well">
+
+                    <div class="view overlay hm-white-slight">
+                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
+                        <a href="#">
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+
+                    <div class="well-block">
+                        <h4 class="well-title">Rank</h4>
+                        <p class="well-text">Overdose on our tablets</p>
+                        <a ng-href="#/tabletCategory" class="btn default-color">Our range</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div ng-show="gameHistoryViewVisible" class="row">
+            <div class="col-md-6">
+                <div class="well">
+
+                    <div class="view overlay hm-white-slight">
+                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
+                        <a href="#">
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+
+                    <div class="well-block">
+                        <h4 class="well-title">Balance</h4>
+                        <p class="well-text">View your balance</p>
+                        <a ng-href="#/laptopCategory" class="btn default-color">View </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="well">
+
+                    <div class="view overlay hm-white-slight">
+                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
+                        <a href="#">
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+
+                    <div class="well-block">
+                        <h4 class="well-title">Rank</h4>
+                        <p class="well-text">Overdose on our tablets</p>
+                        <a ng-href="#/tabletCategory" class="btn default-color">Our range</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--gameHistory View End-->
+
+
+
+
+
+    </div>
+    <!--/.Main layout-->
+
+</main>
+
+
+
+
