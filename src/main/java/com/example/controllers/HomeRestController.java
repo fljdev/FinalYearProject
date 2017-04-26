@@ -2,12 +2,11 @@ package com.example.controllers;
 
 import com.example.entities.BankAccount;
 import com.example.entities.Rank;
+import com.example.entities.Trade;
+import com.example.entities.User;
 import com.example.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +65,13 @@ public class HomeRestController {
             accountBalances.add(b.getBalance());
         }
         return accountBalances;
+    }
+
+    @RequestMapping(value = "/numberOfSoloTrades", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public List<Trade> getAverageAccountBalance(@RequestBody int id) {
+        User user = iUserService.findById(id);
+        return iTradeService.findByUser(user);
     }
 
 
