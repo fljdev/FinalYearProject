@@ -27,16 +27,7 @@ angular.module('myApp.OnlineController',[]).
 
 
 
-    if($rootScope.currentUser){
-        $http.post('/api/user/findById', JSON.stringify($rootScope.currentUser.id))
-            .success(function (data, status) {
-                if(status = 200){
-                    $cookieStore.put('userCookie', data);
-                }
-            }).error(function (error) {
-            console.log("something went wrong in findById -> OnlineController!!");
-        });
-    }
+
 
     $scope.challenge = function(opponent,t,s){
         console.log(opponent,t,s);
@@ -71,27 +62,19 @@ angular.module('myApp.OnlineController',[]).
 
 
 
-    var name="";
-    if(!$cookieStore.get('userCookie')){
-        name = "xyz";
-    }else{
-        name = $cookieStore.get('userCookie').username
-    }
 
-    $scope.init = function(){
-        $http.post('/api/user/onlineUsers',$rootScope.currentUser)
-            .success(function (data, status) {
-                if(status = 200){
-                    //data will be equal to the arraylist returned by the UserRestController onlineUsers method
-                    $scope.online = data;
-                }
-            }).error(function (error) {
-            console.log("something went wrong!!");
-        });
-    };
-    $scope.init();
+ 
 
 
+    $http.post('/api/user/onlineUsers',$rootScope.currentUser)
+        .success(function (data, status) {
+            if(status = 200){
+                //data will be equal to the arraylist returned by the UserRestController onlineUsers method
+                $scope.online = data;
+            }
+        }).error(function (error) {
+        console.log("something went wrong!!");
+    });
     /**
      * Challenger game timer area
      */
@@ -112,7 +95,7 @@ angular.module('myApp.OnlineController',[]).
         });
 
     };
-    var promise = $interval( function(){ $scope.waitForReply($scope.challID); }, 3000);
+    var promise = $interval( function(){ $scope.waitForReply($scope.challID); }, 5000);
 
 
     $scope.startTimer = function(duration){
