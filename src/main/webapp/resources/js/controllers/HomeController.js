@@ -21,25 +21,34 @@ angular.module('myApp.HomeController',[]).
     $scope.setUser();
 
 
-    $scope.counter = 0;
-    $scope.onTimeout = function(){
-        $scope.counter++;
-        mytimeout = $timeout($scope.onTimeout,1000);
-    }
-    var mytimeout = $timeout($scope.onTimeout,1000);
+    $scope.personalViewVisible = true;
+    $scope.personalView = function(){
+        console.log("personal tab");
+        $scope.personalViewVisible = true;
+        $scope.soloHistoryViewVisible = false;
+        $scope.gameHistoryViewVisible = false;
+    };
 
-    $scope.stop = function(){
-        $timeout.cancel(mytimeout);
-    }
+    $scope.soloHistoryView = function(){
+        console.log("solo tab");
+        $scope.soloHistoryViewVisible = true;
+        $scope.personalViewVisible = false;
+        $scope.gameHistoryViewVisible = false;
+    };
+    $scope.gameHistoryView = function(){
+        console.log("game tab");
+        $scope.gameHistoryViewVisible = true;
+        $scope.personalViewVisible = false;
+        $scope.soloHistoryViewVisible = false;
+    };
 
 
-})
-.filter('toMinSec', function(){
-    return function(input){
-        var minutes = parseInt(input/60, 10);
-        var seconds = input%60;
 
-        return minutes+' mins'+(seconds ? ' and '+seconds+' secs' : '');
-    }
+
+
+
+
+
+
 });
 
