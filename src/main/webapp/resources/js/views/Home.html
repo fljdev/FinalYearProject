@@ -56,8 +56,9 @@
                     </div>
 
                     <div class="well-block">
-                        <h4 class="well-title">Balance</h4>
-                        <p class="well-text">View your balance</p>
+                        <h4 class="well-title"></h4>
+                        <h2>Average A/C Balance: ${{averageBalance.toFixed(2) | number : fractionSize}}</h2>
+                        <h2>Your Balance : ${{$root.currentUser.account.balance.toFixed(2) | number : fractionSize}}</h2>
                         <a ng-href="#/laptopCategory" class="btn default-color">View </a>
                     </div>
 
