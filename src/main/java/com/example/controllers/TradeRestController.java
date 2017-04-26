@@ -144,16 +144,10 @@ public class TradeRestController {
     @RequestMapping(value ="/watchForChanges", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public User watchChanges(@RequestBody String userJson)throws Exception{
-        System.out.println("got in anyway...");
         JSONObject jsonObject = new JSONObject(userJson);
-
-
         live(userJson);
         totalProfit(userJson);
-
         User user = iUserService.findById(jsonObject.getInt("id"));
-
-
         return user;
     }
 
