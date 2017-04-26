@@ -80,7 +80,7 @@ controller('StatsController',function($scope, $stateParams, $cookieStore, $http,
     $timeout (function(){
         $scope.result = ["won","lost"];
         $scope.number = [$scope.victoriesList.length, $scope.lossesList.length];
-    }, 1000);
+    }, 1500);
 
 
     $scope.options = {

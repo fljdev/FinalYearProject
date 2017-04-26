@@ -95,7 +95,7 @@ angular.module('myApp.OnlineController',[]).
         });
 
     };
-    var promise = $interval( function(){ $scope.waitForReply($scope.challID); }, 5000);
+    var promise = $interval( function(){ $scope.waitForReply($scope.challID); }, 10000);
 
 
     $scope.startTimer = function(duration){
@@ -125,7 +125,7 @@ angular.module('myApp.OnlineController',[]).
             swal({
                 title: msg,
                 text: 'Thanks for playing',
-                timer: 2000
+                timer: 4000
             });
         }
     };

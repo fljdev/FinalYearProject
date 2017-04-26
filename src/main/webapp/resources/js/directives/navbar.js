@@ -48,7 +48,7 @@ directive('navheader', function($cookieStore, $state, $http,$rootScope,$interval
                     console.log("something went wrong in recievedChallenged !!");
                 });
             }//end function
-            $interval( function(){ $scope.findChallenges(); }, 5000);
+            $interval( function(){ $scope.findChallenges(); }, 10000);
 
 
 

@@ -37,7 +37,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             console.log("something went wrong in  watchForChanges()!!");
         });
     };
-    $interval( function(){ $scope.watchForChanges($rootScope.currentUser); }, 5000);
+    $interval( function(){ $scope.watchForChanges($rootScope.currentUser); }, 10000);
 
     $scope.getPairs = function(){
         $http.get('/api/trade/pairs')
@@ -98,7 +98,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
     $scope.showOpenTrades();
-    $interval( function(){ $scope.showOpenTrades(); }, 5000);
+    $interval( function(){ $scope.showOpenTrades(); }, 10000);
 
     $scope.checkForOpenGameTrades= function (pair) {
         function findPair(currentPair) {
@@ -113,7 +113,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
     $scope.showOpenGameTrades();
-    $interval( function(){ $scope.showOpenGameTrades(); }, 5000);
+    $interval( function(){ $scope.showOpenGameTrades(); }, 10000);
 
 
     /**
@@ -387,7 +387,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
 
                     $scope.xID =data.id;
 
-                    $scope.tradeChart($scope.xID);
+                    // $scope.tradeChart($scope.xID);
 
                 }
             }).error(function (error) {
@@ -413,7 +413,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     //         console.log("something went wrong in findLiveTradeInfoObjectByTradeID");
     //     });
     // };
-    // $interval( function(){ $scope.tradeChart($scope.xID); }, 5000);
+    // $interval( function(){ $scope.tradeChart($scope.xID); }, 10000);
 
 
     $scope.updateEachTrade = function(){

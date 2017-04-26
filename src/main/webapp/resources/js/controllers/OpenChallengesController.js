@@ -121,7 +121,7 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
                 swal({
                     title: msg,
                     text: 'Thanks for playing',
-                    timer: 2000
+                    timer: 4000
                 });
             };
         };
