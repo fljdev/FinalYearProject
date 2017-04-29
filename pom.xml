@@ -84,8 +84,20 @@
 			<version>1.8.3</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.solovyev/common-collections-multiset -->
+		<dependency>
+			<groupId>org.solovyev</groupId>
+			<artifactId>common-collections-multiset</artifactId>
+			<version>1.0.7</version>
+		</dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
+        </dependency>
 
-	</dependencies>
+
+    </dependencies>
 
 	<build>
 		<plugins>

@@ -62,12 +62,72 @@ angular.module('myApp.HomeController',[]).
         console.log("something went wrong in /api/home/numberOfSoloTrades!!");
     });
 
+    $http.post('/api/home/soloTradeProfit', $rootScope.currentUser.id)
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.soloTradeProfit = data;
+                console.log("solo trade profit ",$scope.soloTradeProfit)
+            }}).error(function (error) {
+        console.log("something went wrong in /api/home/soloTradeProfit!!");
+    });
+
+    $http.post('/api/home/soloTradeLoss', $rootScope.currentUser.id)
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.soloTradeLoss = data;
+                console.log("solo trade loss ",$scope.soloTradeLoss)
+
+            }}).error(function (error) {
+        console.log("something went wrong in /api/home/soloTradeLoss!!");
+    });
+
+    $http.post('/api/home/largestSoloTrade', $rootScope.currentUser.id)
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.largestSoloTrade = data;
+                console.log("largestSoloTrade ",$scope.largestSoloTrade)
+
+            }}).error(function (error) {
+        console.log("something went wrong in /api/home/soloTradeLoss!!");
+    });
+
+
+    $http.post('/api/home/favPair', $rootScope.currentUser.id)
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.favPair = data;
+                console.log("favPair ",$scope.favPair)
+
+            }}).error(function (error) {
+        console.log("something went wrong in /api/home/favPair!!");
+    });
+
+
+
     $http.post('/api/home/numberOfGameTrades', $rootScope.currentUser.id)
         .success(function (data, status) {
             if(status = 200){
                 $scope.numberOfGameTrades = data;
             }}).error(function (error) {
         console.log("something went wrong in /api/home/numberOfGameTrades!!");
+    });
+
+    $http.post('/api/home/gameProfit', $rootScope.currentUser.id)
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.gameProfit = data;
+                console.log("game profit ",$scope.gameProfit);
+            }}).error(function (error) {
+        console.log("something went wrong in /api/home/gameProfit!!");
+    });
+
+    $http.post('/api/home/gameLoss', $rootScope.currentUser.id)
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.gameLoss = data;
+                console.log("game loss ",$scope.gameLoss);
+            }}).error(function (error) {
+        console.log("something went wrong in /api/home/gameLoss!!");
     });
 
 

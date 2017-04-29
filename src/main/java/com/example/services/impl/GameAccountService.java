@@ -44,4 +44,9 @@ public class GameAccountService implements IGameAccountService {
     }
 
 
+    @Override
+    public List<GameAccount> findByUser(User user) {
+
+        return gameAccountDAO.findByUser(user);
+    }
 }
