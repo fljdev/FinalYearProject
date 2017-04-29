@@ -25,6 +25,7 @@ public class LiveTradeInfoService implements ILiveTradeInfoService {
         this.liveTradeInfoDAO = dao;
     }
 
+
     @Override
     public List<LiveTradeInfo> getAllLiveTradeInfo() {
         return liveTradeInfoDAO.findAll();

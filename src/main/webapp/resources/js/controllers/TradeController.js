@@ -37,7 +37,19 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             console.log("something went wrong in  watchForChanges()!!");
         });
     };
-    $interval( function(){ $scope.watchForChanges($rootScope.currentUser); }, 10000);
+
+    $scope.watchForChangesInterval = function () {
+        var promise = $interval(function () {
+            if($state.current.name=="trade") {
+                $scope.watchForChanges($rootScope.currentUser);
+            }else {
+                $interval.cancel(promise);
+            }
+        }, 1000);
+
+    };
+
+    $scope.watchForChangesInterval();
 
     $scope.getPairs = function(){
         $http.get('/api/trade/pairs')
@@ -98,7 +110,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
     $scope.showOpenTrades();
-    $interval( function(){ $scope.showOpenTrades(); }, 10000);
+    $interval( function(){ $scope.showOpenTrades(); }, 5000);
 
     $scope.checkForOpenGameTrades= function (pair) {
         function findPair(currentPair) {
@@ -113,15 +125,15 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
     $scope.showOpenGameTrades();
-    $interval( function(){ $scope.showOpenGameTrades(); }, 10000);
+    $interval( function(){ $scope.showOpenGameTrades(); }, 5000);
 
 
     /**
      * Increment/Decrement function (No Problems with these)
      */
     var max = 10000000;
-    var min = 10000;
-    $scope.positionUnits = 1000000;
+    var min = 50000;
+    $scope.positionUnits = 2000000;
     $scope.leverage = 200;
     $scope.preTradeMarginRequiredTradedCurrency = $scope.positionUnits/$scope.leverage;
     $scope.preTradeMarginRequiredTradedCurrencyView = $scope.preTradeMarginRequiredTradedCurrency.toFixed(2);
@@ -130,7 +142,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.increment = function() {
 
         if ($scope.positionUnits >= max) { return; }
-        $scope.positionUnits +=10000;
+        $scope.positionUnits +=50000;
 
         $scope.preTradeMarginRequiredTradedCurrency = $scope.positionUnits/$scope.leverage;
         $scope.preTradeMarginRequiredTradedCurrencyView = $scope.preTradeMarginRequiredTradedCurrency.toFixed(2);
@@ -143,7 +155,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     $scope.decrement = function() {
 
         if ($scope.positionUnits <= min) { return; }
-        $scope.positionUnits -=10000;
+        $scope.positionUnits -=50000;
 
         /**
          * Based on users chosen positionUnits size, I will calc the amount of margin required
@@ -413,7 +425,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     //         console.log("something went wrong in findLiveTradeInfoObjectByTradeID");
     //     });
     // };
-    // $interval( function(){ $scope.tradeChart($scope.xID); }, 10000);
+    // $interval( function(){ $scope.tradeChart($scope.xID); }, 5000);
 
 
     $scope.updateEachTrade = function(){

@@ -1,9 +1,6 @@
 package com.example.controllers;
 
-import com.example.entities.BankAccount;
-import com.example.entities.Rank;
-import com.example.entities.Trade;
-import com.example.entities.User;
+import com.example.entities.*;
 import com.example.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -69,10 +66,16 @@ public class HomeRestController {
 
     @RequestMapping(value = "/numberOfSoloTrades", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public List<Trade> getAverageAccountBalance(@RequestBody int id) {
+    public List<Trade> getNumberOfSoloTrades(@RequestBody int id) {
         User user = iUserService.findById(id);
         return iTradeService.findByUser(user);
     }
 
+    @RequestMapping(value = "/numberOfGameTrades", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public List<Challenge> getNumberOfGameTrades(@RequestBody int id) {
+        User user = iUserService.findById(id);
+        return iChallengeService.getAllChallengesUserInvolvedIn(user);
+    }
 
 }

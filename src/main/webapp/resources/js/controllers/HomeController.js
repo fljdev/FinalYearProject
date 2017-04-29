@@ -63,6 +63,15 @@ angular.module('myApp.HomeController',[]).
         console.log("something went wrong in /api/home/numberOfSoloTrades!!");
     });
 
+    $http.post('/api/home/numberOfGameTrades', $rootScope.currentUser.id)
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.numberOfGameTrades = data.length;
+
+            }}).error(function (error) {
+        console.log("something went wrong in /api/home/numberOfGameTrades!!");
+    });
+
 
 
 

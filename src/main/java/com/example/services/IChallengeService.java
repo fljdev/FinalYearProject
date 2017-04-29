@@ -14,6 +14,8 @@ public interface IChallengeService {
     List<Challenge> getAllChallenges();
     List<Challenge> getAllChallengesSent(User user);
     List<Challenge> getAllChallengesRecieved(User user);
+
+    List<Challenge> getAllChallengesUserInvolvedIn(User user);
     Challenge deleteChallenge(Challenge challenge);
 
     Challenge findById(int id);

@@ -95,7 +95,7 @@ angular.module('myApp.OnlineController',[]).
         });
 
     };
-    var promise = $interval( function(){ $scope.waitForReply($scope.challID); }, 10000);
+    var promise = $interval( function(){ $scope.waitForReply($scope.challID); }, 5000);
 
 
     $scope.startTimer = function(duration){
