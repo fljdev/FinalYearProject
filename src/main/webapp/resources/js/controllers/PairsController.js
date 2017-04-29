@@ -30,6 +30,6 @@ controller('PairsController', function($scope,$http,$interval,$rootScope,$cookie
             console.log("something went wrong in the pairs controller init function!!");
         });
     }
-    $interval( function(){ $scope.init(); }, 10000);
+    $interval( function(){ $scope.init(); }, 5000);
 
 });

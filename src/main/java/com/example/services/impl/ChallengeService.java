@@ -70,4 +70,15 @@ public class ChallengeService implements IChallengeService{
         }
         return recieved;
     }
+
+    @Override
+    public List<Challenge> getAllChallengesUserInvolvedIn(User user) {
+        List<Challenge> allChallenges = new ArrayList<>();
+        for(Challenge c : challengeDAO.findAll()){
+            if(c.getChallengerId()==user.getId() || c.getOpponentId()==user.getId()){
+                allChallenges.add(c);
+            }
+        }
+        return allChallenges;
+    }
 }
