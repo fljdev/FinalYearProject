@@ -2,11 +2,11 @@ package com.example.controllers;
 
 import com.example.entities.*;
 import com.example.services.*;
+import com.google.common.collect.Multiset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by admin on 26/04/2017.
@@ -78,6 +78,61 @@ public class HomeRestController {
             }}
         return soloTradeCount;
     }
+    @RequestMapping(value = "/soloTradeProfit", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public double soloTradeProfit(@RequestBody int id) {
+        User user = iUserService.findById(id);
+        double soloTradeProfit=0;
+        for (Trade t : iTradeService.findByUser(user)){
+            if(t.getClosingProfitLoss()>0){
+                soloTradeProfit+=t.getClosingProfitLoss();
+            }
+        }
+        return soloTradeProfit;
+    }
+    @RequestMapping(value = "/soloTradeLoss", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public double soloTradeLoss(@RequestBody int id) {
+        User user = iUserService.findById(id);
+        double soloTradeLoss=0;
+        for (Trade t : iTradeService.findByUser(user)){
+            if(t.getClosingProfitLoss()<0){
+                soloTradeLoss+=t.getClosingProfitLoss();
+            }
+        }
+        return soloTradeLoss;
+    }
+
+    @RequestMapping(value = "/largestSoloTrade", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public double largestSoloTrade(@RequestBody int id) {
+        Set<Double> tradeAmounts = new HashSet<>();
+        for (Trade t : iTradeService.findByUser(iUserService.findById(id))){
+          tradeAmounts.add(t.getPositionUnits());
+        }
+        return Collections.max(tradeAmounts);
+    }
+
+    @RequestMapping(value = "/favPair", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public String favPair(@RequestBody int id) {
+        List<String>pairs=new ArrayList<>();
+
+        for (Trade t : iTradeService.findByUser(iUserService.findById(id))){
+            pairs.add(t.getCurrencyPairOpen().getSymbols());
+        }
+
+        int hightest = 0;
+
+        for(String t : pairs){
+
+        }
+
+
+
+
+        return "";
+    }
 
 
 
@@ -96,5 +151,33 @@ public class HomeRestController {
 
         return gameTradeCount;
     }
+    @RequestMapping(value = "/gameProfit", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public double gameProfit(@RequestBody int id) {
+        User user = iUserService.findById(id);
+        double win=0;
+        for(Result r : iResultService.findByUser(user)){
+            if(r.getWinner()==user){
+                win+=r.getPrize();
+            }
+        }
+        return win;
+    }
+
+
+    @RequestMapping(value = "/gameLoss", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public double gameLoss(@RequestBody int id) {
+        User user = iUserService.findById(id);
+        double loss=0;
+        for(Result r : iResultService.findByUser(user)){
+            if(r.getLoser()==user){
+                loss+=r.getPrize();
+            }
+        }
+        return loss;
+    }
+
+
 
 }
