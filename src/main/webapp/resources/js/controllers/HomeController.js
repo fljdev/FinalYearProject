@@ -57,7 +57,8 @@ angular.module('myApp.HomeController',[]).
     $http.post('/api/home/numberOfSoloTrades', $rootScope.currentUser.id)
         .success(function (data, status) {
             if(status = 200){
-                $scope.numberOfSoloTrades = data.length;
+                console.log(" /numberOfSoloTrades returned ",data);
+                $scope.numberOfSoloTrades = data;
 
             }}).error(function (error) {
         console.log("something went wrong in /api/home/numberOfSoloTrades!!");

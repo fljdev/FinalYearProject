@@ -66,9 +66,12 @@ public class HomeRestController {
 
     @RequestMapping(value = "/numberOfSoloTrades", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public List<Trade> getNumberOfSoloTrades(@RequestBody int id) {
+    public double getNumberOfSoloTrades(@RequestBody int id) {
         User user = iUserService.findById(id);
-        return iTradeService.findByUser(user);
+
+        double soloTradeCount = iTradeService.findByUser(user).size();
+        System.out.println("xxxxx solo trades "+soloTradeCount);
+        return soloTradeCount;
     }
 
     @RequestMapping(value = "/numberOfGameTrades", method = RequestMethod.POST, produces = "application/json")
