@@ -69,16 +69,32 @@ public class HomeRestController {
     public double getNumberOfSoloTrades(@RequestBody int id) {
         User user = iUserService.findById(id);
 
-        double soloTradeCount = iTradeService.findByUser(user).size();
-        System.out.println("xxxxx solo trades "+soloTradeCount);
+        List<Trade> soloTrades = iTradeService.findByUser(user);
+
+        double soloTradeCount = 0;
+        for(Trade t : soloTrades){
+            if(t.getChallenge()==null){
+                soloTradeCount++;
+            }}
         return soloTradeCount;
     }
 
+
+
     @RequestMapping(value = "/numberOfGameTrades", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public List<Challenge> getNumberOfGameTrades(@RequestBody int id) {
+    public double getNumberOfGameTrades(@RequestBody int id) {
         User user = iUserService.findById(id);
-        return iChallengeService.getAllChallengesUserInvolvedIn(user);
+
+        List<Trade> gameTrades = iTradeService.findByUser(user);
+
+        double gameTradeCount = 0;
+        for(Trade t : gameTrades){
+            if(t.getChallenge()!=null){
+                gameTradeCount++;
+            }}
+
+        return gameTradeCount;
     }
 
 }
