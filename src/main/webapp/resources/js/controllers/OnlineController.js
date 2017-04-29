@@ -26,6 +26,7 @@ angular.module('myApp.OnlineController',[]).
     $scope.selectedStake = 1000;
 
 
+    $scope.challengeSent = false;
 
 
 
@@ -45,8 +46,11 @@ angular.module('myApp.OnlineController',[]).
                     console.log($rootScope.currentUser.username,"vs",opponent.username,"Challenge Saved");
                     console.log(data);
                     $scope.challID = data.id;
-                    $scope.waitForReply($scope.challID);
+                    // $scope.waitForReply($scope.challID);
+                    $scope.waitForReplyInterval($scope.challID);
                     $scope.startChallengeValidTimer();
+
+                    $scope.challengeSent = true;
 
                     var msg = "Your Challenge to "+opponent.username+" was sent";
                     swal(msg,"Wait for their response","success");
@@ -69,7 +73,6 @@ angular.module('myApp.OnlineController',[]).
     $http.post('/api/user/onlineUsers',$rootScope.currentUser)
         .success(function (data, status) {
             if(status = 200){
-                //data will be equal to the arraylist returned by the UserRestController onlineUsers method
                 $scope.online = data;
             }
         }).error(function (error) {
@@ -79,23 +82,39 @@ angular.module('myApp.OnlineController',[]).
      * Challenger game timer area
      */
 
-    $scope.waitForReply = function(id){
-        $http.post('/api/challenge/waitForReply',id)
-            .success(function (data, status) {
-                if(status = 200){
 
-                    if(data.accepted){
-                        $scope.startTimer(data.duration);
-                        $state.go('trade',{challengeID: data.id});
-                        $interval.cancel(promise);
+        $scope.waitForReply = function(id){
+            $http.post('/api/challenge/waitForReply',id)
+                .success(function (data, status) {
+                    if(status = 200){
+
+                        if(data.accepted){
+
+                            $scope.startTimer(data.duration);
+                            $state.go('trade',{challengeID: data.id});
+                            $interval.cancel(promise);
+                        }
                     }
-                }
-            }).error(function (error) {
-            console.log("something went wrong in waitForReply!!");
-        });
+                }).error(function (error) {
+                console.log("something went wrong in /api/challenge/waitForReply'!!");
+            });
 
+        };
+        // var promise = $interval( function(){ $scope.waitForReply($scope.challID); }, 5000);
+
+
+    $scope.waitForReplyInterval = function(id){
+        var promise = $interval(function () {
+
+            if($scope.challengeSent==true ){
+                $scope.waitForReply(id);
+            }else{
+                $interval.cancel(promise);
+            }
+        }, 1000);
     };
-    var promise = $interval( function(){ $scope.waitForReply($scope.challID); }, 5000);
+
+
 
 
     $scope.startTimer = function(duration){

@@ -40,9 +40,8 @@ public class Challenge {
     private String challengeWithdrawen;
 
     private double challengerProfit;
+
     private double opponentProfit;
-
-
 
     private boolean accepted;
 
