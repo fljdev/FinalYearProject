@@ -8,57 +8,64 @@
     </div>
     <div class="row">
 
-        <div class="col-md-4">
-            <div align="center">
-            <img src="../../../resources/img/sent.png"  height="142" width="242">
-            </div>
+        <!--<div class="col-md-4">-->
+            <!--<div align="center">-->
+            <!--<img src="../../../resources/img/sent.png"  height="142" width="242">-->
+            <!--</div>-->
 
-            <table >
-            <thead>
-            <tr>
-            <th bgcolor="#4286f4"></th>
-            <th bgcolor="#4286f4">Opponent</th>
-            <th>Time</th>
-            <th>Duration</th>
-            <th>Stake</th>
-            <th>Status</th>
+            <!--<table >-->
+            <!--<thead>-->
+            <!--<tr>-->
+            <!--<th bgcolor="#4286f4"></th>-->
+            <!--<th bgcolor="#4286f4">Opponent</th>-->
+            <!--<th>Time</th>-->
+            <!--<th>Duration</th>-->
+            <!--<th>Stake</th>-->
+            <!--<th>Status</th>-->
 
-            <th>Option</th>
-            </tr>
-            </thead>
+            <!--<th>Option</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
 
-            <tbody>
-            <tr ng-repeat="x in sentChallenges" >
+            <!--<tbody>-->
+            <!--<tr ng-repeat="x in sentChallenges" >-->
 
-            <td>Sent to</td>
-            <td>{{x.opponentName}}</td>
-            <td>{{x.challengeSent}}</td>
-            <td>{{x.duration}}</td>
-            <td>{{x.stake}}</td>
-            <td ng-if="!x.withdrawen && !x.declined && !x.accepted">{{"Open"}}</td>
-            <td ng-if="x.withdrawen">{{"Withdrawen"}}</td>
-            <td ng-if="x.declined">{{"Declined"}}</td>
-            <td ng-if="x.accepted">{{"Game is ON!!"}}</td>
+            <!--<td>Sent to</td>-->
+            <!--<td>{{x.opponentName}}</td>-->
+            <!--<td>{{x.challengeSent}}</td>-->
+            <!--<td>{{x.duration}}</td>-->
+            <!--<td>{{x.stake}}</td>-->
+            <!--<td ng-if="!x.withdrawen && !x.declined && !x.accepted">{{"Open"}}</td>-->
+            <!--<td ng-if="x.withdrawen">{{"Withdrawen"}}</td>-->
+            <!--<td ng-if="x.declined">{{"Declined"}}</td>-->
+            <!--<td ng-if="x.accepted">{{"Game is ON!!"}}</td>-->
 
-            <td ng-show="!x.withdrawen && !x.declined && !x.accepted"><button ng-click="withdraw(x)" class="btn btn-danger">Withdraw Challenge</button></td>
-            <!--<td ng-show="x.withdrawen"><button ng-click="withdraw(x)" class="btn btn-success">Re-Challenge</button></td>-->
-            <!--<td ng-show="x.withdrawen || x.declined"><button ng-click="findMore()" class="btn btn-info">Find More Users</button></td>-->
+            <!--<td ng-show="!x.withdrawen && !x.declined && !x.accepted"><button ng-click="withdraw(x)" class="btn btn-danger">Withdraw Challenge</button></td>-->
+            <!--&lt;!&ndash;<td ng-show="x.withdrawen"><button ng-click="withdraw(x)" class="btn btn-success">Re-Challenge</button></td>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td ng-show="x.withdrawen || x.declined"><button ng-click="findMore()" class="btn btn-info">Find More Users</button></td>&ndash;&gt;-->
 
 
-            </tr>
-            </tbody>
+            <!--</tr>-->
+            <!--</tbody>-->
 
-            </table>
+            <!--</table>-->
+        <!--</div>-->
+
+        <div class="col-md-12">
         </div>
 
-        <div class="col-md-4">
+        <div ng-show='liveIncoming' class="panel-heading">
+            <h1 align="center"><b>You have {{$root.challengeValidTime | toMinSec}} remaining to accept</b></h1>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-12">
             <div align="center">
-            <img src="../../../resources/img/received.png" alt="Smiley face" height="142" width="242">
+            <!--<img src="../../../resources/img/received.png" alt="Smiley face" height="142" width="242">-->
+                <h1>Incoming Challenges</h1>
             </div>
-            <table class="floatedTableRight" >
+
+
+            <table align="center" >
             <thead>
             <tr>
             <th></th>
@@ -73,7 +80,7 @@
             </thead>
 
             <tbody>
-            <tr ng-repeat="x in challengesRecieved" >
+            <tr ng-repeat="x in liveChallenge" >
 
             <td>From</td>
             <td>{{x.challengerName}}</td>

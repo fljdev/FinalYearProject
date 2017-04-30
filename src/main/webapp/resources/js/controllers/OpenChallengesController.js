@@ -22,22 +22,31 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
 
 
     $scope.init = function(){
-        $http.post('/api/challenge/challengesSent',$rootScope.currentUser)
-            .success(function (data, status) {
-                if(status = 200){
-                    $scope.sentChallenges = data;
-                }
-            }).error(function (error) {
-            console.log("something went wrong in challengesSent !!");
-        });
+        // $http.post('/api/challenge/challengesSent',$rootScope.currentUser)
+        //     .success(function (data, status) {
+        //         if(status = 200){
+        //             $scope.sentChallenges = data;
+        //         }
+        //     }).error(function (error) {
+        //     console.log("something went wrong in challengesSent !!");
+        // });
 
-        $http.post('/api/challenge/challengesRecieved',$rootScope.currentUser)
+        // $http.post('/api/challenge/challengesRecieved',$rootScope.currentUser)
+        //     .success(function (data, status) {
+        //         if(status = 200){
+        //             $scope.challengesRecieved = data;
+        //         }
+        //     }).error(function (error) {
+        //     console.log("something went wrong in recievedChallenged !!");
+        // });
+
+        $http.post('/api/challenge/liveChallenge',$rootScope.currentUser)
             .success(function (data, status) {
                 if(status = 200){
-                    $scope.challengesRecieved = data;
+                    $scope.liveChallenge = data;
                 }
             }).error(function (error) {
-            console.log("something went wrong in recievedChallenged !!");
+            console.log("something went wrong in liveChallenge !!");
         });
     }//end function
     $scope.init();
@@ -70,7 +79,7 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
             if(status = 200){
 
                 console.log("x.id was no ",obj.id);
-                console.log("withdraw challenge worked");
+                console.log("decline challenge worked");
             }
         }).error(function (error) {
             console.log("something went wrong in withdraw challenge!!");
@@ -81,12 +90,10 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
     $scope.accept = function(x){
 
 
-        console.log("challenge that was accepted : ",x);
         $http.post('/api/challenge/acceptChallenge',x.id)
             .success(function (data, status) {
                 if(status = 200){
-                    var name = x.challengerName + " Vs " + x.opponentName;
-                    console.log("x.id was no ",x.id);
+                    var name = x.challenger.firstName + " Vs " + x.opponent.firstName;
                     swal("Let's Trade",name,"success");
                     $rootScope.openChallengesCount--;
 
@@ -145,4 +152,47 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
     // $scope.playNow = function(x){
     //     $state.go('trade',{challengeID: x.id});
     // }
+
+
+    $scope.liveIncoming = true;
+
+    $rootScope.challengeValidTime=10;
+    var x = 10;
+    $scope.startChallengeValidTimer = function(){
+        console.log("in here");
+        $scope.onTimeout = function(){
+            $rootScope.challengeValidTime--;
+            mytimeout = $timeout($scope.onTimeout,1000);
+
+
+            if($rootScope.challengeValidTime==0){
+                $scope.stop();
+            }
+        };
+        var mytimeout = $timeout($scope.onTimeout,1000);
+        $scope.stop = function(){
+            $timeout.cancel(mytimeout);
+            swal("Challenge not accepted","They Chickened Out!","error");
+            $http.post('/api/challenge/declineChallenge',$rootScope.currentUser.id)
+                .success(function (data, status) {
+                    if(status = 200){
+                        $scope.liveIncoming = false;
+                        $rootScope.challengeValidTime=10;
+                        swal("You refused this challenge","your loss!","error");
+
+                    }
+                }).error(function (error) {
+                console.log("something went wrong in withdrawMyChallenge!!");
+            });
+        }
+    };
+
+    $scope.startChallengeValidTimer();
+
+})  .filter('toMinSec', function(){
+    return function(input){
+        var minutes = parseInt(input/60, 10);
+        var seconds = input%60;
+        return minutes+' mins'+(seconds ? ' and '+seconds+' seconds' : '');
+    }
 });
