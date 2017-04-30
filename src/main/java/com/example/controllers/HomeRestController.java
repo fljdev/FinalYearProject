@@ -64,6 +64,31 @@ public class HomeRestController {
         return accountBalances;
     }
 
+    @RequestMapping(value = "/averageSoloTrade", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public double averageSoloTrade() {
+
+        double total = 0;
+        for(Trade t: iTradeService.getAllTrades()){
+            total+=t.getPositionUnits();
+        }
+        double average = total / iTradeService.getAllTrades().size();
+        return average;
+    }
+
+    @RequestMapping(value = "/largestSoloTradeByAllUsers", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public double largestSoloTradeByAllUsers() {
+
+        ArrayList<Double>allTrades = new ArrayList<>();
+        for(Trade t : iTradeService.getAllTrades()){
+            allTrades.add(t.getPositionUnits());
+        }
+
+
+        return Collections.max(allTrades);
+    }
+
     @RequestMapping(value = "/numberOfSoloTrades", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public double getNumberOfSoloTrades(@RequestBody int id) {
@@ -128,9 +153,6 @@ public class HomeRestController {
 
         }
 
-
-
-
         return "";
     }
 
@@ -151,6 +173,15 @@ public class HomeRestController {
 
         return gameTradeCount;
     }
+
+    @RequestMapping(value = "/getAllChallengesUserInvolvedIn", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public double getAllChallengesUserInvolvedIn(@RequestBody int id) {
+        User user = iUserService.findById(id);
+        return iChallengeService.getAllChallengesUserInvolvedIn(user).size();
+    }
+
+
     @RequestMapping(value = "/gameProfit", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public double gameProfit(@RequestBody int id) {

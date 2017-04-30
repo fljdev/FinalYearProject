@@ -138,18 +138,19 @@
             <div class="col-md-6">
                 <div class="well">
 
-                    <div class="view overlay hm-white-slight">
-                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
-                        <a href="#">
-                            <div class="mask"></div>
-                        </a>
-                    </div>
+                    <!--<div class="view overlay hm-white-slight">-->
+                        <!--<img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">-->
+                        <!--<a href="#">-->
+                            <!--<div class="mask"></div>-->
+                        <!--</a>-->
+                    <!--</div>-->
 
                     <div class="well-block">
-                        <h4 class="well-title">NO. OF SOLO TRADES {{numberOfSoloTrades}}</h4>
-                        <p class="well-text">HOW MUCH DID YOU PLAY THE MARKETS</p>
-                        <a ng-href="#/laptopCategory" class="btn default-color"></a>
-                    </div>
+                        <h1 align="center">Position Size Comparison!</h1>
+                    <canvas id="barPositionSizeStats" class="chart chart-bar"
+                            chart-data="positionSizeData" chart-labels="positionSizeLabels" chart-options="options" height="220px">
+                    </canvas>
+                        </div>
 
                 </div>
             </div>
@@ -182,17 +183,11 @@
             <div class="col-md-6">
                 <div class="well">
 
-                    <div class="view overlay hm-white-slight">
-                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
-                        <a href="#">
-                            <div class="mask"></div>
-                        </a>
-                    </div>
 
-                    <div class="well-block">
+
+                    <div class="well-block" style="height:220px " style="width:620px" >
                         <h4 class="well-title">FAVOURITE TRADE</h4>
                         <p class="well-text">Which Pair, Long or Short?</p>
-                        <a ng-href="#/laptopCategory" class="btn default-color"></a>
                     </div>
 
                 </div>
@@ -200,19 +195,8 @@
 
             <div class="col-md-6">
                 <div class="well">
-
-                    <div class="view overlay hm-white-slight">
-                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
-                        <a href="#">
-                            <div class="mask"></div>
-                        </a>
-                    </div>
-
-                    <div class="well-block">
-                        <h4 class="well-title">LARGEST TRADE</h4>
-                        <p class="well-text">How exposed where you?</p>
-                        <a ng-href="#/tabletCategory" class="btn default-color"></a>
-                    </div>
+                    <h1 class="well-title">LARGEST TRADE : {{largestSoloTrade | number : fractionSize}}</h1>
+                    <h1 class="well-title">Margin you put up :  ${{largestSoloTrade/200 | number : fractionSize}}</h1>
 
                 </div>
             </div>
@@ -239,9 +223,9 @@
                     </div>
 
                     <div class="well-block">
-                        <h1 class="well-title">You played {{numberOfGameTrades}} games!</h1>
-                        <!--<p class="well-text">how busy where you?</p>-->
-                        <a ng-href="#/laptopCategory" class="btn default-color"></a>
+                        <h1 class="well-title">Played in {{getAllChallengesUserInvolvedIn}} Games!</h1>
+
+                        <h1 class="well-title">You made {{numberOfGameTrades}} in In Game Trades!</h1>
                     </div>
 
                 </div>
@@ -250,18 +234,11 @@
             <div class="col-md-6">
                 <div class="well">
 
-                    <!--<div class="view overlay hm-white-slight">-->
-                        <!--<img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">-->
-                        <!--<a href="#">-->
-                            <!--<div class="mask"></div>-->
-                        <!--</a>-->
-                    <!--</div>-->
+
 
                     <div class="well-block">
                         <h1 align="center">Game Profit Vs Loss at a Glance!</h1>
-                        <!--<h4 class="well-title">NET PROFIT AND LOSS</h4>-->
-                        <!--<p class="well-text">are you up or down?</p>-->
-                        <!--<a ng-href="#/tabletCategory" class="btn default-color"></a>-->
+
                         <canvas id="barGameProfitLoss" class="chart chart-bar"
                                 chart-data="gameTradeProfitLossData" chart-labels="gameTradeProfitLossLabels" chart-options="options" height="220px">
                         </canvas>
@@ -285,7 +262,6 @@
                     <div class="well-block">
                         <h4 class="well-title">TOTAL WINNINGS/LOSSES</h4>
                         <p class="well-text">Can you steal the game stakes?</p>
-                        <a ng-href="#/laptopCategory" class="btn default-color"></a>
                     </div>
 
                 </div>
@@ -304,7 +280,6 @@
                     <div class="well-block">
                         <h4 class="well-title">CHALLENGES ACCEPTES/DECLINES</h4>
                         <p class="well-text">Are you a player?</p>
-                        <a ng-href="#/tabletCategory" class="btn default-color"></a>
                     </div>
 
                 </div>
