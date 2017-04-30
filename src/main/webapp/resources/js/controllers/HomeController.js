@@ -76,7 +76,7 @@ angular.module('myApp.HomeController',[]).
             if(status = 200){
                 $scope.soloTradeLoss = data;
                 console.log("solo trade loss ",$scope.soloTradeLoss)
-                $scope.chartIt();
+                $scope.chartSoloTrades();
 
 
             }}).error(function (error) {
@@ -128,6 +128,7 @@ angular.module('myApp.HomeController',[]).
             if(status = 200){
                 $scope.gameLoss = data;
                 console.log("game loss ",$scope.gameLoss);
+                $scope.chartGameTrades();
             }}).error(function (error) {
         console.log("something went wrong in /api/home/gameLoss!!");
 
@@ -135,11 +136,17 @@ angular.module('myApp.HomeController',[]).
 
 
 
-    $scope.chartIt = function(){
+    $scope.chartSoloTrades = function(){
 
         $scope.soloTradeProfitLossLabels = ["Profit","Losses"];
         $scope.soloTradeProfitLossData = [$scope.soloTradeProfit,($scope.soloTradeLoss*-1)];
-        console.log("ban",$scope.soloTradeLoss*-1)
+
+    };
+
+    $scope.chartGameTrades = function(){
+
+        $scope.gameTradeProfitLossLabels = ["Profit","Losses"];
+        $scope.gameTradeProfitLossData = [$scope.gameProfit,($scope.gameLoss)];
 
     };
 

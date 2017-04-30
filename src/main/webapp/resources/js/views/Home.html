@@ -169,7 +169,7 @@
                         <!--<h4 class="well-title">NET PROFIT AND LOSS</h4>-->
                         <!--<p class="well-text">are you up or down?</p>-->
                         <!--<a ng-href="#/tabletCategory" class="btn default-color"></a>-->
-                        <canvas id="bar" class="chart chart-bar"
+                        <canvas id="barSoloProfitLoss" class="chart chart-bar"
                                 chart-data="soloTradeProfitLossData" chart-labels="soloTradeProfitLossLabels" chart-options="options" height="220px">
                         </canvas>
                     </div>
@@ -250,17 +250,21 @@
             <div class="col-md-6">
                 <div class="well">
 
-                    <div class="view overlay hm-white-slight">
-                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
-                        <a href="#">
-                            <div class="mask"></div>
-                        </a>
-                    </div>
+                    <!--<div class="view overlay hm-white-slight">-->
+                        <!--<img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">-->
+                        <!--<a href="#">-->
+                            <!--<div class="mask"></div>-->
+                        <!--</a>-->
+                    <!--</div>-->
 
                     <div class="well-block">
-                        <h4 class="well-title">WIN/LOSS RATE</h4>
-                        <p class="well-text">Are you getting better?</p>
-                        <a ng-href="#/tabletCategory" class="btn default-color"></a>
+                        <h1 align="center">Game Profit Vs Loss at a Glance!</h1>
+                        <!--<h4 class="well-title">NET PROFIT AND LOSS</h4>-->
+                        <!--<p class="well-text">are you up or down?</p>-->
+                        <!--<a ng-href="#/tabletCategory" class="btn default-color"></a>-->
+                        <canvas id="barGameProfitLoss" class="chart chart-bar"
+                                chart-data="gameTradeProfitLossData" chart-labels="gameTradeProfitLossLabels" chart-options="options" height="220px">
+                        </canvas>
                     </div>
 
                 </div>
