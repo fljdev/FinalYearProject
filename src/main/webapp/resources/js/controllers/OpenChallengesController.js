@@ -179,6 +179,7 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
                         $scope.liveIncoming = false;
                         $rootScope.challengeValidTime=10;
                         swal("You refused this challenge","your loss!","error");
+                        $state.go('home');
 
                     }
                 }).error(function (error) {

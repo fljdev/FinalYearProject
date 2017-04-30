@@ -76,6 +76,8 @@ angular.module('myApp.HomeController',[]).
             if(status = 200){
                 $scope.soloTradeLoss = data;
                 console.log("solo trade loss ",$scope.soloTradeLoss)
+                $scope.chartIt();
+
 
             }}).error(function (error) {
         console.log("something went wrong in /api/home/soloTradeLoss!!");
@@ -128,12 +130,31 @@ angular.module('myApp.HomeController',[]).
                 console.log("game loss ",$scope.gameLoss);
             }}).error(function (error) {
         console.log("something went wrong in /api/home/gameLoss!!");
+
     });
 
 
 
+    $scope.chartIt = function(){
+
+        $scope.soloTradeProfitLossLabels = ["Profit","Losses"];
+        $scope.soloTradeProfitLossData = [$scope.soloTradeProfit,($scope.soloTradeLoss*-1)];
+        console.log("ban",$scope.soloTradeLoss*-1)
+
+    };
 
 
 
+    $scope.options = {
+        responsive: true,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    suggestedMax : 20,
+                    beginAtZero:true
+                }
+            }]
+        }
+    };
 });
 
