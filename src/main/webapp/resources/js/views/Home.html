@@ -79,7 +79,7 @@
                         <h1 class="well-title"><h1>Current Rank: {{$root.currentUser.currentRank}}</h1>
                         <h2 class="well-title"><h2>Best Rank: {{$root.currentUser.bestRank}}</h2>
                         <p class="well-text">Where are you compared to the other players</p>
-                        <a ng-href="#/tabletCategory" class="btn default-color">All Ranks</a>
+                        <a ng-href="#/rank" class="btn default-color">All Ranks</a>
                     </div>
 
                 </div>
@@ -270,16 +270,13 @@
             <div class="col-md-6">
                 <div class="well">
 
-                    <div class="view overlay hm-white-slight">
-                        <img src="" style="height:220px " style="width:620px" class="img-fluid" alt="">
-                        <a href="#">
-                            <div class="mask"></div>
-                        </a>
-                    </div>
+
 
                     <div class="well-block">
-                        <h4 class="well-title">CHALLENGES ACCEPTES/DECLINES</h4>
-                        <p class="well-text">Are you a player?</p>
+                        <h1>How Playable are you?</h1>
+                        <canvas id="barChallengeStats" class="chart chart-bar"
+                                chart-data="challengesData" chart-labels="challengesLabels" chart-options="options" height="220px">
+                        </canvas>
                     </div>
 
                 </div>
