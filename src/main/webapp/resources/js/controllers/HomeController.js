@@ -126,6 +126,7 @@ angular.module('myApp.HomeController',[]).
 
 
 
+
     $http.post('/api/home/getAllChallengesUserInvolvedIn', $rootScope.currentUser.id)
         .success(function (data, status) {
             if(status = 200){
@@ -164,6 +165,8 @@ angular.module('myApp.HomeController',[]).
 
 
 
+
+
     $scope.chartSoloTrades = function(){
 
         $scope.soloTradeProfitLossLabels = ["Profit","Losses"];
@@ -176,12 +179,53 @@ angular.module('myApp.HomeController',[]).
 
     };
 
-    $scope.chartGameTrades = function(){
+    $http.post('/api/home/challengesWithdrawn', $rootScope.currentUser.id)
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.challengesWithdrawn = data;
+                $scope.challengesData.push($scope.challengesWithdrawn);
+                console.log("challengesWithdrawn ",$scope.challengesWithdrawn);
 
+            }}).error(function (error) {
+        console.log("something went wrong in /api/home/soloTradeLoss!!");
+    });
+
+    $http.post('/api/home/challengesDeclined', $rootScope.currentUser.id)
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.challengesDeclined = data;
+                $scope.challengesData.push($scope.challengesDeclined);
+
+                console.log("challengesDeclined ",$scope.challengesDeclined)
+
+            }}).error(function (error) {
+        console.log("something went wrong in /api/home/soloTradeLoss!!");
+    });
+
+    $http.post('/api/home/challengesAccepted', $rootScope.currentUser.id)
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.challengesAccepted = data;
+                $scope.challengesData.push($scope.challengesAccepted);
+
+                console.log("challengesAccepted ",$scope.challengesAccepted)
+
+            }}).error(function (error) {
+        console.log("something went wrong in /api/home/soloTradeLoss!!");
+        $scope.chartChallengeHistory();
+    });
+
+    $scope.chartGameTrades = function(){
         $scope.gameTradeProfitLossLabels = ["Profit","Losses"];
         $scope.gameTradeProfitLossData = [$scope.gameProfit,($scope.gameLoss)];
-
     };
+
+    $scope.chartChallengeHistory = function(){
+
+        $scope.challengesLabels = ["accepted","declined","withdrawn"];
+        $scope.challengesData= [];
+    };
+    $scope.chartChallengeHistory();
 
 
 

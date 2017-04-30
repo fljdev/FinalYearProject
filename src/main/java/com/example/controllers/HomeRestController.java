@@ -181,6 +181,46 @@ public class HomeRestController {
         return iChallengeService.getAllChallengesUserInvolvedIn(user).size();
     }
 
+    @RequestMapping(value = "/challengesWithdrawn", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public double challengesWithdrawn(@RequestBody int id) {
+        User user = iUserService.findById(id);
+        List<Challenge>withdrawn = new ArrayList<>();
+        for(Challenge c :  iChallengeService.getAllChallengesUserInvolvedIn(user)){
+            if(c.isWithdrawen()){
+                withdrawn.add(c);
+            }
+        }
+        return  withdrawn.size();
+    }
+
+    @RequestMapping(value = "/challengesDeclined", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public double challengesDeclined(@RequestBody int id) {
+        User user = iUserService.findById(id);
+        List<Challenge>declined = new ArrayList<>();
+        for(Challenge c :  iChallengeService.getAllChallengesUserInvolvedIn(user)){
+            if(c.isDeclined()){
+                declined.add(c);
+            }
+        }
+        return  declined.size();
+    }
+
+    @RequestMapping(value = "/challengesAccepted", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public double challengesAccepted(@RequestBody int id) {
+        User user = iUserService.findById(id);
+        List<Challenge>accepted = new ArrayList<>();
+        for(Challenge c :  iChallengeService.getAllChallengesUserInvolvedIn(user)){
+            if(c.isAccepted()){
+                accepted.add(c);
+            }
+        }
+        return  accepted.size();
+    }
+
+
 
     @RequestMapping(value = "/gameProfit", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
