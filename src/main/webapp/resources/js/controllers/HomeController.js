@@ -76,7 +76,6 @@ angular.module('myApp.HomeController',[]).
             if(status = 200){
                 $scope.soloTradeLoss = data;
                 console.log("solo trade loss ",$scope.soloTradeLoss)
-                $scope.chartSoloTrades();
 
 
             }}).error(function (error) {
@@ -93,6 +92,27 @@ angular.module('myApp.HomeController',[]).
         console.log("something went wrong in /api/home/soloTradeLoss!!");
     });
 
+    $http.get('/api/home/averageSoloTrade')
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.averageSoloTrade = data;
+                console.log("averageSoloTrade ",$scope.averageSoloTrade)
+
+            }}).error(function (error) {
+        console.log("something went wrong in /api/home/averageSoloTrade!!");
+    });
+
+    $http.get('/api/home/largestSoloTradeByAllUsers')
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.largestSoloTradeByAllUsers = data;
+                console.log("largestSoloTradeByAllUsers ",$scope.largestSoloTradeByAllUsers)
+                $scope.chartSoloTrades();
+
+            }}).error(function (error) {
+        console.log("something went wrong in /api/home/averageSoloTrade!!");
+    });
+
 
     $http.post('/api/home/favPair', $rootScope.currentUser.id)
         .success(function (data, status) {
@@ -105,6 +125,14 @@ angular.module('myApp.HomeController',[]).
     });
 
 
+
+    $http.post('/api/home/getAllChallengesUserInvolvedIn', $rootScope.currentUser.id)
+        .success(function (data, status) {
+            if(status = 200){
+                $scope.getAllChallengesUserInvolvedIn = data;
+            }}).error(function (error) {
+        console.log("something went wrong in /api/home/getAllChallengesUserInvolvedIn!!");
+    });
 
     $http.post('/api/home/numberOfGameTrades', $rootScope.currentUser.id)
         .success(function (data, status) {
@@ -140,6 +168,11 @@ angular.module('myApp.HomeController',[]).
 
         $scope.soloTradeProfitLossLabels = ["Profit","Losses"];
         $scope.soloTradeProfitLossData = [$scope.soloTradeProfit,($scope.soloTradeLoss*-1)];
+
+        $scope.positionSizeLabels =["Your Highest","Average","Highest on Record"];
+        $scope.positionSizeData =[$scope.largestSoloTrade,$scope.averageSoloTrade,$scope.largestSoloTradeByAllUsers];
+
+        console.log("average here is ",$scope.averageSoloTrade)
 
     };
 
