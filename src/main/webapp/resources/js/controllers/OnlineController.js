@@ -111,7 +111,7 @@ angular.module('myApp.OnlineController',[]).
             }else{
                 $interval.cancel(promise);
             }
-        }, 1000);
+        }, 5000);
     };
 
 
@@ -167,7 +167,9 @@ angular.module('myApp.OnlineController',[]).
         $scope.stop = function(){
             $timeout.cancel(mytimeout);
             swal("Challenge not accepted","They Chickened Out!","error");
-                $http.post('/api/challenge/withdrawMyChallenge',$rootScope.currentUser.id)
+            $state.go('home');
+
+            $http.post('/api/challenge/withdrawMyChallenge',$rootScope.currentUser.id)
                     .success(function (data, status) {
                         if(status = 200){
                             $rootScope.iAmLive = false;

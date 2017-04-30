@@ -45,7 +45,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
             }else {
                 $interval.cancel(promise);
             }
-        }, 1000);
+        }, 5000);
 
     };
 
