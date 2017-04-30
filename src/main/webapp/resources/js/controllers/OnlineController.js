@@ -33,7 +33,7 @@ angular.module('myApp.OnlineController',[]).
     $scope.challenge = function(opponent,t,s){
         console.log(opponent,t,s);
 
-        $scope.iAmLive = true;
+        $rootScope.iAmLive = true;
         var challengeParams = {};
         challengeParams.currUserID = $rootScope.currentUser.id+"";
         challengeParams.opponentID = opponent.id+"";
@@ -170,7 +170,7 @@ angular.module('myApp.OnlineController',[]).
                 $http.post('/api/challenge/withdrawMyChallenge',$rootScope.currentUser.id)
                     .success(function (data, status) {
                         if(status = 200){
-                            $scope.iAmLive = false;
+                            $rootScope.iAmLive = false;
                             $rootScope.challengeValidTime=10;
                         }
                     }).error(function (error) {

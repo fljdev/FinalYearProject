@@ -53,7 +53,7 @@ public class ChallengeService implements IChallengeService{
     public List<Challenge> getAllChallengesSent(User user) {
         List<Challenge> sent =new ArrayList<>();
         for(Challenge c : challengeDAO.findAll()){
-            if(c.getChallengerId()==user.getId()){
+            if(c.getChallenger()==user){
                 sent.add(c);
             }
         }
@@ -62,23 +62,18 @@ public class ChallengeService implements IChallengeService{
 
     @Override
     public List<Challenge> getAllChallengesRecieved(User user) {
-        List<Challenge>recieved=new ArrayList<>();
-        for(Challenge c : challengeDAO.findAll()){
-            if(c.getOpponentId()==user.getId()){
-                recieved.add(c);
-            }
-        }
-        return recieved;
+        return challengeDAO.findByOpponent(user);
     }
 
     @Override
     public List<Challenge> getAllChallengesUserInvolvedIn(User user) {
         List<Challenge> allChallenges = new ArrayList<>();
         for(Challenge c : challengeDAO.findAll()){
-            if(c.getChallengerId()==user.getId() || c.getOpponentId()==user.getId()){
+            if(c.getChallenger()==user || c.getOpponent()==user){
                 allChallenges.add(c);
             }
         }
         return allChallenges;
     }
+
 }

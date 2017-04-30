@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ChallengeDAO extends JpaRepository<Challenge,Integer> {
 
+    List<Challenge> findByOpponent(User user);
+
 }
