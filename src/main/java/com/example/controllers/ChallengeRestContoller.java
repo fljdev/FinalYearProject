@@ -62,11 +62,13 @@ public class ChallengeRestContoller {
 
     @RequestMapping(value = "/withdrawChallenge",method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public void withdrawChallenge(@RequestBody String id){
+    public Challenge withdrawChallenge(@RequestBody String id){
         Challenge challengeToWithdraw=iChallengeService.findById(Integer.parseInt(id));
         challengeToWithdraw.setWithdrawen(true);
         challengeToWithdraw.setOpen(false);
         iChallengeService.saveChallenge(challengeToWithdraw);
+
+        return challengeToWithdraw;
     }//end withdrawChallenge
 
 
@@ -184,8 +186,8 @@ public class ChallengeRestContoller {
         return thisChallenge;
     }
 
-    @RequestMapping(value = "/getChallengeRequestValidTime", method = RequestMethod.POST, produces = "application/json")
-    public int getChallengeRequestValidTime(@RequestBody int id){
+    @RequestMapping(value = "/getChallengeRequestValidTimeForChallenger", method = RequestMethod.POST, produces = "application/json")
+    public int getChallengeRequestValidTimeForChallenger(@RequestBody int id){
 
         Challenge c = iChallengeService.findById(id);
         int challengeRequestValidTimeRemaining = c.getChallengeRequestValidTime();
@@ -193,11 +195,14 @@ public class ChallengeRestContoller {
         c.setChallengeRequestValidTime(updatedTime);
         iChallengeService.saveChallenge(c);
         return challengeRequestValidTimeRemaining;
+
     }
 
 
-
-
+    @RequestMapping(value = "/getChallengeRequestValidTimeForOpponent", method = RequestMethod.POST, produces = "application/json")
+    public int getChallengeRequestValidTimeForOpponent(@RequestBody int id){
+        return iChallengeService.findById(id).getChallengeRequestValidTime();
+    }
 
 
 
