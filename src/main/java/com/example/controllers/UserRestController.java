@@ -48,7 +48,15 @@ public class UserRestController {
         if(!password.equalsIgnoreCase(confirmPassword)){
             return null;
         }
-
+        boolean unique = true;
+        for(User u : iUserService.getAllUsers()){
+            if(u.getEmail().equalsIgnoreCase(email) || u.getUsername().equalsIgnoreCase(username)){
+                unique=false;
+            }
+        }
+        if(!unique){
+            return null;
+        }
         User aUser = new User();
         aUser.setFirstName(firstName);
         aUser.setLastName(lastName);
@@ -63,9 +71,14 @@ public class UserRestController {
         aUser.setAccount(account);
         aUser.setOnline(true);
 
+
+
+
+
         iUserService.register(aUser);
         return aUser;
     }
+
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
