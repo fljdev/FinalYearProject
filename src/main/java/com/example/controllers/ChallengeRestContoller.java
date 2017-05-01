@@ -180,6 +180,7 @@ public class ChallengeRestContoller {
         thisChallenge.setOpen(true);
 
         thisChallenge.setChallengeRequestValidTime(60);
+        thisChallenge.setGameTime(duration*60);
 
         iChallengeService.saveChallenge(thisChallenge);
 
@@ -202,6 +203,23 @@ public class ChallengeRestContoller {
     @RequestMapping(value = "/getChallengeRequestValidTimeForOpponent", method = RequestMethod.POST, produces = "application/json")
     public int getChallengeRequestValidTimeForOpponent(@RequestBody int id){
         return iChallengeService.findById(id).getChallengeRequestValidTime();
+    }
+
+
+
+    @RequestMapping(value = "/gameTimeRemainingForChallenger", method = RequestMethod.POST, produces = "application/json")
+    public int gameTimeRemaining(@RequestBody int id){
+        Challenge c = iChallengeService.findById(id);
+        int timeRemaining = c.getGameTime();
+        int updatedTime = timeRemaining-5;
+        c.setGameTime(updatedTime);
+        iChallengeService.saveChallenge(c);
+        return updatedTime;
+    }
+
+    @RequestMapping(value = "/gameTimeRemainingForOpponent", method = RequestMethod.POST, produces = "application/json")
+    public int gameTimeRemainingForOpponent(@RequestBody int id){
+        return iChallengeService.findById(id).getGameTime();
     }
 
 
@@ -269,8 +287,8 @@ public class ChallengeRestContoller {
         result.setWinner(winner);
         result.setLoser(loser);
         result.setPrize(prize);
+        result.setChallenge(challenge);
         iResultService.saveResult(result);
-        System.out.println("rrssss "+result.toString());
 
 
         opponent.setGameMargin(0);
