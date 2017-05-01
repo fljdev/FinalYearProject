@@ -50,6 +50,16 @@ angular.module('myApp.HomeController',[]).
                     total+=allBankBalances[i];
                 }
                 $scope.averageBalance = total/amountOfAccounts;
+
+                if($rootScope.currentUser.account.balance > $scope.averageBalance){
+                    $scope.statusDisplay = "YOU HAVE A HIGHER THAN AVERAGE BALANCE";
+                    $scope.statusMessage = "more";
+                }else{
+                    $scope.statusDisplay = "YOU HAVE A LOWER THAN AVERAGE BALANCE";
+                    $scope.statusMessage = "less";
+
+                }
+                $scope.diff = $rootScope.currentUser.account.balance - $scope.averageBalance;
             }}).error(function (error) {
         console.log("something went wrong in /api/home/averageBalance!!");
     });
