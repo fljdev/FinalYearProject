@@ -48,8 +48,9 @@ angular.module('myApp.OnlineController',[]).
                     $scope.challID = data.id;
                     // $scope.waitForReply($scope.challID);
                     $scope.waitForReplyInterval($scope.challID);
-                    $scope.startChallengeValidTimer();
+                    // $scope.startChallengeValidTimer();
 
+                    $scope.startTimerInterval();
                     $scope.challengeSent = true;
 
                     var msg = "Your Challenge to "+opponent.username+" was sent";
@@ -60,7 +61,6 @@ angular.module('myApp.OnlineController',[]).
             }).error(function (error) {
             console.log("something went wrong in saveChallenge!!");
         });
-
     };
 
 
@@ -117,6 +117,94 @@ angular.module('myApp.OnlineController',[]).
 
 
 
+
+
+    $scope.challengeValidTime=60;
+    $scope.startTimerInterval = function(){
+        var prom = $interval(function(){
+            if($scope.challengeValidTime >0){
+
+                $http.post('/api/challenge/getChallengeRequestValidTimeForChallenger',$scope.challID)
+                    .success(function (data, status) {
+                    if(status = 200){
+                        $scope.challengeValidTime=data;
+                        console.log("$scope.challengeValidTime ",$scope.challengeValidTime);
+
+                    }
+                }).error(function (error) {
+                    console.log("something went wrong in onlines api/challenge/getChallengeRequestValidTime''!!");
+                });
+            }else{
+                $interval.cancel(prom);
+
+                $http.post('/api/challenge/withdrawChallenge',$scope.challID)
+                    .success(function (data, status) {
+                        if(status = 200){
+                            $rootScope.iAmLive = false;
+                            console.log("/withdrawChallenge returned ",data);
+                        }
+                    }).error(function (error) {
+                    console.log("something went wrong in withdrawChallenge!!");
+                });
+
+
+                swal("Challenge not accepted","They Chickened Out!","error");
+                $state.go('home');
+            }
+        },5000);
+    };
+
+
+
+
+
+    // $scope.challengeValidTime=35;
+    // $scope.startChallengeValidTimer = function(){
+    //
+    //     $scope.onTimeout = function(){
+    //         mytimeout = $timeout($scope.onTimeout,5000);
+    //
+    //         $http.post('/api/challenge/getChallengeRequestValidTime',$scope.challID)
+    //             .success(function (data, status) {
+    //                 if(status = 200){
+    //                     $scope.challengeValidTime=data;
+    //                     console.log($scope.challengeValidTime);
+    //                     if($scope.challengeValidTime<=0){
+    //                         $scope.stop();
+    //                     }
+    //                 }
+    //             }).error(function (error) {
+    //             console.log("something went wrong in onlines api/challenge/getChallengeRequestValidTime''!!");
+    //         });
+    //     };
+    //     var mytimeout = $timeout($scope.onTimeout,5000);
+    //     $scope.stop = function(){
+    //         $timeout.cancel(mytimeout);
+    //         swal("Challenge not accepted","They Chickened Out!","error");
+    //         $state.go('home');
+    //
+    //         $http.post('/api/challenge/withdrawMyChallenge',$rootScope.currentUser.id)
+    //                 .success(function (data, status) {
+    //                     if(status = 200){
+    //                         $rootScope.iAmLive = false;
+    //                     }
+    //                 }).error(function (error) {
+    //                 console.log("something went wrong in withdrawMyChallenge!!");
+    //         });
+    //     }
+    // };
+
+
+
+
+
+
+
+
+
+
+
+
     $scope.startTimer = function(duration){
         $rootScope.gameCounter = duration * 30;
         $scope.onTimeout = function(){
@@ -146,47 +234,6 @@ angular.module('myApp.OnlineController',[]).
                 text: 'Thanks for playing',
                 timer: 4000
             });
-        }
-    };
-
-
-
-    $scope.challengeValidTime=35;
-    $scope.startChallengeValidTimer = function(){
-
-        $scope.onTimeout = function(){
-            mytimeout = $timeout($scope.onTimeout,5000);
-
-            $http.post('/api/challenge/getChallengeRequestValidTime',$scope.challID)
-                .success(function (data, status) {
-                    if(status = 200){
-                        $scope.challengeValidTime=data;
-                        console.log($scope.challengeValidTime);
-                        if($scope.challengeValidTime<=0){
-                            $scope.stop();
-                        }
-                    }
-                }).error(function (error) {
-                console.log("something went wrong in onlines api/challenge/getChallengeRequestValidTime''!!");
-            });
-        };
-
-
-        var mytimeout = $timeout($scope.onTimeout,5000);
-        $scope.stop = function(){
-            $timeout.cancel(mytimeout);
-            swal("Challenge not accepted","They Chickened Out!","error");
-            $state.go('home');
-
-            $http.post('/api/challenge/withdrawMyChallenge',$rootScope.currentUser.id)
-                    .success(function (data, status) {
-                        if(status = 200){
-                            $rootScope.iAmLive = false;
-                                // $scope.challengeValidTime=10;
-                        }
-                    }).error(function (error) {
-                    console.log("something went wrong in withdrawMyChallenge!!");
-                });
         }
     };
 })
