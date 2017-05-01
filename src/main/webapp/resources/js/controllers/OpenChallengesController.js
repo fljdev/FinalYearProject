@@ -145,31 +145,36 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
         });
     };
 
-    // $scope.findMore = function(){
-    //     $state.go('onlineUsers');
-    // };
 
-    // $scope.playNow = function(x){
-    //     $state.go('trade',{challengeID: x.id});
-    // }
 
 
     $scope.liveIncoming = true;
-
-    $rootScope.challengeValidTime=10;
-    var x = 10;
+    $scope.challengeValidTime=30;
     $scope.startChallengeValidTimer = function(){
-        console.log("in here");
         $scope.onTimeout = function(){
-            $rootScope.challengeValidTime--;
-            mytimeout = $timeout($scope.onTimeout,1000);
+            mytimeout = $timeout($scope.onTimeout,5000);
 
+            $http.post('/api/challenge/getChallengeRequestValidTime',$scope.liveChallenge[0].id)
+                .success(function (data, status) {
+                    if(status = 200){
 
-            if($rootScope.challengeValidTime==0){
-                $scope.stop();
-            }
+                        $scope.challengeValidTime=data;
+
+                        console.log($scope.challengeValidTime);
+                        if($scope.challengeValidTime<=0){
+                            $scope.stop();
+                        }
+                    }
+                }).error(function (error) {
+                console.log("something went wrong in openChallenges api/challenge/getChallengeRequestValidTime''!!");
+            });
         };
-        var mytimeout = $timeout($scope.onTimeout,1000);
+        var mytimeout = $timeout($scope.onTimeout,5000);
+
+
+
+
+
         $scope.stop = function(){
             $timeout.cancel(mytimeout);
             swal("Challenge not accepted","They Chickened Out!","error");
@@ -187,10 +192,15 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
             });
         }
     };
-
     $scope.startChallengeValidTimer();
 
-})  .filter('toMinSec', function(){
+})
+
+
+
+
+
+    .filter('toMinSec', function(){
     return function(input){
         var minutes = parseInt(input/60, 10);
         var seconds = input%60;

@@ -11,17 +11,6 @@ public class Challenge {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-//    @Column(name = "Chall_ID")
-//    private int challengerId;
-
-//    @Column(name = "Chall")
-//    private String challengerName;
-
-//    @Column(name = "OPP_ID")
-//    private int opponentId;
-//    @Column(name = "Opp")
-//    private String opponentName;
-
     @ManyToOne
     User challenger;
     @ManyToOne
@@ -45,17 +34,7 @@ public class Challenge {
     private boolean open;
     private boolean completed;
 
-//    @Column(name = "Sent_Time")
-//    private String challengeSent;
-//
-//    @Column(name = "Accept_Time")
-//    private String challengeAccepted;
-//
-//    @Column(name = "Decline_Time")
-//    private String challengeDeclined;
-//
-//    @Column(name = "Withdraw_Time")
-//    private String challengeWithdrawen;
+    private int challengeRequestValidTime;
 
 
 
@@ -64,7 +43,7 @@ public class Challenge {
 
     public Challenge(User challenger, User opponent, int duration, double stake, double challengerProfit,
                      double opponentProfit, boolean accepted, boolean declined, boolean withdrawen,
-                     boolean open, boolean completed) {
+                     boolean open, boolean completed, int challengeRequestValidTime) {
         this.challenger = challenger;
         this.opponent = opponent;
         this.duration = duration;
@@ -76,6 +55,7 @@ public class Challenge {
         this.withdrawen = withdrawen;
         this.open = open;
         this.completed = completed;
+        this.challengeRequestValidTime = challengeRequestValidTime;
     }
 
     public int getId() {
@@ -174,21 +154,11 @@ public class Challenge {
         this.completed = completed;
     }
 
-    @Override
-    public String toString() {
-        return "Challenge{" +
-                "id=" + id +
-                ", challenger=" + challenger +
-                ", opponent=" + opponent +
-                ", duration=" + duration +
-                ", stake=" + stake +
-                ", challengerProfit=" + challengerProfit +
-                ", opponentProfit=" + opponentProfit +
-                ", accepted=" + accepted +
-                ", declined=" + declined +
-                ", withdrawen=" + withdrawen +
-                ", open=" + open +
-                ", completed=" + completed +
-                '}';
+    public int getChallengeRequestValidTime() {
+        return challengeRequestValidTime;
+    }
+
+    public void setChallengeRequestValidTime(int challengeRequestValidTime) {
+        this.challengeRequestValidTime = challengeRequestValidTime;
     }
 }
