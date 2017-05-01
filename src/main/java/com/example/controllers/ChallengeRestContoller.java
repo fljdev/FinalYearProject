@@ -177,10 +177,24 @@ public class ChallengeRestContoller {
         thisChallenge.setStake(stake);
         thisChallenge.setOpen(true);
 
+        thisChallenge.setChallengeRequestValidTime(60);
+
         iChallengeService.saveChallenge(thisChallenge);
 
         return thisChallenge;
     }
+
+    @RequestMapping(value = "/getChallengeRequestValidTime", method = RequestMethod.POST, produces = "application/json")
+    public int getChallengeRequestValidTime(@RequestBody int id){
+
+        Challenge c = iChallengeService.findById(id);
+        int challengeRequestValidTimeRemaining = c.getChallengeRequestValidTime();
+        int updatedTime = challengeRequestValidTimeRemaining-5;
+        c.setChallengeRequestValidTime(updatedTime);
+        iChallengeService.saveChallenge(c);
+        return challengeRequestValidTimeRemaining;
+    }
+
 
 
 

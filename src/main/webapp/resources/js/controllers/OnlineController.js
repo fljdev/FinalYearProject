@@ -151,19 +151,28 @@ angular.module('myApp.OnlineController',[]).
 
 
 
-    $rootScope.challengeValidTime=10;
-    var x = 10;
+    $scope.challengeValidTime=35;
     $scope.startChallengeValidTimer = function(){
+
         $scope.onTimeout = function(){
-            $rootScope.challengeValidTime--;
-            mytimeout = $timeout($scope.onTimeout,1000);
+            mytimeout = $timeout($scope.onTimeout,5000);
 
-
-            if($rootScope.challengeValidTime==0){
-                $scope.stop();
-            }
+            $http.post('/api/challenge/getChallengeRequestValidTime',$scope.challID)
+                .success(function (data, status) {
+                    if(status = 200){
+                        $scope.challengeValidTime=data;
+                        console.log($scope.challengeValidTime);
+                        if($scope.challengeValidTime<=0){
+                            $scope.stop();
+                        }
+                    }
+                }).error(function (error) {
+                console.log("something went wrong in onlines api/challenge/getChallengeRequestValidTime''!!");
+            });
         };
-        var mytimeout = $timeout($scope.onTimeout,1000);
+
+
+        var mytimeout = $timeout($scope.onTimeout,5000);
         $scope.stop = function(){
             $timeout.cancel(mytimeout);
             swal("Challenge not accepted","They Chickened Out!","error");
@@ -173,7 +182,7 @@ angular.module('myApp.OnlineController',[]).
                     .success(function (data, status) {
                         if(status = 200){
                             $rootScope.iAmLive = false;
-                            $rootScope.challengeValidTime=10;
+                                // $scope.challengeValidTime=10;
                         }
                     }).error(function (error) {
                     console.log("something went wrong in withdrawMyChallenge!!");
@@ -181,6 +190,11 @@ angular.module('myApp.OnlineController',[]).
         }
     };
 })
+
+
+
+
+
     .filter('toMinSec', function(){
         return function(input){
             var minutes = parseInt(input/60, 10);
