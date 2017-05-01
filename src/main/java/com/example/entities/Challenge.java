@@ -36,14 +36,14 @@ public class Challenge {
 
     private int challengeRequestValidTime;
 
-
+    private int gameTime;
 
     public Challenge() {
     }
 
     public Challenge(User challenger, User opponent, int duration, double stake, double challengerProfit,
-                     double opponentProfit, boolean accepted, boolean declined, boolean withdrawen,
-                     boolean open, boolean completed, int challengeRequestValidTime) {
+                     double opponentProfit, boolean accepted, boolean declined, boolean withdrawen, boolean open,
+                     boolean completed, int challengeRequestValidTime, int gameTime) {
         this.challenger = challenger;
         this.opponent = opponent;
         this.duration = duration;
@@ -56,6 +56,7 @@ public class Challenge {
         this.open = open;
         this.completed = completed;
         this.challengeRequestValidTime = challengeRequestValidTime;
+        this.gameTime = gameTime;
     }
 
     public int getId() {
@@ -160,5 +161,13 @@ public class Challenge {
 
     public void setChallengeRequestValidTime(int challengeRequestValidTime) {
         this.challengeRequestValidTime = challengeRequestValidTime;
+    }
+
+    public int getGameTime() {
+        return gameTime;
+    }
+
+    public void setGameTime(int gameTime) {
+        this.gameTime = gameTime;
     }
 }

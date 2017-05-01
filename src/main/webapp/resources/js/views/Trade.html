@@ -35,7 +35,7 @@
     <div class="row">
         <div class="panel panel-default">
             <div ng-show='checkIfGame' class="panel-heading">
-                <h4 align="center"><b>{{$root.gameCounter | toMinSec}} remaining in this game!</b></h4>
+                <h4 align="center"><b>{{$root.gameTimeRemaining | toMinSec}} remaining in this game!</b></h4>
             </div>
             <div class="panel-heading">
                 <h4 align="center" ng-if="activeTrades"><b>{{openTrades.length}} Trades currently open!!</b></h4>

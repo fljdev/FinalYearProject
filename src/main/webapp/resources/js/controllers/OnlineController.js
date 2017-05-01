@@ -90,26 +90,26 @@ angular.module('myApp.OnlineController',[]).
 
                         if(data.accepted){
 
-                            $scope.startTimer(data.duration);
+                            $scope.startGameTimerInterval(data.duration);
                             $state.go('trade',{challengeID: data.id});
-                            $interval.cancel(promise);
+                            $interval.cancel($scope.promise);
+                            $interval.cancel($scope.prom);
                         }
                     }
                 }).error(function (error) {
                 console.log("something went wrong in /api/challenge/waitForReply'!!");
             });
-
         };
         // var promise = $interval( function(){ $scope.waitForReply($scope.challID); }, 5000);
 
 
     $scope.waitForReplyInterval = function(id){
-        var promise = $interval(function () {
+        $scope.promise = $interval(function () {
 
             if($scope.challengeSent==true ){
                 $scope.waitForReply(id);
             }else{
-                $interval.cancel(promise);
+                $interval.cancel($scope.promise);
             }
         }, 5000);
     };
@@ -117,25 +117,65 @@ angular.module('myApp.OnlineController',[]).
 
 
 
+    $rootScope.gameTimeRemaining = 60;
+    $scope.startGameTimerInterval = function(duration){
+        var gameTimerPromise = $interval (function(){
+
+            if($scope.gameTimeRemaining>=0){
+                $http.post('/api/challenge/gameTimeRemainingForChallenger',$scope.challID)
+                    .success(function (data, status) {
+                        if(status = 200){
+
+                            $rootScope.gameTimeRemaining=data;
+                        }
+                    }).error(function (error) {
+                    console.log("something went wrong in onlines api/challenge/getChallengeRequestValidTime''!!");
+                });
+            }else{
+                $interval.cancel(gameTimerPromise);
+                console.log("got in to $interval.cancel(gameTimerPromise)");
+
+                $http.post('/api/challenge/completeChallenge',JSON.stringify($scope.challID))
+                    .success(function (data, status) {
+                        if(status = 200){
+                            console.log("got back from completeChallenge");
+                            console.log("cunty")
+                            msg = "Winner Winner "+data.firstName+" gets Dinner!!";
+                            swal(msg,"congratulations","success");
+                        }
+                    }).error(function (error) {
+                    console.log("something went wrong in waitForReply!!");
+                });
+                var msg = "This Game has ended "+$rootScope.currentUser.firstName;
+                swal({
+                    title: msg,
+                    text: 'Thanks for playing',
+                    timer: 4000
+                });
+            }
+        },5000);
+    };
+
 
 
     $scope.challengeValidTime=60;
     $scope.startTimerInterval = function(){
-        var prom = $interval(function(){
+        $scope.prom = $interval(function(){
+
             if($scope.challengeValidTime >0){
 
                 $http.post('/api/challenge/getChallengeRequestValidTimeForChallenger',$scope.challID)
                     .success(function (data, status) {
-                    if(status = 200){
-                        $scope.challengeValidTime=data;
-                        console.log("$scope.challengeValidTime ",$scope.challengeValidTime);
+                        if(status = 200){
+                            $scope.challengeValidTime=data;
+                            console.log("$scope.challengeValidTime ",$scope.challengeValidTime);
 
-                    }
-                }).error(function (error) {
+                        }
+                    }).error(function (error) {
                     console.log("something went wrong in onlines api/challenge/getChallengeRequestValidTime''!!");
                 });
             }else{
-                $interval.cancel(prom);
+                $interval.cancel($scope.prom);
 
                 $http.post('/api/challenge/withdrawChallenge',$scope.challID)
                     .success(function (data, status) {
@@ -153,6 +193,45 @@ angular.module('myApp.OnlineController',[]).
             }
         },5000);
     };
+
+
+
+
+
+    // $scope.startGameTimer = function(duration){
+    //     $rootScope.gameCounter = duration * 30;
+    //     $scope.onTimeout = function(){
+    //         $rootScope.gameCounter--;
+    //         mytimeout = $timeout($scope.onTimeout,1000);
+    //
+    //         if($rootScope.gameCounter==0){
+    //             $scope.stop();
+    //         }
+    //     };
+    //     var mytimeout = $timeout($scope.onTimeout,1000);
+    //     $scope.stop = function(){
+    //         $timeout.cancel(mytimeout);
+    //         $http.post('/api/challenge/completeChallenge',JSON.stringify($scope.challID))
+    //             .success(function (data, status) {
+    //                 if(status = 200){
+    //                     console.log("got back from completeChallenge");
+    //                     msg = "Winner Winner "+data.firstName+" gets Dinner!!";
+    //                     swal(msg,"congratulations","success");
+    //                 }
+    //             }).error(function (error) {
+    //             console.log("something went wrong in waitForReply!!");
+    //         });
+    //         var msg = "This Game has ended "+$rootScope.currentUser.firstName;
+    //         swal({
+    //             title: msg,
+    //             text: 'Thanks for playing',
+    //             timer: 4000
+    //         });
+    //     }
+    // };
+
+
+
 
 
 
@@ -205,43 +284,8 @@ angular.module('myApp.OnlineController',[]).
 
 
 
-    $scope.startTimer = function(duration){
-        $rootScope.gameCounter = duration * 30;
-        $scope.onTimeout = function(){
-            $rootScope.gameCounter--;
-            mytimeout = $timeout($scope.onTimeout,1000);
 
-            if($rootScope.gameCounter==0){
-                $scope.stop();
-            }
-        };
-        var mytimeout = $timeout($scope.onTimeout,1000);
-        $scope.stop = function(){
-            $timeout.cancel(mytimeout);
-            $http.post('/api/challenge/completeChallenge',JSON.stringify($scope.challID))
-                .success(function (data, status) {
-                    if(status = 200){
-                        console.log("got back from completeChallenge");
-                        msg = "Winner Winner "+data.firstName+" gets Dinner!!";
-                        swal(msg,"congratulations","success");
-                    }
-                }).error(function (error) {
-                console.log("something went wrong in waitForReply!!");
-            });
-            var msg = "This Game has ended "+$rootScope.currentUser.firstName;
-            swal({
-                title: msg,
-                text: 'Thanks for playing',
-                timer: 4000
-            });
-        }
-    };
 })
-
-
-
-
-
     .filter('toMinSec', function(){
         return function(input){
             var minutes = parseInt(input/60, 10);
