@@ -45,15 +45,22 @@ controller('LogRegController',function($scope,$http,$state,$cookieStore,$rootSco
             .success(function (data, status) {
                 if(status = 200){
 
-                    $rootScope.loggedIn = true;
+                    if(data==""){
+                        console.log("api register call got back null");
+                        swal("Your Form Contains errors","username or email not unique or passwords don't match","error");
+                    }else{
+                        console.log("api register call got back",data);
 
-                    $rootScope.currentUser = data;
-                    $cookieStore.put('userCookie',$rootScope.currentUser);
+                        $rootScope.loggedIn = true;
+                        $rootScope.currentUser = data;
+                        $cookieStore.put('userCookie',$rootScope.currentUser);
 
-                    var welcomeString = "Welcome to Forex Fighter "+$rootScope.currentUser.username;
-                    swal(welcomeString," thanks for joining us ","success");
+                        var welcomeString = "Welcome to Forex Fighter "+$rootScope.currentUser.username;
+                        swal(welcomeString," thanks for joining us ","success");
 
-                    $state.go('home');
+                        $state.go('home');
+                    }
+
                 }
             }).error(function (error) {
             console.log("something went wrong!!");
@@ -67,15 +74,17 @@ controller('LogRegController',function($scope,$http,$state,$cookieStore,$rootSco
             .success(function (data, status) {
                 if(status = 200){
 
-                    $rootScope.loggedIn = true;
+                        $rootScope.loggedIn = true;
 
-                    $rootScope.currentUser= data;
-                    $cookieStore.put('userCookie',$rootScope.currentUser);
+                        $rootScope.currentUser= data;
+                        $cookieStore.put('userCookie',$rootScope.currentUser);
 
-                    var welcomeString = "Welcome Back "+$rootScope.currentUser.username;
-                    swal(welcomeString," we've missed you ","success");
+                        var welcomeString = "Welcome Back "+$rootScope.currentUser.username;
+                        swal(welcomeString," we've missed you ","success");
 
-                    $state.go('home');
+                        $state.go('home');
+
+
 
                 }
             }).error(function (error) {

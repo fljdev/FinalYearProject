@@ -66,7 +66,8 @@ directive('navheader', function($cookieStore, $state, $http,$rootScope,$interval
 
                         if(status = 200){
                             console.log("logged out ",data);
-
+                            var msg = "Goodbye "+data.firstName+" you've logged out!";
+                            swal(msg,"sorry to see you go","error");
                             $state.go('welcome');
                         }
                     }).error(function (error) {
