@@ -21,7 +21,6 @@ public class GameTradeRestController {
     ITradeService iTradeService;
     ICurrencyPairService iCurrencyPairService;
     IUserService iUserService;
-    ILiveTradeInfoService iLiveTradeInfoService;
     IGameAccountService iGameAccountService;
     IChallengeService iChallengeService;
 
@@ -30,10 +29,7 @@ public class GameTradeRestController {
         this.iChallengeService=service;
     }
 
-    @Autowired
-    public void setiLiveTradeInfoService(ILiveTradeInfoService info){
-        this.iLiveTradeInfoService =info;
-    }
+
     @Autowired
     public void setGameAccountService(IGameAccountService iGameAccountService) {
 
@@ -162,35 +158,15 @@ public class GameTradeRestController {
                 }
             }
 
-            LiveTradeInfo liveTradeInfo;
 
             for(Trade t : openTradesWithChallenges){
 
-                liveTradeInfo = new LiveTradeInfo();
-
                 CurrencyPair thisCurrencyPair = thisPair(t.getCurrencyPairOpen().getSymbols());
-
-                Timestamp tickTime = new Timestamp(System.currentTimeMillis());
-
-                liveTradeInfo.setTradeID(t.getId());
-
-                liveTradeInfo.setTickTime(tickTime);
-
-                liveTradeInfo.setCurrentAsk(thisCurrencyPair.getAsk());
-
-                liveTradeInfo.setCurrentBid(thisCurrencyPair.getBid());
 
                 double profit = calcThisProfitAndLoss(t,thisCurrencyPair);
                 System.out.println("in updateEachGemeTrade and profit is "+profit);
                 System.out.println("profit is "+profit);
                 t.setClosingProfitLoss(profit);
-
-                liveTradeInfo.setCurrentProfitAndLoss(profit);
-
-                iLiveTradeInfoService.saveLiveTradeInfo(liveTradeInfo);
-
-                t.getLiveTradeInfoList().add(liveTradeInfo);
-
 
                 iTradeService.saveTrade(t);
             }

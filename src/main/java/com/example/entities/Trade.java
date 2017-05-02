@@ -40,16 +40,14 @@ public class Trade {
     private Challenge challenge;
 
 
-    @ManyToMany
-    private List<LiveTradeInfo> liveTradeInfoList;
+
 
     public Trade() {
     }
 
     public Trade(User user, CurrencyPair currencyPairOpen, CurrencyPair currencyPairClose, Timestamp timestampOpen,
-                 Timestamp timestampClose, double margin, String action,
-                 boolean open, double closingProfitLoss, double positionUnits, Challenge challenge,
-                 List<LiveTradeInfo> liveTradeInfoList) {
+                 Timestamp timestampClose, double margin, String action, boolean open, double closingProfitLoss,
+                 double positionUnits, Challenge challenge) {
         this.user = user;
         this.currencyPairOpen = currencyPairOpen;
         this.currencyPairClose = currencyPairClose;
@@ -61,7 +59,6 @@ public class Trade {
         this.closingProfitLoss = closingProfitLoss;
         this.positionUnits = positionUnits;
         this.challenge = challenge;
-        this.liveTradeInfoList = liveTradeInfoList;
     }
 
     public int getId() {
@@ -158,13 +155,5 @@ public class Trade {
 
     public void setChallenge(Challenge challenge) {
         this.challenge = challenge;
-    }
-
-    public List<LiveTradeInfo> getLiveTradeInfoList() {
-        return liveTradeInfoList;
-    }
-
-    public void setLiveTradeInfoList(List<LiveTradeInfo> liveTradeInfoList) {
-        this.liveTradeInfoList = liveTradeInfoList;
     }
 }

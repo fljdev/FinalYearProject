@@ -21,11 +21,7 @@ public class TradeRestController {
     ICurrencyPairService iCurrencyPairService;
     IUserService iUserService;
     IBankAccountService iBankAccountService;
-    ILiveTradeInfoService iLiveTradeInfoService;
-    @Autowired
-    public void setiLiveTradeInfoService(ILiveTradeInfoService info){
-        this.iLiveTradeInfoService =info;
-    }
+
     @Autowired
     public void setiBankAccountService(IBankAccountService iBankAccountService) {
 
@@ -171,36 +167,15 @@ public class TradeRestController {
                 }
             }
 
-            LiveTradeInfo liveTradeInfo;
 
             for(Trade t : openTradesWithoutChallenges){
 
-
-                liveTradeInfo = new LiveTradeInfo();
-
                 CurrencyPair thisCurrencyPair = thisPair(t.getCurrencyPairOpen().getSymbols());
-
-                Timestamp tickTime = new Timestamp(System.currentTimeMillis());
-
-                liveTradeInfo.setTradeID(t.getId());
-
-                liveTradeInfo.setTickTime(tickTime);
-
-                liveTradeInfo.setCurrentAsk(thisCurrencyPair.getAsk());
-
-                liveTradeInfo.setCurrentBid(thisCurrencyPair.getBid());
 
                 double profit = calcThisProfitAndLoss(t,thisCurrencyPair);
                 System.out.println("in updateEachTrade and profit is "+profit);
                 System.out.println("profit is "+profit);
                 t.setClosingProfitLoss(profit);
-
-                liveTradeInfo.setCurrentProfitAndLoss(profit);
-
-                iLiveTradeInfoService.saveLiveTradeInfo(liveTradeInfo);
-
-                t.getLiveTradeInfoList().add(liveTradeInfo);
-
 
                 iTradeService.saveTrade(t);
             }

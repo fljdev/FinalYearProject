@@ -408,24 +408,7 @@ controller('TradeController',function($scope,$http,$state,$cookieStore,$interval
     };
 
 
-    // $scope.tradeChart = function(x){
-    //     $http.post('/api/liveTradeInfoController/findLiveTradeInfoObjectByTradeID',x)
-    //         .success(function (data, status) {
-    //             if(status = 200){
-    //                 // console.log("call got ",data);
-    //                 // if(data.length>0){
-    //                 //     console.log(data[data.length-1].currentAsk)
-    //                 //     console.log(data[data.length-1].currentBid)
-    //                 //     console.log(data[data.length-1].currentProfitAndLoss)
-    //                 //     console.log(data[data.length-1].tickTime)
-    //                 //
-    //                 // }
-    //             }
-    //         }).error(function (error) {
-    //         console.log("something went wrong in findLiveTradeInfoObjectByTradeID");
-    //     });
-    // };
-    // $interval( function(){ $scope.tradeChart($scope.xID); }, 5000);
+
 
 
     $scope.updateEachTrade = function(){
