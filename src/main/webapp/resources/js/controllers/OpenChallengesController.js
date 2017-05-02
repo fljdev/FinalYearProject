@@ -133,6 +133,7 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
                     $interval.cancel($scope.gameTimerPromise);
                     $state.go('home');
 
+
                     var msg = "This Game has ended "+$rootScope.currentUser.firstName;
                     swal({
                         title: msg,
