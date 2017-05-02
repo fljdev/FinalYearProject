@@ -93,21 +93,13 @@ public class ChallengeRestContoller {
 
     @RequestMapping(value = "/declineChallenge",method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public void declineChallenge(@RequestBody int id){
+    public Challenge declineChallenge(@RequestBody int id){
 
-
-//        Challenge challengeToDecline=iChallengeService.findById(Integer.parseInt(id));
-
-        for(Challenge c : iChallengeService.getAllChallengesRecieved(iUserService.findById(id))){
-            c.setDeclined(true);
-            c.setOpen(false);
-            iChallengeService.saveChallenge(c);
-        }
-
-//        challengeToDecline.setDeclined(true);
-//        challengeToDecline.setOpen(false);
-//        challengeToDecline.setChallengeDeclined(sdf.format(challengeSentMili));
-
+        Challenge toDecline = iChallengeService.findById(id);
+        toDecline.setDeclined(true);
+        toDecline.setOpen(false);
+        iChallengeService.saveChallenge(toDecline);
+        return toDecline;
     }
 
 

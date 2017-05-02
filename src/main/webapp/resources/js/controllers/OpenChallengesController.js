@@ -77,12 +77,11 @@ controller('OpenChallengesController', function($scope,$cookieStore,$http,$state
         $http.post('/api/challenge/declineChallenge',obj.id)
             .success(function (data, status) {
             if(status = 200){
-
-                console.log("x.id was no ",obj.id);
-                console.log("decline challenge worked");
+                swal("You Succesfully Declined this Challenge","don't make a habit of it","error");
+                $state.go('home');
             }
         }).error(function (error) {
-            console.log("something went wrong in withdraw challenge!!");
+            console.log("something went wrong in decline challenge!!");
         });
     };
 
