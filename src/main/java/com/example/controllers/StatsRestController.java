@@ -19,7 +19,6 @@ public class StatsRestController {
     ICurrencyPairService iCurrencyPairService;
     IUserService iUserService;
     IBankAccountService iBankAccountService;
-    ILiveTradeInfoService iLiveTradeInfoService;
     IResultService iResultService;
 
     @Autowired
@@ -29,10 +28,6 @@ public class StatsRestController {
     @Autowired
     public void setiStatsService(IStatsService iStatsService){
         this.iStatsService = iStatsService;
-    }
-    @Autowired
-    public void setiLiveTradeInfoService(ILiveTradeInfoService info){
-        this.iLiveTradeInfoService =info;
     }
     @Autowired
     public void setiBankAccountService(IBankAccountService iBankAccountService) {this.iBankAccountService = iBankAccountService;}
