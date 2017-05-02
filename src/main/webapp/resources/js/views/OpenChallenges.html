@@ -70,8 +70,7 @@
             <tr>
             <th></th>
             <th>Challenger</th>
-            <th>Time</th>
-            <th>Duration</th>
+            <th>Duration (Min's)</th>
             <th>Stake</th>
 
             <th>Status</th>
@@ -83,8 +82,7 @@
             <tr ng-repeat="x in liveChallenge" >
 
             <td>From</td>
-            <td>{{x.challengerName}}</td>
-            <td>{{x.challengeSent}}</td>
+            <td>{{x.challenger.username}}</td>
             <td>{{x.duration}}</td>
             <td>{{x.stake}}</td>
 

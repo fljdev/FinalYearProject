@@ -138,10 +138,12 @@ angular.module('myApp.OnlineController',[]).
                 $http.post('/api/challenge/completeChallenge',JSON.stringify($scope.challID))
                     .success(function (data, status) {
                         if(status = 200){
-                            console.log("got back from completeChallenge");
-                            console.log("cunty")
+
+
                             msg = "Winner Winner "+data.firstName+" gets Dinner!!";
                             swal(msg,"congratulations","success");
+                            $state.go('home');
+
                         }
                     }).error(function (error) {
                     console.log("something went wrong in waitForReply!!");
@@ -152,6 +154,7 @@ angular.module('myApp.OnlineController',[]).
                     text: 'Thanks for playing',
                     timer: 4000
                 });
+
             }
         },5000);
     };
