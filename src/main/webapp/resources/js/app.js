@@ -17,7 +17,10 @@ angular.module('myApp',[
     'myApp.OpenChallengesController',
     'myApp.TradeController',
     'myApp.RankController',
-    'myApp.StatsController'
+    'myApp.StatsController',
+    'myApp.WhatIsForexController',
+    'myApp.HowToUseThisSiteController'
+
 ]).
     config(function ($stateProvider,$urlRouterProvider) {
 
@@ -73,6 +76,16 @@ angular.module('myApp',[
             url: '/stats',
             templateUrl: "resources/js/views/Stats.html",
             controller: "StatsController"
+        })
+        .state('whatIsForex',{
+            url: '/whatIsForex',
+            templateUrl: "resources/js/views/WhatIsForex.html",
+            controller: "WhatIsForexController"
+        })
+        .state('howToUseThisSite',{
+            url: '/howToUseThisSite',
+            templateUrl: "resources/js/views/HowToUseThisSite.html",
+            controller: "HowToUseThisSiteController"
         })
       ;
 });

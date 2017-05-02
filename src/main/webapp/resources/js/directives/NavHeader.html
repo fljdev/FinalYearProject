@@ -3,7 +3,7 @@
 
 <div class="container-fluid">
 <navbar class="navbar navbar-inverse bg-inverse navbar-fixed-top " id="my-navbar">
-        <a class="navbar-brand" ng-href="#home">Forex Gym</a>
+        <a ng-show='$root.loggedIn' class="navbar-brand" ng-href="#home"><b>Forex Gym</b></a>
 
         <ul class="collapse navbar-collapse" id="navbar-collapse">
 
@@ -14,37 +14,33 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>LEARNING CENTER</b><span class="caret"></span></a>
                     <ul class="dropdown-menu">
 
-                        <li><a a-href="#/">What is Forex</a></li>
+                        <li><a ng-href="#/whatIsForex">What is Forex</a></li>
 
-                        <li><a ng-href="#/">What this site will teach you</a></li>
+                        <li><a ng-href="#/howToUseThisSite">How to use this site</a></li>
 
-                        <li><a ng-href="#/">Financial Management</a></li>
 
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">Something</a></li>
+                        <li><a ng-href="#/pairs">Go To Live Prices</a></li>
                     </ul>
                 </li>
 
 
 
                 <li class="nav-item">
-                    <a class="nav-link" ng-href="#/pairs">Live FOREX</a>
+                    <a class="nav-link" ng-href="#/pairs"><b>Live FOREX</b></a>
                 </li>
 
-                <!--<li class="nav-item">-->
-                    <!--<a ng-show='$root.loggedIn' class="nav-link" ng-href="#/allUsers">Player List</a>-->
-                <!--</li>-->
 
                 <li class="nav-item">
-                    <a ng-show='$root.loggedIn' class="nav-link" ng-href="#/onlineUsers">Who's Online?</a>
+                    <a ng-show='$root.loggedIn' class="nav-link" ng-href="#/onlineUsers"><b>Who's Online?</b></a>
                 </li>
 
                 <li class="nav-item">
-                    <a ng-show='$root.loggedIn' class="nav-link" ng-href="#/rank">Ranking</a>
+                    <a ng-show='$root.loggedIn' class="nav-link" ng-href="#/rank"><b>Ranking</b></a>
                 </li>
 
                 <li class="nav-item">
-                    <a ng-show='$root.loggedIn' class="nav-link" ng-href="#/trade/0">Trade</a>
+                    <a ng-show='$root.loggedIn' class="nav-link" ng-href="#/trade/0"><b>Trade</b></a>
                 </li>
 
                 <li  class="nav-item">
@@ -64,10 +60,10 @@
 
                 <li class="nav-item " ng-show='$root.loggedIn' >
 
-                    <a ng-show="$root.loggedIn" class="nav-link" ng-href="#">Hi {{$root.currentUser.firstName}}!</a>
+                    <a ng-show="$root.loggedIn" class="nav-link" ng-href="#"><b>Hi {{$root.currentUser.firstName}}!</b></a>
                 </li>
                 <li>
-                    <a ng-show="$root.loggedIn" class="nav-link" ng-click="logOutUser()">Log Out</a>
+                    <a ng-show="$root.loggedIn" class="nav-link" ng-click="logOutUser()"><b>Log Out</b></a>
                 </li>
 
                 <li class="nav-item">
