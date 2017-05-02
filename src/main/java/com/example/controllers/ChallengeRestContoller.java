@@ -261,32 +261,38 @@ public class ChallengeRestContoller {
     public User completeChallenge(@RequestBody String id){
         Challenge challenge = iChallengeService.findById(Integer.parseInt(id));
 
+        User winner;
+        User loser;
+
         User opponent = challenge.getOpponent();
         opponent.setBusy(false);
-        double opponentProfit = opponent.getGameProfit();
-        BankAccount opponentAccount = opponent.getAccount();
 
         User challenger = challenge.getChallenger();
         challenger.setBusy(false);
-        double challengerProfit = challenger.getGameProfit();
-        BankAccount challengerAccount =challenger.getAccount();
 
 
-        User winner;
-        User loser;
-        if(challengerProfit>opponentProfit){
-            winner=challenger;
-            loser=opponent;
+
+        double challBal = iGameAccountService.findGameAccountByUserAndChallenge(challenger,challenge).getBalance();
+        double oppBal = iGameAccountService.findGameAccountByUserAndChallenge(opponent,challenge).getBalance();
+
+        if(challBal>oppBal){
+            winner = challenger;
+            loser = opponent;
         }else{
             winner=opponent;
             loser=challenger;
         }
 
+
+
+
         Result result = new Result();
         double prize = challenge.getStake();
+
         result.setWinner(winner);
         result.setLoser(loser);
         result.setPrize(prize);
+
         result.setChallenge(challenge);
         iResultService.saveResult(result);
 

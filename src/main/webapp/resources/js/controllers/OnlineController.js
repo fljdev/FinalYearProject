@@ -146,12 +146,15 @@ angular.module('myApp.OnlineController',[]).
                     }).error(function (error) {
                     console.log("something went wrong in waitForReply!!");
                 });
+                $state.go('home');
+
                 var msg = "This Game has ended "+$rootScope.currentUser.firstName;
                 swal({
                     title: msg,
                     text: 'Thanks for playing',
                     timer: 4000
                 });
+
             }
         },5000);
     };
