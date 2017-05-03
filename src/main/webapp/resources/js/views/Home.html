@@ -339,8 +339,8 @@
                         <tbody>
                         <tr ng-repeat="x in victoriesList">
                             <td>{{x.id}}</td>
-                            <td>{{x.winner.firstName}} {{x.winner.lastName}}</td>
-                            <td>{{x.loser.firstName}} {{x.loser.lastName}}</td>
+                            <td>{{x.winner.username}}</td>
+                            <td>{{x.loser.username}}</td>
                             <td>${{x.prize}}</td>
                         </tr>
                         <tr><td colspan="4">Total winnings {{totalWinnings}}</td></tr>
@@ -380,8 +380,8 @@
                         <tbody>
                         <tr ng-repeat="x in lossesList">
                             <td>{{x.id}}</td>
-                            <td>{{x.winner.firstName}} {{x.winner.lastName}}</td>
-                            <td>{{x.loser.firstName}} {{x.loser.lastName}}</td>
+                            <td>{{x.winner.username}} </td>
+                            <td>{{x.loser.username}}</td>
                             <td>${{x.prize}}</td>
                         </tr>
                         <tr><td colspan="4">Total losses {{totalLosses}}</td></tr>
